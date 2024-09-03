@@ -4,12 +4,16 @@ import GameObject = Phaser.GameObjects.GameObject;
 import Hero from "./Hero";
 import Group = Phaser.Physics.Arcade.Group;
 import MainScene from "../scenes/MainScene.ts";
+import HealthBar from "./HealthBar.ts";
 
 class Enemy extends Sprite {
     attackRange: number;
     isAttacking: boolean;
     debugCircle: Phaser.GameObjects.Arc;
     hero: Hero;
+    health: number;
+    maxHealth: number;
+    healthBar: HealthBar;
 
     constructor(scene: MainScene, x: number, y: number, attackRange: number = 100, showDebug: boolean = true) {
         super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
@@ -17,6 +21,9 @@ class Enemy extends Sprite {
         scene.physics.add.existing(this); // Enable physics
         this.setCollideWorldBounds(true); // Prevent enemy from going offscreen
 
+        this.maxHealth = 50;  // Example max health
+        this.health = this.maxHealth;
+        
         this.attackRange = attackRange;
         this.isAttacking = false;
         this.hero = scene.hero as Hero;  // Reference to the hero object
@@ -26,6 +33,18 @@ class Enemy extends Sprite {
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
         this.debugCircle.setVisible(showDebug);  // Show or hide the circle based on the parameter
+
+        // Create a health bar for the enemy
+        this.healthBar = new HealthBar(scene, this, 40, 5, this.maxHealth, {x: -20, y: -30});
+    }
+
+    // Reduce health and update the health bar
+    takeDamage(damage: number) {
+        this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0;
+        }
+        this.healthBar.updateHealth(this.health);
     }
 
     move() {
@@ -43,6 +62,7 @@ class Enemy extends Sprite {
             this.isAttacking = false;
             this.chaseHero();  // Continue chasing the hero
         }
+        this.healthBar.draw()
     }
 
     attack() {

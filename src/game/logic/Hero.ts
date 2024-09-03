@@ -8,8 +8,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     health: number;
     maxHealth: number;
     healthBar: HealthBar;
-    
-    
+
+
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'hero');  // 'hero' is the key for the hero sprite
         scene.add.existing(this);     // Add the hero to the scene
@@ -22,7 +22,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         // initial state
         this.state = 'idle';
 
-        this.healthBar = new HealthBar(scene, 20, 20, 200, 20, this.maxHealth);
+        this.healthBar = new HealthBar(scene, {x: 20, y: 20}, 200, 20, this.maxHealth);
     }
 
     // Method to update the hero's animation based on movement
