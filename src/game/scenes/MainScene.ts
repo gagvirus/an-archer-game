@@ -15,29 +15,11 @@ class MainScene extends Scene {
         // Call the Phaser.Scene constructor and pass the scene key
         super({key: 'MainScene'});
         this.level = 1;  // Start at level 1
-        this.enemies = this.physics.add.group(); // Group to hold all enemies
-
-
-        // Initialize the hero in the center of the canvas
-        const centerX = this.scale.width / 2;
-        const centerY = this.scale.height / 2;
-        this.hero = new Hero(this, centerX, centerY);
-        this.hero.anims.play('idle');
     }
 
     // Preload assets (if any)
     preload() {
-        this.load.spritesheet('hero', 'hero/running.png', {
-            frameWidth: 64,  // Width of each frame in the spritesheet
-            frameHeight: 64  // Height of each frame in the spritesheet
-        });
 
-        this.load.image('enemy', 'enemy.png');
-
-        for (let i = 1; i <= 6; i++) {
-            this.load.image(`enemy_walk_${i}`, `enemy/walk_${i}.png`);
-            this.load.image(`enemy_attack_${i}`, `enemy/attack1_${i}.png`);
-        }
     }
 
     // Create game objects
@@ -90,7 +72,13 @@ class MainScene extends Scene {
         });
 
         // Initialize enemy group
-        this.enemies = this.physics.add.group();
+        this.enemies = this.physics.add.group(); // Group to hold all enemies
+
+        // Initialize the hero in the center of the canvas
+        const centerX = this.scale.width / 2;
+        const centerY = this.scale.height / 2;
+        this.hero = new Hero(this, centerX, centerY);
+        this.hero.anims.play('idle');
 
         // Spawn enemies for the initial level
         this.spawnEnemies();

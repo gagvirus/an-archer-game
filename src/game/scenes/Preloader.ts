@@ -30,6 +30,18 @@ export class Preloader extends Scene {
 
         this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');
+
+        this.load.spritesheet('hero', 'hero/running.png', {
+            frameWidth: 64,  // Width of each frame in the spritesheet
+            frameHeight: 64  // Height of each frame in the spritesheet
+        });
+
+        this.load.image('enemy', 'enemy.png');
+
+        for (let i = 1; i <= 6; i++) {
+            this.load.image(`enemy_walk_${i}`, `enemy/walk_${i}.png`);
+            this.load.image(`enemy_attack_${i}`, `enemy/attack1_${i}.png`);
+        }
     }
 
     create() {
@@ -37,6 +49,6 @@ export class Preloader extends Scene {
         //  For example, you can define global animations here, so we can use them in other scenes.
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start('MainMenu');
+        this.scene.start('MainScene');
     }
 }
