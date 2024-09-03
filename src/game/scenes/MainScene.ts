@@ -26,37 +26,7 @@ class MainScene extends Scene {
 
     // Create game objects
     create() {
-        // Define the idle animation
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNumbers('hero', {start: 0, end: 1}), // Adjust start and end based on your spritesheet
-            frameRate: 5,  // Animation speed
-            repeat: -1      // Repeat indefinitely
-        });
-
-        // Define the running animation
-        this.anims.create({
-            key: 'run',
-            frames: this.anims.generateFrameNumbers('hero', {start: 8, end: 15}), // Adjust start and end based on your spritesheet
-            frameRate: 5,  // Animation speed
-            repeat: -1      // Repeat indefinitely
-        });
-
-        // Create an animation using the custom texture
-        this.anims.create({
-            key: 'walk',
-            frames: Array.from({length: 6}, (_, i) => ({key: `enemy_walk_${i + 1}`, frame: 0})),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        // Create an animation using the custom texture
-        this.anims.create({
-            key: 'attack',
-            frames: Array.from({length: 6}, (_, i) => ({key: `enemy_attack_${i + 1}`, frame: 0})),
-            frameRate: 10,
-            repeat: -1
-        });
+        
 
         // Listener for pointer (mouse/touch) inputs
         this.input.on('pointerdown', (pointer: Pointer) => {
@@ -82,7 +52,6 @@ class MainScene extends Scene {
         const centerX = this.scale.width / 2;
         const centerY = this.scale.height / 2;
         this.hero = new Hero(this, centerX, centerY);
-        this.hero.anims.play('idle');
 
         // Spawn enemies for the initial level
         this.spawnEnemies();

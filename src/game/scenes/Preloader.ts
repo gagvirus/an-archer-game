@@ -19,10 +19,8 @@ export class Preloader extends Scene {
 
         //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress: number) => {
-
             //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
             bar.width = 4 + (460 * progress);
-
         });
     }
 
@@ -50,8 +48,43 @@ export class Preloader extends Scene {
     create() {
         //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
         //  For example, you can define global animations here, so we can use them in other scenes.
+        this.registerAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
         this.scene.start('MainScene');
+    }
+
+    private registerAnimations() {
+        // Define the idle animation
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('hero', {start: 0, end: 1}), // Adjust start and end based on your spritesheet
+            frameRate: 5,  // Animation speed
+            repeat: -1      // Repeat indefinitely
+        });
+
+        // Define the running animation
+        this.anims.create({
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('hero', {start: 8, end: 15}), // Adjust start and end based on your spritesheet
+            frameRate: 5,  // Animation speed
+            repeat: -1      // Repeat indefinitely
+        });
+
+        // Create an animation using the custom texture
+        this.anims.create({
+            key: 'walk',
+            frames: Array.from({length: 6}, (_, i) => ({key: `enemy_walk_${i + 1}`, frame: 0})),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        // Create an animation using the custom texture
+        this.anims.create({
+            key: 'attack',
+            frames: Array.from({length: 6}, (_, i) => ({key: `enemy_attack_${i + 1}`, frame: 0})),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 }

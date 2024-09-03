@@ -21,6 +21,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
         // initial state
         this.state = 'idle';
+        this.anims.play('idle');
 
         this.healthBar = new HealthBar(scene, {x: 20, y: 20}, 200, 20, this.maxHealth);
     }
