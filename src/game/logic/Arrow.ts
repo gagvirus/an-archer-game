@@ -5,7 +5,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     target: Enemy;
     speed: number;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, target: Enemy, speed: number = 300) {
+    constructor(scene: Phaser.Scene, x: number, y: number, target: Enemy, speed: number = 500) {
         super(scene, x, y, 'arrow');
         this.target = target;
         this.speed = speed;
