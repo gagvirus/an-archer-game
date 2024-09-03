@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
+import Enemy from "./Enemy.ts";
+import Arrow from "./Arrow.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -25,6 +27,12 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('idle', true);
             }
         }
+    }
+
+    shootArrow(target: Enemy) {
+        const arrow = new Arrow(this.scene, this.x, this.y, target);
+        this.scene.add.existing(arrow);
+        return arrow;
     }
 }
 
