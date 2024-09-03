@@ -76,13 +76,12 @@ class Enemy extends Sprite {
             if (otherEnemy !== this) {
                 const distance = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
 
-                if (distance < minDistance) {
+                // Check if the distance is less than the minimum distance
+                if (distance < minDistance) { // Adjust the distance as needed
                     const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
-                    const overlap = minDistance - distance;
-
                     this.setVelocity(
-                        Math.cos(angle) * overlap * 2,
-                        Math.sin(angle) * overlap * 2
+                        Math.cos(angle) * -minDistance, // Push away from the other enemy
+                        Math.sin(angle) * -minDistance  // Adjust the push strength as needed
                     );
                 }
             }
