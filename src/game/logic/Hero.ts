@@ -52,6 +52,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.health -= damage;
         if (this.health < 0) {
             this.health = 0;
+            this.scene.scene.start('GameOver');
         }
         this.healthBar.updateHealth(this.health);
     }
