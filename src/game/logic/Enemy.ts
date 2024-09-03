@@ -46,6 +46,7 @@ class Enemy extends Sprite {
     }
 
     attack() {
+        this.hero.takeDamage(10)
         console.log('Enemy is attacking the hero!');
     }
 
