@@ -49,6 +49,10 @@ class HealthBar {
         this.health = newHealth;
         this.draw();
     }
+
+    destroy() {
+        this.bar.destroy();
+    }
 }
 
 export default HealthBar;

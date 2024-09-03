@@ -43,8 +43,16 @@ class Enemy extends Sprite {
         this.health -= damage;
         if (this.health < 0) {
             this.health = 0;
+            this.destroy();
         }
         this.healthBar.updateHealth(this.health);
+    }
+    
+    destroy()
+    {
+        this.healthBar.destroy();
+        this.debugCircle.destroy();
+        super.destroy()
     }
 
     move() {
@@ -67,7 +75,6 @@ class Enemy extends Sprite {
 
     attack() {
         this.hero.takeDamage(10)
-        console.log('Enemy is attacking the hero!');
     }
 
     // Move the enemy towards the target (the hero)

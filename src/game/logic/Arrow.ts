@@ -25,7 +25,6 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
 
     // Move the arrow towards the target
     private moveTowardsTarget() {
-        console.log('moving')
         const angle = Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y);
         const velocityX = Math.cos(angle) * this.speed;
         const velocityY = Math.sin(angle) * this.speed;
