@@ -7,6 +7,7 @@ import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import Arrow from "../logic/Arrow.ts";
 import Skeleton from "../logic/Skeleton.ts";
+import {getRandomPosition} from "../helpers/position-helper.ts";
 
 class MainScene extends Scene {
     level: number;
@@ -27,7 +28,7 @@ class MainScene extends Scene {
 
     // Create game objects
     create() {
-        
+
 
         // Listener for pointer (mouse/touch) inputs
         this.input.on('pointerdown', (pointer: Pointer) => {
@@ -140,8 +141,7 @@ class MainScene extends Scene {
         const numEnemies = this.level * 3; // Increase the number of enemies each level
 
         for (let i = 0; i < numEnemies; i++) {
-            const x = Phaser.Math.Between(50, this.scale.width - 50);
-            const y = Phaser.Math.Between(50, this.scale.height - 50);
+            const {x, y} = getRandomPosition(this.scale.width - 50, this.scale.height - 50);
             const enemy = new Skeleton(this, x, y);
             this.enemies.add(enemy);
         }
