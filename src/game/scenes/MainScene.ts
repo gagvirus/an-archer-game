@@ -15,7 +15,7 @@ class MainScene extends Scene {
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
-        super({key: 'MainScene'});
+        super('MainScene');
         this.level = 1;  // Start at level 1
     }
 
@@ -61,6 +61,9 @@ class MainScene extends Scene {
             console.log(`Key down: ${event.key}`);
             if (event.key === 'n') {
                 this.nextLevel();  // Press 'n' to advance to the next level
+            }
+            if (event.key === 'Escape') {
+                this.scene.start('PauseMenu');
             }
         });
 
