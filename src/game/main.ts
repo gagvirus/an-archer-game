@@ -22,9 +22,9 @@ const config: Phaser.Types.Core.GameConfig = {
         Boot,
         Preloader,
         MainMenu,
-        PauseMenu,
         GameOver,
         MainScene,
+        PauseMenu,
     ],
     physics: {
         default: 'arcade',

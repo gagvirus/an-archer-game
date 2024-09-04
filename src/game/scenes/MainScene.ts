@@ -63,7 +63,8 @@ class MainScene extends Scene {
                 this.nextLevel();  // Press 'n' to advance to the next level
             }
             if (event.key === 'Escape') {
-                this.scene.start('PauseMenu');
+                this.scene.pause();
+                this.scene.launch('PauseMenu');
             }
         });
 

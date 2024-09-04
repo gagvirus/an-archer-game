@@ -18,7 +18,8 @@ export class PauseMenu extends Scene {
         this.startGame.setInteractive()
         
         this.startGame.on('pointerdown', () => {
-            this.scene.start('MainScene')
+            this.scene.resume('MainScene')
+            this.scene.stop();
         });
 
 
