@@ -9,7 +9,6 @@ export class Preloader extends Scene {
         const x = window.innerWidth / 2;
         const y = window.innerHeight / 2;
         //  We loaded this image in our Boot Scene, so we can display it here
-        // this.add.image(x, y, 'background');
 
         //  A simple progress bar. This is the outline of the bar.
         this.add.rectangle(x, y, 468, 32).setStrokeStyle(1, 0xffffff);
@@ -28,7 +27,6 @@ export class Preloader extends Scene {
         //  Load the assets for the game - Replace with your own assets
         this.load.setPath('assets');
 
-        this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');
 
         this.load.image('arrow', 'arrow.png');
