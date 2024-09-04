@@ -8,6 +8,7 @@ import Enemy from "../logic/Enemy.ts";
 import Arrow from "../logic/Arrow.ts";
 import Skeleton from "../logic/Skeleton.ts";
 import {getRandomPositionAwayFromPoint} from "../helpers/position-helper.ts";
+import {createAnimatedText} from "../helpers/text-helpers.ts";
 
 class MainScene extends Scene {
     level: number;
@@ -84,6 +85,7 @@ class MainScene extends Scene {
     
     startLevel()
     {
+        createAnimatedText(this, `Level ${this.level}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new level
         console.log(`Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
     }
