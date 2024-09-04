@@ -6,6 +6,7 @@ class Skeleton extends Enemy {
         this.speed = 75;
         this.attackRange = 100;
         this.attackDamage = 10;
+        this.attacksPerSecond = 1;
         this.type = 'skeleton';
     }
 }

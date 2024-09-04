@@ -6,6 +6,7 @@ class Demon extends Enemy {
         this.speed = 25;
         this.attackRange = 50;
         this.attackDamage = 30;
+        this.attacksPerSecond = 0.5;
         this.type = 'demon';
     }
 }

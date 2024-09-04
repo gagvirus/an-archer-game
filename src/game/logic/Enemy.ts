@@ -16,6 +16,7 @@ abstract class Enemy extends Sprite {
     healthBar: HealthBar;
     speed: number;
     attackDamage: number;
+    attacksPerSecond: number = 1;
     type: string = 'enemy';
 
     constructor(scene: MainScene, x: number, y: number) {
@@ -24,7 +25,6 @@ abstract class Enemy extends Sprite {
         scene.physics.add.existing(this); // Enable physics
         this.setCollideWorldBounds(true); // Prevent enemy from going offscreen
 
-        
         this.hero = scene.hero as Hero;  // Reference to the hero object
 
         this.setBounce(1);  // Add bounce for better collision response
