@@ -7,7 +7,7 @@ import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 
-const COOLDOWN_THRESSHOLD = 10;
+const COOLDOWN_THRESHOLD = 10;
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     health: number;
@@ -60,7 +60,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
             (gameObject as Arrow).update();
         });
         this.attackCooldown -= delta;
-        if (this.attackCooldown <= COOLDOWN_THRESSHOLD)
+        if (this.attackCooldown <= COOLDOWN_THRESHOLD)
         {
             this.attackCooldown = 0;
         }
@@ -83,7 +83,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     shootArrowAtNearestEnemy() {
-        if (this.attackCooldown < COOLDOWN_THRESSHOLD)
+        if (this.attackCooldown < COOLDOWN_THRESHOLD)
         {
             this.attackCooldown = 1000 / this.attacksPerSecond;
             const nearestEnemy = this.getNearestEnemy();
