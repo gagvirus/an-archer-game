@@ -38,8 +38,12 @@ export class Preloader extends Scene {
         });
 
         for (let i = 1; i <= 6; i++) {
-            this.load.image(`enemy_walk_${i}`, `enemy/walk_${i}.png`);
-            this.load.image(`enemy_attack_${i}`, `enemy/attack1_${i}.png`);
+            this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
+            this.load.image(`skeleton_attack_${i}`, `enemy/skeleton/attack1_${i}.png`);
+            this.load.image(`imp_attack_${i}`, `enemy/imp/walk_${i}.png`);
+            this.load.image(`imp_attack_${i}`, `enemy/imp/attack1_${i}.png`);
+            this.load.image(`demon_attack_${i}`, `enemy/demon/walk_${i}.png`);
+            this.load.image(`demon_attack_${i}`, `enemy/demon/attack1_${i}.png`);
         }
     }
 
@@ -71,16 +75,48 @@ export class Preloader extends Scene {
 
         // Create an animation using the custom texture
         this.anims.create({
-            key: 'walk',
-            frames: Array.from({length: 6}, (_, i) => ({key: `enemy_walk_${i + 1}`, frame: 0})),
+            key: 'skeleton_walk',
+            frames: Array.from({length: 6}, (_, i) => ({key: `skeleton_walk_${i + 1}`, frame: 0})),
             frameRate: 10,
             repeat: -1
         });
 
         // Create an animation using the custom texture
         this.anims.create({
-            key: 'attack',
-            frames: Array.from({length: 6}, (_, i) => ({key: `enemy_attack_${i + 1}`, frame: 0})),
+            key: 'skeleton_attack',
+            frames: Array.from({length: 6}, (_, i) => ({key: `skeleton_attack_${i + 1}`, frame: 0})),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        // Create an animation using the custom texture
+        this.anims.create({
+            key: 'imp_walk',
+            frames: Array.from({length: 6}, (_, i) => ({key: `imp_walk_${i + 1}`, frame: 0})),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        // Create an animation using the custom texture
+        this.anims.create({
+            key: 'imp_attack',
+            frames: Array.from({length: 6}, (_, i) => ({key: `imp_attack_${i + 1}`, frame: 0})),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        // Create an animation using the custom texture
+        this.anims.create({
+            key: 'demon_walk',
+            frames: Array.from({length: 6}, (_, i) => ({key: `demon_walk_${i + 1}`, frame: 0})),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        // Create an animation using the custom texture
+        this.anims.create({
+            key: 'demon_attack',
+            frames: Array.from({length: 6}, (_, i) => ({key: `demon_attack_${i + 1}`, frame: 0})),
             frameRate: 10,
             repeat: -1
         });

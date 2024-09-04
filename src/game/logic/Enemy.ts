@@ -29,7 +29,7 @@ class Enemy extends Sprite {
         this.hero = scene.hero as Hero;  // Reference to the hero object
 
         this.setBounce(1);  // Add bounce for better collision response
-        this.anims.play('walk')
+        this.anims.play('skeleton_walk')
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
         this.debugCircle.setVisible(showDebug);  // Show or hide the circle based on the parameter
