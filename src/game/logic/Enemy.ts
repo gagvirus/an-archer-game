@@ -5,6 +5,7 @@ import Hero from "./Hero";
 import Group = Phaser.Physics.Arcade.Group;
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
+import {COOLDOWN_THRESHOLD} from "../helpers/gameplayer-helper.ts";
 
 abstract class Enemy extends Sprite {
     attackRange: number;
@@ -17,6 +18,7 @@ abstract class Enemy extends Sprite {
     speed: number;
     attackDamage: number;
     attacksPerSecond: number = 1;
+    attackCooldown: number;
     type: string = 'enemy';
 
     constructor(scene: MainScene, x: number, y: number) {
@@ -29,13 +31,14 @@ abstract class Enemy extends Sprite {
 
         this.setBounce(1);  // Add bounce for better collision response
 
-        // Create a health bar for the enemy
         this.initStats();
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
         this.debugCircle.setVisible(true);  // todo: to be modifiable somehow 
 
         this.health = this.maxHealth;
+        this.attackCooldown = 0;
+        // Create a health bar for the enemy
         this.healthBar = new HealthBar(scene, this, 40, 5, this.maxHealth, {x: -20, y: -30});
         this.anims.play(`${this.type}_walk`)
     }
@@ -60,6 +63,18 @@ abstract class Enemy extends Sprite {
         super.destroy()
     }
 
+    // @ts-expect-error we *must* receive time
+    update(time: number, delta: number)
+    {
+        this.move();
+        this.avoidCollision((this.scene as MainScene).enemies, 50);
+        this.attackCooldown -= delta;
+        if (this.attackCooldown <= COOLDOWN_THRESHOLD)
+        {
+            this.attackCooldown = 0;
+        }
+    }
+
     move() {
         // Update the debug circle position
         this.debugCircle.setPosition(this.x, this.y);
@@ -79,7 +94,11 @@ abstract class Enemy extends Sprite {
     }
 
     attack() {
-        this.hero.takeDamage(this.attackDamage)
+        if (this.attackCooldown < COOLDOWN_THRESHOLD)
+        {
+            this.attackCooldown = 1000 / this.attacksPerSecond;
+            this.hero.takeDamage(this.attackDamage);
+        }
     }
 
     // Move the enemy towards the target (the hero)

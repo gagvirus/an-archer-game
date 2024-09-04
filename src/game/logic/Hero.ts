@@ -6,8 +6,7 @@ import MainScene from "../scenes/MainScene.ts";
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
-
-const COOLDOWN_THRESHOLD = 10;
+import {COOLDOWN_THRESHOLD} from "../helpers/gameplayer-helper.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     health: number;
@@ -44,7 +43,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     // Method to update the hero's animation based on movement
-    update(cursors: CursorKeys, delta: number) {
+    // @ts-expect-error we *must* receive time
+    update(cursors: CursorKeys, time: numer, delta: number) {
         if (cursors.left.isDown || cursors.right.isDown || cursors.up.isDown || cursors.down.isDown) {
             if (this.state !== 'run') {
                 this.state = 'run';
