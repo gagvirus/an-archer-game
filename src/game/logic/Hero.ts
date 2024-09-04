@@ -7,12 +7,15 @@ import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 
+const COOLDOWN_THRESSHOLD = 10;
+
 class Hero extends Phaser.Physics.Arcade.Sprite {
     health: number;
     maxHealth: number;
     healthBar: HealthBar;
     arrows: Group;
-
+    attacksPerSecond: number;
+    attackCooldown: number;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'hero');  // 'hero' is the key for the hero sprite
@@ -25,6 +28,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
         this.maxHealth = 100;
         this.health = this.maxHealth;
+        
+        this.attacksPerSecond = 2;
+        this.attackCooldown = 0;
 
         // initial state
         this.state = 'idle';
@@ -38,7 +44,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     // Method to update the hero's animation based on movement
-    update(cursors: CursorKeys) {
+    update(cursors: CursorKeys, delta: number) {
         if (cursors.left.isDown || cursors.right.isDown || cursors.up.isDown || cursors.down.isDown) {
             if (this.state !== 'run') {
                 this.state = 'run';
@@ -53,6 +59,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.arrows.getChildren().forEach((gameObject: GameObject) => {
             (gameObject as Arrow).update();
         });
+        this.attackCooldown -= delta;
+        if (this.attackCooldown <= COOLDOWN_THRESSHOLD)
+        {
+            this.attackCooldown = 0;
+        }
     }
 
     shootArrow(target: Enemy) {
@@ -72,10 +83,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     shootArrowAtNearestEnemy() {
-        const nearestEnemy = this.getNearestEnemy();
+        if (this.attackCooldown < COOLDOWN_THRESSHOLD)
+        {
+            this.attackCooldown = 1000 / this.attacksPerSecond;
+            const nearestEnemy = this.getNearestEnemy();
 
-        if (nearestEnemy) {
-            this.arrows.add(this.shootArrow(nearestEnemy));
+            if (nearestEnemy) {
+                this.arrows.add(this.shootArrow(nearestEnemy));
+            }
         }
     }
 

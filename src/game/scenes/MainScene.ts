@@ -73,7 +73,8 @@ class MainScene extends Scene {
     }
 
     // Update game state (called every frame)
-    update() {
+    // @ts-expect-error we *must* receive time
+    update(time: number, delta: number) {
         // Make enemies move towards the hero and avoid collision with each other
         this.enemies.getChildren().forEach((gameObject: GameObject) => {
             const enemy = gameObject as Enemy;
@@ -84,7 +85,7 @@ class MainScene extends Scene {
         const cursors = (this.input.keyboard as KeyboardPlugin).createCursorKeys();
 
         // Update hero based on input
-        this.hero.update(cursors);
+        this.hero.update(cursors, delta);
 
         // Handle hero movement
         if (cursors.left.isDown) {
