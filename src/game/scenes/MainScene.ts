@@ -4,7 +4,6 @@ import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
-import Skeleton from "../logic/Skeleton.ts";
 import {getRandomPositionAwayFromPoint} from "../helpers/position-helper.ts";
 import {createAnimatedText} from "../helpers/text-helpers.ts";
 
@@ -108,7 +107,7 @@ class MainScene extends Scene {
 
         for (let i = 0; i < numEnemies; i++) {
             const {x, y} = getRandomPositionAwayFromPoint(this.scale.width - 50, this.scale.height - 50, this.hero, 200);
-            const enemy = new Skeleton(this, x, y);
+            const enemy = new Enemy(this, x, y);
             this.enemies.add(enemy);
         }
     }

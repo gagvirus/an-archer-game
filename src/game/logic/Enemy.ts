@@ -6,8 +6,10 @@ import Group = Phaser.Physics.Arcade.Group;
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
 import {Attackable} from "../helpers/gameplayer-helper.ts";
+import {enemies, EnemyDef} from "./enemies.ts";
+import {getRandomItem} from "../helpers/random-helper.ts";
 
-abstract class Enemy extends Sprite {
+class Enemy extends Sprite {
     attackRange: number;
     isAttacking: boolean = false;
     debugCircle: Phaser.GameObjects.Arc;
@@ -21,7 +23,7 @@ abstract class Enemy extends Sprite {
     type: string = 'enemy';
     attackable: Attackable;
 
-    constructor(scene: MainScene, x: number, y: number) {
+    constructor(scene: MainScene, x: number, y: number, enemyDef?: EnemyDef) {
         super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
         scene.add.existing(this);     // Add to the scene
         scene.physics.add.existing(this); // Enable physics
@@ -31,7 +33,7 @@ abstract class Enemy extends Sprite {
 
         this.setBounce(1);  // Add bounce for better collision response
 
-        this.initStats();
+        this.instantiate(enemyDef);
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
         this.debugCircle.setVisible(true);  // todo: to be modifiable somehow 
@@ -52,7 +54,18 @@ abstract class Enemy extends Sprite {
     }
     
     // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
-    abstract initStats(): void;
+    instantiate = (enemyDef?: EnemyDef): void => {
+        if (!enemyDef)
+        {
+            enemyDef = getRandomItem<EnemyDef>(enemies)
+        }
+        this.maxHealth = enemyDef.maxHealth;
+        this.speed = enemyDef.speed;
+        this.attackRange = enemyDef.attackRange;
+        this.attackDamage = enemyDef.attackDamage;
+        this.attacksPerSecond = enemyDef.attacksPerSecond;
+        this.type = enemyDef.type;
+    };
 
     destroy()
     {
