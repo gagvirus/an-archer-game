@@ -6,6 +6,7 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import Arrow from "../logic/Arrow.ts";
+import Skeleton from "../logic/Skeleton.ts";
 
 class MainScene extends Scene {
     level: number;
@@ -141,7 +142,7 @@ class MainScene extends Scene {
         for (let i = 0; i < numEnemies; i++) {
             const x = Phaser.Math.Between(50, this.scale.width - 50);
             const y = Phaser.Math.Between(50, this.scale.height - 50);
-            const enemy = new Enemy(this, x, y);
+            const enemy = new Skeleton(this, x, y);
             this.enemies.add(enemy);
         }
     }

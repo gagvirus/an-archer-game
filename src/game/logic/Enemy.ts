@@ -6,15 +6,17 @@ import Group = Phaser.Physics.Arcade.Group;
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
 
-class Enemy extends Sprite {
+abstract class Enemy extends Sprite {
     attackRange: number;
-    isAttacking: boolean;
+    isAttacking: boolean = false;
     debugCircle: Phaser.GameObjects.Arc;
     hero: Hero;
     health: number;
     maxHealth: number;
     healthBar: HealthBar;
     speed: number;
+    attackDamage: number;
+    type: string = 'enemy';
 
     constructor(scene: MainScene, x: number, y: number) {
         super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
@@ -22,25 +24,24 @@ class Enemy extends Sprite {
         scene.physics.add.existing(this); // Enable physics
         this.setCollideWorldBounds(true); // Prevent enemy from going offscreen
 
-        this.attackRange = 100; // todo: to be extended
-
-        this.maxHealth = 50;  // todo: to be extended
-        this.health = this.maxHealth;
         
-        this.speed = 50; // todo: to be extended
-        
-        this.isAttacking = false;
         this.hero = scene.hero as Hero;  // Reference to the hero object
 
         this.setBounce(1);  // Add bounce for better collision response
-        this.anims.play('skeleton_walk')
+
+        // Create a health bar for the enemy
+        this.initStats();
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
         this.debugCircle.setVisible(true);  // todo: to be modifiable somehow 
 
-        // Create a health bar for the enemy
+        this.health = this.maxHealth;
         this.healthBar = new HealthBar(scene, this, 40, 5, this.maxHealth, {x: -20, y: -30});
+        this.anims.play(`${this.type}_walk`)
     }
+    
+    // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
+    abstract initStats(): void;
 
     // Reduce health and update the health bar
     takeDamage(damage: number) {
@@ -78,7 +79,7 @@ class Enemy extends Sprite {
     }
 
     attack() {
-        this.hero.takeDamage(10)
+        this.hero.takeDamage(this.attackDamage)
     }
 
     // Move the enemy towards the target (the hero)
