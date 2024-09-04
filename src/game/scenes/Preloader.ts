@@ -40,9 +40,9 @@ export class Preloader extends Scene {
         for (let i = 1; i <= 6; i++) {
             this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
             this.load.image(`skeleton_attack_${i}`, `enemy/skeleton/attack1_${i}.png`);
-            this.load.image(`imp_attack_${i}`, `enemy/imp/walk_${i}.png`);
+            this.load.image(`imp_walk_${i}`, `enemy/imp/walk_${i}.png`);
             this.load.image(`imp_attack_${i}`, `enemy/imp/attack1_${i}.png`);
-            this.load.image(`demon_attack_${i}`, `enemy/demon/walk_${i}.png`);
+            this.load.image(`demon_walk_${i}`, `enemy/demon/walk_${i}.png`);
             this.load.image(`demon_attack_${i}`, `enemy/demon/attack1_${i}.png`);
         }
     }
