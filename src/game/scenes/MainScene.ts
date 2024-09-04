@@ -55,9 +55,6 @@ class MainScene extends Scene {
         const centerY = this.scale.height / 2;
         this.hero = new Hero(this, centerX, centerY);
 
-        // Spawn enemies for the initial level
-        this.spawnEnemies();
-
         // Listener for keyboard inputs
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             console.log(`Key down: ${event.key}`);
@@ -73,6 +70,8 @@ class MainScene extends Scene {
         this.input.keyboard?.on('keydown-SPACE', () => {
             this.shootArrowAtNearestEnemy();
         });
+        
+        this.startLevel();
     }
 
     shootArrowAtNearestEnemy() {
@@ -81,6 +80,12 @@ class MainScene extends Scene {
         if (nearestEnemy) {
             this.arrows.add(this.hero.shootArrow(nearestEnemy));
         }
+    }
+    
+    startLevel()
+    {
+        this.spawnEnemies(); // Spawn more enemies for the new level
+        console.log(`Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
     }
 
     getNearestEnemy(): Enemy | null {
@@ -150,8 +155,7 @@ class MainScene extends Scene {
     nextLevel() {
         this.level += 1;   // Increase level
         this.enemies.clear(true, true); // Clear existing enemies
-        this.spawnEnemies(); // Spawn more enemies for the new level
-        console.log(`Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
+        this.startLevel();
     }
 
 }
