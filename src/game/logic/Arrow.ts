@@ -42,7 +42,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
 
     // Handle what happens when the arrow hits the target
     private handleHit() {
-        this.target.takeDamage(10);
+        this.target.attackable.takeDamage(10);
         // this.target.takeDamage(10); // Assume the Enemy class has a takeDamage method
         this.destroy();
     }

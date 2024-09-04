@@ -5,14 +5,13 @@ import Hero from "./Hero";
 import Group = Phaser.Physics.Arcade.Group;
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
-import {COOLDOWN_THRESHOLD} from "../helpers/gameplayer-helper.ts";
+import {Attackable} from "../helpers/gameplayer-helper.ts";
 
 abstract class Enemy extends Sprite {
     attackRange: number;
     isAttacking: boolean = false;
     debugCircle: Phaser.GameObjects.Arc;
     hero: Hero;
-    health: number;
     maxHealth: number;
     healthBar: HealthBar;
     speed: number;
@@ -20,6 +19,7 @@ abstract class Enemy extends Sprite {
     attacksPerSecond: number = 1;
     attackCooldown: number;
     type: string = 'enemy';
+    attackable: Attackable;
 
     constructor(scene: MainScene, x: number, y: number) {
         super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
@@ -36,26 +36,24 @@ abstract class Enemy extends Sprite {
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
         this.debugCircle.setVisible(true);  // todo: to be modifiable somehow 
 
-        this.health = this.maxHealth;
         this.attackCooldown = 0;
         // Create a health bar for the enemy
         this.healthBar = new HealthBar(scene, this, 40, 5, this.maxHealth, {x: -20, y: -30});
         this.anims.play(`${this.type}_walk`)
+
+        this.attackable = new Attackable(
+            this.attacksPerSecond,
+            this.attackDamage,
+            this.maxHealth,
+            this.healthBar,
+            () => this.destroy(),
+            () => this.hero.attackable.takeDamage(this.attackDamage))
+
     }
     
     // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
     abstract initStats(): void;
 
-    // Reduce health and update the health bar
-    takeDamage(damage: number) {
-        this.health -= damage;
-        if (this.health < 0) {
-            this.health = 0;
-            this.destroy();
-        }
-        this.healthBar.updateHealth(this.health);
-    }
-    
     destroy()
     {
         this.healthBar.destroy();
@@ -68,11 +66,7 @@ abstract class Enemy extends Sprite {
     {
         this.move();
         this.avoidCollision((this.scene as MainScene).enemies, 50);
-        this.attackCooldown -= delta;
-        if (this.attackCooldown <= COOLDOWN_THRESHOLD)
-        {
-            this.attackCooldown = 0;
-        }
+        this.attackable.update(delta)
     }
 
     move() {
@@ -85,20 +79,12 @@ abstract class Enemy extends Sprite {
         if (distanceToHero <= this.attackRange) {
             this.isAttacking = true;
             this.setVelocity(0);  // Stop moving
-            this.attack();  // Attack the hero
+            this.attackable.attack();  // Attack the hero
         } else {
             this.isAttacking = false;
             this.chaseHero();  // Continue chasing the hero
         }
         this.healthBar.draw()
-    }
-
-    attack() {
-        if (this.attackCooldown < COOLDOWN_THRESHOLD)
-        {
-            this.attackCooldown = 1000 / this.attacksPerSecond;
-            this.hero.takeDamage(this.attackDamage);
-        }
     }
 
     // Move the enemy towards the target (the hero)

@@ -1,4 +1,3 @@
-import Pointer = Phaser.Input.Pointer;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
 import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
@@ -28,19 +27,19 @@ class MainScene extends Scene {
     // Create game objects
     create() {
         // Listener for pointer (mouse/touch) inputs
-        this.input.on('pointerdown', (pointer: Pointer) => {
-            console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
-        });
+        // this.input.on('pointerdown', (pointer: Pointer) => {
+        //     console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
+        // });
 
         // Listener for keyboard inputs
-        this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
-            console.log(`Key down: ${event.key}`);
-        });
+        // this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
+        //     console.log(`Key down: ${event.key}`);
+        // });
 
         // Listener for pointer movement
-        this.input.on('pointermove', () => {
-            // console.log(`Pointer moved to x: ${pointer.x}, y: ${pointer.y}`);
-        });
+        // this.input.on('pointermove', () => {
+        //     // console.log(`Pointer moved to x: ${pointer.x}, y: ${pointer.y}`);
+        // });
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
@@ -52,7 +51,7 @@ class MainScene extends Scene {
 
         // Listener for keyboard inputs
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
-            console.log(`Key down: ${event.key}`);
+            // console.log(`Key down: ${event.key}`);
             if (event.key === 'n') {
                 this.nextLevel();  // Press 'n' to advance to the next level
             }

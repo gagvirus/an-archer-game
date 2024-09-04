@@ -3,18 +3,17 @@ import Enemy from "./Enemy.ts";
 import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
 import MainScene from "../scenes/MainScene.ts";
+import {Attackable} from "../helpers/gameplayer-helper.ts";
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
-import {COOLDOWN_THRESHOLD} from "../helpers/gameplayer-helper.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
-    health: number;
     maxHealth: number;
     healthBar: HealthBar;
     arrows: Group;
     attacksPerSecond: number;
-    attackCooldown: number;
+    attackable: Attackable;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'hero');  // 'hero' is the key for the hero sprite
@@ -26,10 +25,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.arrows = scene.add.group(); // Group to hold all arrows
 
         this.maxHealth = 100;
-        this.health = this.maxHealth;
-        
+
         this.attacksPerSecond = 2;
-        this.attackCooldown = 0;
 
         // initial state
         this.state = 'idle';
@@ -38,8 +35,18 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.healthBar = new HealthBar(scene, {x: 20, y: 20}, 200, 20, this.maxHealth);
 
         scene.input.keyboard?.on('keydown-SPACE', () => {
-            this.shootArrowAtNearestEnemy();
+            this.attackable.attack();
         });
+        this.attackable = new Attackable(
+            2, // attacks per second
+            10, // attack damage
+            this.maxHealth,
+            this.healthBar, () => this.scene.scene.start('GameOver'), () => {
+                const nearestEnemy = this.getNearestEnemy();
+                if (nearestEnemy) {
+                    this.arrows.add(this.shootArrow(nearestEnemy));
+                }
+            })
     }
 
     // Method to update the hero's animation based on movement
@@ -59,39 +66,13 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.arrows.getChildren().forEach((gameObject: GameObject) => {
             (gameObject as Arrow).update();
         });
-        this.attackCooldown -= delta;
-        if (this.attackCooldown <= COOLDOWN_THRESHOLD)
-        {
-            this.attackCooldown = 0;
-        }
+        this.attackable.update(delta);
     }
 
     shootArrow(target: Enemy) {
         const arrow = new Arrow(this.scene, this.x, this.y, target);
         this.scene.add.existing(arrow);
         return arrow;
-    }
-
-    // Reduce health and update the health bar
-    takeDamage(damage: number) {
-        this.health -= damage;
-        if (this.health < 0) {
-            this.health = 0;
-            this.scene.scene.start('GameOver');
-        }
-        this.healthBar.updateHealth(this.health);
-    }
-
-    shootArrowAtNearestEnemy() {
-        if (this.attackCooldown < COOLDOWN_THRESHOLD)
-        {
-            this.attackCooldown = 1000 / this.attacksPerSecond;
-            const nearestEnemy = this.getNearestEnemy();
-
-            if (nearestEnemy) {
-                this.arrows.add(this.shootArrow(nearestEnemy));
-            }
-        }
     }
 
     getNearestEnemy(): Enemy | null {
