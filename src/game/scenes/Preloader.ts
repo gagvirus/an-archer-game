@@ -37,6 +37,11 @@ export class Preloader extends Scene {
             frameHeight: 64  // Height of each frame in the spritesheet
         });
 
+        this.load.spritesheet('hero_attack', 'hero/attack.png', {
+            frameWidth: 64,  // Width of each frame in the spritesheet
+            frameHeight: 64  // Height of each frame in the spritesheet
+        });
+
         for (let i = 1; i <= 6; i++) {
             this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
             this.load.image(`skeleton_attack_${i}`, `enemy/skeleton/attack1_${i}.png`);
@@ -69,6 +74,14 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'run',
             frames: this.anims.generateFrameNumbers('hero', {start: 8, end: 15}), // Adjust start and end based on your spritesheet
+            frameRate: 5,  // Animation speed
+            repeat: -1      // Repeat indefinitely
+        });
+
+        // Define the running animation
+        this.anims.create({
+            key: 'hero_attack',
+            frames: this.anims.generateFrameNumbers('hero_attack', {start: 24, end: 29}), // Adjust start and end based on your spritesheet
             frameRate: 5,  // Animation speed
             repeat: -1      // Repeat indefinitely
         });
