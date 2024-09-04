@@ -14,17 +14,21 @@ class Enemy extends Sprite {
     health: number;
     maxHealth: number;
     healthBar: HealthBar;
+    speed: number;
 
-    constructor(scene: MainScene, x: number, y: number, attackRange: number = 100, showDebug: boolean = true) {
+    constructor(scene: MainScene, x: number, y: number) {
         super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
         scene.add.existing(this);     // Add to the scene
         scene.physics.add.existing(this); // Enable physics
         this.setCollideWorldBounds(true); // Prevent enemy from going offscreen
 
-        this.maxHealth = 50;  // Example max health
+        this.attackRange = 100; // todo: to be extended
+
+        this.maxHealth = 50;  // todo: to be extended
         this.health = this.maxHealth;
         
-        this.attackRange = attackRange;
+        this.speed = 50; // todo: to be extended
+        
         this.isAttacking = false;
         this.hero = scene.hero as Hero;  // Reference to the hero object
 
@@ -32,7 +36,7 @@ class Enemy extends Sprite {
         this.anims.play('skeleton_walk')
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
-        this.debugCircle.setVisible(showDebug);  // Show or hide the circle based on the parameter
+        this.debugCircle.setVisible(true);  // todo: to be modifiable somehow 
 
         // Create a health bar for the enemy
         this.healthBar = new HealthBar(scene, this, 40, 5, this.maxHealth, {x: -20, y: -30});
@@ -79,12 +83,10 @@ class Enemy extends Sprite {
 
     // Move the enemy towards the target (the hero)
     chaseHero() {
-        const speed = Phaser.Math.Between(50, 100); // Random speed for each enemy
-
         // Calculate the angle and direction towards the target
         const angle = Phaser.Math.Angle.Between(this.x, this.y, this.hero.x, this.hero.y);
-        const velocityX = Math.cos(angle) * speed;
-        const velocityY = Math.sin(angle) * speed;
+        const velocityX = Math.cos(angle) * this.speed;
+        const velocityY = Math.sin(angle) * this.speed;
 
         // Set velocity towards the target
         this.setVelocity(velocityX, velocityY);
