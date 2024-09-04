@@ -5,7 +5,6 @@ import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
-import Arrow from "../logic/Arrow.ts";
 import Skeleton from "../logic/Skeleton.ts";
 import {getRandomPositionAwayFromPoint} from "../helpers/position-helper.ts";
 import {createAnimatedText} from "../helpers/text-helpers.ts";
@@ -13,7 +12,6 @@ import {createAnimatedText} from "../helpers/text-helpers.ts";
 class MainScene extends Scene {
     level: number;
     enemies: Group;
-    arrows: Group;
     hero: Hero;
 
     constructor() {
@@ -29,8 +27,6 @@ class MainScene extends Scene {
 
     // Create game objects
     create() {
-
-
         // Listener for pointer (mouse/touch) inputs
         this.input.on('pointerdown', (pointer: Pointer) => {
             console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
@@ -48,8 +44,6 @@ class MainScene extends Scene {
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
-        // Initialize arrow group
-        this.arrows = this.physics.add.group(); // Group to hold all arrows
 
         // Initialize the hero in the center of the canvas
         const centerX = this.scale.width / 2;
@@ -68,42 +62,14 @@ class MainScene extends Scene {
             }
         });
 
-        this.input.keyboard?.on('keydown-SPACE', () => {
-            this.shootArrowAtNearestEnemy();
-        });
-        
         this.startLevel();
     }
 
-    shootArrowAtNearestEnemy() {
-        const nearestEnemy = this.getNearestEnemy();
-
-        if (nearestEnemy) {
-            this.arrows.add(this.hero.shootArrow(nearestEnemy));
-        }
-    }
-    
     startLevel()
     {
         createAnimatedText(this, `Level ${this.level}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new level
         console.log(`Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
-    }
-
-    getNearestEnemy(): Enemy | null {
-        let nearestEnemy: Enemy | null = null;
-        let minDistance = Number.MAX_VALUE;
-
-        this.enemies.getChildren().forEach((gameObject: GameObject) => {
-            const enemy = gameObject as Enemy;
-            const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, enemy.x, enemy.y);
-            if (distance < minDistance) {
-                nearestEnemy = enemy as Enemy;
-                minDistance = distance;
-            }
-        });
-
-        return nearestEnemy;
     }
 
     // Update game state (called every frame)
@@ -138,10 +104,6 @@ class MainScene extends Scene {
         } else {
             this.hero.setVelocityY(0);
         }
-
-        this.arrows.getChildren().forEach((gameObject: GameObject) => {
-            (gameObject as Arrow).update();
-        });
     }
 
     spawnEnemies() {

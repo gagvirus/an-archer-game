@@ -1,13 +1,17 @@
 import Phaser from "phaser";
-import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import Enemy from "./Enemy.ts";
 import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
+import MainScene from "../scenes/MainScene.ts";
+import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
+import GameObject = Phaser.GameObjects.GameObject;
+import Group = Phaser.GameObjects.Group;
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     health: number;
     maxHealth: number;
     healthBar: HealthBar;
+    arrows: Group;
 
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -15,6 +19,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);     // Add the hero to the scene
         scene.physics.add.existing(this); // Enable physics for the hero
         this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
+
+        // Initialize arrow group
+        this.arrows = scene.add.group(); // Group to hold all arrows
 
         this.maxHealth = 100;
         this.health = this.maxHealth;
@@ -24,6 +31,10 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('idle');
 
         this.healthBar = new HealthBar(scene, {x: 20, y: 20}, 200, 20, this.maxHealth);
+
+        scene.input.keyboard?.on('keydown-SPACE', () => {
+            this.shootArrowAtNearestEnemy();
+        });
     }
 
     // Method to update the hero's animation based on movement
@@ -39,6 +50,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('idle', true);
             }
         }
+        this.arrows.getChildren().forEach((gameObject: GameObject) => {
+            (gameObject as Arrow).update();
+        });
     }
 
     shootArrow(target: Enemy) {
@@ -56,7 +70,30 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         }
         this.healthBar.updateHealth(this.health);
     }
-}
 
+    shootArrowAtNearestEnemy() {
+        const nearestEnemy = this.getNearestEnemy();
+
+        if (nearestEnemy) {
+            this.arrows.add(this.shootArrow(nearestEnemy));
+        }
+    }
+
+    getNearestEnemy(): Enemy | null {
+        let nearestEnemy: Enemy | null = null;
+        let minDistance = Number.MAX_VALUE;
+
+        (this.scene as MainScene).enemies.getChildren().forEach((gameObject: GameObject) => {
+            const enemy = gameObject as Enemy;
+            const distance = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
+            if (distance < minDistance) {
+                nearestEnemy = enemy as Enemy;
+                minDistance = distance;
+            }
+        });
+
+        return nearestEnemy;
+    }
+}
 
 export default Hero;
