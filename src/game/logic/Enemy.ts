@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
-import Sprite = Phaser.Physics.Arcade.Sprite;
-import GameObject = Phaser.GameObjects.GameObject;
 import Hero from "./Hero";
-import Group = Phaser.Physics.Arcade.Group;
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
 import {Attackable} from "../helpers/gameplayer-helper.ts";
 import {enemies, EnemyDef} from "./enemies.ts";
 import {getRandomItem} from "../helpers/random-helper.ts";
+import Sprite = Phaser.Physics.Arcade.Sprite;
+import GameObject = Phaser.GameObjects.GameObject;
+import Group = Phaser.Physics.Arcade.Group;
 
 class Enemy extends Sprite {
     attackRange: number;
@@ -55,12 +55,14 @@ class Enemy extends Sprite {
             this,
         )
     }
-    
+
     // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
     instantiate = (enemyDef?: EnemyDef): void => {
-        if (!enemyDef)
-        {
-            enemyDef = getRandomItem<EnemyDef>(enemies)
+        if (!enemyDef) {
+            const enemiesFilteredByHeroLevel = enemies.filter((enemyDef: EnemyDef) => {
+                return enemyDef.minLevel <= this.hero.xpManager.level && enemyDef.maxLevel >= this.hero.xpManager.level;
+            });
+            enemyDef = getRandomItem<EnemyDef>(enemiesFilteredByHeroLevel)
         }
         this.maxHealth = enemyDef.maxHealth;
         this.speed = enemyDef.speed;
@@ -72,16 +74,14 @@ class Enemy extends Sprite {
         this.scale = enemyDef.scale;
     };
 
-    destroy()
-    {
+    destroy() {
         this.attackable.healthBar.destroy();
         this.debugCircle.destroy();
         super.destroy()
     }
 
     // @ts-expect-error we *must* receive time
-    update(time: number, delta: number)
-    {
+    update(time: number, delta: number) {
         this.move();
         this.avoidCollision((this.scene as MainScene).enemies, 50);
         this.attackable.update(delta)
