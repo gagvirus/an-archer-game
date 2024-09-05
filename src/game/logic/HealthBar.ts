@@ -1,19 +1,16 @@
-interface Position {
-    x: number;
-    y: number;
-}
+import {Vector2} from "../helpers/position-helper.ts";
 
 class HealthBar {
     scene: Phaser.Scene;
-    position: Position;
-    positionOffset: Position;
+    position: Vector2;
+    positionOffset: Vector2;
     width: number;
     height: number;
     bar: Phaser.GameObjects.Graphics;
     maxHealth: number;
     health: number;
 
-    constructor(scene: Phaser.Scene, position: Position, width: number, height: number, maxHealth: number, positionOffset?: Position) {
+    constructor(scene: Phaser.Scene, position: Vector2, width: number, height: number, maxHealth: number, positionOffset?: Vector2) {
         this.scene = scene;
         this.position = position
         this.width = width;
