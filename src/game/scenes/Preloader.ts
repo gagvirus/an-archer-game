@@ -160,7 +160,7 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'demon_walk',
             frames: Array.from({length: 6}, (_, i) => ({key: `demon_walk_${i + 1}`, frame: 0})),
-            frameRate: 10,
+            frameRate: 2,
             repeat: -1
         });
 

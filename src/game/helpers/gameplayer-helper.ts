@@ -25,9 +25,11 @@ class XpManager {
     gainXp(amount: number) {
         this.xp += amount;
         if (this.xp >= this.xpToNextLevel) {
-            this.xp -= this.xpToNextLevel;
+            const xpOverflow = this.xp - this.xpToNextLevel;
+            this.xp = 0;
             this.level += 1;
             this.onLevelUp(this.level);
+            this.gainXp(xpOverflow);
         }
         this.xpBar.updateBar(this.xp, this.xpToNextLevel);
     }

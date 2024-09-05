@@ -51,6 +51,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     onLevelUp = (newLevel: number) => {
         this.attackable.setMaxHealth(100 + Math.pow(1.1, newLevel - 1) * 10)
         this.attackable.attackDamage += 2;
+        this.attackable.attacksPerSecond += 0.1;
     }
 
     initXpBar = (xpToNextLevel: number) => new XpBar(this.scene, {x: 20, y: 50}, 200, 20, xpToNextLevel)

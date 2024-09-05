@@ -124,7 +124,7 @@ export const enemies: EnemyDef[] = [
         attackRange: 100,
         attackDamage: 500,
         attacksPerSecond: 0.3,
-        type: "Demon",
+        type: "demon",
         name: "Ultra Demon",
         xpAmount: 5000,
         minLevel: 25,
