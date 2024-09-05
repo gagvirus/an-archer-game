@@ -6,6 +6,7 @@ import {Preloader} from './scenes/Preloader';
 import MainScene from "./scenes/MainScene.ts";
 import {PauseMenu} from "./scenes/PauseMenu.ts";
 import SettingsScene from "./scenes/SettingsScene.ts";
+import BuildMenuScene from "./scenes/BuildMenuScene.ts";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -26,6 +27,7 @@ const config: Phaser.Types.Core.GameConfig = {
         SettingsScene,
         GameOver,
         MainScene,
+        BuildMenuScene,
         PauseMenu,
     ],
     physics: {

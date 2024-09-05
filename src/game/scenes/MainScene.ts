@@ -57,6 +57,11 @@ class MainScene extends Scene {
                 this.scene.pause();
                 this.scene.launch('PauseMenu');
             }
+            
+            if (event.key === 'b') {
+                this.scene.pause();
+                this.scene.launch('BuildMenuScene');
+            }
         });
 
         this.startLevel();
