@@ -65,6 +65,7 @@ class Enemy extends Sprite {
         this.attackDamage = enemyDef.attackDamage;
         this.attacksPerSecond = enemyDef.attacksPerSecond;
         this.type = enemyDef.type;
+        this.scale = enemyDef.scale;
     };
 
     destroy()
