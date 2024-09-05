@@ -1,13 +1,17 @@
 import HealthBar from "../logic/HealthBar.ts";
+import XpBar from "../logic/XpBar.ts";
 
 export const COOLDOWN_THRESHOLD = 10;
 
 class XpManager {
     level: number;
     xp: number;
+    xpBar: XpBar;
 
-    constructor() {
+    constructor(initXpBar: (xpToNextLevel: number) => XpBar) {
         this.level = 1;
+        this.xpBar = initXpBar(this.xpToNextLevel);
+        this.xpBar.draw();
     }
 
     get xpToNextLevel() {
@@ -24,7 +28,7 @@ class XpManager {
     }
 
     draw() {
-
+        this.xpBar.draw();
     }
 }
 

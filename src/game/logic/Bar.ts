@@ -12,15 +12,14 @@ abstract class Bar {
     filledColor: number;
     emptyColor: number;
 
-    constructor(scene: Phaser.Scene, position: Vector2, width: number, height: number, maxValue: number, positionOffset?: Vector2, filledColor?: number, emptyColor?: number) {
+    constructor(scene: Phaser.Scene, position: Vector2, width: number, height: number, maxValue: number, currentValue: number, positionOffset?: Vector2, filledColor?: number, emptyColor?: number) {
         this.scene = scene;
         this.position = position
         this.width = width;
         this.height = height;
         this.maxValue = maxValue;
-        this.currentValue = maxValue;
+        this.currentValue = currentValue;
         this.positionOffset = positionOffset ?? {x: 0, y: 0};
-        
         this.filledColor = filledColor ?? 0x00ff00;
         this.emptyColor = emptyColor ?? 0xff0000;
         this.bar = this.scene.add.graphics();

@@ -3,7 +3,7 @@ import Bar from "./Bar.ts";
 
 class HealthBar extends Bar {
     constructor(scene: Phaser.Scene, position: Vector2, width: number, height: number, maxHealth: number, positionOffset?: Vector2) {
-        super(scene, position, width, height, maxHealth, positionOffset)
+        super(scene, position, width, height, maxHealth, maxHealth, positionOffset)
     }
 }
 

@@ -3,14 +3,16 @@ import Enemy from "./Enemy.ts";
 import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
 import MainScene from "../scenes/MainScene.ts";
-import {Attackable} from "../helpers/gameplayer-helper.ts";
+import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
+import XpBar from "./XpBar.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
     attackable: Attackable;
+    xpManager: XpManager;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'hero');  // 'hero' is the key for the hero sprite
@@ -40,6 +42,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                     this.arrows.add(this.shootArrow(nearestEnemy));
                 }
             })
+        
+        this.xpManager = new XpManager((xpToNextLevel: number) => new XpBar(scene, {x: 20, y: 50}, 200, 20, xpToNextLevel));
     }
 
     // Method to update the hero's animation based on movement
