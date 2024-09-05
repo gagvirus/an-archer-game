@@ -40,6 +40,7 @@ class MainScene extends Scene {
         // this.input.on('pointermove', () => {
         //     // console.log(`Pointer moved to x: ${pointer.x}, y: ${pointer.y}`);
         // });
+        new Portal(this, 400, 400);
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
@@ -49,8 +50,6 @@ class MainScene extends Scene {
         const centerY = this.scale.height / 2;
         this.hero = new Hero(this, centerX, centerY);
 
-        new Portal(this, 400, 400);
-        
         // Listener for keyboard inputs
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             // console.log(`Key down: ${event.key}`);
