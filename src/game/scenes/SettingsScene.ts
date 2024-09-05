@@ -11,9 +11,7 @@ class SettingsScene extends Phaser.Scene {
     }
 
     create() {
-        // Load persisted settings from localStorage
-        const savedDebugMode = localStorage.getItem('debugMode');
-        this.debugMode = savedDebugMode === 'true';
+        this.debugMode = this.game.registry.get('debugMode') == 'true';
 
         // Add text label
         this.add.text(100, 100, 'Enable Debug Mode:', {fontSize: '20px', color: '#ffffff'});
@@ -40,9 +38,8 @@ class SettingsScene extends Phaser.Scene {
     updateDebugMode() {
         // Persist the setting to localStorage
         localStorage.setItem('debugMode', this.debugMode.toString());
-
         // You can also update global game variables if necessary, for example:
-        this.game.registry.set('debugMode', this.debugMode);
+        this.game.registry.set('debugMode', this.debugMode.toString());
     }
 }
 

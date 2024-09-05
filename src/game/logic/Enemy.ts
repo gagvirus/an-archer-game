@@ -36,9 +36,7 @@ class Enemy extends Sprite {
         this.instantiate(enemyDef);
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
-        const debugMode = scene.game.registry.get('debugMode');
-        console.log(debugMode)
-        this.debugCircle.setVisible(debugMode); 
+        this.debugCircle.setVisible(scene.game.registry.get('debugMode') == 'true'); 
 
         this.attackCooldown = 0;
         // Create a health bar for the enemy

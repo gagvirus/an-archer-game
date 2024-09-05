@@ -11,6 +11,8 @@ export class Boot extends Scene {
     }
 
     create() {
+        this.game.registry.set('debugMode', localStorage.getItem('debugMode'));
+        
         this.scene.start('Preloader');
     }
 }
