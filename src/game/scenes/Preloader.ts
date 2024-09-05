@@ -79,12 +79,20 @@ export class Preloader extends Scene {
 
         // Define the portal animation 
         this.anims.create({
-            key: 'portal-active',
-            frames: this.anims.generateFrameNumbers('portal', {frames: getPingPongAnimationFrames(0, 43, 5)}),
+            key: 'portal-idle',
+            frames: this.anims.generateFrameNumbers('portal', {frames: getPingPongAnimationFrames(0, 43, 2)}),
             frameRate: 10,  // Animation speed
             repeat: -1      // Repeat indefinitely
         });
 
+        // Define the portal animation 
+        this.anims.create({
+            key: 'portal-active',
+            frames: this.anims.generateFrameNumbers('portal', {frames: getPingPongAnimationFrames(43, 59, 10)}),
+            frameRate: 10,  // Animation speed
+            repeat: -1      // Repeat indefinitely
+        });
+        
         // Define the running animation
         this.anims.create({
             key: 'run',
