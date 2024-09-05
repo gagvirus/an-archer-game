@@ -67,7 +67,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     shootArrow(target: Enemy) {
-        const arrow = new Arrow(this.scene, this.x, this.y, target);
+        const arrow = new Arrow(this.scene, this.x, this.y, target, target.attackable, 500, this.attackable);
         this.scene.add.existing(arrow);
         return arrow;
     }
