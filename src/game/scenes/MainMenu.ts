@@ -4,21 +4,27 @@ import {EventBus} from '../EventBus';
 import {createCenteredText} from "../helpers/text-helpers.ts";
 
 export class MainMenu extends Scene {
-    title: GameObjects.Text;
-    startGame: GameObjects.Text;
+    titleText: GameObjects.Text;
+    startGameText: GameObjects.Text;
+    settingsText: GameObjects.Text;
 
     constructor() {
         super('MainMenu');
     }
 
     create() {
-        this.title = createCenteredText(this, 'Main Menu', -100, 38, false);
-        this.startGame = createCenteredText(this, 'Start Game', 0, 32, true);
+        this.titleText = createCenteredText(this, 'Main Menu', -100, 38, false);
+        this.startGameText = createCenteredText(this, 'Start Game', 0, 32, true);
+        this.settingsText = createCenteredText(this, 'Settings', 100, 32, true);
         
-        this.startGame.setInteractive()
+        this.startGameText.setInteractive()
         
-        this.startGame.on('pointerdown', () => {
+        this.startGameText.on('pointerdown', () => {
             this.scene.start('MainScene')
+        });
+        
+        this.settingsText.on('pointerdown', () => {
+            this.scene.start('SettingsScene')
         });
 
 
