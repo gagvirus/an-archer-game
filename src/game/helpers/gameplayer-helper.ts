@@ -75,7 +75,7 @@ class Attackable {
         }
         console.log(`receive damage ${damage}`)
         console.log(`health is ${this.health}`);
-        this.healthBar.updateHealth(this.health);
+        this.healthBar.updateBar(this.health);
     }
 
     replenishHealth(amount: number) {
