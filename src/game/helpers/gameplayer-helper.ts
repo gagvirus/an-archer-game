@@ -8,12 +8,14 @@ class XpManager {
     level: number;
     xp: number;
     xpBar: XpBar;
+    onLevelUp: (newLevel: number) => void;
 
-    constructor(initXpBar: (xpToNextLevel: number) => XpBar) {
+    constructor(initXpBar: (xpToNextLevel: number) => XpBar, onLevelUp: (newLevel: number) => void) {
         this.level = 1;
         this.xpBar = initXpBar(this.xpToNextLevel);
         this.xp = 0;
         this.xpBar.draw();
+        this.onLevelUp = onLevelUp;
     }
 
     get xpToNextLevel() {
@@ -25,6 +27,7 @@ class XpManager {
         if (this.xp >= this.xpToNextLevel) {
             this.xp -= this.xpToNextLevel;
             this.level += 1;
+            this.onLevelUp(this.level);
         }
         this.xpBar.updateBar(this.xp, this.xpToNextLevel);
     }
@@ -84,13 +87,18 @@ class Attackable {
             this.health = this.maxHealth;
         }
     }
-
-    onKilledTarget(target: Attackable)
+    
+    setMaxHealth(maxHealth: number)
     {
-        if ("xpManager" in this.owner)
-        {
-            if ("xpAmount" in target.owner)
-            {
+        console.log(maxHealth);
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+        this.healthBar.updateBar(this.health, this.maxHealth);
+    }
+
+    onKilledTarget(target: Attackable) {
+        if ("xpManager" in this.owner) {
+            if ("xpAmount" in target.owner) {
                 (this.owner.xpManager as XpManager).gainXp(target.owner.xpAmount as number);
             }
         }

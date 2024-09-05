@@ -4,10 +4,10 @@ import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
 import MainScene from "../scenes/MainScene.ts";
 import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
+import XpBar from "./XpBar.ts";
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
-import XpBar from "./XpBar.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
@@ -34,7 +34,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
             2, // attacks per second
             10, // attack damage
             100, // initial health
-            (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth), 
+            (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth),
             () => this.scene.scene.start('GameOver'),
             () => {
                 const nearestEnemy = this.getNearestEnemy();
@@ -44,9 +44,15 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
             },
             this
         )
-        
-        this.xpManager = new XpManager((xpToNextLevel: number) => new XpBar(scene, {x: 20, y: 50}, 200, 20, xpToNextLevel));
+
+        this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
     }
+
+    onLevelUp = (newLevel: number) => {
+        this.attackable.setMaxHealth(100 + Math.pow(1.1, newLevel - 1) * 10)
+    }
+
+    initXpBar = (xpToNextLevel: number) => new XpBar(this.scene, {x: 20, y: 50}, 200, 20, xpToNextLevel)
 
     // Method to update the hero's animation based on movement
     // @ts-expect-error we *must* receive time
