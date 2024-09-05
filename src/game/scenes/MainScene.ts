@@ -17,7 +17,6 @@ class MainScene extends Scene {
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
         super('MainScene');
-        this.level = 1;  // Start at level 1
     }
 
     // Preload assets (if any)
@@ -27,6 +26,7 @@ class MainScene extends Scene {
 
     // Create game objects
     create() {
+        this.level = 1;
         // Listener for pointer (mouse/touch) inputs
         // this.input.on('pointerdown', (pointer: Pointer) => {
         //     console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
