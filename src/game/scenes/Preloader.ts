@@ -1,4 +1,5 @@
 import {Scene} from 'phaser';
+import {getPingPongAnimationFrames} from "../helpers/anims-helper.ts";
 
 export class Preloader extends Scene {
     constructor() {
@@ -42,6 +43,12 @@ export class Preloader extends Scene {
             frameHeight: 64  // Height of each frame in the spritesheet
         });
 
+
+        this.load.spritesheet('portal', 'portal.png', {
+            frameWidth: 190,  // Width of each frame in the spritesheet
+            frameHeight: 190  // Height of each frame in the spritesheet
+        });
+
         for (let i = 1; i <= 6; i++) {
             this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
             this.load.image(`skeleton_attack_${i}`, `enemy/skeleton/attack1_${i}.png`);
@@ -67,6 +74,14 @@ export class Preloader extends Scene {
             key: 'idle',
             frames: this.anims.generateFrameNumbers('hero', {start: 0, end: 1}), // Adjust start and end based on your spritesheet
             frameRate: 5,  // Animation speed
+            repeat: -1      // Repeat indefinitely
+        });
+
+        // Define the portal animation 
+        this.anims.create({
+            key: 'portal-active',
+            frames: this.anims.generateFrameNumbers('portal', {frames: getPingPongAnimationFrames(0, 43, 5)}),
+            frameRate: 10,  // Animation speed
             repeat: -1      // Repeat indefinitely
         });
 

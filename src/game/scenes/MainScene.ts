@@ -6,6 +6,7 @@ import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import {getRandomPositionAwayFromPoint} from "../helpers/position-helper.ts";
 import {createAnimatedText} from "../helpers/text-helpers.ts";
+import Portal from "../logic/Portal.ts";
 
 class MainScene extends Scene {
     level: number;
@@ -48,6 +49,8 @@ class MainScene extends Scene {
         const centerY = this.scale.height / 2;
         this.hero = new Hero(this, centerX, centerY);
 
+        new Portal(this, 400, 400);
+        
         // Listener for keyboard inputs
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             // console.log(`Key down: ${event.key}`);
