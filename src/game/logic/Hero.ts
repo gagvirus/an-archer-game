@@ -10,7 +10,6 @@ import Group = Phaser.GameObjects.Group;
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
-    attacksPerSecond: number;
     attackable: Attackable;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -21,8 +20,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
         // Initialize arrow group
         this.arrows = scene.add.group(); // Group to hold all arrows
-
-        this.attacksPerSecond = 2;
 
         // initial state
         this.state = 'idle';
