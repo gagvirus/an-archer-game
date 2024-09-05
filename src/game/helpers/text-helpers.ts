@@ -12,7 +12,7 @@ const createText = (scene: Scene, text: string, position: Vector2, fontSize: num
     }).setOrigin(0.5).setDepth(100)
 }
 
-const createCenteredText = (scene: Scene, text: string, verticalOffset: number = 0, fontSize: number = 32, isInteractive: boolean = false) => {
+const createCenteredText = (scene: Scene, text: string, verticalOffset: number = 0, fontSize: number = 32, isInteractive: boolean = false, onClick?: () => void) => {
     const textObject = createText(scene, text, {
         x: scene.scale.width / 2,
         y: scene.scale.height / 2 + verticalOffset
@@ -20,6 +20,10 @@ const createCenteredText = (scene: Scene, text: string, verticalOffset: number =
 
     if (isInteractive) {
         textObject.setInteractive();
+        if (onClick)
+        {
+            textObject.on('pointerdown', onClick);
+        }
     }
 
     return textObject

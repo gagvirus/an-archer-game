@@ -1,6 +1,11 @@
+import {GameObjects} from "phaser";
+import {createCenteredText} from "../helpers/text-helpers.ts";
+
 class SettingsScene extends Phaser.Scene {
     private debugMode: boolean = false;
-    backButton: Phaser.GameObjects.Text;
+    backToMainMenuText: Phaser.GameObjects.Text;
+    titleText: GameObjects.Text;
+    checkbox: GameObjects.Rectangle;
 
     constructor() {
         super({key: 'SettingsScene'});
@@ -11,31 +16,29 @@ class SettingsScene extends Phaser.Scene {
     }
 
     create() {
+        this.titleText = createCenteredText(this, 'Settings', -200, 38, false);
+
         this.debugMode = this.game.registry.get('debugMode') == 'true';
 
         // Add text label
-        this.add.text(100, 100, 'Enable Debug Mode:', {fontSize: '20px', color: '#ffffff'});
+        createCenteredText(this, 'Debug Mode', 0, 32, true, () => this.updateDebugMode());
 
         // Create checkbox (simply represented by a rectangle for now)
-        const checkbox = this.add.rectangle(300, 110, 20, 20, this.debugMode ? 0x00ff00 : 0xff0000)
-            .setInteractive();
+        this.checkbox = this.add.rectangle(this.scale.width / 2 + 150, this.scale.height / 2, 20, 20, this.debugMode ? 0x00ff00 : 0xff0000)
+            .setInteractive().setOrigin(0.5);
 
         // Toggle debug mode when clicking the checkbox
-        checkbox.on('pointerdown', () => {
-            this.debugMode = !this.debugMode;
-            checkbox.setFillStyle(this.debugMode ? 0x00ff00 : 0xff0000); // Change color
-            this.updateDebugMode();
-        });
+        this.checkbox.on('pointerdown', () => this.updateDebugMode());
 
         // Button to return to the main scene
-        this.backButton = this.add.text(100, 200, 'Back to Main Menu', {fontSize: '20px', color: '#ffffff'})
-            .setInteractive()
-            .on('pointerdown', () => {
-                this.scene.start('MainMenu');
-            });
+        this.backToMainMenuText = createCenteredText(this, 'Back to Main Menu', 100, 32, true, () => {
+            this.scene.start('MainMenu');
+        });
     }
 
     updateDebugMode() {
+        this.debugMode = !this.debugMode;
+        this.checkbox.setFillStyle(this.debugMode ? 0x00ff00 : 0xff0000);
         // Persist the setting to localStorage
         localStorage.setItem('debugMode', this.debugMode.toString());
         // You can also update global game variables if necessary, for example:
