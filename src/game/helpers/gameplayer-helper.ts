@@ -2,6 +2,35 @@ import HealthBar from "../logic/HealthBar.ts";
 
 export const COOLDOWN_THRESHOLD = 10;
 
+class XpManager {
+    level: number;
+    xp: number;
+    constructor() {
+        this.level = 1;
+    }
+    
+    get xpToNextLevel()
+    {
+        return Math.pow(1.2, this.level - 1) * 100;
+    }
+    
+    gainXp(amount: number)
+    {
+        this.xp += amount;
+        if (this.xp >= this.xpToNextLevel)
+        {
+            this.xp -= this.xpToNextLevel;
+            this.level += 1;
+        }
+        this.draw();
+    }
+    
+    draw()
+    {
+        
+    }
+}
+
 class Attackable {
     attackCooldown: number = 0;
     attacksPerSecond: number = 1;
@@ -57,4 +86,4 @@ class Attackable {
     }
 }
 
-export {Attackable};
+export {Attackable, XpManager};
