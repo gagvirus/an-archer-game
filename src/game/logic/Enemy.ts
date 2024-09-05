@@ -72,6 +72,10 @@ class Enemy extends Sprite {
         this.xpAmount = enemyDef.xpAmount;
         this.type = enemyDef.type;
         this.scale = enemyDef.scale;
+        if (enemyDef.tint)
+        {
+            this.tint = enemyDef.tint;
+        }
     };
 
     destroy() {
