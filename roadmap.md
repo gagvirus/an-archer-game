@@ -1,0 +1,13 @@
+- add stats ability
+  - on level up player gains a stat point, which they can choose between different stats:
+    -  strength + 5% damage
+    -  agility + 5% attack damage
+    -  vitality + 5% health
+    -  intelligence + 5% extra xp
+- active skills 
+  - add functionality for active skills which can be enabled with hotkeys, have duration and cooldown:
+    - for example: double arrows for 30s, double attack speed for 30s
+- building 
+  - add ability to build things
+    - each building shall persist through levels
+  - on pressing "B" game pauses and add ability to place "blocks" (placeholders for now)
