@@ -47,7 +47,10 @@ class Enemy extends Sprite {
             this.attackDamage,
             this.maxHealth,
             (maxHealth: number) => new HealthBar(scene, this, 40, 5, maxHealth, {x: -20, y: -30}),
-            () => this.destroy(),
+            () => {
+                this.destroy();
+                scene.onEnemyKilled();
+            },
             () => this.hero.attackable.takeDamage(this.attackDamage),
             this,
         )

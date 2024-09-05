@@ -76,7 +76,15 @@ export class Preloader extends Scene {
             frameRate: 5,  // Animation speed
             repeat: -1      // Repeat indefinitely
         });
+        
+        // Define the portal animation 
+        this.anims.create({
+            key: 'portal-disabled',
+            frames: this.anims.generateFrameNumbers('portal', {start: 0, end: 1}),
+            frameRate: 1,  // Animation speed
+        });
 
+        
         // Define the portal animation 
         this.anims.create({
             key: 'portal-idle',
@@ -89,7 +97,8 @@ export class Preloader extends Scene {
         this.anims.create({
             key: 'portal-activate',
             frames: this.anims.generateFrameNumbers('portal', {start: 43, end: 59}),
-            frameRate: 10,  // Animation speed
+            frameRate: 16,  // Animation speed
+            repeat: 0,
         });
 
         // Define the portal animation 

@@ -12,6 +12,7 @@ class MainScene extends Scene {
     level: number;
     enemies: Group;
     hero: Hero;
+    portal: Portal;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -40,7 +41,7 @@ class MainScene extends Scene {
         // this.input.on('pointermove', () => {
         //     // console.log(`Pointer moved to x: ${pointer.x}, y: ${pointer.y}`);
         // });
-        new Portal(this, 400, 400);
+        this.portal = new Portal(this, 400, 400);
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
@@ -64,11 +65,20 @@ class MainScene extends Scene {
 
         this.startLevel();
     }
+    
+    onEnemyKilled()
+    {
+        if (this.enemies.countActive() < 1)
+        {
+            this.portal.setDisabled(false);
+        }
+    }
 
     startLevel()
     {
         createAnimatedText(this, `Level ${this.level}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new level
+        this.portal.setDisabled(true);
         console.log(`Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
     }
 
@@ -102,6 +112,8 @@ class MainScene extends Scene {
         } else {
             this.hero.setVelocityY(0);
         }
+        
+        this.portal.checkHeroIsWithinBounds(this.hero);
     }
 
     spawnEnemies() {
