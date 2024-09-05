@@ -9,8 +9,6 @@ import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
-    maxHealth: number;
-    healthBar: HealthBar;
     arrows: Group;
     attacksPerSecond: number;
     attackable: Attackable;
@@ -24,15 +22,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         // Initialize arrow group
         this.arrows = scene.add.group(); // Group to hold all arrows
 
-        this.maxHealth = 100;
-
         this.attacksPerSecond = 2;
 
         // initial state
         this.state = 'idle';
         this.anims.play('idle');
-
-        this.healthBar = new HealthBar(scene, {x: 20, y: 20}, 200, 20, this.maxHealth);
 
         scene.input.keyboard?.on('keydown-SPACE', () => {
             this.attackable.attack();
@@ -40,8 +34,10 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.attackable = new Attackable(
             2, // attacks per second
             10, // attack damage
-            this.maxHealth,
-            this.healthBar, () => this.scene.scene.start('GameOver'), () => {
+            100, // initial health
+            (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth), 
+            () => this.scene.scene.start('GameOver'),
+            () => {
                 const nearestEnemy = this.getNearestEnemy();
                 if (nearestEnemy) {
                     this.arrows.add(this.shootArrow(nearestEnemy));

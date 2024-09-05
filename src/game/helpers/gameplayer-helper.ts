@@ -5,29 +5,26 @@ export const COOLDOWN_THRESHOLD = 10;
 class XpManager {
     level: number;
     xp: number;
+
     constructor() {
         this.level = 1;
     }
-    
-    get xpToNextLevel()
-    {
+
+    get xpToNextLevel() {
         return Math.pow(1.2, this.level - 1) * 100;
     }
-    
-    gainXp(amount: number)
-    {
+
+    gainXp(amount: number) {
         this.xp += amount;
-        if (this.xp >= this.xpToNextLevel)
-        {
+        if (this.xp >= this.xpToNextLevel) {
             this.xp -= this.xpToNextLevel;
             this.level += 1;
         }
         this.draw();
     }
-    
-    draw()
-    {
-        
+
+    draw() {
+
     }
 }
 
@@ -41,13 +38,13 @@ class Attackable {
     onDeath: () => void;
     onAttack: () => void;
 
-    constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, healthBar: HealthBar, onDeath: () => void, onAttack: () => void) {
+    constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void) {
         this.attackCooldown = 0;
         this.attacksPerSecond = attacksPerSecond;
         this.attackDamage = attackDamage;
         this.health = maxHealth;
         this.maxHealth = maxHealth;
-        this.healthBar = healthBar;
+        this.healthBar = initHealthBar(maxHealth);
         this.onDeath = onDeath;
         this.onAttack = onAttack;
     }
@@ -58,12 +55,10 @@ class Attackable {
             this.onAttack();
         }
     }
-    
-    update(delta: number)
-    {
+
+    update(delta: number) {
         this.attackCooldown -= delta;
-        if (this.attackCooldown <= COOLDOWN_THRESHOLD)
-        {
+        if (this.attackCooldown <= COOLDOWN_THRESHOLD) {
             this.attackCooldown = 0;
         }
     }

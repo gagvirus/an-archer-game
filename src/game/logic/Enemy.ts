@@ -14,9 +14,8 @@ class Enemy extends Sprite {
     isAttacking: boolean = false;
     debugCircle: Phaser.GameObjects.Arc;
     hero: Hero;
-    maxHealth: number;
-    healthBar: HealthBar;
     speed: number;
+    maxHealth: number;
     attackDamage: number;
     attacksPerSecond: number = 1;
     attackCooldown: number;
@@ -40,14 +39,13 @@ class Enemy extends Sprite {
 
         this.attackCooldown = 0;
         // Create a health bar for the enemy
-        this.healthBar = new HealthBar(scene, this, 40, 5, this.maxHealth, {x: -20, y: -30});
         this.anims.play(`${this.type}_walk`)
 
         this.attackable = new Attackable(
             this.attacksPerSecond,
             this.attackDamage,
             this.maxHealth,
-            this.healthBar,
+            (maxHealth: number) => new HealthBar(scene, this, 40, 5, maxHealth, {x: -20, y: -30}),
             () => this.destroy(),
             () => this.hero.attackable.takeDamage(this.attackDamage))
 
@@ -70,7 +68,7 @@ class Enemy extends Sprite {
 
     destroy()
     {
-        this.healthBar.destroy();
+        this.attackable.healthBar.destroy();
         this.debugCircle.destroy();
         super.destroy()
     }
@@ -98,7 +96,7 @@ class Enemy extends Sprite {
             this.isAttacking = false;
             this.chaseHero();  // Continue chasing the hero
         }
-        this.healthBar.draw()
+        this.attackable.healthBar.draw()
     }
 
     // Move the enemy towards the target (the hero)
