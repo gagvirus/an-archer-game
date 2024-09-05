@@ -53,10 +53,6 @@ class MainScene extends Scene {
 
         // Listener for keyboard inputs
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
-            // console.log(`Key down: ${event.key}`);
-            if (event.key === 'n') {
-                this.nextLevel();  // Press 'n' to advance to the next level
-            }
             if (event.key === 'Escape') {
                 this.scene.pause();
                 this.scene.launch('PauseMenu');
