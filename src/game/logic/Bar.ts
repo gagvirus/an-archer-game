@@ -45,8 +45,12 @@ abstract class Bar {
     }
 
     // Update the bar with the new current value
-    updateBar(newValue: number) {
+    updateBar(newValue: number, maxValue?: number) {
         this.currentValue = newValue;
+        if (maxValue)
+        {
+            this.maxValue = maxValue;
+        }
         this.draw();
     }
 

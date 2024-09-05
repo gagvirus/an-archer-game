@@ -21,6 +21,7 @@ class Enemy extends Sprite {
     attackCooldown: number;
     type: string = 'enemy';
     attackable: Attackable;
+    xpAmount: number;
 
     constructor(scene: MainScene, x: number, y: number, enemyDef?: EnemyDef) {
         super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
@@ -47,8 +48,9 @@ class Enemy extends Sprite {
             this.maxHealth,
             (maxHealth: number) => new HealthBar(scene, this, 40, 5, maxHealth, {x: -20, y: -30}),
             () => this.destroy(),
-            () => this.hero.attackable.takeDamage(this.attackDamage))
-
+            () => this.hero.attackable.takeDamage(this.attackDamage),
+            this,
+        )
     }
     
     // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
@@ -62,6 +64,7 @@ class Enemy extends Sprite {
         this.attackRange = enemyDef.attackRange;
         this.attackDamage = enemyDef.attackDamage;
         this.attacksPerSecond = enemyDef.attacksPerSecond;
+        this.xpAmount = enemyDef.xpAmount;
         this.type = enemyDef.type;
         this.scale = enemyDef.scale;
     };

@@ -5,6 +5,7 @@ export interface EnemyDef {
     attackDamage: number;
     attacksPerSecond: number;
     type: string;
+    xpAmount: number;
     weight: number;
     scale: number;
 }
@@ -18,6 +19,7 @@ export const enemies: EnemyDef[] = [
         attackDamage: 10,
         attacksPerSecond: 1,
         type: "skeleton",
+        xpAmount: 25,
         scale: 1.2,
         weight: 3,
     },
@@ -28,6 +30,7 @@ export const enemies: EnemyDef[] = [
         attackDamage: 3,
         attacksPerSecond: 3,
         type: "imp",
+        xpAmount: 10,
         scale: 1,
         weight: 10,
     },
@@ -38,6 +41,7 @@ export const enemies: EnemyDef[] = [
         attackDamage: 30,
         attacksPerSecond: 0.5,
         type: "demon",
+        xpAmount: 100,
         scale: 1.8,
         weight: 1,
     }

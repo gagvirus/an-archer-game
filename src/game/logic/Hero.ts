@@ -41,7 +41,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                 if (nearestEnemy) {
                     this.arrows.add(this.shootArrow(nearestEnemy));
                 }
-            })
+            },
+            this
+        )
         
         this.xpManager = new XpManager((xpToNextLevel: number) => new XpBar(scene, {x: 20, y: 50}, 200, 20, xpToNextLevel));
     }

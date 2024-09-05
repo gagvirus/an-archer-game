@@ -1,5 +1,6 @@
 import HealthBar from "../logic/HealthBar.ts";
 import XpBar from "../logic/XpBar.ts";
+import GameObject = Phaser.GameObjects.GameObject;
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -11,6 +12,7 @@ class XpManager {
     constructor(initXpBar: (xpToNextLevel: number) => XpBar) {
         this.level = 1;
         this.xpBar = initXpBar(this.xpToNextLevel);
+        this.xp = 0;
         this.xpBar.draw();
     }
 
@@ -24,11 +26,7 @@ class XpManager {
             this.xp -= this.xpToNextLevel;
             this.level += 1;
         }
-        this.draw();
-    }
-
-    draw() {
-        this.xpBar.draw();
+        this.xpBar.updateBar(this.xp, this.xpToNextLevel);
     }
 }
 
@@ -39,10 +37,11 @@ class Attackable {
     health: number = 100;
     maxHealth: number = 100;
     healthBar: HealthBar;
+    owner: GameObject;
     onDeath: () => void;
     onAttack: () => void;
 
-    constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void) {
+    constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void, owner: GameObject) {
         this.attackCooldown = 0;
         this.attacksPerSecond = attacksPerSecond;
         this.attackDamage = attackDamage;
@@ -51,6 +50,7 @@ class Attackable {
         this.healthBar = initHealthBar(maxHealth);
         this.onDeath = onDeath;
         this.onAttack = onAttack;
+        this.owner = owner;
     }
 
     attack() {
@@ -67,10 +67,11 @@ class Attackable {
         }
     }
 
-    takeDamage(damage: number) {
+    takeDamage(damage: number, onDeath?: (attackable: Attackable) => void) {
         this.health -= damage;
         if (this.health <= 0) {
             this.onDeath();
+            onDeath && onDeath(this);
         }
         console.log(`receive damage ${damage}`)
         console.log(`health is ${this.health}`);
@@ -81,6 +82,17 @@ class Attackable {
         this.health += amount;
         if (this.health > this.maxHealth) {
             this.health = this.maxHealth;
+        }
+    }
+
+    onKilledTarget(target: Attackable)
+    {
+        if ("xpManager" in this.owner)
+        {
+            if ("xpAmount" in target.owner)
+            {
+                (this.owner.xpManager as XpManager).gainXp(target.owner.xpAmount as number);
+            }
         }
     }
 }
