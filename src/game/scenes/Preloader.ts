@@ -33,21 +33,9 @@ export class Preloader extends Scene {
         this.load.image('arrow', 'arrow.png');
         this.load.image('enemy', 'enemy.png');
 
-        this.load.spritesheet('hero', 'hero/running.png', {
-            frameWidth: 64,  // Width of each frame in the spritesheet
-            frameHeight: 64  // Height of each frame in the spritesheet
-        });
-
-        this.load.spritesheet('hero_attack', 'hero/attack.png', {
-            frameWidth: 64,  // Width of each frame in the spritesheet
-            frameHeight: 64  // Height of each frame in the spritesheet
-        });
-
-
-        this.load.spritesheet('portal', 'portal.png', {
-            frameWidth: 190,  // Width of each frame in the spritesheet
-            frameHeight: 190  // Height of each frame in the spritesheet
-        });
+        this.load.spritesheet('hero', 'hero/running.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('hero_attack', 'hero/attack.png', {frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('portal', 'portal.png', {frameWidth: 190, frameHeight: 190});
 
         for (let i = 1; i <= 6; i++) {
             this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
