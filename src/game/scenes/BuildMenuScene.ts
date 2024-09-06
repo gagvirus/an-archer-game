@@ -79,6 +79,13 @@ class BuildMenuScene extends Scene {
             this.towerPreview = this.createTower(position);
             this.towerPreview.alpha = 0.5;
         }
+        const {x: tileX, y: tileY} = getTileCoordinate(position);
+        if (this.disallowedTiles[tileX] && this.disallowedTiles[tileX][tileY])
+        {
+            this.towerPreview.setVisible(false);
+        } else {
+            this.towerPreview.setVisible(true);
+        }
         // todo: hide tower preview if on disallowed tile
         this.towerPreview.x = x;
         this.towerPreview.y = y;
