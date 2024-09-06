@@ -89,6 +89,7 @@ class Enemy extends Sprite {
     update(time: number, delta: number) {
         this.move();
         this.avoidCollision((this.scene as MainScene).enemies, 50);
+        this.avoidCollision((this.scene as MainScene).buildings, 50);
         this.attackable.update(delta)
     }
 
