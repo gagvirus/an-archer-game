@@ -19,6 +19,7 @@ class BuildMenuScene extends Scene {
             x: parseInt(p.split('x')[0]),
             y: parseInt(p.split('x')[1])
         }));
+        // todo: add top/bottom + left/right rows / columns as disallowed tiles
     }
 
     create() {
@@ -38,6 +39,7 @@ class BuildMenuScene extends Scene {
         });
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             if (event.key === 'b') {
+                // todo: pass the buildings to the main scene
                 delete this.towerPreview;
                 this.scene.resume('MainScene')
                 this.scene.stop();
@@ -54,6 +56,7 @@ class BuildMenuScene extends Scene {
             this.storedTiles[y][x].destroy();
             delete this.storedTiles[y][x];
         } else {
+            // todo: disallow placing towers on disallowed tiles
             this.storedTiles[y][x] = this.createTower(dampPosition(position));
             this.storedTiles[y][x].setDepth(y);
         }
@@ -71,12 +74,14 @@ class BuildMenuScene extends Scene {
             this.towerPreview = this.createTower(position);
             this.towerPreview.alpha = 0.5;
         }
+        // todo: hide tower preview if on disallowed tile
         this.towerPreview.x = x;
         this.towerPreview.y = y;
         this.towerPreview.update();
     }
 
     private drawGrid() {
+        // todo: show numbers on top/bottom + left/right rows + columns
         for (let x = 0; x <= this.scale.width; x += TILE_SIZE) {
             for (let y = 0; y <= this.scale.height; y += TILE_SIZE) {
                 this.add.rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE).setStrokeStyle(1, 0xffffff);
