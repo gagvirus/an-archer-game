@@ -1,20 +1,29 @@
 import {Scene} from "phaser";
 import Tower from "../logic/Tower.ts";
-import {dampPosition, getTileCoordinate} from "../helpers/position-helper.ts";
+import {dampPosition, getTileCoordinate, TILE_SIZE, tileCoordinateToPosition} from "../helpers/position-helper.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 class BuildMenuScene extends Scene {
-    tileSize: number = 32;
     storedTiles: Tower[][];
     towerPreview?: Tower;
+    occupiedTiles: Vector2Like[];
 
     constructor() {
         super('BuildMenuScene');
     }
+    
+    init(data: {occupiedTiles: Vector2Like[]})
+    {
+        this.occupiedTiles = data.occupiedTiles;
+    }
 
     create() {
         this.storedTiles = []
+        this.occupiedTiles.forEach((occupiedTile: Vector2Like) => {
+            const { x, y } = tileCoordinateToPosition(occupiedTile);
+            this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xff0000).setAlpha(0.5);
+        })
         // Listener for pointer (mouse/touch) inputs
         this.input.on('pointerdown', (pointer: Pointer) => {
             this.addOrRemoveTile(pointer);
@@ -32,7 +41,7 @@ class BuildMenuScene extends Scene {
     }
 
     addOrRemoveTile(position: Vector2Like) {
-        const {x, y} = getTileCoordinate(position, this.tileSize);
+        const {x, y} = getTileCoordinate(position);
         if (!this.storedTiles[y]) {
             this.storedTiles[y] = [];
         }
@@ -40,19 +49,19 @@ class BuildMenuScene extends Scene {
             this.storedTiles[y][x].destroy();
             delete this.storedTiles[y][x];
         } else {
-            this.storedTiles[y][x] = this.createTower(dampPosition(position, this.tileSize));
+            this.storedTiles[y][x] = this.createTower(dampPosition(position));
             this.storedTiles[y][x].setDepth(y);
         }
     }
 
     createTower(position: Vector2Like): Tower {
         const tower = new Tower(this, position.x, position.y);
-        tower.scale = this.tileSize / tower.width;
+        tower.scale = TILE_SIZE / tower.width;
         return tower;
     }
 
     private showTowerPreview(position: Vector2Like) {
-        const {x, y} = dampPosition(position, this.tileSize);
+        const {x, y} = dampPosition(position);
         if (!this.towerPreview) {
             this.towerPreview = this.createTower(position);
             this.towerPreview.alpha = 0.5;

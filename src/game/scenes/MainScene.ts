@@ -4,9 +4,11 @@ import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
-import {getRandomPositionAwayFromPoint} from "../helpers/position-helper.ts";
+import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../helpers/position-helper.ts";
 import {createAnimatedText} from "../helpers/text-helpers.ts";
 import Portal from "../logic/Portal.ts";
+import Sprite = Phaser.GameObjects.Sprite;
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 class MainScene extends Scene {
     level: number;
@@ -60,11 +62,31 @@ class MainScene extends Scene {
             
             if (event.key === 'b') {
                 this.scene.pause();
-                this.scene.launch('BuildMenuScene');
+                // get disabled tiles and pass to build scene
+                this.scene.launch('BuildMenuScene', { occupiedTiles: this.getOccupiedTiles() });
             }
         });
 
         this.startLevel();
+    }
+    
+    getOccupiedTiles()
+    {
+        const occupiedTiles: Vector2Like[] = [];
+        const objects: Sprite[] = [this.hero, this.portal, ...this.enemies.getChildren()] as Sprite[];
+        objects.forEach((obj: Sprite) => {            
+            const bounds = obj.getBounds();
+            const minX = bounds.x;
+            const maxX = bounds.x + bounds.width;
+            const minY = bounds.y;
+            const maxY = bounds.y + bounds.height;
+            for (let x = minX; x <= maxX; x += TILE_SIZE) {
+                for (let y = minY; y <= maxY; y += TILE_SIZE) {
+                    occupiedTiles.push(getTileCoordinate({x, y}))
+                }
+            }
+        })
+        return occupiedTiles;
     }
     
     onEnemyKilled()
