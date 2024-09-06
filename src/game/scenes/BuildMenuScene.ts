@@ -48,6 +48,7 @@ class BuildMenuScene extends Scene {
                 // todo: pass the buildings to the main scene
                 delete this.towerPreview;
                 this.scene.resume('MainScene')
+                this.events.emit('buildComplete', {buildings: this.pendingBuildings})
                 this.scene.stop();
             }
         });

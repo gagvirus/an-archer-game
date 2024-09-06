@@ -1,34 +1,40 @@
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
 import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
+import Sprite = Phaser.GameObjects.Sprite;
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../helpers/position-helper.ts";
 import {createAnimatedText} from "../helpers/text-helpers.ts";
 import Portal from "../logic/Portal.ts";
-import Sprite = Phaser.GameObjects.Sprite;
-import Vector2Like = Phaser.Types.Math.Vector2Like;
+import Tower from "../logic/Tower.ts";
 
 class MainScene extends Scene {
     level: number;
     enemies: Group;
     hero: Hero;
     portal: Portal;
+    buildings: Group;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
         super('MainScene');
     }
 
-    // Preload assets (if any)
-    preload() {
-
-    }
-
     // Create game objects
     create() {
         this.level = 1;
+        this.scene.get('BuildMenuScene').events.on('buildComplete', (data: { buildings: Tower[][] }) => {
+            if (data.buildings) {
+                data.buildings.forEach((towersRow: Tower[]) => {
+                    towersRow.forEach((tower: Tower) => {
+                        this.buildings.add(tower.clone(this));
+                    })
+                })
+            }
+        })
         // Listener for pointer (mouse/touch) inputs
         // this.input.on('pointerdown', (pointer: Pointer) => {
         //     console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
@@ -47,6 +53,8 @@ class MainScene extends Scene {
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
+        
+        this.buildings = this.physics.add.group();
 
         // Initialize the hero in the center of the canvas
         const centerX = this.scale.width / 2;
@@ -59,22 +67,21 @@ class MainScene extends Scene {
                 this.scene.pause();
                 this.scene.launch('PauseMenu');
             }
-            
+
             if (event.key === 'b') {
                 this.scene.pause();
                 // get disabled tiles and pass to build scene
-                this.scene.launch('BuildMenuScene', { occupiedTiles: this.getOccupiedTiles() });
+                this.scene.launch('BuildMenuScene', {occupiedTiles: this.getOccupiedTiles()});
             }
         });
 
         this.startLevel();
     }
-    
-    getOccupiedTiles()
-    {
+
+    getOccupiedTiles() {
         const occupiedTiles: Vector2Like[] = [];
         const objects: Sprite[] = [this.hero, this.portal, ...this.enemies.getChildren()] as Sprite[];
-        objects.forEach((obj: Sprite) => {            
+        objects.forEach((obj: Sprite) => {
             const bounds = obj.getBounds();
             const minX = bounds.x;
             const maxX = bounds.x + bounds.width;
@@ -88,17 +95,14 @@ class MainScene extends Scene {
         })
         return occupiedTiles;
     }
-    
-    onEnemyKilled()
-    {
-        if (this.enemies.countActive() < 1)
-        {
+
+    onEnemyKilled() {
+        if (this.enemies.countActive() < 1) {
             this.portal.setDisabled(false);
         }
     }
 
-    startLevel()
-    {
+    startLevel() {
         createAnimatedText(this, `Level ${this.level}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new level
         this.portal.setDisabled(true);
@@ -135,7 +139,7 @@ class MainScene extends Scene {
         } else {
             this.hero.setVelocityY(0);
         }
-        
+
         this.portal.checkHeroIsWithinBounds(this.hero);
     }
 
@@ -143,7 +147,10 @@ class MainScene extends Scene {
         const numEnemies = this.level * 3; // Increase the number of enemies each level
 
         for (let i = 0; i < numEnemies; i++) {
-            const {x, y} = getRandomPositionAwayFromPoint(this.scale.width - 50, this.scale.height - 50, this.hero, 200);
+            const {
+                x,
+                y
+            } = getRandomPositionAwayFromPoint(this.scale.width - 50, this.scale.height - 50, this.hero, 200);
             const enemy = new Enemy(this, x, y);
             this.enemies.add(enemy);
         }

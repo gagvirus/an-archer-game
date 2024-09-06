@@ -35,7 +35,9 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
     
     clone(scene?: Scene)
     {
-        return new Tower(scene ?? this.scene, this.x, this.y);
+        const clone = new Tower(scene ?? this.scene, this.x, this.y);
+        clone.scale = this.scale;
+        return clone;
     }
 }
 
