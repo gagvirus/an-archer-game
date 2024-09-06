@@ -22,7 +22,7 @@ const getRandomPositionAwayFromPoint = (maxX: number, maxY: number, awayFrom: Ve
 const dampPosition = (position: Vector2Like): Vector2Like => {
     return {
         x: Math.floor(position.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2,
-        y: Math.floor(position.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2,
+        y: Math.floor(position.y / TILE_SIZE) * TILE_SIZE,
     };
 }
 
