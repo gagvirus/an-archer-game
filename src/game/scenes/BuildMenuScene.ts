@@ -8,23 +8,32 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 class BuildMenuScene extends Scene {
     storedTiles: Tower[][];
     towerPreview?: Tower;
-    _disallowedTiles: Vector2Like[];
+    disallowedTiles: true[][];
 
     constructor() {
         super('BuildMenuScene');
     }
 
     init(data: { occupiedTiles: Vector2Like[] }) {
-        this.disallowedTiles = [...data.occupiedTiles, ...this.getBorderTilesAsIgnored()]
+        const disallowedTiles = [...data.occupiedTiles, ...this.getBorderTilesAsIgnored()]
+        this.disallowedTiles = [];
+        disallowedTiles.forEach(({x, y}) => {
+            if (!this.disallowedTiles[x]) {
+                this.disallowedTiles[x] = [];
+            }
+            this.disallowedTiles[x][y] = true;
+        })
     }
 
     create() {
         isDebugMode(this.game) && this.drawGrid();
 
         this.storedTiles = []
-        this.disallowedTiles.forEach((occupiedTile: Vector2Like) => {
-            const {x, y} = tileCoordinateToPosition(occupiedTile);
-            this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xff0000).setAlpha(0.5);
+        this.disallowedTiles.forEach((value, posX) => {
+            value.forEach((_, posY) => {
+                const {x, y} = tileCoordinateToPosition({x: posX, y: posY});
+                this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xff0000).setAlpha(0.5);
+            })
         })
         // Listener for pointer (mouse/touch) inputs
         this.input.on('pointerdown', (pointer: Pointer) => {
@@ -85,10 +94,6 @@ class BuildMenuScene extends Scene {
         }
     }
 
-    get disallowedTiles() {
-        return this._disallowedTiles;
-    }
-
     // add top/bottom + left/right rows / columns as disallowed tiles
     private getBorderTilesAsIgnored() {
         const borderTiles = [];
@@ -101,17 +106,6 @@ class BuildMenuScene extends Scene {
             borderTiles.push({x: Math.floor(this.scale.width / TILE_SIZE), y});
         }
         return borderTiles;
-    }
-
-    set disallowedTiles(disallowedTiles: Vector2Like[]) {
-        // cast tile coordinate to strings
-        // store the strings in set, thus removing the duplicates
-        // revert the strings back to coordinates
-        this._disallowedTiles = Array.from(new Set([...disallowedTiles.map((p) => `${p.x}x${p.y}`)])).map((c: string) => {
-            const [x, y] = c.split('x');
-            return {x: parseInt(x), y: parseInt(y)};
-        })
-        ;
     }
 }
 
