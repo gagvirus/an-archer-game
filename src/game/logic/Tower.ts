@@ -27,6 +27,11 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
         this.outline?.setVisible(value);
         return this;
     }
+    
+    destroy(fromScene?: boolean) {
+        super.destroy(fromScene);
+        this.outline?.destroy();
+    }
 }
 
 export default Tower;
