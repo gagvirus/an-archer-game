@@ -1,6 +1,8 @@
 import Phaser, {Scene} from "phaser";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import {isDebugMode} from "../helpers/debug-helper.ts";
+import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {TILE_SIZE} from "../helpers/position-helper.ts";
 
 export class Tower extends Phaser.Physics.Arcade.Sprite {
     outline?: Rectangle;
@@ -36,8 +38,13 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
     clone(scene?: Scene)
     {
         const clone = new Tower(scene ?? this.scene, this.x, this.y);
-        clone.scale = this.scale;
+        clone.setScale(this.scale);
         return clone;
+    }
+
+    getOccupyingCoordinates(): Vector2Like
+    {
+        return {x: (this.x - TILE_SIZE / 2) / TILE_SIZE, y: this.y / TILE_SIZE};
     }
 }
 

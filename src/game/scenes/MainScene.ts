@@ -82,16 +82,22 @@ class MainScene extends Scene {
         const occupiedTiles: Vector2Like[] = [];
         const objects: Sprite[] = [this.hero, this.portal, ...this.enemies.getChildren(), ...this.buildings.getChildren()] as Sprite[];
         objects.forEach((obj: Sprite) => {
-            const bounds = obj.getBounds();
-            const minX = bounds.x;
-            const maxX = bounds.x + bounds.width;
-            const minY = bounds.y;
-            const maxY = bounds.y + bounds.height;
-            for (let x = minX; x <= maxX; x += TILE_SIZE) {
-                for (let y = minY; y <= maxY; y += TILE_SIZE) {
-                    occupiedTiles.push(getTileCoordinate({x, y}))
+            if (obj instanceof Tower) {
+                occupiedTiles.push(obj.getOccupyingCoordinates());
+            } else {
+                const bounds = obj.getBounds();
+                const minX = bounds.x;
+                const maxX = bounds.x + bounds.width;
+                const minY = bounds.y;
+                const maxY = bounds.y + bounds.height;
+                for (let x = minX; x <= maxX; x += TILE_SIZE) {
+                    for (let y = minY; y <= maxY; y += TILE_SIZE) {
+                        console.log('OTHER', getTileCoordinate({x, y}));
+                        occupiedTiles.push(getTileCoordinate({x, y}))
+                    }
                 }
             }
+            
         })
         return occupiedTiles;
     }
