@@ -81,8 +81,7 @@ class BuildMenuScene extends Scene {
             this.towerPreview.alpha = 0.5;
         }
         const {x: tileX, y: tileY} = getTileCoordinate(position);
-        if (this.disallowedTiles[tileX] && this.disallowedTiles[tileX][tileY])
-        {
+        if (this.disallowedTiles[tileX] && this.disallowedTiles[tileX][tileY]) {
             this.towerPreview.setVisible(false);
         } else {
             this.towerPreview.setVisible(true);
@@ -107,10 +106,12 @@ class BuildMenuScene extends Scene {
         for (let x = 0; x <= Math.floor(this.scale.width / TILE_SIZE); x++) {
             borderTiles.push({x, y: 0});
             borderTiles.push({x, y: Math.floor(this.scale.height / TILE_SIZE)});
+            this.add.text(x * TILE_SIZE, TILE_SIZE / 2, x.toString()).setOrigin(0).setDepth(11);
         }
         for (let y = 0; y <= Math.floor(this.scale.height / TILE_SIZE); y++) {
             borderTiles.push({x: 0, y});
             borderTiles.push({x: Math.floor(this.scale.width / TILE_SIZE), y});
+            this.add.text(0, y * TILE_SIZE, y.toString()).setOrigin(0).setDepth(11);
         }
         return borderTiles;
     }
