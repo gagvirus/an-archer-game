@@ -8,6 +8,7 @@ import {getRandomItem} from "../helpers/random-helper.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
+import {isDebugMode} from "../helpers/debug-helper.ts";
 
 class Enemy extends Sprite {
     attackRange: number;
@@ -36,7 +37,7 @@ class Enemy extends Sprite {
         this.instantiate(enemyDef);
 
         this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, 0xffff00, 0.3);
-        this.debugCircle.setVisible(scene.game.registry.get('debugMode') == 'true'); 
+        this.debugCircle.setVisible(isDebugMode(scene.game)); 
 
         this.attackCooldown = 0;
         // Create a health bar for the enemy

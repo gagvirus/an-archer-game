@@ -3,6 +3,7 @@ import Tower from "../logic/Tower.ts";
 import {dampPosition, getTileCoordinate, TILE_SIZE, tileCoordinateToPosition} from "../helpers/position-helper.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {isDebugMode} from "../helpers/debug-helper.ts";
 
 class BuildMenuScene extends Scene {
     storedTiles: Tower[][];
@@ -12,16 +13,17 @@ class BuildMenuScene extends Scene {
     constructor() {
         super('BuildMenuScene');
     }
-    
-    init(data: {occupiedTiles: Vector2Like[]})
-    {
+
+    init(data: { occupiedTiles: Vector2Like[] }) {
         this.occupiedTiles = data.occupiedTiles;
     }
 
     create() {
+        isDebugMode(this.game) && this.drawGrid();
+
         this.storedTiles = []
         this.occupiedTiles.forEach((occupiedTile: Vector2Like) => {
-            const { x, y } = tileCoordinateToPosition(occupiedTile);
+            const {x, y} = tileCoordinateToPosition(occupiedTile);
             this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xff0000).setAlpha(0.5);
         })
         // Listener for pointer (mouse/touch) inputs
@@ -56,7 +58,7 @@ class BuildMenuScene extends Scene {
 
     createTower(position: Vector2Like): Tower {
         const tower = new Tower(this, position.x, position.y);
-        tower.scale = TILE_SIZE / tower.width;
+        tower.setScale(TILE_SIZE / tower.width);
         return tower;
     }
 
@@ -68,6 +70,15 @@ class BuildMenuScene extends Scene {
         }
         this.towerPreview.x = x;
         this.towerPreview.y = y;
+        this.towerPreview.update();
+    }
+
+    private drawGrid() {
+        for (let x = 0; x <= this.scale.width; x += TILE_SIZE) {
+            for (let y = 0; y <= this.scale.height; y += TILE_SIZE) {
+                this.add.rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE).setStrokeStyle(1, 0xffffff);
+            }
+        }
     }
 }
 
