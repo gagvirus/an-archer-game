@@ -23,7 +23,13 @@ const dampPosition = (position: Vector2Like, tileSize: number): Vector2Like =>
         x: Math.floor(position.x / tileSize) * tileSize + tileSize / 2,
         y: Math.floor(position.y / tileSize) * tileSize + tileSize / 2,
     };
-    
 }
 
-export {getRandomPosition, getRandomPositionAwayFromPoint, dampPosition}
+const getTileCoordinate = (position: Vector2Like, tileSize: number): Vector2Like => {
+    return {
+        x: Math.floor(position.x / tileSize),
+        y: Math.floor(position.y / tileSize),
+    }
+}
+
+export {getRandomPosition, getRandomPositionAwayFromPoint, dampPosition, getTileCoordinate}

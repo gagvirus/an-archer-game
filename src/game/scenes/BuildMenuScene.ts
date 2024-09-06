@@ -1,12 +1,12 @@
 import {Scene} from "phaser";
 import Tower from "../logic/Tower.ts";
+import {dampPosition, getTileCoordinate} from "../helpers/position-helper.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {dampPosition} from "../helpers/position-helper.ts";
 
 class BuildMenuScene extends Scene {
     tileSize: number = 32;
-    storedTiles: { [coordinate: string]: Tower };
+    storedTiles: Tower[][];
     towerPreview: Tower;
 
     constructor() {
@@ -14,14 +14,13 @@ class BuildMenuScene extends Scene {
     }
 
     create() {
-        this.storedTiles = {}
+        this.storedTiles = []
         // Listener for pointer (mouse/touch) inputs
         this.input.on('pointerdown', (pointer: Pointer) => {
             this.addOrRemoveTile(pointer);
         });
         this.input.on('pointermove', (pointer: Pointer) => {
             this.showTowerPreview(pointer);
-            // console.log(`Pointer moved to x: ${pointer.x}, y: ${pointer.y}`);
         });
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             if (event.key === 'b') {
@@ -32,45 +31,29 @@ class BuildMenuScene extends Scene {
     }
 
     addOrRemoveTile(position: Vector2Like) {
-        const coordinate = this.positionToCoordinate(position);
-        if (this.storedTiles[coordinate]) {
-            this.storedTiles[coordinate].destroy();
-            delete this.storedTiles[coordinate];
+        const {x, y} = getTileCoordinate(position, this.tileSize);
+        if (!this.storedTiles[y]) {
+            this.storedTiles[y] = [];
+        }
+        if (this.storedTiles[y][x]) {
+            this.storedTiles[y][x].destroy();
+            delete this.storedTiles[y][x];
         } else {
-            this.storedTiles[coordinate] = this.createTower(position);
+            this.storedTiles[y][x] = this.createTower(dampPosition(position, this.tileSize));
+            this.storedTiles[y][x].setDepth(y);
         }
     }
-    
-    coordinateToPosition(coordinate: string): Vector2Like
-    {
-        const [coordinateX, coordinateY] = coordinate.split("x");
-        return {
-            x: parseInt(coordinateX) * this.tileSize + this.tileSize / 2,
-            y: parseInt(coordinateY) * this.tileSize + this.tileSize / 2,
-        }
-    }
-    
-    positionToCoordinate(position: Vector2Like): string
-    {
-        const tileX = Math.floor(position.x / this.tileSize);
-        const tileY = Math.floor(position.y / this.tileSize);
-        return `${tileX}x${tileY}`;
-    }
-    
-    createTower(position: Vector2Like): Tower
-    {
-        const { x, y } = dampPosition(position, this.tileSize);
-        const tower = new Tower(this, x, y);
+
+    createTower(position: Vector2Like): Tower {
+        const tower = new Tower(this, position.x, position.y);
         tower.scale = this.tileSize / tower.width;
         return tower;
     }
 
     private showTowerPreview(position: Vector2Like) {
-        const { x, y } = dampPosition(position, this.tileSize);
-        if (!this.towerPreview)
-        {
-            this.towerPreview = new Tower(this, x, y);
-            this.towerPreview.scale = this.tileSize / this.towerPreview.width;
+        const {x, y} = dampPosition(position, this.tileSize);
+        if (!this.towerPreview) {
+            this.towerPreview = this.createTower(position);
             this.towerPreview.alpha = 0.5;
         }
         this.towerPreview.x = x;
