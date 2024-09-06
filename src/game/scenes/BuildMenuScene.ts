@@ -8,16 +8,14 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 class BuildMenuScene extends Scene {
     storedTiles: Tower[][];
     towerPreview?: Tower;
-    occupiedTiles: Vector2Like[];
-    borderTiles: Vector2Like[];
+    _disallowedTiles: Vector2Like[];
 
     constructor() {
         super('BuildMenuScene');
     }
 
     init(data: { occupiedTiles: Vector2Like[] }) {
-        this.occupiedTiles = data.occupiedTiles;
-        this.addBorderTilesAsIgnored();
+        this.disallowedTiles = [...data.occupiedTiles, ...this.getBorderTilesAsIgnored()]
     }
 
     create() {
@@ -88,21 +86,25 @@ class BuildMenuScene extends Scene {
     }
 
     get disallowedTiles() {
-        return this.borderTiles.concat(this.occupiedTiles);
+        return this._disallowedTiles;
     }
 
     // add top/bottom + left/right rows / columns as disallowed tiles
-    private addBorderTilesAsIgnored() {
-        this.borderTiles = [];
+    private getBorderTilesAsIgnored() {
+        const borderTiles = [];
         for (let x = 0; x <= Math.floor(this.scale.width / TILE_SIZE); x++) {
-            this.borderTiles.push({x, y: 0});
-            this.borderTiles.push({x, y: Math.floor(this.scale.height / TILE_SIZE)});
+            borderTiles.push({x, y: 0});
+            borderTiles.push({x, y: Math.floor(this.scale.height / TILE_SIZE)});
         }
         for (let y = 0; y <= Math.floor(this.scale.height / TILE_SIZE); y++) {
-            this.borderTiles.push({x: 0, y});
-            this.borderTiles.push({x: Math.floor(this.scale.width / TILE_SIZE), y});
+            borderTiles.push({x: 0, y});
+            borderTiles.push({x: Math.floor(this.scale.width / TILE_SIZE), y});
         }
-        console.log(this.borderTiles);
+        return borderTiles;
+    }
+
+    set disallowedTiles(disallowedTiles: Vector2Like[]) {
+        this._disallowedTiles = disallowedTiles;
     }
 }
 
