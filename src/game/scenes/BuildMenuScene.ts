@@ -6,7 +6,7 @@ import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 class BuildMenuScene extends Scene {
-    storedTiles: Tower[][];
+    pendingBuildings: Tower[][];
     towerPreview?: Tower;
     disallowedTiles: true[][];
 
@@ -28,7 +28,7 @@ class BuildMenuScene extends Scene {
     create() {
         isDebugMode(this.game) && this.drawGrid();
 
-        this.storedTiles = []
+        this.pendingBuildings = []
         this.disallowedTiles.forEach((value, posX) => {
             value.forEach((_, posY) => {
                 const {x, y} = tileCoordinateToPosition({x: posX, y: posY});
@@ -54,16 +54,16 @@ class BuildMenuScene extends Scene {
 
     addOrRemoveTile(position: Vector2Like) {
         const {x, y} = getTileCoordinate(position);
-        if (!this.storedTiles[y]) {
-            this.storedTiles[y] = [];
+        if (!this.pendingBuildings[y]) {
+            this.pendingBuildings[y] = [];
         }
-        if (this.storedTiles[y][x]) {
-            this.storedTiles[y][x].destroy();
-            delete this.storedTiles[y][x];
+        if (this.pendingBuildings[y][x]) {
+            this.pendingBuildings[y][x].destroy();
+            delete this.pendingBuildings[y][x];
         } else {
             if (!(this.disallowedTiles[x] && this.disallowedTiles[x][y])) {
-                this.storedTiles[y][x] = this.createTower(dampPosition(position));
-                this.storedTiles[y][x].setDepth(y);
+                this.pendingBuildings[y][x] = this.createTower(dampPosition(position));
+                this.pendingBuildings[y][x].setDepth(y);
             }
         }
     }
