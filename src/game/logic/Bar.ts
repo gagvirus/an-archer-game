@@ -1,9 +1,9 @@
-import {Vector2} from "../helpers/position-helper.ts";
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 abstract class Bar {
     scene: Phaser.Scene;
-    position: Vector2;
-    positionOffset: Vector2;
+    position: Vector2Like;
+    positionOffset: Vector2Like;
     width: number;
     height: number;
     bar: Phaser.GameObjects.Graphics;
@@ -12,7 +12,7 @@ abstract class Bar {
     filledColor: number;
     emptyColor: number;
 
-    constructor(scene: Phaser.Scene, position: Vector2, width: number, height: number, maxValue: number, currentValue: number, positionOffset?: Vector2, filledColor?: number, emptyColor?: number) {
+    constructor(scene: Phaser.Scene, position: Vector2Like, width: number, height: number, maxValue: number, currentValue: number, positionOffset?: Vector2Like, filledColor?: number, emptyColor?: number) {
         this.scene = scene;
         this.position = position
         this.width = width;

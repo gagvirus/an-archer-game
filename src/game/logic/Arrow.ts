@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
 import {Attackable} from "../helpers/gameplayer-helper.ts";
-import {Vector2} from "../helpers/position-helper.ts";
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
     target: Attackable;
     speed: number;
     owner: Attackable;
-    targetPosition: Vector2;
+    targetPosition: Vector2Like;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, targetPosition: Vector2, target: Attackable, speed: number = 500, owner: Attackable) {
+    constructor(scene: Phaser.Scene, x: number, y: number, targetPosition: Vector2Like, target: Attackable, speed: number = 500, owner: Attackable) {
         super(scene, x, y, 'arrow');
         this.target = target;
         this.targetPosition = targetPosition;

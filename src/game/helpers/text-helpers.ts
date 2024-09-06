@@ -1,7 +1,7 @@
 import {GameObjects, Scene} from "phaser";
-import {Vector2} from "./position-helper.ts";
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
-const createText = (scene: Scene, text: string, position: Vector2, fontSize: number = 32): GameObjects.Text => {
+const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32): GameObjects.Text => {
     return scene.add.text(position.x, position.y, text, {
         fontFamily: 'Arial Black',
         fontSize,
