@@ -61,9 +61,10 @@ class BuildMenuScene extends Scene {
             this.storedTiles[y][x].destroy();
             delete this.storedTiles[y][x];
         } else {
-            // todo: disallow placing towers on disallowed tiles
-            this.storedTiles[y][x] = this.createTower(dampPosition(position));
-            this.storedTiles[y][x].setDepth(y);
+            if (!(this.disallowedTiles[x] && this.disallowedTiles[x][y])) {
+                this.storedTiles[y][x] = this.createTower(dampPosition(position));
+                this.storedTiles[y][x].setDepth(y);
+            }
         }
     }
 
@@ -86,7 +87,6 @@ class BuildMenuScene extends Scene {
         } else {
             this.towerPreview.setVisible(true);
         }
-        // todo: hide tower preview if on disallowed tile
         this.towerPreview.x = x;
         this.towerPreview.y = y;
         this.towerPreview.update();
