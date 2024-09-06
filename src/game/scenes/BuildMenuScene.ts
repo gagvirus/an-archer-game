@@ -9,6 +9,7 @@ class BuildMenuScene extends Scene {
     storedTiles: Tower[][];
     towerPreview?: Tower;
     occupiedTiles: Vector2Like[];
+    borderTiles: Vector2Like[];
 
     constructor() {
         super('BuildMenuScene');
@@ -19,14 +20,14 @@ class BuildMenuScene extends Scene {
             x: parseInt(p.split('x')[0]),
             y: parseInt(p.split('x')[1])
         }));
-        // todo: add top/bottom + left/right rows / columns as disallowed tiles
+        this.addBorderTilesAsIgnored();
     }
 
     create() {
         isDebugMode(this.game) && this.drawGrid();
 
         this.storedTiles = []
-        this.occupiedTiles.forEach((occupiedTile: Vector2Like) => {
+        this.disallowedTiles.forEach((occupiedTile: Vector2Like) => {
             const {x, y} = tileCoordinateToPosition(occupiedTile);
             this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xff0000).setAlpha(0.5);
         })
@@ -87,6 +88,24 @@ class BuildMenuScene extends Scene {
                 this.add.rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE).setStrokeStyle(1, 0xffffff);
             }
         }
+    }
+
+    get disallowedTiles() {
+        return this.borderTiles.concat(this.occupiedTiles);
+    }
+
+    // add top/bottom + left/right rows / columns as disallowed tiles
+    private addBorderTilesAsIgnored() {
+        this.borderTiles = [];
+        for (let x = 0; x <= Math.floor(this.scale.width / TILE_SIZE); x++) {
+            this.borderTiles.push({x, y: 0});
+            this.borderTiles.push({x, y: Math.floor(this.scale.height / TILE_SIZE)});
+        }
+        for (let y = 0; y <= Math.floor(this.scale.height / TILE_SIZE); y++) {
+            this.borderTiles.push({x: 0, y});
+            this.borderTiles.push({x: Math.floor(this.scale.width / TILE_SIZE), y});
+        }
+        console.log(this.borderTiles);
     }
 }
 
