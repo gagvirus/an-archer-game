@@ -7,7 +7,7 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 class BuildMenuScene extends Scene {
     tileSize: number = 32;
     storedTiles: Tower[][];
-    towerPreview: Tower;
+    towerPreview?: Tower;
 
     constructor() {
         super('BuildMenuScene');
@@ -24,6 +24,7 @@ class BuildMenuScene extends Scene {
         });
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             if (event.key === 'b') {
+                delete this.towerPreview;
                 this.scene.resume('MainScene')
                 this.scene.stop();
             }
