@@ -6,7 +6,7 @@ import {dampPosition} from "../helpers/position-helper.ts";
 
 class BuildMenuScene extends Scene {
     tileSize: number = 32;
-    storedTiles: { [coordinate: string]: string };
+    storedTiles: { [coordinate: string]: Tower };
     towerPreview: Tower;
 
     constructor() {
@@ -17,7 +17,7 @@ class BuildMenuScene extends Scene {
         this.storedTiles = {}
         // Listener for pointer (mouse/touch) inputs
         this.input.on('pointerdown', (pointer: Pointer) => {
-            this.addOrRemoveTile(pointer.x, pointer.y);
+            this.addOrRemoveTile(pointer);
         });
         this.input.on('pointermove', (pointer: Pointer) => {
             this.showTowerPreview(pointer);
@@ -31,28 +31,39 @@ class BuildMenuScene extends Scene {
         });
     }
 
-    addOrRemoveTile(x: number, y: number, element: string = 'block') {
-        const tileX = Math.floor(x / this.tileSize);
-        const tileY = Math.floor(y / this.tileSize);
-        const coordinate = `${tileX}x${tileY}`;
+    addOrRemoveTile(position: Vector2Like) {
+        const coordinate = this.positionToCoordinate(position);
         if (this.storedTiles[coordinate]) {
+            this.storedTiles[coordinate].destroy();
             delete this.storedTiles[coordinate];
         } else {
-            this.storedTiles[coordinate] = element;
+            this.storedTiles[coordinate] = this.createTower(position);
         }
-        this.renderElements();
-    }
-
-    renderElements() {
-        Object.keys(this.storedTiles).forEach((coordinate: string) => {
-            const [coordinateX, coordinateY] = coordinate.split("x");
-            const positionX = parseInt(coordinateX) * this.tileSize + this.tileSize / 2;
-            const positionY = parseInt(coordinateY) * this.tileSize + this.tileSize / 2;
-            const tower = new Tower(this, positionX, positionY)
-            tower.scale = this.tileSize / tower.width;
-        })
     }
     
+    coordinateToPosition(coordinate: string): Vector2Like
+    {
+        const [coordinateX, coordinateY] = coordinate.split("x");
+        return {
+            x: parseInt(coordinateX) * this.tileSize + this.tileSize / 2,
+            y: parseInt(coordinateY) * this.tileSize + this.tileSize / 2,
+        }
+    }
+    
+    positionToCoordinate(position: Vector2Like): string
+    {
+        const tileX = Math.floor(position.x / this.tileSize);
+        const tileY = Math.floor(position.y / this.tileSize);
+        return `${tileX}x${tileY}`;
+    }
+    
+    createTower(position: Vector2Like): Tower
+    {
+        const { x, y } = dampPosition(position, this.tileSize);
+        const tower = new Tower(this, x, y);
+        tower.scale = this.tileSize / tower.width;
+        return tower;
+    }
 
     private showTowerPreview(position: Vector2Like) {
         const { x, y } = dampPosition(position, this.tileSize);
