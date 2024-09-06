@@ -27,6 +27,7 @@ class BuildMenuScene extends Scene {
 
     create() {
         isDebugMode(this.game) && this.drawGrid();
+        isDebugMode(this.game) && this.drawGridNumbers();
 
         this.pendingBuildings = []
         this.disallowedTiles.forEach((value, posX) => {
@@ -92,11 +93,19 @@ class BuildMenuScene extends Scene {
     }
 
     private drawGrid() {
-        // todo: show numbers on top/bottom + left/right rows + columns
         for (let x = 0; x <= this.scale.width; x += TILE_SIZE) {
             for (let y = 0; y <= this.scale.height; y += TILE_SIZE) {
                 this.add.rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE).setStrokeStyle(1, 0xffffff);
             }
+        }
+    }
+
+    private drawGridNumbers() {
+        for (let x = 0; x <= Math.floor(this.scale.width / TILE_SIZE); x++) {
+            this.add.text(x * TILE_SIZE, TILE_SIZE / 2, x.toString()).setOrigin(0).setDepth(11);
+        }
+        for (let y = 0; y <= Math.floor(this.scale.height / TILE_SIZE); y++) {
+            this.add.text(0, y * TILE_SIZE, y.toString()).setOrigin(0).setDepth(11);
         }
     }
 
@@ -106,12 +115,10 @@ class BuildMenuScene extends Scene {
         for (let x = 0; x <= Math.floor(this.scale.width / TILE_SIZE); x++) {
             borderTiles.push({x, y: 0});
             borderTiles.push({x, y: Math.floor(this.scale.height / TILE_SIZE)});
-            this.add.text(x * TILE_SIZE, TILE_SIZE / 2, x.toString()).setOrigin(0).setDepth(11);
         }
         for (let y = 0; y <= Math.floor(this.scale.height / TILE_SIZE); y++) {
             borderTiles.push({x: 0, y});
             borderTiles.push({x: Math.floor(this.scale.width / TILE_SIZE), y});
-            this.add.text(0, y * TILE_SIZE, y.toString()).setOrigin(0).setDepth(11);
         }
         return borderTiles;
     }
