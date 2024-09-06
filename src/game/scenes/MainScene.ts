@@ -86,7 +86,7 @@ class MainScene extends Scene {
                 }
             }
         })
-        return [...new Set(occupiedTiles.map((p) => `${p.x}x${p.y}`))];
+        return occupiedTiles;
     }
     
     onEnemyKilled()

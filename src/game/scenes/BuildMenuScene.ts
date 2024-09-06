@@ -15,11 +15,8 @@ class BuildMenuScene extends Scene {
         super('BuildMenuScene');
     }
 
-    init(data: { occupiedTiles: string[] }) {
-        this.occupiedTiles = data.occupiedTiles.map((p) => ({
-            x: parseInt(p.split('x')[0]),
-            y: parseInt(p.split('x')[1])
-        }));
+    init(data: { occupiedTiles: Vector2Like[] }) {
+        this.occupiedTiles = data.occupiedTiles;
         this.addBorderTilesAsIgnored();
     }
 
