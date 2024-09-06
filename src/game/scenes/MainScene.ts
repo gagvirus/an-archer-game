@@ -80,7 +80,7 @@ class MainScene extends Scene {
 
     getOccupiedTiles() {
         const occupiedTiles: Vector2Like[] = [];
-        const objects: Sprite[] = [this.hero, this.portal, ...this.enemies.getChildren()] as Sprite[];
+        const objects: Sprite[] = [this.hero, this.portal, ...this.enemies.getChildren(), ...this.buildings.getChildren()] as Sprite[];
         objects.forEach((obj: Sprite) => {
             const bounds = obj.getBounds();
             const minX = bounds.x;
