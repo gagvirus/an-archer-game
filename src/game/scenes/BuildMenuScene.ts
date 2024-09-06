@@ -1,9 +1,9 @@
 import {Scene} from "phaser";
 import Tower from "../logic/Tower.ts";
 import {dampPosition, getTileCoordinate, TILE_SIZE, tileCoordinateToPosition} from "../helpers/position-helper.ts";
+import {isDebugMode} from "../helpers/debug-helper.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {isDebugMode} from "../helpers/debug-helper.ts";
 
 class BuildMenuScene extends Scene {
     storedTiles: Tower[][];
@@ -14,8 +14,11 @@ class BuildMenuScene extends Scene {
         super('BuildMenuScene');
     }
 
-    init(data: { occupiedTiles: Vector2Like[] }) {
-        this.occupiedTiles = data.occupiedTiles;
+    init(data: { occupiedTiles: string[] }) {
+        this.occupiedTiles = data.occupiedTiles.map((p) => ({
+            x: parseInt(p.split('x')[0]),
+            y: parseInt(p.split('x')[1])
+        }));
     }
 
     create() {
