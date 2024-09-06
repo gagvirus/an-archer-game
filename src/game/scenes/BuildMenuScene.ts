@@ -104,7 +104,14 @@ class BuildMenuScene extends Scene {
     }
 
     set disallowedTiles(disallowedTiles: Vector2Like[]) {
-        this._disallowedTiles = disallowedTiles;
+        // cast tile coordinate to strings
+        // store the strings in set, thus removing the duplicates
+        // revert the strings back to coordinates
+        this._disallowedTiles = Array.from(new Set([...disallowedTiles.map((p) => `${p.x}x${p.y}`)])).map((c: string) => {
+            const [x, y] = c.split('x');
+            return {x: parseInt(x), y: parseInt(y)};
+        })
+        ;
     }
 }
 
