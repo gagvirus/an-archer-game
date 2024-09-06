@@ -32,6 +32,11 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
         super.destroy(fromScene);
         this.outline?.destroy();
     }
+    
+    clone(scene?: Scene)
+    {
+        return new Tower(scene ?? this.scene, this.x, this.y);
+    }
 }
 
 export default Tower;
