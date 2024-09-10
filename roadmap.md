@@ -15,3 +15,6 @@
   - add ability to build things
     - each building shall persist through levels
   - on pressing "B" game pauses and add ability to place "blocks" (placeholders for now)
+- enemy walk logic
+  - shall follow a target
+  - implement pathfinding
