@@ -1,6 +1,6 @@
 import Phaser, {Scene} from "phaser";
 import Rectangle = Phaser.GameObjects.Rectangle;
-import {isDebugMode} from "../helpers/debug-helper.ts";
+import {isDebugMode} from "../helpers/registry-helper.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {TILE_SIZE} from "../helpers/position-helper.ts";
 

@@ -8,7 +8,7 @@ import {getRandomItem} from "../helpers/random-helper.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
-import {isDebugMode} from "../helpers/debug-helper.ts";
+import {isDebugMode} from "../helpers/registry-helper.ts";
 
 class Enemy extends Sprite {
     attackRange: number;

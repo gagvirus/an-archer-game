@@ -5,6 +5,7 @@ import HealthBar from "./HealthBar.ts";
 import MainScene from "../scenes/MainScene.ts";
 import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
+import {isAutoAttackEnabled} from "../helpers/registry-helper.ts";
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
@@ -27,9 +28,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.state = 'idle';
         this.anims.play('idle');
 
-        scene.input.keyboard?.on('keydown-SPACE', () => {
-            this.attackable.attack();
-        });
+        if (!isAutoAttackEnabled(scene.game)) {
+            scene.input.keyboard?.on('keydown-SPACE', () => {
+                this.attackable.attack();
+            });
+        }
         this.attackable = new Attackable(
             2, // attacks per second
             10, // attack damage
@@ -70,6 +73,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                 this.anims.play('idle', true);
             }
         }
+        isAutoAttackEnabled(this.scene.game) && this.attackable.attack();
         this.arrows.getChildren().forEach((gameObject: GameObject) => {
             (gameObject as Arrow).update();
         });
