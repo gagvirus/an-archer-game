@@ -4,10 +4,14 @@
     -  agility + 5% attack damage
     -  vitality + 5% health
     -  intelligence + 5% extra xp
-- active skills 
+- active skills
+- add score
+  - on enemy kill add some score
+  - have a high score (local storage only for now)
+  - display the score
   - add functionality for active skills which can be enabled with hotkeys, have duration and cooldown:
     - for example: double arrows for 30s, double attack speed for 30s
-- building 
+- building
   - add ability to build things
     - each building shall persist through levels
   - on pressing "B" game pauses and add ability to place "blocks" (placeholders for now)
