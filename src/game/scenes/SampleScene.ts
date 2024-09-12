@@ -76,6 +76,28 @@ class SampleScene extends Phaser.Scene {
 //     return numbers.join('\n');
 // }
 
+const createRow = (scene: SampleScene, i: number) => {
+    const background = scene.rexUI.add.roundRectangle({
+        x: 0, y: 0,
+        width: 200, height: 60,
+        color: COLOR_DARK, strokeColor: COLOR_LIGHT,
+        radius: 10,
+    });
+    const text = scene.add.text(-90, -10, i.toString())
+    const button = scene.add.text(65, -10, 'BTN')
+        .setInteractive()
+        .on('pointerup', function () {
+            scene.print.text += `Click item ${i}\n`
+        })
+    return scene.add.container()
+        .setSize(200, 60)
+        .add([
+            background,
+            text,
+            button
+        ])
+}
+
 const createPanel = function (scene: SampleScene) {
     const panel = scene.rexUI.add.sizer({
         orientation: 'y',
@@ -83,22 +105,7 @@ const createPanel = function (scene: SampleScene) {
     })
 
     for (let i = 0; i < 20; i++) {
-        const background = scene.rexUI.add.roundRectangle({
-            x: 0, y: 0,
-            width: 200, height: 60,
-            color: COLOR_DARK, strokeColor: COLOR_LIGHT,
-            radius: 10,
-        });
-        const text = scene.add.text(-90, -10, i.toString())
-        const button = scene.add.text(65, -10, 'BTN')
-            .setInteractive()
-            .on('pointerup', function () {
-                scene.print.text += `Click item ${i}\n`
-            })
-        const child = scene.add.container()
-            .setSize(200, 60)
-            .add([background, text, button])
-
+        const child = createRow(scene, i);
         panel.add(child)
     }
 
