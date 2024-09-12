@@ -23,7 +23,7 @@ class SampleScene extends Phaser.Scene {
             }),
 
             panel: {
-                child: createPanel(this),
+                child: this.createPanel(),
 
                 mask: {padding: 1,},
             },
@@ -71,47 +71,47 @@ class SampleScene extends Phaser.Scene {
 
     update() {
     }
-}
 
-const createRow = (scene: SampleScene, i: number) => {
-    const width = scene.scale.width - 200;
-    const background = scene.rexUI.add.roundRectangle({
-        x: 0,
-        y: 0,
-        width,
-        height: 60,
-        color: COLOR_DARK,
-        strokeColor: COLOR_LIGHT,
-        radius: 10,
-    });
-    const text = scene.add.text(-90, -10, i.toString())
-    const button = scene.add.text(65, -10, 'BTN')
-        .setInteractive()
-        .on('pointerup', function () {
-            scene.print.text += `Click item ${i}\n`
+    createPanel() {
+        const panel = this.rexUI.add.sizer({
+            orientation: 'y',
+            space: {item: 5}
         })
-    return scene.add.container()
-        .setSize(width, 60)
-        .add([
-            background,
-            text,
-            button
-        ])
-}
 
-const createPanel = function (scene: SampleScene) {
-    const panel = scene.rexUI.add.sizer({
-        orientation: 'y',
-        space: {item: 5}
-    })
+        for (let i = 0; i < 8; i++) {
+            const child = this.createRow(i);
+            panel.add(child)
+        }
 
-    for (let i = 0; i < 8; i++) {
-        const child = createRow(scene, i);
-        panel.add(child)
+        return panel;
     }
 
-    return panel;
-}
+    createRow = (i: number) => {
+        const width = this.scale.width - 200;
+        const background = this.rexUI.add.roundRectangle({
+            x: 0,
+            y: 0,
+            width,
+            height: 60,
+            color: COLOR_DARK,
+            strokeColor: COLOR_LIGHT,
+            radius: 10,
+        });
+        const text = this.add.text(-90, -10, i.toString())
+        const button = this.add.text(65, -10, 'BTN')
+            .setInteractive()
+            .on('pointerup', () => {
+                this.print.text += `Click item ${i}\n`
+            })
+        return this.add.container()
+            .setSize(width, 60)
+            .add([
+                background,
+                text,
+                button
+            ])
+    }
 
+}
 
 export default SampleScene;
