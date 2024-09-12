@@ -54,7 +54,8 @@ export class Preloader extends Scene {
         this.registerAnimations();
 
         //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start('MainMenu');
+        // todo: revert to "MainMenu"
+        this.scene.start('SampleScene');
     }
 
     private registerAnimations() {
@@ -65,16 +66,16 @@ export class Preloader extends Scene {
             frameRate: 5,  // Animation speed
             repeat: -1      // Repeat indefinitely
         });
-        
-        // Define the portal animation 
+
+        // Define the portal animation
         this.anims.create({
             key: 'portal-disabled',
             frames: this.anims.generateFrameNumbers('portal', {start: 0, end: 1}),
             frameRate: 1,  // Animation speed
         });
 
-        
-        // Define the portal animation 
+
+        // Define the portal animation
         this.anims.create({
             key: 'portal-idle',
             frames: this.anims.generateFrameNumbers('portal', {frames: getPingPongAnimationFrames(0, 43, 2)}),
@@ -82,7 +83,7 @@ export class Preloader extends Scene {
             repeat: -1      // Repeat indefinitely
         });
 
-        // Define the portal animation 
+        // Define the portal animation
         this.anims.create({
             key: 'portal-activate',
             frames: this.anims.generateFrameNumbers('portal', {start: 43, end: 59}),
@@ -90,13 +91,13 @@ export class Preloader extends Scene {
             repeat: 0,
         });
 
-        // Define the portal animation 
+        // Define the portal animation
         this.anims.create({
             key: 'portal-deactivate',
             frames: this.anims.generateFrameNumbers('portal', {start: 59, end: 43}),
             frameRate: 10,  // Animation speed
         });
-        
+
         // Define the running animation
         this.anims.create({
             key: 'run',
