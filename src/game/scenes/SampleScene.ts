@@ -11,6 +11,7 @@ class SampleScene extends Phaser.Scene {
     }
 
     create() {
+        this.loadStoredSettingsValues();
         this.rexUI.add.scrollablePanel({
             x: this.scene.scene.scale.width / 2,
             y: this.scene.scene.scale.height / 2,
@@ -91,7 +92,7 @@ class SampleScene extends Phaser.Scene {
             .setInteractive();
 
         checkbox.on('pointerdown', () => update(checkbox));
-        const text = this.add.text(0, 0, 'Debug Mode').setInteractive().on('pointerup', () => update(checkbox));
+        const text = this.add.text(40, -5, 'Debug Mode').setInteractive().on('pointerup', () => update(checkbox));
         // Toggle debug mode when clicking the checkbox
         const width = this.scale.width - 200;
         const background = this.rexUI.add.roundRectangle({
@@ -119,6 +120,11 @@ class SampleScene extends Phaser.Scene {
         localStorage.setItem('autoAttack', this.autoAttack.toString());
         // You can also update global game variables if necessary, for example:
         this.game.registry.set('autoAttack', this.autoAttack.toString());
+    }
+
+    private loadStoredSettingsValues() {
+        this.debugMode = this.game.registry.get('debugMode') == 'true';
+        this.autoAttack = this.game.registry.get('autoAttack') == 'true';
     }
 }
 
