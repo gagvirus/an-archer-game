@@ -1,6 +1,7 @@
 import {EventBus} from '../EventBus';
 import {Scene} from 'phaser';
 import {createCenteredText} from "../helpers/text-helpers.ts";
+import {COLOR_DANGER} from '../helpers/colors.ts';
 
 export class GameOver extends Scene {
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -13,7 +14,7 @@ export class GameOver extends Scene {
 
     create() {
         this.camera = this.cameras.main
-        this.camera.setBackgroundColor(0xff0000);
+        this.camera.setBackgroundColor(COLOR_DANGER);
 
         this.gameOverText = createCenteredText(this, 'Game Over', -100, 48, false);
         this.mainMenuText = createCenteredText(this, 'Main Menu', 0, 32, true);

@@ -1,8 +1,5 @@
 import {GameObjects} from 'phaser';
-
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
+import {COLOR_DARK, COLOR_LIGHT, COLOR_PRIMARY} from '../helpers/colors.ts';
 
 class SampleScene extends Phaser.Scene {
     print: GameObjects.Text;
@@ -21,6 +18,7 @@ class SampleScene extends Phaser.Scene {
             scrollMode: 'y',
             background: this.rexUI.add.roundRectangle({
                 strokeColor: COLOR_LIGHT,
+                color: COLOR_PRIMARY,
                 radius: 10
             }),
 

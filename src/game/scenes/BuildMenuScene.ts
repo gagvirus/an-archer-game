@@ -4,6 +4,7 @@ import {dampPosition, getTileCoordinate, TILE_SIZE, tileCoordinateToPosition} fr
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {COLOR_DANGER, COLOR_WHITE} from '../helpers/colors.ts';
 
 class BuildMenuScene extends Scene {
     pendingBuildings: Tower[][];
@@ -33,7 +34,7 @@ class BuildMenuScene extends Scene {
         this.disallowedTiles.forEach((value, posX) => {
             value.forEach((_, posY) => {
                 const {x, y} = tileCoordinateToPosition({x: posX, y: posY});
-                this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0xff0000).setAlpha(0.5);
+                this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, COLOR_DANGER).setAlpha(0.5);
             })
         })
         // Listener for pointer (mouse/touch) inputs
@@ -96,7 +97,7 @@ class BuildMenuScene extends Scene {
     private drawGrid() {
         for (let x = 0; x <= this.scale.width; x += TILE_SIZE) {
             for (let y = 0; y <= this.scale.height; y += TILE_SIZE) {
-                this.add.rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE).setStrokeStyle(1, 0xffffff);
+                this.add.rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE).setStrokeStyle(1, COLOR_WHITE);
             }
         }
     }

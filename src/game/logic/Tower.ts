@@ -3,6 +3,7 @@ import Rectangle = Phaser.GameObjects.Rectangle;
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {TILE_SIZE} from "../helpers/position-helper.ts";
+import {COLOR_WARNING} from '../helpers/colors.ts';
 
 export class Tower extends Phaser.Physics.Arcade.Sprite {
     outline?: Rectangle;
@@ -10,7 +11,7 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Scene, x: number, y: number) {
         super(scene, x, y, 'towers', 0);
         scene.add.existing(this);
-        this.outline = scene.add.rectangle(this.x, this.y, this.width, this.height, 0xffff00, 0.3);
+        this.outline = scene.add.rectangle(this.x, this.y, this.width, this.height, COLOR_WARNING, 0.3);
         this.outline.setVisible(isDebugMode(scene.game));
     }
 
@@ -23,18 +24,18 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
         this.outline?.setScale(this.scale);
         return this;
     }
-    
+
     setVisible(value: boolean): this {
         super.setVisible(value);
         this.outline?.setVisible(value);
         return this;
     }
-    
+
     destroy(fromScene?: boolean) {
         super.destroy(fromScene);
         this.outline?.destroy();
     }
-    
+
     clone(scene?: Scene)
     {
         const clone = new Tower(scene ?? this.scene, this.x, this.y);

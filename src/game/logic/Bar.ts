@@ -1,4 +1,5 @@
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {COLOR_DANGER, COLOR_SUCCESS} from '../helpers/colors.ts';
 
 abstract class Bar {
     scene: Phaser.Scene;
@@ -20,8 +21,8 @@ abstract class Bar {
         this.maxValue = maxValue;
         this.currentValue = currentValue;
         this.positionOffset = positionOffset ?? {x: 0, y: 0};
-        this.filledColor = filledColor ?? 0x00ff00;
-        this.emptyColor = emptyColor ?? 0xff0000;
+        this.filledColor = filledColor ?? COLOR_SUCCESS;
+        this.emptyColor = emptyColor ?? COLOR_DANGER;
         this.bar = this.scene.add.graphics();
         this.draw();
     }

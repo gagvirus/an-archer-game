@@ -1,5 +1,6 @@
 import {GameObjects} from "phaser";
 import {createCenteredText} from "../helpers/text-helpers.ts";
+import {COLOR_DANGER, COLOR_SUCCESS} from '../helpers/colors.ts';
 
 class SettingsScene extends Phaser.Scene {
     private debugMode: boolean = false;
@@ -28,13 +29,13 @@ class SettingsScene extends Phaser.Scene {
         createCenteredText(this, 'Auto-Attack', 50, 32, true, () => this.updateAutoAttack());
 
         // Create checkbox (simply represented by a rectangle for now)
-        this.debugModeCheckbox = this.add.rectangle(this.scale.width / 2 + 150, this.scale.height / 2, 20, 20, this.debugMode ? 0x00ff00 : 0xff0000)
+        this.debugModeCheckbox = this.add.rectangle(this.scale.width / 2 + 150, this.scale.height / 2, 20, 20, this.debugMode ? COLOR_SUCCESS : COLOR_DANGER)
             .setInteractive().setOrigin(0.5);
         // Toggle debug mode when clicking the checkbox
         this.debugModeCheckbox.on('pointerdown', () => this.updateDebugMode());
 
         // Create checkbox (simply represented by a rectangle for now)
-        this.autoAttackCheckbox = this.add.rectangle(this.scale.width / 2 + 150, this.scale.height / 2 + 50, 20, 20, this.autoAttack ? 0x00ff00 : 0xff0000)
+        this.autoAttackCheckbox = this.add.rectangle(this.scale.width / 2 + 150, this.scale.height / 2 + 50, 20, 20, this.autoAttack ? COLOR_SUCCESS : COLOR_DANGER)
             .setInteractive().setOrigin(0.5);
         // Toggle debug mode when clicking the checkbox
         this.autoAttackCheckbox.on('pointerdown', () => this.updateAutoAttack());
@@ -47,7 +48,7 @@ class SettingsScene extends Phaser.Scene {
 
     updateDebugMode() {
         this.debugMode = !this.debugMode;
-        this.debugModeCheckbox.setFillStyle(this.debugMode ? 0x00ff00 : 0xff0000);
+        this.debugModeCheckbox.setFillStyle(this.debugMode ? COLOR_SUCCESS : COLOR_DANGER);
         // Persist the setting to localStorage
         localStorage.setItem('debugMode', this.debugMode.toString());
         // You can also update global game variables if necessary, for example:
@@ -56,7 +57,7 @@ class SettingsScene extends Phaser.Scene {
 
     updateAutoAttack() {
         this.autoAttack = !this.autoAttack;
-        this.autoAttackCheckbox.setFillStyle(this.autoAttack ? 0x00ff00 : 0xff0000);
+        this.autoAttackCheckbox.setFillStyle(this.autoAttack ? COLOR_SUCCESS : COLOR_DANGER);
         // Persist the setting to localStorage
         localStorage.setItem('autoAttack', this.autoAttack.toString());
         // You can also update global game variables if necessary, for example:

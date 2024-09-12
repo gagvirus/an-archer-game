@@ -1,3 +1,5 @@
+import {COLOR_DANGER, COLOR_WARNING} from '../helpers/colors.ts';
+
 export interface EnemyDef {
     name: string;
     maxHealth: number;
@@ -43,7 +45,7 @@ export const enemies: EnemyDef[] = [
         maxLevel: 50,
         scale: 1.3,
         weight: 3,
-        tint: 0xffff00,
+        tint: COLOR_WARNING,
     },
     {
         maxHealth: 100,
@@ -58,7 +60,7 @@ export const enemies: EnemyDef[] = [
         maxLevel: 50,
         scale: 1.6,
         weight: 2,
-        tint: 0xff0000,
+        tint: COLOR_DANGER,
     },
     {
         maxHealth: 20,
@@ -87,7 +89,7 @@ export const enemies: EnemyDef[] = [
         maxLevel: 50,
         scale: 1.1,
         weight: 10,
-        tint: 0xffff00,
+        tint: COLOR_WARNING,
     },
     {
         maxHealth: 250,
@@ -102,7 +104,7 @@ export const enemies: EnemyDef[] = [
         maxLevel: 50,
         scale: 1.1,
         weight: 10,
-        tint: 0xff0000,
+        tint: COLOR_DANGER,
     },
     {
         maxHealth: 200,
@@ -131,6 +133,6 @@ export const enemies: EnemyDef[] = [
         maxLevel: 50,
         scale: 2.5,
         weight: 0.2,
-        tint: 0xff0000,
+        tint: COLOR_DANGER,
     }
 ]
