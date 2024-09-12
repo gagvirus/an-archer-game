@@ -7,7 +7,6 @@ import MainScene from './scenes/MainScene.ts';
 import {PauseMenu} from './scenes/PauseMenu.ts';
 import SettingsScene from './scenes/SettingsScene.ts';
 import BuildMenuScene from './scenes/BuildMenuScene.ts';
-import SampleScene from './scenes/SampleScene.ts';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 //  Find out more information about the Game Config at:
@@ -36,7 +35,6 @@ const config: Phaser.Types.Core.GameConfig = {
         Preloader,
         MainMenu,
         SettingsScene,
-        SampleScene,
         GameOver,
         MainScene,
         BuildMenuScene,
