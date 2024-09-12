@@ -12,9 +12,9 @@ class SampleScene extends Phaser.Scene {
         this.print = this.add.text(0, 0, '');
 
         this.rexUI.add.scrollablePanel({
-            x: 400,
-            y: 300,
-            height: 320,
+            x: this.scene.scene.scale.width / 2,
+            y: this.scene.scene.scale.height / 2,
+            height: this.scene.scene.scale.height - 100,
             scrollMode: 'y',
             background: this.rexUI.add.roundRectangle({
                 strokeColor: COLOR_LIGHT,
@@ -29,8 +29,8 @@ class SampleScene extends Phaser.Scene {
             },
 
             slider: {
-                track: this.rexUI.add.roundRectangle({width: 20, radius: 10, color: COLOR_DARK}),
-                thumb: this.rexUI.add.roundRectangle({radius: 13, color: COLOR_LIGHT})
+                track: this.rexUI.add.roundRectangle({radius: 5, color: COLOR_DARK}),
+                thumb: this.rexUI.add.roundRectangle({width: 20, height: 40, radius: 10, color: COLOR_LIGHT})
             },
 
             mouseWheelScroller: {
@@ -39,25 +39,30 @@ class SampleScene extends Phaser.Scene {
             },
 
             header: this.rexUI.add.label({
-                space: {left: 5, right: 5, top: 5, bottom: 5},
+                space: {left: 5, right: 5, top: 5, bottom: 15},
                 background: this.rexUI.add.roundRectangle({color: COLOR_PRIMARY}),
-                text: this.add.text(0, 0, 'Header', {fontSize: 20})
+                text: this.add.text(0, 0, 'Settings', {fontSize: 20}),
+                align: 'center',
             }),
 
             footer: this.rexUI.add.label({
                 space: {left: 5, right: 5, top: 5, bottom: 5},
                 background: this.rexUI.add.roundRectangle({color: COLOR_PRIMARY}),
-                text: this.add.text(0, 0, 'Footer', {fontSize: 20})
+                text: this.add.text(0, 0, 'Go Back', {fontSize: 20})
+                    .setInteractive()
+                    .on('pointerup', () => {
+                        this.scene.start('PauseMenu');
+                    })
             }),
 
             space: {
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: 20,
-                panel: 3,
-                header: 5,
-                footer: 5
+                left: 15,
+                right: 15,
+                top: 15,
+                bottom: 15,
+                panel: 15,
+                header: 15,
+                footer: 15
             }
         })
             .layout()
@@ -68,19 +73,15 @@ class SampleScene extends Phaser.Scene {
     }
 }
 
-// var CreateContent = function (linesCount) {
-//     var numbers = [];
-//     for (var i = 0; i < linesCount; i++) {
-//         numbers.push(i.toString());
-//     }
-//     return numbers.join('\n');
-// }
-
 const createRow = (scene: SampleScene, i: number) => {
+    const width = scene.scale.width - 200;
     const background = scene.rexUI.add.roundRectangle({
-        x: 0, y: 0,
-        width: 200, height: 60,
-        color: COLOR_DARK, strokeColor: COLOR_LIGHT,
+        x: 0,
+        y: 0,
+        width,
+        height: 60,
+        color: COLOR_DARK,
+        strokeColor: COLOR_LIGHT,
         radius: 10,
     });
     const text = scene.add.text(-90, -10, i.toString())
@@ -90,7 +91,7 @@ const createRow = (scene: SampleScene, i: number) => {
             scene.print.text += `Click item ${i}\n`
         })
     return scene.add.container()
-        .setSize(200, 60)
+        .setSize(width, 60)
         .add([
             background,
             text,
@@ -104,7 +105,7 @@ const createPanel = function (scene: SampleScene) {
         space: {item: 5}
     })
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 8; i++) {
         const child = createRow(scene, i);
         panel.add(child)
     }
