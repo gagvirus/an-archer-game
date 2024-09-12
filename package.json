@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "phaser": "^3.80.1",
+        "phaser3-rex-plugins": "^1.80.7",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
@@ -39,8 +40,8 @@
         "eslint": "^8.57.0",
         "eslint-plugin-react-hooks": "^4.6.2",
         "eslint-plugin-react-refresh": "^0.4.7",
-        "typescript": "^5.2.2",
         "terser": "^5.28.1",
+        "typescript": "^5.2.2",
         "vite": "^5.3.1"
     }
 }
