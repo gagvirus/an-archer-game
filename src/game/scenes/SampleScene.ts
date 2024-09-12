@@ -1,16 +1,16 @@
-import {GameObjects} from 'phaser';
-import {COLOR_DARK, COLOR_LIGHT, COLOR_PRIMARY} from '../helpers/colors.ts';
+import {COLOR_DANGER, COLOR_DARK, COLOR_LIGHT, COLOR_PRIMARY, COLOR_SUCCESS} from '../helpers/colors.ts';
+import Rectangle = Phaser.GameObjects.Rectangle;
 
 class SampleScene extends Phaser.Scene {
-    print: GameObjects.Text;
+    private debugMode: boolean = false;
+    private autoAttack: boolean = false;
+    autoAttackCheckbox: Rectangle;
 
     constructor() {
         super('SampleScene')
     }
 
     create() {
-        this.print = this.add.text(0, 0, '');
-
         this.rexUI.add.scrollablePanel({
             x: this.scene.scene.scale.width / 2,
             y: this.scene.scene.scale.height / 2,
@@ -23,7 +23,7 @@ class SampleScene extends Phaser.Scene {
             }),
 
             panel: {
-                child: this.createPanel(),
+                child: this._createPanel(),
 
                 mask: {padding: 1,},
             },
@@ -69,24 +69,30 @@ class SampleScene extends Phaser.Scene {
 
     }
 
-    update() {
-    }
+    _createPanel() {
+        const panel = this.rexUI.add.sizer({orientation: 'y', space: {item: 5}})
 
-    createPanel() {
-        const panel = this.rexUI.add.sizer({
-            orientation: 'y',
-            space: {item: 5}
-        })
-
-        for (let i = 0; i < 8; i++) {
-            const child = this.createRow(i);
-            panel.add(child)
-        }
+        panel.add(this._createDebugModeCheckbox());
+        // panel.add(this._createAutoAttackCheckbox());
 
         return panel;
     }
 
-    createRow = (i: number) => {
+    private _createDebugModeCheckbox() {
+        const update = (cb: Rectangle) => {
+            this.debugMode = !this.debugMode;
+            cb.setFillStyle(this.debugMode ? COLOR_SUCCESS : COLOR_DANGER);
+            // Persist the setting to localStorage
+            localStorage.setItem('debugMode', this.debugMode.toString());
+            // You can also update global game variables if necessary, for example:
+            this.game.registry.set('debugMode', this.debugMode.toString());
+        }
+        const checkbox: Rectangle = this.add.rectangle(0, 0, 20, 20, this.debugMode ? COLOR_SUCCESS : COLOR_DANGER)
+            .setInteractive();
+
+        checkbox.on('pointerdown', () => update(checkbox));
+        const text = this.add.text(0, 0, 'Debug Mode').setInteractive().on('pointerup', () => update(checkbox));
+        // Toggle debug mode when clicking the checkbox
         const width = this.scale.width - 200;
         const background = this.rexUI.add.roundRectangle({
             x: 0,
@@ -97,21 +103,23 @@ class SampleScene extends Phaser.Scene {
             strokeColor: COLOR_LIGHT,
             radius: 10,
         });
-        const text = this.add.text(-90, -10, i.toString())
-        const button = this.add.text(65, -10, 'BTN')
-            .setInteractive()
-            .on('pointerup', () => {
-                this.print.text += `Click item ${i}\n`
-            })
         return this.add.container()
             .setSize(width, 60)
             .add([
                 background,
                 text,
-                button
+                checkbox,
             ])
     }
 
+    updateAutoAttack() {
+        this.autoAttack = !this.autoAttack;
+        this.autoAttackCheckbox.setFillStyle(this.autoAttack ? COLOR_SUCCESS : COLOR_DANGER);
+        // Persist the setting to localStorage
+        localStorage.setItem('autoAttack', this.autoAttack.toString());
+        // You can also update global game variables if necessary, for example:
+        this.game.registry.set('autoAttack', this.autoAttack.toString());
+    }
 }
 
 export default SampleScene;
