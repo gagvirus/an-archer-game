@@ -6,6 +6,7 @@ import MainScene from '../scenes/MainScene.ts';
 import {Attackable, XpManager} from '../helpers/gameplayer-helper.ts';
 import XpBar from './XpBar.ts';
 import {isAutoAttackEnabled} from '../helpers/registry-helper.ts';
+import StatsManager from '../helpers/stats-manager.ts';
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
@@ -14,6 +15,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
     attackable: Attackable;
     xpManager: XpManager;
+    stats: StatsManager;
     _level: number;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -51,21 +53,32 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         )
 
         this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
+
+        this.stats = new StatsManager(1, 1, 1);
     }
 
     get attackDamage() {
-        const INITIAL_ATTACK_DAMAGE = 10;
-        return INITIAL_ATTACK_DAMAGE + (INITIAL_ATTACK_DAMAGE * this._level * 0.2);
+        const BASE_DAMAGE = 10;
+        const levelModifier = BASE_DAMAGE * this._level * 0.2;
+        // each strength point adds +5% to the level-adjusted damage
+        const strengthModifier = 1 + (this.stats.strength - 1) * 0.05;
+        return (BASE_DAMAGE + levelModifier) * strengthModifier;
     }
 
     get attacksPerSecond() {
-        const INITIAL_ATTACKS_PER_SECOND = 2;
-        return INITIAL_ATTACKS_PER_SECOND + (INITIAL_ATTACKS_PER_SECOND * this._level * 0.05);
+        const BASE_ATTACKS_PER_SECOND = 2;
+        const levelModifier = (BASE_ATTACKS_PER_SECOND * this._level * 0.05);
+        // each agility point adds +5% to the level-adjusted attack speed
+        const agilityModifier = 1 + (this.stats.agility - 1) * 0.05;
+        return (BASE_ATTACKS_PER_SECOND + levelModifier) * agilityModifier;
     }
 
     get maxHealth() {
-        const INITIAL_MAX_HEALTH = 100;
-        return INITIAL_MAX_HEALTH + Math.pow(1.1, this._level - 1) * 10;
+        const BASE_MAX_HEALTH = 100;
+        const levelModifier = Math.pow(1.1, this._level - 1) * 10;
+        // each endurance point adds +10% to the level-adjusted max health
+        const enduranceModifier = 1 + (this.stats.endurance - 1) * 0.1;
+        return (BASE_MAX_HEALTH + levelModifier) * enduranceModifier;
     }
 
 
