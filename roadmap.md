@@ -1,3 +1,6 @@
+# SomeGameName
+
+## Roadmap
 - add stats ability
   - on level up player gains a stat point, which they can choose between different stats:
     -  strength + 5% damage
@@ -18,3 +21,27 @@
 - enemy walk logic
   - shall follow a target
   - implement pathfinding
+
+
+## Todo
+
+- On pause screen, resume game on "Esc" press
+- Display the current player level in game UI
+- Have a "Bestiary" in main menu (display list of enemies with their stats)
+- Have a "Stats" UI in-game (for example when clicking "C" or "S")
+- Support "ASDW" movement
+- Support GamePad
+- Add UI for changing key bindings inside settings
+- Enemy "Death" animation
+- Hero "Level Up" animation
+- Enemy "Spawn" (birth) animation
+- Floating numbers for "Damage Inflicted" and "Damage Received"
+- Add "Critical Hit" logic - critical chance + critical damage (multiplier)
+- Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the arrow arrives at destination, XP is awarded again
+- Sound effects
+  - Shoot arrow (~2 samples)
+  - Enemy hit (~2 samples)
+  - Enemy dead (~2 samples per enemy)
+  - Level up (1 sample)
+  - Player hit (~3 samples)
+  - Player dead (~2 samples )
