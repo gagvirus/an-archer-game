@@ -1,11 +1,11 @@
-import Phaser from "phaser";
-import Enemy from "./Enemy.ts";
-import Arrow from "./Arrow.ts";
-import HealthBar from "./HealthBar.ts";
-import MainScene from "../scenes/MainScene.ts";
-import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
-import XpBar from "./XpBar.ts";
-import {isAutoAttackEnabled} from "../helpers/registry-helper.ts";
+import Phaser from 'phaser';
+import Enemy from './Enemy.ts';
+import Arrow from './Arrow.ts';
+import HealthBar from './HealthBar.ts';
+import MainScene from '../scenes/MainScene.ts';
+import {Attackable, XpManager} from '../helpers/gameplayer-helper.ts';
+import XpBar from './XpBar.ts';
+import {isAutoAttackEnabled} from '../helpers/registry-helper.ts';
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
@@ -14,12 +14,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
     attackable: Attackable;
     xpManager: XpManager;
+    _level: number;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'hero');  // 'hero' is the key for the hero sprite
         scene.add.existing(this);     // Add the hero to the scene
         scene.physics.add.existing(this); // Enable physics for the hero
         this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
+        this._level = 1;
 
         // Initialize arrow group
         this.arrows = scene.add.group(); // Group to hold all arrows
@@ -34,9 +36,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
             });
         }
         this.attackable = new Attackable(
-            2, // attacks per second
-            10, // attack damage
-            100, // initial health
+            this.attacksPerSecond, // attacks per second
+            this.attackDamage, // attack damage
+            this.maxHealth, // initial health
             (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth),
             () => this.scene.scene.start('GameOver'),
             () => {
@@ -51,10 +53,27 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
     }
 
+    get attackDamage() {
+        const INITIAL_ATTACK_DAMAGE = 10;
+        return INITIAL_ATTACK_DAMAGE + (INITIAL_ATTACK_DAMAGE * this._level * 0.2);
+    }
+
+    get attacksPerSecond() {
+        const INITIAL_ATTACKS_PER_SECOND = 2;
+        return INITIAL_ATTACKS_PER_SECOND + (INITIAL_ATTACKS_PER_SECOND * this._level * 0.05);
+    }
+
+    get maxHealth() {
+        const INITIAL_MAX_HEALTH = 100;
+        return INITIAL_MAX_HEALTH + Math.pow(1.1, this._level - 1) * 10;
+    }
+
+
     onLevelUp = (newLevel: number) => {
-        this.attackable.setMaxHealth(100 + Math.pow(1.1, newLevel - 1) * 10)
-        this.attackable.attackDamage += 2;
-        this.attackable.attacksPerSecond += 0.1;
+        this._level = newLevel;
+        this.attackable.setMaxHealth(this.maxHealth)
+        this.attackable.attackDamage = this.attackDamage;
+        this.attackable.attacksPerSecond = this.attacksPerSecond;
     }
 
     initXpBar = (xpToNextLevel: number) => new XpBar(this.scene, {x: 20, y: 50}, 200, 20, xpToNextLevel)

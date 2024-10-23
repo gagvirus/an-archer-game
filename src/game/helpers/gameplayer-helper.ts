@@ -89,12 +89,13 @@ class Attackable {
             this.health = this.maxHealth;
         }
     }
-    
+
     setMaxHealth(maxHealth: number)
     {
-        console.log(maxHealth);
         this.maxHealth = maxHealth;
+        // setting current health to max
         this.health = maxHealth;
+        // updating the health bar UI
         this.healthBar.updateBar(this.health, this.maxHealth);
     }
 
