@@ -53,7 +53,7 @@ class MainScene extends Scene {
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
-        
+
         this.buildings = this.physics.add.group();
 
         // Initialize the hero in the center of the canvas
@@ -72,6 +72,11 @@ class MainScene extends Scene {
                 this.scene.pause();
                 // get disabled tiles and pass to build scene
                 this.scene.launch('BuildMenuScene', {occupiedTiles: this.getOccupiedTiles()});
+            }
+
+            if (event.key === 'c') {
+                this.scene.pause();
+                this.scene.launch('StatsScene');
             }
         });
 
@@ -97,7 +102,7 @@ class MainScene extends Scene {
                     }
                 }
             }
-            
+
         })
         return occupiedTiles;
     }

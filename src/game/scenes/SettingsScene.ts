@@ -1,4 +1,5 @@
-import {COLOR_DANGER, COLOR_DARK, COLOR_LIGHT, COLOR_PRIMARY, COLOR_SUCCESS} from '../helpers/colors.ts';
+import {COLOR_DANGER, COLOR_DARK, COLOR_LIGHT, COLOR_SUCCESS} from '../helpers/colors.ts';
+import {getScrollableUIConfig} from '../helpers/ui-helper.ts';
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -14,65 +15,12 @@ class SettingsScene extends Phaser.Scene {
 
     create() {
         this.loadStoredSettingsValues();
-        this.rexUI.add.scrollablePanel({
-            x: this.scale.width / 2,
-            y: this.scale.height / 2,
-            height: this.scale.height - 100,
-            scrollMode: 'y',
-            background: this.rexUI.add.roundRectangle({
-                strokeColor: COLOR_LIGHT,
-                color: COLOR_PRIMARY,
-                radius: 10
-            }),
-
-            panel: {
-                child: this._createPanel(),
-
-                mask: {padding: 1,},
-            },
-
-            slider: {
-                track: this.rexUI.add.roundRectangle({radius: 5, color: COLOR_DARK}),
-                thumb: this.rexUI.add.roundRectangle({width: 20, height: 40, radius: 10, color: COLOR_LIGHT})
-            },
-
-            mouseWheelScroller: {
-                focus: false,
-                speed: 0.1
-            },
-
-            header: this.rexUI.add.label({
-                space: {left: 5, right: 5, top: 5, bottom: 15},
-                background: this.rexUI.add.roundRectangle({color: COLOR_PRIMARY}),
-                text: this.add.text(0, 0, 'Settings', {fontSize: 20}),
-                align: 'center',
-            }),
-
-            footer: this.rexUI.add.label({
-                space: {left: 5, right: 5, top: 5, bottom: 5},
-                background: this.rexUI.add.roundRectangle({color: COLOR_PRIMARY}),
-                text: this.add.text(0, 0, 'Go Back', {fontSize: 20})
-                    .setInteractive()
-                    .on('pointerup', () => {
-                        this.scene.start('MainMenu');
-                    })
-            }),
-
-            space: {
-                left: 15,
-                right: 15,
-                top: 15,
-                bottom: 15,
-                panel: 15,
-                header: 15,
-                footer: 15
-            }
-        })
+        this.rexUI.add.scrollablePanel(getScrollableUIConfig(this, 'Settings'))
             .layout()
 
     }
 
-    _createPanel() {
+    createPanel() {
         const panel = this.rexUI.add.sizer({orientation: 'y', space: {item: 5}})
 
         panel.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, {x: 0, y: 0}));
@@ -90,7 +38,15 @@ class SettingsScene extends Phaser.Scene {
         const text = this.add.text(textOffset.x, textOffset.y, label).setInteractive().on('pointerup', () => this.updateBoolVal(settingKey, checkbox));
         // Toggle debug mode when clicking the checkbox
         const width = this.scale.width - 200;
-        const background = this.rexUI.add.roundRectangle({x: 0, y: 0, width, height: 60, color: COLOR_DARK, strokeColor: COLOR_LIGHT, radius: 10});
+        const background = this.rexUI.add.roundRectangle({
+            x: 0,
+            y: 0,
+            width,
+            height: 60,
+            color: COLOR_DARK,
+            strokeColor: COLOR_LIGHT,
+            radius: 10
+        });
         return this.add.container()
             .setSize(width, 60)
             .add([
