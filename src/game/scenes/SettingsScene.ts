@@ -15,9 +15,9 @@ class SettingsScene extends Phaser.Scene {
     create() {
         this.loadStoredSettingsValues();
         this.rexUI.add.scrollablePanel({
-            x: this.scene.scene.scale.width / 2,
-            y: this.scene.scene.scale.height / 2,
-            height: this.scene.scene.scale.height - 100,
+            x: this.scale.width / 2,
+            y: this.scale.height / 2,
+            height: this.scale.height - 100,
             scrollMode: 'y',
             background: this.rexUI.add.roundRectangle({
                 strokeColor: COLOR_LIGHT,
