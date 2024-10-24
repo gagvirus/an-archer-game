@@ -37,6 +37,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                 this.attackable.attack();
             });
         }
+        this.stats = new StatsManager(1, 1, 1);
         this.attackable = new Attackable(
             this.attacksPerSecond, // attacks per second
             this.attackDamage, // attack damage
@@ -53,13 +54,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         )
 
         this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
-
-        this.stats = new StatsManager(1, 1, 1);
     }
 
     get attackDamage() {
         const BASE_DAMAGE = 10;
-        const levelModifier = BASE_DAMAGE * this._level * 0.2;
+        const levelModifier = BASE_DAMAGE * (this._level - 1) * 0.2;
         // each strength point adds +5% to the level-adjusted damage
         const strengthModifier = 1 + (this.stats.strength - 1) * 0.05;
         return (BASE_DAMAGE + levelModifier) * strengthModifier;
