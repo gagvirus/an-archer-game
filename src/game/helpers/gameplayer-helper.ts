@@ -10,10 +10,10 @@ class XpManager {
     xpBar: XpBar;
     onLevelUp: (newLevel: number) => void;
 
-    constructor(initXpBar: (xpToNextLevel: number) => XpBar, onLevelUp: (newLevel: number) => void) {
+    constructor(initXpBar: (level: number, currentXp: number, xpToNextLevel: number) => XpBar, onLevelUp: (newLevel: number) => void) {
         this.level = 1;
-        this.xpBar = initXpBar(this.xpToNextLevel);
         this.xp = 0;
+        this.xpBar = initXpBar(this.level, this.xp, this.xpToNextLevel);
         this.xpBar.draw();
         this.onLevelUp = onLevelUp;
     }
@@ -30,6 +30,7 @@ class XpManager {
             this.level += 1;
             this.onLevelUp(this.level);
             this.gainXp(xpOverflow);
+            this.xpBar.level = this.level;
         }
         this.xpBar.updateBar(this.xp, this.xpToNextLevel);
     }
