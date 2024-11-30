@@ -88,7 +88,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.attackable.attacksPerSecond = this.attacksPerSecond;
     }
 
-    initXpBar = (xpToNextLevel: number) => new XpBar(this.scene, {x: 20, y: 50}, 200, 20, xpToNextLevel)
+    initXpBar = (level: number, currentXp: number, xpToNextLevel: number) => new XpBar(this.scene, {x: 20, y: 50}, 200, 20, level, currentXp, xpToNextLevel)
 
     // Method to update the hero's animation based on movement
     // @ts-expect-error we *must* receive time
