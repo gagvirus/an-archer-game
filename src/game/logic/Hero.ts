@@ -74,7 +74,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
     get maxHealth() {
         const BASE_MAX_HEALTH = 100;
-        const levelModifier = Math.pow(1.1, this._level - 1) * 10;
+        const levelModifier = Math.pow(1.1, this._level - 1) * 10 - 10;
         // each endurance point adds +10% to the level-adjusted max health
         const enduranceModifier = 1 + (this.stats.endurance - 1) * 0.1;
         return (BASE_MAX_HEALTH + levelModifier) * enduranceModifier;
