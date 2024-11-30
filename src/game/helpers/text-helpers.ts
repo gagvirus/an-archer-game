@@ -35,7 +35,7 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
 
     // Create the text at the bottom of the screen
     const animatedText = createText(scene, text, {x: screenWidth / 2, y: screenHeight}, 48)
-    
+
     // Animate the text to move up to the middle of the screen
     scene.tweens.add({
         targets: animatedText,
@@ -59,4 +59,19 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
     return animatedText;
 }
 
-export {createCenteredText, createAnimatedText, createText};
+function formatNumber(value: number) {
+    value = Math.floor(value);
+    if (value >= 1_000_000_000_000) {
+        return (value / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 't';
+    } else if (value >= 1_000_000_000) {
+        return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'b';
+    } else if (value >= 1_000_000) {
+        return (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'm';
+    } else if (value >= 1_000) {
+        return (value / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+    } else {
+        return value.toString();
+    }
+}
+
+export {createCenteredText, createAnimatedText, createText, formatNumber};
