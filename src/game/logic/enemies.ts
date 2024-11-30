@@ -130,7 +130,7 @@ export const enemies: EnemyDef[] = [
         name: "Ultra Demon",
         xpAmount: 5000,
         minLevel: 25,
-        maxLevel: 50,
+        maxLevel: Infinity,
         scale: 2.5,
         weight: 0.2,
         tint: COLOR_DANGER,
