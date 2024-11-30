@@ -27,6 +27,7 @@
 
 - ~~On pause screen, resume game on "Esc" press~~
 - ~~Display the current player level in game UI~~
+- show current / max health
 - Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Have a "Stats" UI in-game (for example when clicking "C" or "S")
 - Support "ASDW" movement
