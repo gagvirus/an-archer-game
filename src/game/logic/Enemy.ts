@@ -10,6 +10,8 @@ import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import {HEX_COLOR_WARNING} from '../helpers/colors.ts';
+import {showDamage} from '../helpers/text-helpers.ts';
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 class Enemy extends Sprite {
     attackRange: number;
@@ -53,7 +55,10 @@ class Enemy extends Sprite {
                 this.destroy();
                 scene.onEnemyKilled();
             },
-            () => this.hero.attackable.takeDamage(this.attackDamage),
+            () => {
+                this.hero.attackable.takeDamage(this.attackDamage);
+                showDamage(this.scene, this.hero as Vector2Like, this.attackDamage, false);
+            },
             this,
         )
     }
