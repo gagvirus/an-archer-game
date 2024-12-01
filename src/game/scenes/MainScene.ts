@@ -35,6 +35,11 @@ class MainScene extends Scene {
                 })
             }
         })
+        this.scene.get('StatsScene').events.on('statsUpdated', () => {
+            // todo
+            // update the health bar ui
+            // update the health regen tick
+        })
         // Listener for pointer (mouse/touch) inputs
         // this.input.on('pointerdown', (pointer: Pointer) => {
         //     console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);

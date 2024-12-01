@@ -94,5 +94,6 @@ export class StatsScene extends Scene {
         // @ts-expect-error the stat names is present on the stat manager
         this.statsManager[selectedStatGroup.prop] += 1;
         this.statsButtons[index].setText(this.getStatText(selectedStatGroup))
+        this.events.emit('statsUpdated')
     }
 }
