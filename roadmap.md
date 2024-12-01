@@ -21,6 +21,8 @@
 - enemy walk logic
   - shall follow a target
   - implement pathfinding
+- developer settings
+  - xp modifier
 
 
 ## Todo
@@ -28,8 +30,8 @@
 - ~~On pause screen, resume game on "Esc" press~~
 - ~~Display the current player level in game UI~~
 - ~~show current / max health~~
-- Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Have a "Stats" UI in-game (for example when clicking "C" or "S")
+- Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Support "ASDW" movement
 - Support GamePad
 - Add UI for changing key bindings inside settings
@@ -39,6 +41,7 @@
 - Floating numbers for "Damage Inflicted" and "Damage Received"
 - Add "Critical Hit" logic - critical chance + critical damage (multiplier)
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the arrow arrives at destination, XP is awarded again
+- Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Sound effects
   - Shoot arrow (~2 samples)
   - Enemy hit (~2 samples)
