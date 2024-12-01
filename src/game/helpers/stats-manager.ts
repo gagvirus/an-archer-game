@@ -98,7 +98,7 @@ class StatsManager {
         // regenerated every 5 seconds
         // maybe to be modified later
         // todo: if this is changed, make sure to update registerHealthRegenerationIfNecessary function also
-        return 5000;
+        return 2000;
     }
 
     static listStatsGroups(): StatGroup[] {
