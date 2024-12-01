@@ -30,18 +30,28 @@
 - ~~show current / max health~~
 - ~~Have a "Stats" UI in-game (for example when clicking "C" or "S")~~
 - ~~health regeneration logic~~
-- Floating numbers for "Damage Inflicted" and "Damage Received"
+- Floating numbers
+  - ~~for Damage Inflicted~~
+  - ~~Damage Received~~
+  - ~~xp gained~~
+  - health replenished
 - Add "Critical Hit" logic - critical chance + critical damage (multiplier)
 - log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc
 - Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Support "ASDW" movement
 - Support GamePad
 - Add UI for changing key bindings inside settings
+- settings
+  - ability to disable floating numbers
+    - perhaps granularly
 - Enemy "Death" animation
 - Hero "Level Up" animation
 - Enemy "Spawn" (birth) animation
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the arrow arrives at destination, XP is awarded again
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
+- Fix regen logic
+  - hp regen shall be paused on different scenes
+  - intervals not being cleaned properly
 - Sound effects
   - Shoot arrow (~2 samples)
   - Enemy hit (~2 samples)

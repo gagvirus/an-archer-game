@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
 import {Attackable} from "../helpers/gameplayer-helper.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {showDamage} from '../helpers/text-helpers.ts';
+import {showDamage, showGainedXp} from '../helpers/text-helpers.ts';
+import Enemy from './Enemy.ts';
+import Hero from './Hero.ts';
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
     target: Attackable;
@@ -48,8 +50,16 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
 
     // Handle what happens when the arrow hits the target
     private handleHit() {
-        this.target.takeDamage(this.owner.attackDamage, (target: Attackable) => this.owner.onKilledTarget(target));
+        this.target.takeDamage(this.owner.attackDamage, (target: Attackable) => {
+            this.owner.onKilledTarget(target)
+            // todo: check if this is hero
+            // todo:  perhaps there is a better way to do this ?
+            const baseXp = (target.owner as Enemy).xpAmount;
+            const xpGainModifier = (this.owner.owner as Hero).stats.xpGainMultiplier;
+            showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, baseXp * xpGainModifier)
+        });
         showDamage(this.scene, this.target.owner as Vector2Like, this.owner.attackDamage, false);
+
         // this.target.takeDamage(10); // Assume the Enemy class has a takeDamage method
         this.destroy();
     }

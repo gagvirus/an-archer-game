@@ -1,7 +1,7 @@
 import {GameObjects, Scene} from 'phaser';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
-import {COLOR_DANGER, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
+import {COLOR_DANGER, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
 
 const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true, color: string = COLOR_WHITE): GameObjects.Text => {
     let textConfig: TextStyle = {
@@ -122,7 +122,11 @@ const showFloatingNumber = (scene: Scene, position: Vector2Like, text: string, s
 const showDamage = (scene: Scene, position: Vector2Like, amount: number, isCritical: boolean = false) => {
     const color = isCritical ? COLOR_WARNING : COLOR_DANGER;
     const size = isCritical ? 'lg' : 'sm';
-    showFloatingNumber(scene, position, Math.floor(amount) as unknown as string, size, color);
+    showFloatingNumber(scene, position, `-${formatNumber(amount)}`, size, color);
 }
 
-export {createCenteredText, createAnimatedText, createText, formatNumber, showFloatingNumber, showDamage};
+const showGainedXp = (scene: Scene, position: Vector2Like, amount: number) => {
+    showFloatingNumber(scene, position, `+ ${formatNumber(amount)} XP`, 'xs', COLOR_SUCCESS);
+}
+
+export {createCenteredText, createAnimatedText, createText, formatNumber, showFloatingNumber, showDamage, showGainedXp};
