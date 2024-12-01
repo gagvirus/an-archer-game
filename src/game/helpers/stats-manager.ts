@@ -70,6 +70,11 @@ class StatsManager {
         return this.thoughtfulness;
     }
 
+    get xpGainMultiplier()
+    {
+        return Math.pow(1.05, this.intelligence - 1);
+    }
+
     static listStatsGroups(): StatGroup[] {
         return [
             {
