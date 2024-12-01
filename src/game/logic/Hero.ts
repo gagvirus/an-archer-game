@@ -93,7 +93,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         if (this._level % 50 < 1)
         {
             // on level 50, 150.. grant 20 points
-            return 20;
+            return 25;
         }
         if (this._level % 25 < 1)
         {
