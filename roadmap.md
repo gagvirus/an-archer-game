@@ -1,10 +1,10 @@
 ## Roadmap
-- add stats ability
-  - on level up player gains a stat point, which they can choose between different stats:
-    -  strength + 5% damage
-    -  agility + 5% attack damage
-    -  vitality + 5% health
-    -  intelligence + 5% extra xp
+- ~~add stats ability~~
+  - ~~on level up player gains a stat point, which they can choose between different stats:~~
+    -  ~~strength + 5% damage~~
+    -  ~~agility + 5% attack damage~~
+    -  ~~vitality + 5% health~~
+    -  ~~intelligence + 5% extra xp~~
 - active skills
 - add score
   - on enemy kill add some score
@@ -29,6 +29,10 @@
 - ~~Display the current player level in game UI~~
 - ~~show current / max health~~
 - ~~Have a "Stats" UI in-game (for example when clicking "C" or "S")~~
+- health regeneration logic
+- Floating numbers for "Damage Inflicted" and "Damage Received"
+- Add "Critical Hit" logic - critical chance + critical damage (multiplier)
+- log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc
 - Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Support "ASDW" movement
 - Support GamePad
@@ -36,8 +40,6 @@
 - Enemy "Death" animation
 - Hero "Level Up" animation
 - Enemy "Spawn" (birth) animation
-- Floating numbers for "Damage Inflicted" and "Damage Received"
-- Add "Critical Hit" logic - critical chance + critical damage (multiplier)
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the arrow arrives at destination, XP is awarded again
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Sound effects
