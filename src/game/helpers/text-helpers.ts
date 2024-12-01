@@ -1,15 +1,22 @@
-import {GameObjects, Scene} from "phaser";
+import {GameObjects, Scene} from 'phaser';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
 
-const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32): GameObjects.Text => {
-    return scene.add.text(position.x, position.y, text, {
+const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true): GameObjects.Text => {
+    let textConfig: TextStyle = {
         fontFamily: 'Arial Black',
         fontSize,
         color: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 8,
-        align: 'center',
-    }).setOrigin(0.5).setDepth(100)
+        align,
+    };
+    if (defaultStroke) {
+        textConfig = {
+            ...textConfig,
+            stroke: '#000000',
+            strokeThickness: Math.floor(fontSize / 4)
+        }
+    }
+    return scene.add.text(position.x, position.y, text, textConfig).setOrigin(0.5).setDepth(100)
 }
 
 const createCenteredText = (scene: Scene, text: string, verticalOffset: number = 0, fontSize: number = 32, isInteractive: boolean = false, onClick?: () => void) => {
@@ -20,8 +27,7 @@ const createCenteredText = (scene: Scene, text: string, verticalOffset: number =
 
     if (isInteractive) {
         textObject.setInteractive();
-        if (onClick)
-        {
+        if (onClick) {
             textObject.on('pointerdown', onClick);
         }
     }
