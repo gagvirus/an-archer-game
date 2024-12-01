@@ -91,7 +91,7 @@ class StatsManager {
 
     get healthRegenPerInterval() {
         // each endurance point adds +((1.2^level) - 1) health regenerated per second
-        return Math.pow(1.2, this.endurance / 2) - 1
+        return Math.pow(1.2, this.endurance) - 1
     }
 
     get healthRegenerationInterval() {
