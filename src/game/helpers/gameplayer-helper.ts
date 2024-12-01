@@ -107,7 +107,6 @@ class Attackable {
                 const xpAmount: number = target.owner.xpAmount as number;
                 let xpGainMultiplier = 1;
                 if ("stats" in this.owner) {
-                    (this.owner.stats as StatsManager)
                     xpGainMultiplier = Math.pow(1.05, (this.owner.stats as StatsManager).intelligence - 1);
                 }
 
