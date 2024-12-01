@@ -25,49 +25,67 @@ class StatsManager {
         this.unallocatedStats = unallocatedStats;
     }
 
-    get dexterity() {
+    protected get dexterity() {
         // affects Attack speed
         return this.finesse;
     }
 
-    get agility() {
+    protected get agility() {
         // affects Evade chance
         return this.finesse;
     }
 
-    get perception() {
+    protected get perception() {
         // affects Critical chance / Critical damage
         return this.awareness;
     }
 
-    get strength() {
+    protected get strength() {
         // affects Attack damage
         return this.awareness;
     }
 
-    get fortitude() {
+    protected get fortitude() {
         // affects armor rating
         return this.resilience;
     }
 
-    get endurance() {
+    protected get endurance() {
         // affects Max Health / Health Regen
         return this.resilience;
     }
 
-    get intelligence() {
+    protected get intelligence() {
         // affects XP Gain
         return this.thoughtfulness;
     }
 
-    get charisma() {
+    protected get charisma() {
         // affects Bartering
         return this.thoughtfulness;
     }
 
-    get luck() {
+    protected get luck() {
         // affects Coin Gain
         return this.thoughtfulness;
+    }
+
+    get damageMultiplier()
+    {
+        // each strength point adds +5% to the level-adjusted damage
+        return 1 + (this.strength - 1) * 0.05;
+    }
+
+    get attackSpeedMultiplier()
+    {
+        // each agility point adds +5% to the level-adjusted attack speed
+        return 1 + (this.agility - 1) * 0.05;
+    }
+
+    get maxHealthMultiplier()
+    {
+        // each endurance point adds +10% to the level-adjusted max health
+        return 1 + (this.endurance - 1) * 0.1
     }
 
     get xpGainMultiplier()

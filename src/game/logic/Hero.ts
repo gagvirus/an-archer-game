@@ -59,25 +59,19 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     get attackDamage() {
         const BASE_DAMAGE = 10;
         const levelModifier = BASE_DAMAGE * (this._level - 1) * 0.2;
-        // each strength point adds +5% to the level-adjusted damage
-        const strengthModifier = 1 + (this.stats.strength - 1) * 0.05;
-        return (BASE_DAMAGE + levelModifier) * strengthModifier;
+        return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier;
     }
 
     get attacksPerSecond() {
         const BASE_ATTACKS_PER_SECOND = 2;
         const levelModifier = (BASE_ATTACKS_PER_SECOND * this._level * 0.05);
-        // each agility point adds +5% to the level-adjusted attack speed
-        const agilityModifier = 1 + (this.stats.agility - 1) * 0.05;
-        return (BASE_ATTACKS_PER_SECOND + levelModifier) * agilityModifier;
+        return (BASE_ATTACKS_PER_SECOND + levelModifier) * this.stats.attackSpeedMultiplier;
     }
 
     get maxHealth() {
         const BASE_MAX_HEALTH = 100;
         const levelModifier = Math.pow(1.1, this._level - 1) * 10 - 10;
-        // each endurance point adds +10% to the level-adjusted max health
-        const enduranceModifier = 1 + (this.stats.endurance - 1) * 0.1;
-        return (BASE_MAX_HEALTH + levelModifier) * enduranceModifier;
+        return (BASE_MAX_HEALTH + levelModifier) * this.stats.maxHealthMultiplier;
     }
 
 
