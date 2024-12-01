@@ -15,12 +15,14 @@ class StatsManager {
     awareness: number;
     resilience: number;
     thoughtfulness: number;
+    unallocatedStats: number;
 
-    constructor(finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1) {
+    constructor(finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1, unallocatedStats: number = 0) {
         this.finesse = finesse;
         this.awareness = awareness;
         this.resilience = resilience;
         this.thoughtfulness = thoughtfulness;
+        this.unallocatedStats = unallocatedStats;
     }
 
     get dexterity() {
