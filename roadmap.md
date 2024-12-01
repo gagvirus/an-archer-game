@@ -29,7 +29,7 @@
 - ~~Display the current player level in game UI~~
 - ~~show current / max health~~
 - ~~Have a "Stats" UI in-game (for example when clicking "C" or "S")~~
-- health regeneration logic
+- ~~health regeneration logic~~
 - Floating numbers for "Damage Inflicted" and "Damage Received"
 - Add "Critical Hit" logic - critical chance + critical damage (multiplier)
 - log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc
