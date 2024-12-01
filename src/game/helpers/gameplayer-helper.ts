@@ -1,6 +1,7 @@
 import HealthBar from "../logic/HealthBar.ts";
 import XpBar from "../logic/XpBar.ts";
 import GameObject = Phaser.GameObjects.GameObject;
+import StatsManager from './stats-manager.ts';
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -103,7 +104,14 @@ class Attackable {
     onKilledTarget(target: Attackable) {
         if ("xpManager" in this.owner) {
             if ("xpAmount" in target.owner) {
-                (this.owner.xpManager as XpManager).gainXp(target.owner.xpAmount as number);
+                const xpAmount: number = target.owner.xpAmount as number;
+                let xpGainMultiplier = 1;
+                if ("stats" in this.owner) {
+                    (this.owner.stats as StatsManager)
+                    xpGainMultiplier = Math.pow(1.05, (this.owner.stats as StatsManager).intelligence - 1);
+                }
+
+                (this.owner.xpManager as XpManager).gainXp(xpAmount * xpGainMultiplier);
             }
         }
     }
