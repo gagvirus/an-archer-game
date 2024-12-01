@@ -1,7 +1,7 @@
 import {GameObjects, Scene} from 'phaser';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
-import {COLOR_DANGER, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
+import {COLOR_DANGER, COLOR_LIGHT, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
 
 const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true, color: string = COLOR_WHITE): GameObjects.Text => {
     let textConfig: TextStyle = {
@@ -67,7 +67,7 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
 }
 
 function formatNumber(value: number) {
-    value = Math.floor(value);
+    value = Math.round(value);
     if (value >= 1_000_000_000_000) {
         return (value / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 't';
     } else if (value >= 1_000_000_000) {
@@ -129,4 +129,8 @@ const showGainedXp = (scene: Scene, position: Vector2Like, amount: number) => {
     showFloatingNumber(scene, position, `+ ${formatNumber(amount)} XP`, 'xs', COLOR_SUCCESS);
 }
 
-export {createCenteredText, createAnimatedText, createText, formatNumber, showFloatingNumber, showDamage, showGainedXp};
+const showReplenishedHealth = (scene: Scene, position: Vector2Like, amount: number) => {
+    showFloatingNumber(scene, position, `+ ${formatNumber(amount)} HP`, 'sm', COLOR_LIGHT);
+}
+
+export {createCenteredText, createAnimatedText, createText, formatNumber, showFloatingNumber, showDamage, showGainedXp, showReplenishedHealth};

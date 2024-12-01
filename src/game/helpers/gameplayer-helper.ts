@@ -2,6 +2,9 @@ import HealthBar from '../logic/HealthBar.ts';
 import XpBar from '../logic/XpBar.ts';
 import StatsManager from './stats-manager.ts';
 import Sprite = Phaser.GameObjects.Sprite;
+import {Scene} from 'phaser';
+import {showReplenishedHealth} from './text-helpers.ts';
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -38,6 +41,7 @@ class XpManager {
 }
 
 class Attackable {
+    scene: Scene;
     attackCooldown: number = 0;
     attacksPerSecond: number = 1;
     attackDamage: number = 1;
@@ -49,7 +53,8 @@ class Attackable {
     onAttack: () => void;
     regenerationInterval: number;
 
-    constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void, owner: Sprite) {
+    constructor(scene: Scene, attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void, owner: Sprite) {
+        this.scene = scene;
         this.attackCooldown = 0;
         this.attacksPerSecond = attacksPerSecond;
         this.attackDamage = attackDamage;
@@ -83,14 +88,16 @@ class Attackable {
             this.onDeath();
             onDeath && onDeath(this);
         }
-        console.log(`receive damage ${damage}`)
-        console.log(`health is ${this.health}`);
         this.healthBar.updateBar(this.health);
     }
 
     replenishHealth(amount: number) {
-        if (amount > 0) {
-            console.log('replenishing health', {amount})
+        if (amount > 1) {
+            if (this.scene) {
+                if (this.health < this.maxHealth) {
+                    showReplenishedHealth(this.scene, this.owner as Vector2Like, amount)
+                }
+            }
             this.health += amount;
             if (this.health > this.maxHealth) {
                 this.health = this.maxHealth;

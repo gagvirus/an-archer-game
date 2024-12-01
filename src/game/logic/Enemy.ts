@@ -47,6 +47,7 @@ class Enemy extends Sprite {
         this.anims.play(`${this.type}_walk`)
 
         this.attackable = new Attackable(
+            this.scene,
             this.attacksPerSecond,
             this.attackDamage,
             this.maxHealth,
