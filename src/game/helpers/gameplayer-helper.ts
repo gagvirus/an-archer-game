@@ -1,7 +1,7 @@
 import HealthBar from '../logic/HealthBar.ts';
 import XpBar from '../logic/XpBar.ts';
 import StatsManager from './stats-manager.ts';
-import GameObject = Phaser.GameObjects.GameObject;
+import Sprite = Phaser.GameObjects.Sprite;
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -44,12 +44,12 @@ class Attackable {
     health: number = 100;
     maxHealth: number = 100;
     healthBar: HealthBar;
-    owner: GameObject;
+    owner: Sprite;
     onDeath: () => void;
     onAttack: () => void;
     regenerationInterval: number;
 
-    constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void, owner: GameObject) {
+    constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void, owner: Sprite) {
         this.attackCooldown = 0;
         this.attacksPerSecond = attacksPerSecond;
         this.attackDamage = attackDamage;

@@ -1,12 +1,13 @@
 import {GameObjects, Scene} from 'phaser';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
+import {COLOR_DANGER, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
 
-const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true): GameObjects.Text => {
+const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true, color: string = COLOR_WHITE): GameObjects.Text => {
     let textConfig: TextStyle = {
         fontFamily: 'Arial Black',
+        color,
         fontSize,
-        color: '#ffffff',
         align,
     };
     if (defaultStroke) {
@@ -80,4 +81,48 @@ function formatNumber(value: number) {
     }
 }
 
-export {createCenteredText, createAnimatedText, createText, formatNumber};
+/**
+ * Displays a floating number at a given position with animation.
+ * @param {Scene} scene - the game scene
+ * @param {Vector2Like} position - Position to create the text
+ * @param {string} text - Text to display.
+ * @param {string} size - Size of the text
+ * @param {'md' | 'lg' | 'xl' | 'sm' | 'sx'} color - Color of the text
+ */
+const showFloatingNumber = (scene: Scene, position: Vector2Like, text: string, size: 'md' | 'lg' | 'xl' | 'sm' | 'xs' = 'md', color: string = COLOR_WHITE) => {
+    let fontSize = 16;
+    switch (size) {
+        case 'xs':
+            fontSize = 8;
+            break;
+        case 'sm':
+            fontSize = 12;
+            break;
+        case 'lg':
+            fontSize = 18;
+            break;
+        case 'xl':
+            fontSize = 24;
+            break;
+    }
+    const floatingText = createText(scene, text, position, fontSize, 'center', false, color);
+
+    scene.tweens.add({
+        targets: floatingText,
+        y: position.y - 50, // Move up by 50 pixels
+        alpha: 0, // Fade out
+        duration: 1000, // 1 second
+        ease: 'Power1',
+        onComplete: () => {
+            floatingText.destroy(); // Remove the text after the animation completes
+        }
+    });
+}
+
+const showDamage = (scene: Scene, position: Vector2Like, amount: number, isCritical: boolean = false) => {
+    const color = isCritical ? COLOR_WARNING : COLOR_DANGER;
+    const size = isCritical ? 'lg' : 'sm';
+    showFloatingNumber(scene, position, Math.floor(amount) as unknown as string, size, color);
+}
+
+export {createCenteredText, createAnimatedText, createText, formatNumber, showFloatingNumber, showDamage};

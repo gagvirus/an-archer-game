@@ -1,6 +1,6 @@
 import {Scene} from 'phaser';
 import {getPingPongAnimationFrames} from "../helpers/anims-helper.ts";
-import {COLOR_WHITE} from '../helpers/colors.ts';
+import {HEX_COLOR_WHITE} from '../helpers/colors.ts';
 
 export class Preloader extends Scene {
     constructor() {
@@ -13,10 +13,10 @@ export class Preloader extends Scene {
         //  We loaded this image in our Boot Scene, so we can display it here
 
         //  A simple progress bar. This is the outline of the bar.
-        this.add.rectangle(x, y, 468, 32).setStrokeStyle(1, COLOR_WHITE);
+        this.add.rectangle(x, y, 468, 32).setStrokeStyle(1, HEX_COLOR_WHITE);
 
         //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-        const bar = this.add.rectangle(x - 230, y, 4, 28, COLOR_WHITE);
+        const bar = this.add.rectangle(x - 230, y, 4, 28, HEX_COLOR_WHITE);
 
         //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress: number) => {

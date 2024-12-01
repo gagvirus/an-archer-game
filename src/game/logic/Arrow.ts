@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import {Attackable} from "../helpers/gameplayer-helper.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {showDamage} from '../helpers/text-helpers.ts';
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
     target: Attackable;
@@ -48,6 +49,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     // Handle what happens when the arrow hits the target
     private handleHit() {
         this.target.takeDamage(this.owner.attackDamage, (target: Attackable) => this.owner.onKilledTarget(target));
+        showDamage(this.scene, this.target.owner as Vector2Like, this.owner.attackDamage, false);
         // this.target.takeDamage(10); // Assume the Enemy class has a takeDamage method
         this.destroy();
     }

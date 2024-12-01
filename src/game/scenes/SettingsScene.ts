@@ -1,4 +1,4 @@
-import {COLOR_DANGER, COLOR_DARK, COLOR_LIGHT, COLOR_SUCCESS} from '../helpers/colors.ts';
+import {HEX_COLOR_DANGER, HEX_COLOR_DARK, HEX_COLOR_LIGHT, HEX_COLOR_SUCCESS} from '../helpers/colors.ts';
 import {getScrollableUIConfig} from '../helpers/ui-helper.ts';
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
@@ -31,7 +31,7 @@ class SettingsScene extends Phaser.Scene {
     }
 
     private addSettingsRow(settingKey: SettingKey, label: string, textOffset: Vector2Like, checkboxOffset: Vector2Like) {
-        const checkbox: Rectangle = this.add.rectangle(checkboxOffset.x, checkboxOffset.y, 20, 20, this[settingKey] ? COLOR_SUCCESS : COLOR_DANGER)
+        const checkbox: Rectangle = this.add.rectangle(checkboxOffset.x, checkboxOffset.y, 20, 20, this[settingKey] ? HEX_COLOR_SUCCESS : HEX_COLOR_DANGER)
             .setInteractive();
 
         checkbox.on('pointerdown', () => this.updateBoolVal(settingKey, checkbox));
@@ -43,8 +43,8 @@ class SettingsScene extends Phaser.Scene {
             y: 0,
             width,
             height: 60,
-            color: COLOR_DARK,
-            strokeColor: COLOR_LIGHT,
+            color: HEX_COLOR_DARK,
+            strokeColor: HEX_COLOR_LIGHT,
             radius: 10
         });
         return this.add.container()
@@ -58,7 +58,7 @@ class SettingsScene extends Phaser.Scene {
 
     updateBoolVal(settingKey: SettingKey, cb: Rectangle) {
         this[settingKey] = !this[settingKey];
-        cb.setFillStyle(this[settingKey] ? COLOR_SUCCESS : COLOR_DANGER);
+        cb.setFillStyle(this[settingKey] ? HEX_COLOR_SUCCESS : HEX_COLOR_DANGER);
         // Persist the setting to localStorage
         localStorage.setItem(settingKey, this[settingKey].toString());
         // You can also update global game variables if necessary, for example:
