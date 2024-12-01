@@ -47,6 +47,7 @@ class Attackable {
     owner: GameObject;
     onDeath: () => void;
     onAttack: () => void;
+    regenerationInterval: number;
 
     constructor(attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void, owner: GameObject) {
         this.attackCooldown = 0;
@@ -88,14 +89,13 @@ class Attackable {
     }
 
     replenishHealth(amount: number) {
-        // todo: make sure that replenishing correct hp regen amount after level up / stat select
-        // todo: make sure to update the hp bar ui after level up / stat select
         if (amount > 0) {
             console.log('replenishing health', {amount})
             this.health += amount;
             if (this.health > this.maxHealth) {
                 this.health = this.maxHealth;
             }
+            this.healthBar.updateBar(this.health, this.maxHealth);
         }
     }
 
@@ -126,11 +126,14 @@ class Attackable {
         }
     }
 
-    private registerHealthRegenerationIfNecessary() {
+    registerHealthRegenerationIfNecessary() {
         if ('stats' in this.owner) {
+            if (this.regenerationInterval) {
+                clearInterval(this.regenerationInterval);
+            }
             const statsManager = this.owner.stats as StatsManager;
             if (statsManager.healthRegenerationInterval > 0) {
-                setInterval(() => {
+                this.regenerationInterval = setInterval(() => {
                     this.replenishHealth(statsManager.healthRegenPerInterval)
                 }, statsManager.healthRegenerationInterval);
             }

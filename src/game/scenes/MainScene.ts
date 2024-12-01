@@ -36,7 +36,8 @@ class MainScene extends Scene {
             }
         })
         this.scene.get('StatsScene').events.on('statsUpdated', () => {
-            // todo
+            this.hero.attackable.registerHealthRegenerationIfNecessary()
+            this.hero.attackable.setMaxHealth(this.hero.maxHealth);
             // update the health bar ui
             // update the health regen tick
         })
