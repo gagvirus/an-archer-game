@@ -1,5 +1,3 @@
-# SomeGameName
-
 ## Roadmap
 - add stats ability
   - on level up player gains a stat point, which they can choose between different stats:
