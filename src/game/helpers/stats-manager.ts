@@ -1,3 +1,14 @@
+export interface Stat {
+    label: string;
+    prop: string;
+}
+
+export interface StatGroup {
+    label: string;
+    description: string;
+    stats: Stat[];
+}
+
 class StatsManager {
     finesse: number;
     awareness: number;
@@ -56,19 +67,7 @@ class StatsManager {
         return this.thoughtfulness;
     }
 
-    listStatsGroups() {
-        // Finesse (OFF/DEF)
-        //  - Dexterity & Agility
-        //  - affects Attack speed & Evade chance
-        // Awareness (OFF/OFF)
-        //  - Perception & Strength
-        //  - affects Critical chance / Critical damage & Attack damage
-        // Resilience (DEF/DEF)
-        //  - Fortitude & Endurance
-        //  - affects armor rating & Max Health / Health Regen
-        // Thoughtfulness (MISC)
-        //  - Intelligence & Charisma
-        //  - affects XP Gain & Bartering
+    static listStatsGroups(): StatGroup[] {
         return [
             {
                 label: 'Finesse',

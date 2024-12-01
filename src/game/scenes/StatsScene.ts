@@ -2,25 +2,26 @@ import {Scene} from 'phaser';
 import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
+import StatsManager, {StatGroup} from '../helpers/stats-manager.ts';
 
 export class StatsScene extends Scene {
     menu: Buttons;
+    statsGroup: StatGroup[];
     constructor() {
         super('StatsScene');
+        this.statsGroup = StatsManager.listStatsGroups();
     }
 
     create() {
-        const stats = ['Strength', 'Agility', 'Endurance'];
-
         this.menu = this.rexUI.add.buttons({
             x: 400,
             y: 300,
             orientation: 'y',
-            buttons: stats.map(stat => this.createButton(stat)),
+            buttons: this.statsGroup.map(stat => this.createButtonForStatGroup(stat)),
             space: { item: 10 }
         })
             .layout()
-            .on('button.click', (button: Label) => this.handleStatSelection(button));
+            .on('button.click', (button: Label, index: number) => this.handleStatSelection(button, index));
 
         this.add.text(400, 100, 'Choose Your Stat:', {
             fontSize: '24px',
@@ -35,10 +36,10 @@ export class StatsScene extends Scene {
         });
     }
 
-    createButton(label: string) {
+    createButtonForStatGroup(statGroup: StatGroup) {
         return this.rexUI.add.label({
             background: this.rexUI.add.roundRectangle(0, 0, 150, 40, 20, 0x5e92f3),
-            text: this.add.text(0, 0, label, { fontSize: '18px', color: '#ffffff' }),
+            text: this.add.text(0, 0, statGroup.label, { fontSize: '18px', color: '#ffffff' }),
             space: {
                 left: 10,
                 right: 10,
@@ -49,9 +50,8 @@ export class StatsScene extends Scene {
         });
     }
 
-    handleStatSelection(button: Label) {
-        console.log(button)
-        console.log(`Player chose: ${button.text}`);
-        // Add logic to handle stat selection, such as updating the player's stats
+    handleStatSelection(_: Label, index: number) {
+        const selectedStatGroup = this.statsGroup[index];
+        console.log(selectedStatGroup)
     }
 }
