@@ -5,6 +5,7 @@ export interface Stat {
 
 export interface StatGroup {
     label: string;
+    prop: string;
     description: string;
     stats: Stat[];
 }
@@ -71,6 +72,7 @@ class StatsManager {
         return [
             {
                 label: 'Finesse',
+                prop: 'finesse',
                 description: '(OFF/DEF) affects Attack speed & Evade chance',
                 stats: [
                     {label: 'Dexterity', prop: 'dexterity'},
@@ -79,6 +81,7 @@ class StatsManager {
             },
             {
                 label: 'Awareness',
+                prop: 'awareness',
                 description: '(OFF/OFF) affects Critical chance / Critical damage & Attack damage',
                 stats: [
                     {label: 'Perception', prop: 'perception'},
@@ -87,6 +90,7 @@ class StatsManager {
             },
             {
                 label: 'Resilience',
+                prop: 'resilience',
                 description: '(DEF/DEF) affects armor rating & Max Health / Health Regen',
                 stats: [
                     {label: 'Fortitude', prop: 'fortitude'},
@@ -95,6 +99,7 @@ class StatsManager {
             },
             {
                 label: 'Thoughtfulness',
+                prop: 'thoughtfulness',
                 description: '(MISC) affects XP Gain & Bartering & Coin Gain',
                 stats: [
                     {label: 'Intelligence', prop: 'intelligence'},

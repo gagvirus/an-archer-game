@@ -76,7 +76,7 @@ class MainScene extends Scene {
 
             if (event.key === 'c') {
                 this.scene.pause();
-                this.scene.launch('StatsScene');
+                this.scene.launch('StatsScene', { statsManager: this.hero.stats });
             }
         });
 
