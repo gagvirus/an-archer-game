@@ -1,7 +1,7 @@
-import HealthBar from "../logic/HealthBar.ts";
-import XpBar from "../logic/XpBar.ts";
-import GameObject = Phaser.GameObjects.GameObject;
+import HealthBar from '../logic/HealthBar.ts';
+import XpBar from '../logic/XpBar.ts';
 import StatsManager from './stats-manager.ts';
+import GameObject = Phaser.GameObjects.GameObject;
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -58,6 +58,8 @@ class Attackable {
         this.onDeath = onDeath;
         this.onAttack = onAttack;
         this.owner = owner;
+
+        this.registerHealthRegenerationIfNecessary();
     }
 
     attack() {
@@ -86,31 +88,51 @@ class Attackable {
     }
 
     replenishHealth(amount: number) {
-        this.health += amount;
-        if (this.health > this.maxHealth) {
-            this.health = this.maxHealth;
+        // todo: make sure that replenishing correct hp regen amount after level up / stat select
+        // todo: make sure to update the hp bar ui after level up / stat select
+        if (amount > 0) {
+            console.log('replenishing health', {amount})
+            this.health += amount;
+            if (this.health > this.maxHealth) {
+                this.health = this.maxHealth;
+            }
         }
     }
 
-    setMaxHealth(maxHealth: number)
-    {
+    setMaxHealth(maxHealth: number, replenishToMaxHealth: boolean = false) {
+        const healthDiff = maxHealth - this.maxHealth;
         this.maxHealth = maxHealth;
-        // setting current health to max
-        this.health = maxHealth;
+        if (replenishToMaxHealth) {
+            // setting current health to max
+            this.health = maxHealth;
+        } else {
+            this.health += healthDiff;
+        }
         // updating the health bar UI
         this.healthBar.updateBar(this.health, this.maxHealth);
     }
 
     onKilledTarget(target: Attackable) {
-        if ("xpManager" in this.owner) {
-            if ("xpAmount" in target.owner) {
+        if ('xpManager' in this.owner) {
+            if ('xpAmount' in target.owner) {
                 const xpAmount: number = target.owner.xpAmount as number;
                 let xpGainMultiplier = 1;
-                if ("stats" in this.owner) {
+                if ('stats' in this.owner) {
                     xpGainMultiplier = (this.owner.stats as StatsManager).xpGainMultiplier;
                 }
 
                 (this.owner.xpManager as XpManager).gainXp(xpAmount * xpGainMultiplier);
+            }
+        }
+    }
+
+    private registerHealthRegenerationIfNecessary() {
+        if ('stats' in this.owner) {
+            const statsManager = this.owner.stats as StatsManager;
+            if (statsManager.healthRegenerationInterval > 0) {
+                setInterval(() => {
+                    this.replenishHealth(statsManager.healthRegenPerInterval)
+                }, statsManager.healthRegenerationInterval);
             }
         }
     }

@@ -70,27 +70,35 @@ class StatsManager {
         return this.thoughtfulness;
     }
 
-    get damageMultiplier()
-    {
+    get damageMultiplier() {
         // each strength point adds +5% to the level-adjusted damage
         return 1 + (this.strength - 1) * 0.05;
     }
 
-    get attackSpeedMultiplier()
-    {
+    get attackSpeedMultiplier() {
         // each agility point adds +5% to the level-adjusted attack speed
         return 1 + (this.agility - 1) * 0.05;
     }
 
-    get maxHealthMultiplier()
-    {
+    get maxHealthMultiplier() {
         // each endurance point adds +10% to the level-adjusted max health
         return 1 + (this.endurance - 1) * 0.1
     }
 
-    get xpGainMultiplier()
-    {
+    get xpGainMultiplier() {
         return Math.pow(1.05, this.intelligence - 1);
+    }
+
+    get healthRegenPerInterval() {
+        // each endurance point adds +((1.2^level) - 1) health regenerated per second
+        return Math.pow(1.2, this.strength - 1) - 1
+    }
+
+    get healthRegenerationInterval() {
+        // regenerated every 5 seconds
+        // maybe to be modified later
+        // todo: if this is changed, make sure to update registerHealthRegenerationIfNecessary function also
+        return 5000;
     }
 
     static listStatsGroups(): StatGroup[] {

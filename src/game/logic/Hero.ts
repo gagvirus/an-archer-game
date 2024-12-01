@@ -77,7 +77,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
     onLevelUp = (newLevel: number) => {
         this._level = newLevel;
-        this.attackable.setMaxHealth(this.maxHealth)
+        this.attackable.setMaxHealth(this.maxHealth, false)
         this.attackable.attackDamage = this.attackDamage;
         this.attackable.attacksPerSecond = this.attacksPerSecond;
         this.stats.unallocatedStats += 1;
