@@ -10,17 +10,17 @@ class StatsManager {
     }
 
     listStats() {
-        // Finesse
-        //  - Dexterity / Agility
+        // Finesse (OFF/DEF)
+        //  - Dexterity & Agility
         //  - affects Attack speed & Evade chance
-        // Awareness
-        //  - Perception & ???
-        //  - affects Critical chance / Critical damage & armor rating
-        // Resilience
-        //  - Strength & Endurance
-        //  - affects Attack damage & Max Health / Health Regen
-        // Thoughtfulness
-        //  - Intelligence / Charisma
+        // Awareness (OFF/OFF)
+        //  - Perception & Strength
+        //  - affects Critical chance / Critical damage & Attack damage
+        // Resilience (DEF/DEF)
+        //  - Fortitude & Endurance
+        //  - affects armor rating & Max Health / Health Regen
+        // Thoughtfulness (MISC)
+        //  - Intelligence & Charisma
         //  - affects XP Gain & Bartering
         return ['Finesse', 'Awareness', 'Resilience', 'Thoughtfulness'];
     }
