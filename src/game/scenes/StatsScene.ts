@@ -26,6 +26,13 @@ export class StatsScene extends Scene {
             fontSize: '24px',
             color: '#ffffff'
         }).setOrigin(0.5);
+
+        this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
+            if (['Escape', 'c', 'C'].includes(event.key)) {
+                this.scene.resume('MainScene')
+                this.scene.stop();
+            }
+        });
     }
 
     createButton(label: string) {
