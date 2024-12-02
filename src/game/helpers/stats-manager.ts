@@ -101,6 +101,17 @@ class StatsManager {
         return 2000;
     }
 
+    get criticalChancePercent() {
+        // each perception attribute adds +0.5% to critical chance (not more than +50%)
+        const chance = (this.perception - 1) / 2;
+        return chance > 50 ? 50 : chance;
+    }
+
+    get criticalExtraDamageMultiplier() {
+        // each perception attribute adds +5% extra damage (on top of base +50% bonus damage) on critical hit
+        return 1 + (50 + (this.perception - 1) * 5) / 100
+    }
+
     static listStatsGroups(): StatGroup[] {
         return [
             {

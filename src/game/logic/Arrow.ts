@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
-import {Attackable} from "../helpers/gameplayer-helper.ts";
+import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {showDamage, showGainedXp} from '../helpers/text-helpers.ts';
 import Enemy from './Enemy.ts';
 import Hero from './Hero.ts';
+import StatsManager from '../helpers/stats-manager.ts';
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
     target: Attackable;
@@ -50,15 +51,23 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
 
     // Handle what happens when the arrow hits the target
     private handleHit() {
-        this.target.takeDamage(this.owner.attackDamage, (target: Attackable) => {
+        let attackDamage = this.owner.attackDamage;
+        // todo: check if this is hero
+        // todo:  perhaps there is a better way to do this ?
+        const hero: Hero = this.owner.owner as Hero;
+        const stats: StatsManager = hero.stats;
+        const isCritical = randomChance(stats.criticalChancePercent);
+        if (isCritical) {
+            attackDamage *= stats.criticalExtraDamageMultiplier;
+        }
+
+        this.target.takeDamage(attackDamage, (target: Attackable) => {
             this.owner.onKilledTarget(target)
-            // todo: check if this is hero
-            // todo:  perhaps there is a better way to do this ?
             const baseXp = (target.owner as Enemy).xpAmount;
-            const xpGainModifier = (this.owner.owner as Hero).stats.xpGainMultiplier;
+            const xpGainModifier = stats.xpGainMultiplier;
             showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, baseXp * xpGainModifier)
         });
-        showDamage(this.scene, this.target.owner as Vector2Like, this.owner.attackDamage, false);
+        showDamage(this.scene, this.target.owner as Vector2Like, attackDamage, isCritical);
 
         // this.target.takeDamage(10); // Assume the Enemy class has a takeDamage method
         this.destroy();
