@@ -35,7 +35,7 @@
   - ~~Damage Received~~
   - ~~xp gained~~
   - ~~health replenished~~
-- Add "Critical Hit" logic - critical chance + critical damage (multiplier)
+- ~~Add "Critical Hit" logic - critical chance + critical damage (multiplier)~~
 - log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc
 - Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Support "ASDW" movement
