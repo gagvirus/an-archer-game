@@ -43,7 +43,10 @@
   - ~~health replenished~~
 - ~~Add "Critical Hit" logic - critical chance + critical damage (multiplier)~~
 - ~~log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc~~
-- dps counter
+- ~~dps counter~~
+- bulk allocate points
+- un-allocate points
+  - bulk un-allocate points
 - implement remaining stats
   - ~~finesse~~
     - ~~attack speed~~

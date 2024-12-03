@@ -79,13 +79,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     get damagePerSecond() {
-        const attacksNumber = 1 / this.attacksPerSecond;
-        const perAttackPureDamage = this.attackDamage;
         const critChance = this.stats.criticalChancePercent;
         const critDamageMultiplier = this.stats.criticalExtraDamageMultiplier;
-        const pureDps = attacksNumber * perAttackPureDamage;
-        const criticalAttacksNumber = attacksNumber * critChance / 100;
-        const criticalExtraDamage = (criticalAttacksNumber * perAttackPureDamage) * (critDamageMultiplier - 1);
+        const pureDps = this.attacksPerSecond * this.attackDamage;
+        const criticalAttacksNumber = this.attacksPerSecond * critChance / 100;
+        const criticalExtraDamage = (criticalAttacksNumber * this.attackDamage) * (critDamageMultiplier - 1);
         return pureDps + criticalExtraDamage;
     }
 
@@ -99,6 +97,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         const statPointsToGrant = this.statPointsToGrant
         this.stats.unallocatedStats += statPointsToGrant;
         addLogEntry(`${this.name} has received ${statPointsToGrant} stat points.`)
+        this.scene.events.emit('levelUp');
     }
 
     get statPointsToGrant()

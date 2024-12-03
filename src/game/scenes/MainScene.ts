@@ -7,10 +7,11 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../helpers/position-helper.ts";
-import {createAnimatedText} from "../helpers/text-helpers.ts";
+import {createAnimatedText, formatNumber} from '../helpers/text-helpers.ts';
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
 import {addLogEntry, LogManager} from '../helpers/log-utils.ts';
+import DpsIndicator from '../logic/DpsIndicator.ts';
 
 class MainScene extends Scene {
     level: number;
@@ -19,6 +20,7 @@ class MainScene extends Scene {
     portal: Portal;
     buildings: Group;
     logManager: LogManager;
+    dpsIndicator: DpsIndicator;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -40,8 +42,12 @@ class MainScene extends Scene {
         this.scene.get('StatsScene').events.on('statsUpdated', () => {
             this.hero.attackable.registerHealthRegenerationIfNecessary()
             this.hero.attackable.setMaxHealth(this.hero.maxHealth);
+            this.updateDpsIndicator();
             // update the health bar ui
             // update the health regen tick
+        });
+        this.events.on('levelUp', () => {
+            this.updateDpsIndicator();
         })
         LogManager.getInstance(this);
         // Listener for pointer (mouse/touch) inputs
@@ -88,8 +94,13 @@ class MainScene extends Scene {
                 this.scene.launch('StatsScene', { statsManager: this.hero.stats });
             }
         });
-
+        this.dpsIndicator = new DpsIndicator(this);
+        this.updateDpsIndicator();
         this.startLevel();
+    }
+
+    updateDpsIndicator() {
+        this.dpsIndicator.setDps(formatNumber(this.hero.damagePerSecond));
     }
 
     getOccupiedTiles() {
