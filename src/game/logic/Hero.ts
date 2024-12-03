@@ -10,6 +10,7 @@ import StatsManager from '../helpers/stats-manager.ts';
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
+import {addLogEntry} from '../helpers/log-utils.ts';
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
@@ -78,11 +79,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
 
     onLevelUp = (newLevel: number) => {
+        addLogEntry(`${this.name} has become LVL ${newLevel} !`);
         this._level = newLevel;
         this.attackable.setMaxHealth(this.maxHealth, false)
         this.attackable.attackDamage = this.attackDamage;
         this.attackable.attacksPerSecond = this.attacksPerSecond;
-        this.stats.unallocatedStats += this.statPointsToGrant;
+        const statPointsToGrant = this.statPointsToGrant
+        this.stats.unallocatedStats += statPointsToGrant;
+        addLogEntry(`${this.name} has received ${statPointsToGrant} stat points.`)
     }
 
     get statPointsToGrant()

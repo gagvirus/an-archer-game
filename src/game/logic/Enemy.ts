@@ -12,6 +12,7 @@ import {isDebugMode} from "../helpers/registry-helper.ts";
 import {HEX_COLOR_WARNING} from '../helpers/colors.ts';
 import {showDamage} from '../helpers/text-helpers.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {addLogEntry} from '../helpers/log-utils.ts';
 
 class Enemy extends Sprite {
     attackRange: number;
@@ -57,6 +58,7 @@ class Enemy extends Sprite {
                 scene.onEnemyKilled();
             },
             () => {
+                addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${this.attackDamage} DMG`)
                 this.hero.attackable.takeDamage(this.attackDamage);
                 showDamage(this.scene, this.hero as Vector2Like, this.attackDamage, false);
             },

@@ -5,6 +5,7 @@ import Sprite = Phaser.GameObjects.Sprite;
 import {Scene} from 'phaser';
 import {showReplenishedHealth} from './text-helpers.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {addLogEntry} from './log-utils.ts';
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -97,6 +98,7 @@ class Attackable {
             if (this.scene) {
                 if (this.health < this.maxHealth) {
                     showReplenishedHealth(this.scene, this.owner as Vector2Like, amount)
+                    addLogEntry(`Replenished ${amount} HP`)
                 }
             }
             this.health += amount;
