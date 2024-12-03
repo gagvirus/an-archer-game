@@ -78,6 +78,17 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         return (BASE_MAX_HEALTH + levelModifier) * this.stats.maxHealthMultiplier;
     }
 
+    get damagePerSecond() {
+        const attacksNumber = 1 / this.attacksPerSecond;
+        const perAttackPureDamage = this.attackDamage;
+        const critChance = this.stats.criticalChancePercent;
+        const critDamageMultiplier = this.stats.criticalExtraDamageMultiplier;
+        const pureDps = attacksNumber * perAttackPureDamage;
+        const criticalAttacksNumber = attacksNumber * critChance / 100;
+        const criticalExtraDamage = (criticalAttacksNumber * perAttackPureDamage) * (critDamageMultiplier - 1);
+        return pureDps + criticalExtraDamage;
+    }
+
 
     onLevelUp = (newLevel: number) => {
         addLogEntry(`${this.name} has become LVL ${newLevel} !`);
