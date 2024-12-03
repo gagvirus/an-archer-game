@@ -84,7 +84,6 @@ class Attackable {
     }
 
     takeDamage(damage: number, onDeath?: (attackable: Attackable) => void) {
-        console.log(this.owner)
         this.health -= damage;
         if (this.health <= 0) {
             this.onDeath();
