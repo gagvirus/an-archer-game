@@ -5,7 +5,12 @@
     -  ~~agility + 5% attack damage~~
     -  ~~vitality + 5% health~~
     -  ~~intelligence + 5% extra xp~~
+- powerups
+  - e.g. double damage, invulnerability, fast speed (Attack speed, movement speed)
+- different heroes
+  - one is faster, one is tank, one is glass cannon etc
 - active skills
+  - e.g. freeze in a radius, nuke in a radius etc
 - add score
   - on enemy kill add some score
   - have a high score (local storage only for now)
@@ -19,6 +24,7 @@
 - enemy walk logic
   - shall follow a target
   - implement pathfinding
+  - some enemies (for example ghosts) shall be able to pass barriers
 - developer settings
   - xp modifier
 
