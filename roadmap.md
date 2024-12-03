@@ -37,6 +37,8 @@
   - ~~health replenished~~
 - ~~Add "Critical Hit" logic - critical chance + critical damage (multiplier)~~
 - ~~log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc~~
+- on stats screen (on pressing **c**) display list of affected stats (e.g. extra damage multiplier etc)
+- difficulty slider in settings
 - log improvements
   - change font
   - change text size
