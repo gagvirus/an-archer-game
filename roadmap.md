@@ -43,6 +43,31 @@
   - ~~health replenished~~
 - ~~Add "Critical Hit" logic - critical chance + critical damage (multiplier)~~
 - ~~log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc~~
+- dps counter
+- implement remaining stats
+  - finesse
+    - ~~attack speed~~
+    - evade chance
+  - ~~awareness~~
+    - ~~critical chance~~
+    - ~~critical damage~~
+    - ~~attack damage~~
+  - resilience
+    - armor rating
+    - ~~max health~~
+    - ~~health regen~~
+  - thoughtfulness
+    - ~~xp gain~~
+    - bartering
+    - coin gain
+- game stats (per run)
+  - how long have played
+  - how much coin collected
+  - how much damage inflicted
+  - how many enemies killed
+  - how much damage received
+- achievements
+  - tbd
 - on stats screen (on pressing **c**) display list of affected stats (e.g. extra damage multiplier etc)
 - difficulty slider in settings
 - log improvements
@@ -53,6 +78,7 @@
   - format numbers in logs (show 1.5m instead of 15125555)
   - ability to "collapse" & "expand" the log
   - ability to resize the log
+  - copy log contents
 - Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Support "ASDW" movement
 - Support GamePad
