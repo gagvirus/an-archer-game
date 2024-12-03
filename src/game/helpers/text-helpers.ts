@@ -89,7 +89,7 @@ function formatNumber(value: number) {
  * @param {string} size - Size of the text
  * @param {'md' | 'lg' | 'xl' | 'sm' | 'sx'} color - Color of the text
  */
-const showFloatingNumber = (scene: Scene, position: Vector2Like, text: string, size: 'md' | 'lg' | 'xl' | 'sm' | 'xs' = 'md', color: string = COLOR_WHITE) => {
+const showFloatingText = (scene: Scene, position: Vector2Like, text: string, size: 'md' | 'lg' | 'xl' | 'sm' | 'xs' = 'md', color: string = COLOR_WHITE) => {
     let fontSize = 16;
     switch (size) {
         case 'xs':
@@ -122,15 +122,19 @@ const showFloatingNumber = (scene: Scene, position: Vector2Like, text: string, s
 const showDamage = (scene: Scene, position: Vector2Like, amount: number, isCritical: boolean = false) => {
     const color = isCritical ? COLOR_WARNING : COLOR_DANGER;
     const size = isCritical ? 'lg' : 'sm';
-    showFloatingNumber(scene, position, `-${formatNumber(amount)}`, size, color);
+    showFloatingText(scene, position, `-${formatNumber(amount)}`, size, color);
 }
 
 const showGainedXp = (scene: Scene, position: Vector2Like, amount: number) => {
-    showFloatingNumber(scene, position, `+ ${formatNumber(amount)} XP`, 'xs', COLOR_SUCCESS);
+    showFloatingText(scene, position, `+ ${formatNumber(amount)} XP`, 'xs', COLOR_SUCCESS);
 }
 
 const showReplenishedHealth = (scene: Scene, position: Vector2Like, amount: number) => {
-    showFloatingNumber(scene, position, `+ ${formatNumber(amount)} HP`, 'sm', COLOR_LIGHT);
+    showFloatingText(scene, position, `+ ${formatNumber(amount)} HP`, 'sm', COLOR_LIGHT);
+}
+
+const showEvaded = (scene: Scene, position: Vector2Like) => {
+    showFloatingText(scene, position, 'Evaded !', 'md', COLOR_SUCCESS);
 }
 
 export {
@@ -138,8 +142,9 @@ export {
     createAnimatedText,
     createText,
     formatNumber,
-    showFloatingNumber,
+    showFloatingText,
     showDamage,
     showGainedXp,
-    showReplenishedHealth
+    showReplenishedHealth,
+    showEvaded,
 };

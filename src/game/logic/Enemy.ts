@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import Hero from "./Hero";
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
-import {Attackable} from "../helpers/gameplayer-helper.ts";
+import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
 import {enemies, EnemyDef} from "./enemies.ts";
 import {getRandomItem} from "../helpers/random-helper.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
@@ -10,7 +10,7 @@ import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import {HEX_COLOR_WARNING} from '../helpers/colors.ts';
-import {showDamage} from '../helpers/text-helpers.ts';
+import {showDamage, showEvaded} from '../helpers/text-helpers.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {addLogEntry} from '../helpers/log-utils.ts';
 
@@ -58,9 +58,15 @@ class Enemy extends Sprite {
                 scene.onEnemyKilled();
             },
             () => {
-                addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${this.attackDamage} DMG`)
-                this.hero.attackable.takeDamage(this.attackDamage);
-                showDamage(this.scene, this.hero as Vector2Like, this.attackDamage, false);
+                const isEvaded = randomChance(this.hero.stats.evadeChancePercent * 10);
+                if (isEvaded) {
+                    addLogEntry(`${this.hero.name} evaded attack from ${this.name}`);
+                    showEvaded(this.scene, this.hero as Vector2Like);
+                } else {
+                    addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${this.attackDamage} DMG`)
+                    this.hero.attackable.takeDamage(this.attackDamage);
+                    showDamage(this.scene, this.hero as Vector2Like, this.attackDamage, false);
+                }
             },
             this,
         )

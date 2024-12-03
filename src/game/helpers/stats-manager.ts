@@ -80,6 +80,13 @@ class StatsManager {
         return 1 + (this.agility - 1) * 0.05;
     }
 
+    get evadeChancePercent()
+    {
+        // each dexterity attribute adds +0.5% to evade chance (not more than +50%)
+        const chance = (this.dexterity - 1) / 2;
+        return chance > 50 ? 50 : chance;
+    }
+
     get maxHealthMultiplier() {
         // each endurance point adds +10% to the level-adjusted max health
         return 1 + (this.endurance - 1) * 0.1
