@@ -7,11 +7,11 @@ import {Attackable, XpManager} from '../helpers/gameplayer-helper.ts';
 import XpBar from './XpBar.ts';
 import {isAutoAttackEnabled} from '../helpers/registry-helper.ts';
 import StatsManager from '../helpers/stats-manager.ts';
-import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import {addLogEntry} from '../helpers/log-utils.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
+import {CustomCursorKeysDown} from '../helpers/keyboard-helper.ts';
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
@@ -100,42 +100,39 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.scene.events.emit('levelUp');
     }
 
-    get statPointsToGrant()
-    {
-        if (this._level % 100 < 1)
-        {
-            // on level 100, 200.. grant 50 points
+    get statPointsToGrant() {
+        if (this._level % 100 < 1) {
+            // on level 100, 200... grant 50 points
             return 50;
         }
-        if (this._level % 50 < 1)
-        {
-            // on level 50, 150.. grant 20 points
+        if (this._level % 50 < 1) {
+            // on level 50, 150... grant 20 points
             return 25;
         }
-        if (this._level % 25 < 1)
-        {
-            // on level 25, 75, 125.. grant 10 points
+        if (this._level % 25 < 1) {
+            // on level 25, 75, 125... grant 10 points
             return 10;
         }
-        if (this._level % 10 < 1)
-        {
-            // on level 10, 20.. grant 5 points
+        if (this._level % 10 < 1) {
+            // on level 10, 20... grant 5 points
             return 5;
         }
-        if (this._level % 5 < 1)
-        {
-            // on level 5, 15, 35.. grant 3 points
+        if (this._level % 5 < 1) {
+            // on level 5, 15, 35... grant 3 points
             return 3;
         }
         return 1;
     }
 
-    initXpBar = (level: number, currentXp: number, xpToNextLevel: number) => new XpBar(this.scene, {x: 20, y: 50}, 200, 20, level, currentXp, xpToNextLevel)
+    initXpBar = (level: number, currentXp: number, xpToNextLevel: number) => new XpBar(this.scene, {
+        x: 20,
+        y: 50
+    }, 200, 20, level, currentXp, xpToNextLevel)
 
     // Method to update the hero's animation based on movement
     // @ts-expect-error we *must* receive time
-    update(cursors: CursorKeys, time: numer, delta: number) {
-        if (cursors.left.isDown || cursors.right.isDown || cursors.up.isDown || cursors.down.isDown) {
+    update(cursors: CustomCursorKeysDown, time: numer, delta: number) {
+        if (cursors.left || cursors.right || cursors.up || cursors.down) {
             if (this.state !== 'run') {
                 this.state = 'run';
                 this.anims.play('run', true);

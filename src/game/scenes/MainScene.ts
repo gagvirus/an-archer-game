@@ -1,6 +1,5 @@
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
-import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {Scene} from "phaser";
@@ -12,6 +11,7 @@ import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
 import {addLogEntry, LogManager} from '../helpers/log-utils.ts';
 import DpsIndicator from '../logic/DpsIndicator.ts';
+import {createCursorKeys} from '../helpers/keyboard-helper.ts';
 
 class MainScene extends Scene {
     level: number;
@@ -147,25 +147,25 @@ class MainScene extends Scene {
             (gameObject as Enemy).update(time, delta);
         });
 
-        const cursors = (this.input.keyboard as KeyboardPlugin).createCursorKeys();
+        const cursors = createCursorKeys(this);
 
         // Update hero based on input
         this.hero.update(cursors, time, delta);
 
         // Handle hero movement
-        if (cursors.left.isDown) {
+        if (cursors.left) {
             this.hero.setFlipX(true);  // Flip the sprite to face left
             this.hero.setVelocityX(-160);
-        } else if (cursors.right.isDown) {
+        } else if (cursors.right) {
             this.hero.setFlipX(false);  // Flip the sprite to face left
             this.hero.setVelocityX(160);
         } else {
             this.hero.setVelocityX(0);
         }
 
-        if (cursors.up.isDown) {
+        if (cursors.up) {
             this.hero.setVelocityY(-160);
-        } else if (cursors.down.isDown) {
+        } else if (cursors.down) {
             this.hero.setVelocityY(160);
         } else {
             this.hero.setVelocityY(0);

@@ -74,8 +74,8 @@
 - on stats screen (on pressing **c**) display list of affected stats (e.g. extra damage multiplier etc)
 - difficulty slider in settings
 - log improvements
-  - change font
-  - change text size
+  - ~~change font~~
+  - ~~change text size~~
   - partial bold in log entries
   - partial color change in log entry (for example "inflicted **red**->50 damage)
   - format numbers in logs (show 1.5m instead of 15125555)
