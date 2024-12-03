@@ -83,7 +83,7 @@
   - ability to resize the log
   - copy log contents
 - Have a "Bestiary" in main menu (display list of enemies with their stats)
-- Support "ASDW" movement
+- ~~Support "ASDW" movement~~
 - Support GamePad
 - Add UI for changing key bindings inside settings
 - settings
