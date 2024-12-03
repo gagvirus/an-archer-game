@@ -50,9 +50,24 @@
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the arrow arrives at destination, XP is awarded again
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Fix regen logic
-- Fix bug - after hero death - getting this error - Uncaught TypeError: Cannot read properties of null (reading 'cut')
-    - hp regen shall be paused on different scenes
+- hp regen shall be paused on different scenes - make sure not to regen hp during pause, stat select etc
   - intervals not being cleaned properly
+- issues after restarting the game after death
+  - hp regen setinterval is not cleared
+  - errors in the console
+```phaser.js?v=3ad8faf7:119974 Uncaught TypeError: Cannot read properties of null (reading 'cut')
+  at HealthBar.draw (Bar.ts:62:23)
+  at HealthBar.updateBar (Bar.ts:73:14)
+  at Attackable.replenishHealth (gameplayer-helper.ts:106:28)
+  at gameplayer-helper.ts:145:26
+```
+```
+    phaser.js?v=3ad8faf7:46950 Uncaught TypeError: Cannot read properties of null (reading 'glTexture')
+    at HealthBar.draw (Bar.ts:62:23)
+    at HealthBar.updateBar (Bar.ts:73:14)
+    at Attackable.replenishHealth (gameplayer-helper.ts:106:28)
+    at gameplayer-helper.ts:145:26
+```
 - Sound effects
   - Shoot arrow (~2 samples)
   - Enemy hit (~2 samples)
