@@ -10,6 +10,7 @@ import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../h
 import {createAnimatedText} from "../helpers/text-helpers.ts";
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
+import {addLogEntry, LogManager} from '../helpers/log-utils.ts';
 
 class MainScene extends Scene {
     level: number;
@@ -17,6 +18,7 @@ class MainScene extends Scene {
     hero: Hero;
     portal: Portal;
     buildings: Group;
+    logManager: LogManager;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -41,6 +43,7 @@ class MainScene extends Scene {
             // update the health bar ui
             // update the health regen tick
         })
+        LogManager.getInstance(this);
         // Listener for pointer (mouse/touch) inputs
         // this.input.on('pointerdown', (pointer: Pointer) => {
         //     console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
@@ -123,7 +126,7 @@ class MainScene extends Scene {
         createAnimatedText(this, `Level ${this.level}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new level
         this.portal.setDisabled(true);
-        console.log(`Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
+        addLogEntry(`Start Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
     }
 
     // Update game state (called every frame)
