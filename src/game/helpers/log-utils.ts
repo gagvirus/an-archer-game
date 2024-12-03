@@ -1,5 +1,7 @@
 import {Scene} from 'phaser';
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel';
+import {createText} from './text-helpers.ts';
+import {COLOR_WHITE} from './colors.ts';
 
 class LogManager {
     scene: Scene;
@@ -59,12 +61,7 @@ class LogManager {
      * @param message The log message to display.
      */
     addLogEntry(message: string) {
-        const logText = this.scene.add.text(0, 0, message, {
-            fontSize: '14px',
-            color: '#ffffff',
-            fixedWidth: 480,
-            align: 'left',
-        });
+        const logText = createText(this.scene, message, {x: 0, y: 0}, 12, 'left', false, COLOR_WHITE, {fixedWidth: 480});
 
         if (this.logPanel) {
             const panel = this.logPanel.getElement('panel') as ScrollablePanel;

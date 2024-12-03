@@ -1,9 +1,9 @@
 import {GameObjects, Scene} from 'phaser';
+import {COLOR_DANGER, COLOR_LIGHT, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
-import {COLOR_DANGER, COLOR_LIGHT, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
 
-const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true, color: string = COLOR_WHITE): GameObjects.Text => {
+const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true, color: string = COLOR_WHITE, styleOverride: TextStyle = {}): GameObjects.Text => {
     let textConfig: TextStyle = {
         fontFamily: 'Arial Black',
         color,
@@ -17,7 +17,7 @@ const createText = (scene: Scene, text: string, position: Vector2Like, fontSize:
             strokeThickness: Math.floor(fontSize / 4)
         }
     }
-    return scene.add.text(position.x, position.y, text, textConfig).setOrigin(0.5).setDepth(100)
+    return scene.add.text(position.x, position.y, text, {...textConfig, ...styleOverride}).setOrigin(0.5).setDepth(100)
 }
 
 const createCenteredText = (scene: Scene, text: string, verticalOffset: number = 0, fontSize: number = 32, isInteractive: boolean = false, onClick?: () => void) => {
@@ -133,4 +133,13 @@ const showReplenishedHealth = (scene: Scene, position: Vector2Like, amount: numb
     showFloatingNumber(scene, position, `+ ${formatNumber(amount)} HP`, 'sm', COLOR_LIGHT);
 }
 
-export {createCenteredText, createAnimatedText, createText, formatNumber, showFloatingNumber, showDamage, showGainedXp, showReplenishedHealth};
+export {
+    createCenteredText,
+    createAnimatedText,
+    createText,
+    formatNumber,
+    showFloatingNumber,
+    showDamage,
+    showGainedXp,
+    showReplenishedHealth
+};
