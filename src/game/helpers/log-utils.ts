@@ -8,10 +8,7 @@ class LogManager {
     private static _instance: LogManager;
 
     static getInstance(scene?: Scene) {
-        if (!LogManager._instance) {
-            if (!scene) {
-                throw new Error('Initialize the LogManager first by providing a scene instance.')
-            }
+        if (scene) {
             LogManager._instance = new LogManager(scene);
         }
         return LogManager._instance;
@@ -24,10 +21,10 @@ class LogManager {
 
     createLogPanel(): ScrollablePanel {
         return this.scene.rexUI.add.scrollablePanel({
-            x: this.scene.scale.width - 150, // Bottom-right corner
-            y: this.scene.scale.height - 100,
-            width: 300,
-            height: 200,
+            x: this.scene.scale.width - 260, // Bottom-right corner
+            y: this.scene.scale.height - 150,
+            width: 480,
+            height: 300,
 
             scrollMode: 0, // 0 for vertical scrolling
             background: this.scene.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x333333),
@@ -47,7 +44,6 @@ class LogManager {
                 track: this.scene.rexUI.add.roundRectangle(0, 0, 20, 10, 10, 0x888888),
                 thumb: this.scene.rexUI.add.roundRectangle(0, 0, 20, 30, 10, 0xffffff)
             },
-
             space: {
                 left: 10,
                 right: 10,
@@ -66,7 +62,8 @@ class LogManager {
         const logText = this.scene.add.text(0, 0, message, {
             fontSize: '14px',
             color: '#ffffff',
-            wordWrap: {width: 280}
+            fixedWidth: 480,
+            align: 'left',
         });
 
         if (this.logPanel) {

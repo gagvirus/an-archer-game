@@ -24,6 +24,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this); // Enable physics for the hero
         this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
         this._level = 1;
+        this.name = 'Hero';
 
         // Initialize arrow group
         this.arrows = scene.add.group(); // Group to hold all arrows

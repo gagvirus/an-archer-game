@@ -37,6 +37,14 @@
   - ~~health replenished~~
 - ~~Add "Critical Hit" logic - critical chance + critical damage (multiplier)~~
 - log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc
+- log improvements
+  - change font
+  - change text size
+  - partial bold in log entries
+  - partial color change in log entry (for example "inflicted **red**->50 damage)
+  - format numbers in logs (show 1.5m instead of 15125555)
+  - ability to "collapse" & "expand" the log
+  - ability to resize the log
 - Have a "Bestiary" in main menu (display list of enemies with their stats)
 - Support "ASDW" movement
 - Support GamePad

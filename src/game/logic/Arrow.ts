@@ -5,6 +5,7 @@ import {showDamage, showGainedXp} from '../helpers/text-helpers.ts';
 import Enemy from './Enemy.ts';
 import Hero from './Hero.ts';
 import StatsManager from '../helpers/stats-manager.ts';
+import {addLogEntry} from '../helpers/log-utils.ts';
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
     target: Attackable;
@@ -61,11 +62,19 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
             attackDamage *= stats.criticalExtraDamageMultiplier;
         }
 
+        if (isCritical) {
+            addLogEntry(`${this.owner.name} inflicted ${attackDamage} CRIT on ${this.target.name}`);
+        } else {
+            addLogEntry(`${this.owner.name} attacked ${this.target.name} for ${attackDamage} DMG`);
+        }
         this.target.takeDamage(attackDamage, (target: Attackable) => {
             this.owner.onKilledTarget(target)
             const baseXp = (target.owner as Enemy).xpAmount;
             const xpGainModifier = stats.xpGainMultiplier;
-            showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, baseXp * xpGainModifier)
+            addLogEntry(`${this.owner.name} killed ${this.target.name}`);
+            const gainedXP = baseXp * xpGainModifier;
+            showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, gainedXP)
+            addLogEntry(`${this.owner.name} gained ${gainedXP} XP`);
         });
         showDamage(this.scene, this.target.owner as Vector2Like, attackDamage, isCritical);
 
