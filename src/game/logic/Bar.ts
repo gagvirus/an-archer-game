@@ -1,6 +1,7 @@
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {HEX_COLOR_DANGER, HEX_COLOR_SUCCESS} from '../helpers/colors.ts';
 import {formatNumber} from '../helpers/text-helpers.ts';
+import {VectorZeroes} from '../helpers/position-helper.ts';
 
 abstract class Bar {
     scene: Phaser.Scene;
@@ -22,7 +23,7 @@ abstract class Bar {
         this.height = height;
         this.maxValue = maxValue;
         this.currentValue = currentValue;
-        this.positionOffset = positionOffset ?? {x: 0, y: 0};
+        this.positionOffset = positionOffset ?? VectorZeroes();
         this.filledColor = filledColor ?? HEX_COLOR_SUCCESS;
         this.emptyColor = emptyColor ?? HEX_COLOR_DANGER;
         this.bar = this.scene.add.graphics();

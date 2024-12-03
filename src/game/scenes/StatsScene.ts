@@ -4,6 +4,7 @@ import StatsManager, {StatGroup} from '../helpers/stats-manager.ts';
 import {createText} from '../helpers/text-helpers.ts';
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
+import {VectorZeroes} from '../helpers/position-helper.ts';
 
 export class StatsScene extends Scene {
     menu: Buttons;
@@ -62,8 +63,8 @@ export class StatsScene extends Scene {
                 radius: 15,
                 iteration: 0
             }, 0x008888),
-            text: createText(this, this.getStatText(statGroup), {x: 0, y: 0}, 18, 'left'),
-            action: createText(this, statGroup.description, {x: 0, y: 0}, 12, 'center', false),
+            text: createText(this, this.getStatText(statGroup), VectorZeroes(), 18, 'left'),
+            action: createText(this, statGroup.description, VectorZeroes(), 12, 'center', false),
             space: {
                 left: 10,
                 right: 10,

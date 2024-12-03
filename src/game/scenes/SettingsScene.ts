@@ -2,6 +2,7 @@ import {HEX_COLOR_DANGER, HEX_COLOR_DARK, HEX_COLOR_LIGHT, HEX_COLOR_SUCCESS} fr
 import {getScrollableUIConfig} from '../helpers/ui-helper.ts';
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {VectorZeroes} from '../helpers/position-helper.ts';
 
 type SettingKey = 'debugMode' | 'autoAttack';
 
@@ -23,8 +24,8 @@ class SettingsScene extends Phaser.Scene {
     createPanel() {
         const panel = this.rexUI.add.sizer({orientation: 'y', space: {item: 5}})
 
-        panel.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, {x: 0, y: 0}));
-        panel.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, {x: 0, y: 0}));
+        panel.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, VectorZeroes()));
+        panel.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, VectorZeroes()));
         // panel.add(this._createAutoAttackCheckbox());
 
         return panel;

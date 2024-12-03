@@ -8,6 +8,10 @@ const getRandomPosition = (maxX: number, maxY: number): Vector2Like => {
     return {x, y};
 }
 
+const VectorZeroes = (): Vector2Like => {
+    return {x: 0, y: 0};
+}
+
 const getRandomPositionAwayFromPoint = (maxX: number, maxY: number, awayFrom: Vector2Like, minDistance: number): Vector2Like => {
     const {x, y} = getRandomPosition(maxX, maxY);
     const distance = Phaser.Math.Distance.Between(awayFrom.x, awayFrom.y, x, y);
@@ -40,4 +44,11 @@ const tileCoordinateToPosition = (coordinate: Vector2Like): Vector2Like => {
     }
 }
 
-export {getRandomPosition, getRandomPositionAwayFromPoint, dampPosition, getTileCoordinate, tileCoordinateToPosition}
+export {
+    getRandomPosition,
+    getRandomPositionAwayFromPoint,
+    dampPosition,
+    getTileCoordinate,
+    tileCoordinateToPosition,
+    VectorZeroes
+};

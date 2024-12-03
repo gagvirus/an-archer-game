@@ -11,6 +11,7 @@ import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import {addLogEntry} from '../helpers/log-utils.ts';
+import {VectorZeroes} from '../helpers/position-helper.ts';
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
@@ -45,7 +46,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
             this.attacksPerSecond, // attacks per second
             this.attackDamage, // attack damage
             this.maxHealth, // initial health
-            (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth, {x: 0, y: 0}, true),
+            (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth, VectorZeroes(), true),
             () => this.scene.scene.start('GameOver'),
             () => {
                 const nearestEnemy = this.getNearestEnemy();
