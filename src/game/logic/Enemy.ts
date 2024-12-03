@@ -63,9 +63,14 @@ class Enemy extends Sprite {
                     addLogEntry(`${this.hero.name} evaded attack from ${this.name}`);
                     showEvaded(this.scene, this.hero as Vector2Like);
                 } else {
-                    addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${this.attackDamage} DMG`)
+                    const armorRating = this.hero.stats.armorRatingAttribute * 10;
+                    const pureDamage = this.attackDamage;
+                    const blockedDamage = pureDamage * armorRating / 100;
+                    const damageDealt = pureDamage - blockedDamage;
+                    const blockedDamageMessage = blockedDamage > 1 ? `, but ${this.hero.attackable.name} blocked ${blockedDamage} DMG` : '';
+                    addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${damageDealt} DMG${blockedDamageMessage}`)
                     this.hero.attackable.takeDamage(this.attackDamage);
-                    showDamage(this.scene, this.hero as Vector2Like, this.attackDamage, false);
+                    showDamage(this.scene, this.hero as Vector2Like, damageDealt, false);
                 }
             },
             this,

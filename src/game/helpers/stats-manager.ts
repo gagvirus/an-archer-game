@@ -82,7 +82,7 @@ class StatsManager {
 
     get evadeChancePercent()
     {
-        // each dexterity attribute adds +0.5% to evade chance (not more than +50%)
+        // each dexterity attribute adds +0.6667% to evade chance (not more than +60%)
         const chance = (this.dexterity - 1) * 2 / 3;
         return chance > 60 ? 60 : chance;
     }
@@ -109,7 +109,7 @@ class StatsManager {
     }
 
     get criticalChancePercent() {
-        // each perception attribute adds +0.5% to critical chance (not more than +50%)
+        // each perception attribute adds +0.6667% to critical chance (not more than +60%)
         const chance = (this.perception - 1) * 2 / 3;
         return chance > 60 ? 60 : chance;
     }
@@ -117,6 +117,12 @@ class StatsManager {
     get criticalExtraDamageMultiplier() {
         // each perception attribute adds +5% extra damage (on top of base +50% bonus damage) on critical hit
         return 1 + (50 + (this.perception - 1) * 5) / 100
+    }
+
+    get armorRatingAttribute() {
+        // each fortitude attribute adds +0.6667% to armor rating (not more than +60%)
+        const rating = (this.fortitude - 1) * 2 / 3;
+        return rating > 80 ? 80 : rating;
     }
 
     static listStatsGroups(): StatGroup[] {
