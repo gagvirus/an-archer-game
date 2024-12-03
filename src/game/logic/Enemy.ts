@@ -58,7 +58,7 @@ class Enemy extends Sprite {
                 scene.onEnemyKilled();
             },
             () => {
-                const isEvaded = randomChance(this.hero.stats.evadeChancePercent * 10);
+                const isEvaded = randomChance(this.hero.stats.evadeChancePercent);
                 if (isEvaded) {
                     addLogEntry(`${this.hero.name} evaded attack from ${this.name}`);
                     showEvaded(this.scene, this.hero as Vector2Like);
