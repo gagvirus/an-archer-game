@@ -45,9 +45,9 @@
 - ~~log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc~~
 - dps counter
 - implement remaining stats
-  - finesse
+  - ~~finesse~~
     - ~~attack speed~~
-    - evade chance
+    - ~~evade chance~~
   - ~~awareness~~
     - ~~critical chance~~
     - ~~critical damage~~

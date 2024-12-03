@@ -83,8 +83,8 @@ class StatsManager {
     get evadeChancePercent()
     {
         // each dexterity attribute adds +0.5% to evade chance (not more than +50%)
-        const chance = (this.dexterity - 1) / 2;
-        return chance > 50 ? 50 : chance;
+        const chance = (this.dexterity - 1) * 2 / 3;
+        return chance > 60 ? 60 : chance;
     }
 
     get maxHealthMultiplier() {
@@ -110,8 +110,8 @@ class StatsManager {
 
     get criticalChancePercent() {
         // each perception attribute adds +0.5% to critical chance (not more than +50%)
-        const chance = (this.perception - 1) / 2;
-        return chance > 50 ? 50 : chance;
+        const chance = (this.perception - 1) * 2 / 3;
+        return chance > 60 ? 60 : chance;
     }
 
     get criticalExtraDamageMultiplier() {
