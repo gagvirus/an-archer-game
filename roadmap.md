@@ -36,7 +36,7 @@
   - ~~xp gained~~
   - ~~health replenished~~
 - ~~Add "Critical Hit" logic - critical chance + critical damage (multiplier)~~
-- log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc
+- ~~log - show text log of actions - attacked, received damage, regenerated health, gained xp, gained coins etc~~
 - log improvements
   - change font
   - change text size
