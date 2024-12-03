@@ -14,7 +14,7 @@ import DpsIndicator from '../logic/DpsIndicator.ts';
 import {createCursorKeys} from '../helpers/keyboard-helper.ts';
 
 class MainScene extends Scene {
-    level: number;
+    stage: number;
     enemies: Group;
     hero: Hero;
     portal: Portal;
@@ -29,7 +29,7 @@ class MainScene extends Scene {
 
     // Create game objects
     create() {
-        this.level = 1;
+        this.stage = 1;
         this.scene.get('BuildMenuScene').events.on('buildComplete', (data: { buildings: Tower[][] }) => {
             if (data.buildings) {
                 data.buildings.forEach((towersRow: Tower[]) => {
@@ -96,7 +96,7 @@ class MainScene extends Scene {
         });
         this.dpsIndicator = new DpsIndicator(this);
         this.updateDpsIndicator();
-        this.startLevel();
+        this.startStage();
     }
 
     updateDpsIndicator() {
@@ -133,11 +133,11 @@ class MainScene extends Scene {
         }
     }
 
-    startLevel() {
-        createAnimatedText(this, `Level ${this.level}`, 2000)
-        this.spawnEnemies(); // Spawn more enemies for the new level
+    startStage() {
+        createAnimatedText(this, `Stage ${this.stage}`, 2000)
+        this.spawnEnemies(); // Spawn more enemies for the new stage
         this.portal.setDisabled(true);
-        addLogEntry(`Start Level ${this.level} - ${this.enemies.countActive(true)} enemies spawned.`);
+        addLogEntry(`Start Stage ${this.stage} - ${this.enemies.countActive(true)} enemies spawned.`);
     }
 
     // Update game state (called every frame)
@@ -175,7 +175,7 @@ class MainScene extends Scene {
     }
 
     spawnEnemies() {
-        const numEnemies = this.level * 3; // Increase the number of enemies each level
+        const numEnemies = this.stage * 3; // Increase the number of enemies each stage
 
         for (let i = 0; i < numEnemies; i++) {
             const {
@@ -187,10 +187,10 @@ class MainScene extends Scene {
         }
     }
 
-    nextLevel() {
-        this.level += 1;   // Increase level
+    nextStage() {
+        this.stage += 1;   // Increase stage
         this.enemies.clear(true, true); // Clear existing enemies
-        this.startLevel();
+        this.startStage();
     }
 
 }

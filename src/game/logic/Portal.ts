@@ -14,7 +14,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
         scene.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             if (event.key === 'Enter') {
                 if (this.state === 'active'){
-                    scene.nextLevel();
+                    scene.nextStage();
                 }
             }
         });
