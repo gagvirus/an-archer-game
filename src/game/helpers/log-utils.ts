@@ -3,7 +3,18 @@ import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/Sc
 import {createText} from './text-helpers.ts';
 import {COLOR_DANGER, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
 import {VectorZeroes} from './position-helper.ts';
+import Hero from '../logic/Hero.ts';
 import TextStyle = Phaser.GameObjects.TextStyle;
+import Enemy from '../logic/Enemy.ts';
+
+interface StylizedTextPart {
+    text?: string | number;
+    style?: Partial<TextStyle>;
+}
+
+type StylizedTextPartOrStringOrHeroOrEnemy = StylizedTextPart | string | Enemy | Hero;
+
+type StylizedText = StylizedTextPartOrStringOrHeroOrEnemy[];
 
 class LogManager {
     scene: Scene;
@@ -73,6 +84,48 @@ class LogManager {
             this.logPanel.scrollToBottom();
         }
     }
+
+    addLogEntryStylized(messageParts: StylizedText) {
+        const defaultTextStyle: Partial<TextStyle> = {fontStyle: 'normal', color: COLOR_WHITE};
+
+
+        const heroPartyTextStyle: Partial<TextStyle> = {fontStyle: 'bold', color: COLOR_SUCCESS};
+        const enemyPartyTextStyle: Partial<TextStyle> = {fontStyle: 'bold', color: COLOR_DANGER};
+
+        const container = this.scene.add.container();
+        const panel = this.logPanel.getElement('panel') as ScrollablePanel;
+
+
+        let xOffset = 0;
+
+        messageParts.forEach((part) => {
+            if (typeof part === 'string') {
+                part = {
+                    text: part as string,
+                    style: defaultTextStyle,
+                }
+            } else if (part instanceof Enemy) {
+                part = {
+                    text: part.name,
+                    style: enemyPartyTextStyle,
+                }
+            } else if (part instanceof Hero ) {
+                part = {
+                    text: part.name,
+                    style: heroPartyTextStyle,
+                }
+            }
+            const {text, style} = part;
+
+            // Create a styled text object for each part
+            const textObj = this.scene.add.text(xOffset, 0, text ?? '', style ?? defaultTextStyle);
+            container.add(textObj);
+
+            // Update xOffset for the next text part
+            xOffset += textObj.width + 5; // Adjust spacing as needed
+        });
+        panel.add(container); // Add the log entry to the scrollable panel
+    }
 }
 
 enum LogEntryType {
@@ -99,36 +152,37 @@ interface LogEntryData {
     amountStyle?: Partial<TextStyle>,
 }
 
-const getLogEntryMessageByType = (type: LogEntryType, data: LogEntryData = {}) => {
+const getLogEntryMessageByType = (type: LogEntryType, data: LogEntryData = {}): StylizedText => {
     const {firstParty, secondParty, amountStyle = {}, amount, amount2} = data;
-    const style = {
-        fontStyle: 'bold',
-        ...amountStyle,
-    }
-    console.log(style);
     // todo: make first & second party bold
     //  if party is enemy -> red
     //  else -> green
     // todo: also make sure to highlight amounts as well
     switch (type) {
-        case LogEntryType.DamageDealt:
-            return `${firstParty?.name} attacked ${secondParty?.name} for ${amount} DMG`;
-        case LogEntryType.CritDamageDealt:
-            return (`${firstParty?.name} inflicted ${amount} CRIT on ${secondParty?.name}`);
-        case LogEntryType.HealthReplenished:
-            return `${firstParty?.name} Replenished ${amount} HP`;
-        case LogEntryType.KilledEnemy:
-            return `${firstParty?.name} killed ${secondParty?.name}`;
-        case LogEntryType.GainedXp:
-            return `${firstParty?.name} gained ${amount} XP`;
-        case LogEntryType.EvadedAttack:
-            return `${firstParty?.name} evaded attack from ${secondParty?.name}`;
-        case LogEntryType.LeveledUp:
-            return `${firstParty?.name} has become LVL ${amount} !`;
-        case LogEntryType.ReceivedStatPoints:
-            return `${firstParty?.name} has received ${amount} stat points.`;
+        // case LogEntryType.DamageDealt:
+        //     return `${firstParty?.name} attacked ${secondParty?.name} for ${amount} DMG`;
+        // case LogEntryType.CritDamageDealt:
+        //     return (`${firstParty?.name} inflicted ${amount} CRIT on ${secondParty?.name}`);
+        // case LogEntryType.HealthReplenished:
+        //     return `${firstParty?.name} Replenished ${amount} HP`;
+        // case LogEntryType.KilledEnemy:
+        //     return `${firstParty?.name} killed ${secondParty?.name}`;
+        // case LogEntryType.GainedXp:
+        //     return `${firstParty?.name} gained ${amount} XP`;
+        // case LogEntryType.EvadedAttack:
+        //     return `${firstParty?.name} evaded attack from ${secondParty?.name}`;
+        // case LogEntryType.LeveledUp:
+        //     return `${firstParty?.name} has become LVL ${amount} !`;
+        // case LogEntryType.ReceivedStatPoints:
+        //     return `${firstParty?.name} has received ${amount} stat points.`;
         case LogEntryType.StageStarted:
-            return `Start Stage ${amount} - ${amount2} enemies spawned.`;
+            return [
+                'Start Stage ',
+                {text: amount, style: amountStyle},
+                ' - ',
+                {text: amount2, style: amountStyle},
+                ' enemies spawned.',
+            ]
     }
 
     throw new Error(`Invalid entry type received ${type}`);
@@ -141,7 +195,7 @@ const addDamageDealtLogEntry = (firstParty: LogEntryParty, secondParty: LogEntry
         amount,
         amountStyle: {color: COLOR_DANGER},
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addCritDamageDealtLogEntry = (firstParty: LogEntryParty, secondParty: LogEntryParty, amount: number) => {
     const message = getLogEntryMessageByType(LogEntryType.CritDamageDealt, {
@@ -150,7 +204,7 @@ const addCritDamageDealtLogEntry = (firstParty: LogEntryParty, secondParty: LogE
         amount,
         amountStyle: {color: COLOR_WARNING},
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addHealthReplenishedLogEntry = (firstParty: LogEntryParty, amount: number) => {
     const message = getLogEntryMessageByType(LogEntryType.HealthReplenished, {
@@ -158,14 +212,14 @@ const addHealthReplenishedLogEntry = (firstParty: LogEntryParty, amount: number)
         amount,
         amountStyle: {color: COLOR_SUCCESS},
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addKilledEnemyLogEntry = (firstParty: LogEntryParty, secondParty: LogEntryParty) => {
     const message = getLogEntryMessageByType(LogEntryType.KilledEnemy, {
         firstParty,
         secondParty,
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addGainedXpLogEntry = (firstParty: LogEntryParty, amount: number) => {
     const message = getLogEntryMessageByType(LogEntryType.GainedXp, {
@@ -173,14 +227,14 @@ const addGainedXpLogEntry = (firstParty: LogEntryParty, amount: number) => {
         amount,
         amountStyle: {color: COLOR_SUCCESS},
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addEvadedAttackLogEntry = (firstParty: LogEntryParty, secondParty: LogEntryParty) => {
     const message = getLogEntryMessageByType(LogEntryType.EvadedAttack, {
         firstParty,
         secondParty,
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addLeveledUpLogEntry = (firstParty: LogEntryParty, amount: number) => {
     const message = getLogEntryMessageByType(LogEntryType.LeveledUp, {
@@ -188,7 +242,7 @@ const addLeveledUpLogEntry = (firstParty: LogEntryParty, amount: number) => {
         amount,
         amountStyle: {color: COLOR_SUCCESS},
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addReceivedStatPointsLogEntry = (firstParty: LogEntryParty, amount: number) => {
     const message = getLogEntryMessageByType(LogEntryType.ReceivedStatPoints, {
@@ -196,7 +250,7 @@ const addReceivedStatPointsLogEntry = (firstParty: LogEntryParty, amount: number
         amount,
         amountStyle: {color: COLOR_WARNING},
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 const addStageStartedLogEntry = (amount: number, amount2: number) => {
     const message = getLogEntryMessageByType(LogEntryType.StageStarted, {
@@ -204,12 +258,17 @@ const addStageStartedLogEntry = (amount: number, amount2: number) => {
         amount2,
         amountStyle: {color: COLOR_WARNING},
     });
-    addLogEntry(message);
+    addLogEntryStylized(message);
 }
 
 const addLogEntry = (message: string) => {
     const logManager = LogManager.getInstance();
     logManager.addLogEntry(message);
+}
+
+const addLogEntryStylized = (message: StylizedText) => {
+    const logManager = LogManager.getInstance();
+    logManager.addLogEntryStylized(message);
 }
 
 export {
