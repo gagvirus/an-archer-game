@@ -52,8 +52,8 @@
     - ~~critical chance~~
     - ~~critical damage~~
     - ~~attack damage~~
-  - resilience
-    - armor rating
+  - ~~resilience~~
+    - ~~armor rating~~
     - ~~max health~~
     - ~~health regen~~
   - thoughtfulness
