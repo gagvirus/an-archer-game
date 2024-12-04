@@ -140,7 +140,7 @@ class MainScene extends Scene {
         createAnimatedText(this, `Stage ${this.stage}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new stage
         this.portal.setDisabled(true);
-        addLogEntry(`Start Stage ${this.stage} - ${this.enemies.countActive(true)} enemies spawned.`);
+        addLogEntry(`Start Stage ${this.stage} - ${formatNumber(this.enemies.countActive(true))} enemies spawned.`);
     }
 
     // Update game state (called every frame)

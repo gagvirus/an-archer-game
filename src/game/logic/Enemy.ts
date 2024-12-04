@@ -10,7 +10,7 @@ import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import {HEX_COLOR_WARNING} from '../helpers/colors.ts';
-import {showDamage, showEvaded} from '../helpers/text-helpers.ts';
+import {formatNumber, showDamage, showEvaded} from "../helpers/text-helpers.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {addLogEntry} from '../helpers/log-utils.ts';
 
@@ -67,8 +67,8 @@ class Enemy extends Sprite {
                     const pureDamage = this.attackDamage;
                     const blockedDamage = pureDamage * armorRating / 100;
                     const damageDealt = pureDamage - blockedDamage;
-                    const blockedDamageMessage = blockedDamage > 1 ? `, but ${this.hero.attackable.name} blocked ${blockedDamage} DMG` : '';
-                    addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${damageDealt} DMG${blockedDamageMessage}`)
+                    const blockedDamageMessage = blockedDamage > 1 ? `, but ${this.hero.attackable.name} blocked ${formatNumber(blockedDamage)} DMG` : '';
+                    addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${formatNumber(damageDealt)} DMG${blockedDamageMessage}`)
                     this.hero.attackable.takeDamage(this.attackDamage);
                     showDamage(this.scene, this.hero as Vector2Like, damageDealt, false);
                 }

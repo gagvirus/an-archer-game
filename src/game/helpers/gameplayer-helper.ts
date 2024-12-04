@@ -3,7 +3,7 @@ import XpBar from '../logic/XpBar.ts';
 import StatsManager from './stats-manager.ts';
 import Sprite = Phaser.GameObjects.Sprite;
 import {Scene} from 'phaser';
-import {showReplenishedHealth} from './text-helpers.ts';
+import {formatNumber, showReplenishedHealth} from "./text-helpers.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {addLogEntry} from './log-utils.ts';
 
@@ -97,7 +97,7 @@ class Attackable {
             if (this.scene) {
                 if (this.health < this.maxHealth) {
                     showReplenishedHealth(this.scene, this.owner as Vector2Like, amount)
-                    addLogEntry(`Replenished ${amount} HP`)
+                    addLogEntry(`Replenished ${formatNumber(amount)} HP`)
                 }
             }
             this.health += amount;
