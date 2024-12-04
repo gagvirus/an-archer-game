@@ -1,10 +1,10 @@
-import {Scene} from 'phaser';
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
-import StatsManager, {StatGroup} from '../helpers/stats-manager.ts';
-import {createText} from '../helpers/text-helpers.ts';
+import {Scene} from "phaser";
+import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import StatsManager, {StatGroup} from "../helpers/stats-manager.ts";
+import {createText} from "../helpers/text-helpers.ts";
+import {VectorZeroes} from "../helpers/position-helper.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
-import {VectorZeroes} from '../helpers/position-helper.ts';
 
 export class StatsScene extends Scene {
     menu: Buttons;
@@ -12,9 +12,10 @@ export class StatsScene extends Scene {
     statsManager: StatsManager;
     chooseStatsText: Phaser.GameObjects.Text;
     statsButtons: Label[];
+    holdingShift: boolean = false;
 
     constructor() {
-        super('StatsScene');
+        super("StatsScene");
         this.statsGroup = StatsManager.listStatsGroups();
     }
 
@@ -27,30 +28,40 @@ export class StatsScene extends Scene {
         this.menu = this.rexUI.add.buttons({
             x: 400,
             y: 300,
-            orientation: 'y',
+            orientation: "y",
             buttons: this.statsButtons,
             space: {item: 10}
         })
             .layout()
-            .on('button.click', (button: Label, index: number) => this.handleStatSelection(button, index));
+            .on("button.click", (button: Label, index: number) => this.handleStatSelection(button, index));
 
-        this.chooseStatsText = createText(this, 'Choose Stats', {x: 400, y: 100}, 24)
+        this.chooseStatsText = createText(this, "Choose Stats", {x: 400, y: 100}, 24)
         this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
 
-        this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
-            if (['Escape', 'c', 'C'].includes(event.key)) {
-                this.scene.resume('MainScene')
+        this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+            if (["Escape", "c", "C"].includes(event.key)) {
+                this.scene.resume("MainScene")
                 this.scene.stop();
+            }
+            if (["Shift"].includes(event.key)) {
+                this.holdingShift = true;
+                this.updateUI();
+            }
+        });
+
+        this.input.keyboard?.on("keyup", (event: KeyboardEvent) => {
+            if (["Shift"].includes(event.key)) {
+                this.holdingShift = false;
+                this.updateUI();
             }
         });
     }
 
-    updateUnallocatedStatsNumber(newNumber: number)
-    {
-        let chooseStatsLabel = 'Choose Stats'
+    updateUnallocatedStatsNumber(newNumber: number) {
+        let chooseStatsLabel = "Choose Stats"
 
         if (newNumber > 0) {
-            chooseStatsLabel += ' [' + this.statsManager.unallocatedStats + ']';
+            chooseStatsLabel += " [" + this.statsManager.unallocatedStats + "]";
         }
 
         this.chooseStatsText.setText(chooseStatsLabel);
@@ -63,38 +74,49 @@ export class StatsScene extends Scene {
                 radius: 15,
                 iteration: 0
             }, 0x008888),
-            text: createText(this, this.getStatText(statGroup), VectorZeroes(), 18, 'left'),
-            action: createText(this, statGroup.description, VectorZeroes(), 12, 'center', false),
+            text: createText(this, this.getStatText(statGroup), VectorZeroes(), 18, "left"),
+            action: createText(this, statGroup.description, VectorZeroes(), 12, "center", false),
             space: {
                 left: 10,
                 right: 10,
                 top: 10,
                 bottom: 10,
                 icon: 10,
-                text: 5, // Space between text and action
+                text: 5, // Space between text and actioncc
                 // action: 5 // Space between text and bottom padding
             },
-            orientation: 'top-to-bottom', // 1 means vertical alignment (text above action)
-            align: 'left'
+            orientation: "top-to-bottom", // 1 means vertical alignment (text above action)
+            align: "left"
         });
     }
 
-    getStatText(statGroup: StatGroup)
-    {
+    getStatText(statGroup: StatGroup) {
         // @ts-expect-error the stat names is present on the stat manager
         const currentStat = this.statsManager[statGroup.prop];
-        return `${statGroup.label} [${currentStat}]`;
+        const icon = this.holdingShift ? '++' : '+'
+        return `${statGroup.label} [${currentStat}]$ ${icon}`;
     }
 
     handleStatSelection(_: Label, index: number) {
         if (this.statsManager.unallocatedStats < 1) {
             return;
         }
+        let statsToAllocate = 1;
+        if (this.holdingShift) {
+            statsToAllocate = 10;
+            if (statsToAllocate > this.statsManager.unallocatedStats) {
+                statsToAllocate = this.statsManager.unallocatedStats
+            }
+        }
         const selectedStatGroup = this.statsGroup[index];
-        this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= 1);
+        this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsToAllocate);
         // @ts-expect-error the stat names is present on the stat manager
-        this.statsManager[selectedStatGroup.prop] += 1;
+        this.statsManager[selectedStatGroup.prop] += statsToAllocate;
         this.statsButtons[index].setText(this.getStatText(selectedStatGroup))
-        this.events.emit('statsUpdated')
+        this.events.emit("statsUpdated")
+    }
+
+    updateUI() {
+        this.statsButtons.forEach((button, index) => button.setText(this.getStatText(this.statsGroup[index])))
     }
 }
