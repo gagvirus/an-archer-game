@@ -6,15 +6,16 @@ This is a prototype game built using the Phaser framework.
 
 Kill all enemies, which will unlock the portal.
 
-Step on the portal to activate it, then press enter to proceed to the next level
+Step on the portal to activate it, then press enter to proceed to the next stage
 
 ## Controls
 
 - Use Arrows to move ⬅️ ⬆️ ➡️ ⬇️
 - **B** opens the build menu (Work in progress)
-- **C** opens the stats menu (Work in progress)
+- **C** opens the stats menu
+  - Hold **Shift** to bulk-allocate stat points
 - **Space** to attack (if auto-attack is not enabled)
-- **Enter** progress to the next level when portal is active
+- **Enter** progress to the next stage when portal is active
 - **Esc** pause menu
 
 ## Attributions
