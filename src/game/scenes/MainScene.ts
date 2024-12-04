@@ -42,6 +42,8 @@ class MainScene extends Scene {
         this.scene.get('StatsScene').events.on('statsUpdated', () => {
             this.hero.attackable.registerHealthRegenerationIfNecessary()
             this.hero.attackable.setMaxHealth(this.hero.maxHealth);
+            this.hero.attackable.attackDamage = this.hero.attackDamage;
+            this.hero.attackable.attacksPerSecond = this.hero.attacksPerSecond;
             this.hero.xpManager.xpBar.setUnallocatedStats(this.hero.stats.unallocatedStats);
             this.updateDpsIndicator();
             // update the health bar ui

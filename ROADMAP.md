@@ -2,7 +2,6 @@
 
 ### Bugs & Improvements
 
-- bug - damage is not applied immediately after allocating stat - it's active after allocating and then leveling up
 - rename levels to stages
 - log improvements
     - partial bold in log entries

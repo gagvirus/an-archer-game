@@ -94,7 +94,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.attackable.setMaxHealth(this.maxHealth, false)
         this.attackable.attackDamage = this.attackDamage;
         this.attackable.attacksPerSecond = this.attacksPerSecond;
-        const statPointsToGrant = this.statPointsToGrant
+        const statPointsToGrant = this.statPointsToGrant;
         this.stats.unallocatedStats += statPointsToGrant;
         addLogEntry(`${this.name} has received ${statPointsToGrant} stat points.`)
         this.xpManager.xpBar.setUnallocatedStats(this.stats.unallocatedStats);
