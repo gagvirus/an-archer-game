@@ -1,10 +1,23 @@
+## Changelog
+
+### V0.0.2
+- Added Player Stats
+  - On level up player gains a stat point, which they can choose between different stats:
+    - Finesse
+    - Awareness
+    - Resilience
+    - Thoughtfulness
+  - Ability top open "Stats" UI in-game by clicking "C"
+  - Added HP Regen Logic
+
+
+### V0.0.1
+- UI Improvements
+  - On pause screen, resume game on "Esc" press
+  - Display the current player level in game UI
+  - Show HP / Max HP with Numbers
+
 ## Roadmap
-- ~~add stats ability~~
-  - ~~on level up player gains a stat point, which they can choose between different stats:~~
-    -  ~~strength + 5% damage~~
-    -  ~~agility + 5% attack damage~~
-    -  ~~vitality + 5% health~~
-    -  ~~intelligence + 5% extra xp~~
 - powerups
   - e.g. double damage, invulnerability, fast speed (Attack speed, movement speed)
 - different heroes
@@ -44,11 +57,6 @@
 
 ## Todo
 
-- ~~On pause screen, resume game on "Esc" press~~
-- ~~Display the current player level in game UI~~
-- ~~show current / max health~~
-- ~~Have a "Stats" UI in-game (for example when clicking "C" or "S")~~
-- ~~health regeneration logic~~
 - ~~Floating numbers~~
   - ~~for Damage Inflicted~~
   - ~~Damage Received~~
