@@ -1,6 +1,6 @@
 ## Changelog
 
-### WIP
+### v0.0.6
 
 - Displaying number of unallocated stat points without opening stats page
 - Added Ability to allocate stat points in bulk
