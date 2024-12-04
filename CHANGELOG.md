@@ -2,12 +2,13 @@
 
 ### WIP
 
-- Display number of unallocated stat points without opening stats page
-- Ability to allocate stat points in bulk
+- Displaying number of unallocated stat points without opening stats page
+- Added Ability to allocate stat points in bulk
   - Holding "Shift" will enter "Bulk" mode and allocate 10 stat points at once
-- Ability to select stats with keyboard (e.g. 1,2,3,4)
-- bug - damage is not applied immediately after allocating stat - it's active after allocating and then leveling up
-- rename levels to stages
+- Added Ability to select stats with keyboard (e.g. 1,2,3,4)
+- Fixed Bug - damage was not applied immediately after allocating stat
+- Renamed levels to stages
+- Log improvements - formatting numbers in logs (showing 1.5m instead of 15125555)
 
 
 ### v0.0.5
