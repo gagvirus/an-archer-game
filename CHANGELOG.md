@@ -1,5 +1,9 @@
 ## Changelog
 
+### WIP
+
+- Display number of unallocated stat points without opening stats page
+
 ### v0.0.5
 
 - Added DPS Counter

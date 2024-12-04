@@ -2,7 +2,6 @@
 
 ### Bugs & Improvements
 
-- display number of unallocated stat points without opening stats page
 - Ability to allocate stat points in bulk
 - Ability to select stats with keyboard (e.g. 1,2,3,4)
 - bug - damage is not applied immediately after allocating stat - it's active after allocating and then leveling up
