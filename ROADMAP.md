@@ -3,6 +3,10 @@
 ### Bugs & Improvements
 
 - Ability to allocate stat points in bulk
+    - Display a Green "Plus" icon near each stat on StatsScene
+    - Holding "Shift" will change the Green "Plus" to Green "PlusPlus"
+    - Holding "Shift" will enter "Bulk" mode
+    - Holding "Shift" will allocate 10 stat points
 - Ability to select stats with keyboard (e.g. 1,2,3,4)
 - bug - damage is not applied immediately after allocating stat - it's active after allocating and then leveling up
 - rename levels to stages
@@ -44,9 +48,8 @@
     - what stage are you on
     - how many total enemies / remaining enemies are there
 - Ability to un-allocate points
-    - Hold shift then click on stat, shall un-allocate
-    - Display a Green "Plus" icon near each stat on StatsScene
-    - While holding "Shift" key, change the Green "Plus" to a Red "Minus"
+    - Hold Alt then click on stat, shall un-allocate
+    - While holding "Alt" key, change the Green "Plus" to a Red "Minus"
     - Add ability to un-allocate points in bulk
 - Drops - Coins / Resources
     - When killing an enemy, it shall have a chance to drop some resources
