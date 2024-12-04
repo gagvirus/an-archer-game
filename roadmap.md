@@ -15,8 +15,9 @@
   - on enemy kill add some score
   - have a high score (local storage only for now)
   - display the score
-  - add functionality for active skills which can be enabled with hotkeys, have duration and cooldown:
-    - for example: double arrows for 30s, double attack speed for 30s
+  - add leaderboards (backend)
+- add functionality for active skills which can be enabled with hotkeys, have duration and cool-down:
+  - for example: double arrows for 30s, double attack speed for 30s
 - building
   - add ability to build things
     - each building shall persist through levels
@@ -27,7 +28,19 @@
   - some enemies (for example ghosts) shall be able to pass barriers
 - developer settings
   - xp modifier
-
+- display number of unallocated stat points without opening stats page
+- bug - damage is not applied immediately after allocating stat - it's active after allocating and then leveling up
+- ability to select stats with keyboard
+- hero attack range
+- enemy up-scaling
+- rename levels to stages
+- server side:
+    - ability to login via itch
+    - ability to set username
+    - save score
+- show stage info
+    - what stage are you on
+    - how many total enemies / remaining enemies are there
 
 ## Todo
 
@@ -71,13 +84,13 @@
   - how much damage received
 - achievements
   - tbd
-- on stats screen (on pressing **c**) display list of affected stats (e.g. extra damage multiplier etc)
+- on stats screen (on pressing **c**) display list of affected stats (e.g. extra damage multiplier etc.)
 - difficulty slider in settings
 - log improvements
   - ~~change font~~
   - ~~change text size~~
   - partial bold in log entries
-  - partial color change in log entry (for example "inflicted **red**->50 damage)
+  - partial color change in log entry (for example "inflicted **red**->50 damage")
   - format numbers in logs (show 1.5m instead of 15125555)
   - ability to "collapse" & "expand" the log
   - ability to resize the log
@@ -88,7 +101,7 @@
 - Add UI for changing key bindings inside settings
 - settings
   - ability to disable floating numbers
-    - perhaps granularly
+    - perhaps granular
 - Enemy "Death" animation
 - Hero "Level Up" animation
 - Enemy "Spawn" (birth) animation
@@ -98,7 +111,7 @@
 - hp regen shall be paused on different scenes - make sure not to regen hp during pause, stat select etc
   - intervals not being cleaned properly
 - issues after restarting the game after death
-  - hp regen setinterval is not cleared
+  - hp regen setInterval is not cleared
   - errors in the console
 ```phaser.js?v=3ad8faf7:119974 Uncaught TypeError: Cannot read properties of null (reading 'cut')
   at HealthBar.draw (Bar.ts:62:23)
