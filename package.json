@@ -23,7 +23,8 @@
     "scripts": {
         "dev": "vite --config vite/config.dev.mjs",
         "start": "npm run dev",
-        "build": "vite build --config vite/config.prod.mjs"
+        "build": "vite build --config vite/config.prod.mjs",
+        "prod": "npm run build"
     },
     "dependencies": {
         "phaser": "^3.80.1",
