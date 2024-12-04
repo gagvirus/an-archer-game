@@ -25,6 +25,8 @@ export class StatsScene extends Scene {
 
     create() {
         this.statsButtons = this.statsGroup.map(stat => this.createButtonForStatGroup(stat));
+        const statsHotkeys = this.statsGroup.map((statGroup) => statGroup.hotkey);
+
         this.menu = this.rexUI.add.buttons({
             x: 400,
             y: 300,
@@ -33,7 +35,7 @@ export class StatsScene extends Scene {
             space: {item: 10}
         })
             .layout()
-            .on("button.click", (button: Label, index: number) => this.handleStatSelection(button, index));
+            .on("button.click", (_: Label, index: number) => this.handleStatSelection(index));
 
         this.chooseStatsText = createText(this, "Choose Stats", {x: 400, y: 100}, 24)
         this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
@@ -42,6 +44,10 @@ export class StatsScene extends Scene {
             if (["Escape", "c", "C"].includes(event.key)) {
                 this.scene.resume("MainScene")
                 this.scene.stop();
+            }
+            if (statsHotkeys.includes(event.key.toUpperCase())) {
+                const index = this.statsGroup.findIndex(f => f.hotkey == event.key.toUpperCase());
+                this.handleStatSelection(index);
             }
             if (["Shift"].includes(event.key)) {
                 this.holdingShift = true;
@@ -94,10 +100,10 @@ export class StatsScene extends Scene {
         // @ts-expect-error the stat names is present on the stat manager
         const currentStat = this.statsManager[statGroup.prop];
         const icon = this.holdingShift ? '++' : '+'
-        return `${statGroup.label} [${currentStat}]$ ${icon}`;
+        return `[${statGroup.hotkey}] ${statGroup.label} [${currentStat}]$ ${icon}`;
     }
 
-    handleStatSelection(_: Label, index: number) {
+    handleStatSelection(index: number) {
         if (this.statsManager.unallocatedStats < 1) {
             return;
         }

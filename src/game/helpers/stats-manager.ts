@@ -8,6 +8,7 @@ export interface StatGroup {
     prop: string;
     description: string;
     stats: Stat[];
+    hotkey: string;
 }
 
 class StatsManager {
@@ -130,6 +131,7 @@ class StatsManager {
             {
                 label: 'Finesse',
                 prop: 'finesse',
+                hotkey: 'F',
                 description: '(OFF/DEF) affects Attack speed & Evade chance',
                 stats: [
                     {label: 'Dexterity', prop: 'dexterity'},
@@ -139,6 +141,7 @@ class StatsManager {
             {
                 label: 'Awareness',
                 prop: 'awareness',
+                hotkey: 'A',
                 description: '(OFF/OFF) affects Critical chance / Critical damage & Attack damage',
                 stats: [
                     {label: 'Perception', prop: 'perception'},
@@ -148,6 +151,7 @@ class StatsManager {
             {
                 label: 'Resilience',
                 prop: 'resilience',
+                hotkey: 'R',
                 description: '(DEF/DEF) affects armor rating & Max Health / Health Regen',
                 stats: [
                     {label: 'Fortitude', prop: 'fortitude'},
@@ -157,6 +161,7 @@ class StatsManager {
             {
                 label: 'Thoughtfulness',
                 prop: 'thoughtfulness',
+                hotkey: 'T',
                 description: '(MISC) affects XP Gain & Bartering & Coin Gain',
                 stats: [
                     {label: 'Intelligence', prop: 'intelligence'},
