@@ -2,7 +2,6 @@
 
 ### Bugs & Improvements
 
-- rename levels to stages
 - log improvements
     - partial bold in log entries
     - partial color change in log entry (for example "inflicted **red**->50 damage")

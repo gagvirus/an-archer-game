@@ -7,6 +7,7 @@
   - Holding "Shift" will enter "Bulk" mode and allocate 10 stat points at once
 - Ability to select stats with keyboard (e.g. 1,2,3,4)
 - bug - damage is not applied immediately after allocating stat - it's active after allocating and then leveling up
+- rename levels to stages
 
 
 ### v0.0.5
