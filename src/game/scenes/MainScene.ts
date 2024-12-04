@@ -9,7 +9,7 @@ import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../h
 import {createAnimatedText, formatNumber} from '../helpers/text-helpers.ts';
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
-import {addStageStartedLogEntry, LogManager} from '../helpers/log-utils.ts';
+import {addLogEntry, LogManager} from "../helpers/log-utils.ts";
 import DpsIndicator from '../logic/DpsIndicator.ts';
 import {createCursorKeys} from '../helpers/keyboard-helper.ts';
 
@@ -137,8 +137,7 @@ class MainScene extends Scene {
         createAnimatedText(this, `Stage ${this.stage}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new stage
         this.portal.setDisabled(true);
-        // addStageStartedLogEntry(`Start Stage ${this.stage} - ${this.enemies.countActive(true)} enemies spawned.`);
-        addStageStartedLogEntry(1, 1);
+        addLogEntry(`Start Stage ${this.stage} - ${this.enemies.countActive(true)} enemies spawned.`);
     }
 
     // Update game state (called every frame)
