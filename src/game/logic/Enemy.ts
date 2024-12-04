@@ -63,7 +63,7 @@ class Enemy extends Sprite {
                     addLogEntry(`${this.hero.name} evaded attack from ${this.name}`);
                     showEvaded(this.scene, this.hero as Vector2Like);
                 } else {
-                    const armorRating = this.hero.stats.armorRatingAttribute * 10;
+                    const armorRating = this.hero.stats.armorRatingAttribute;
                     const pureDamage = this.attackDamage;
                     const blockedDamage = pureDamage * armorRating / 100;
                     const damageDealt = pureDamage - blockedDamage;
