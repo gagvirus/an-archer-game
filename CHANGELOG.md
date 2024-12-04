@@ -3,6 +3,9 @@
 ### WIP
 
 - Display number of unallocated stat points without opening stats page
+- Ability to allocate stat points in bulk
+  - Holding "Shift" will enter "Bulk" mode and allocate 10 stat points at once
+
 
 ### v0.0.5
 
