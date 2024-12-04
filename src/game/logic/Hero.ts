@@ -97,6 +97,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         const statPointsToGrant = this.statPointsToGrant
         this.stats.unallocatedStats += statPointsToGrant;
         addLogEntry(`${this.name} has received ${statPointsToGrant} stat points.`)
+        this.xpManager.xpBar.setUnallocatedStats(this.stats.unallocatedStats);
         this.scene.events.emit('levelUp');
     }
 

@@ -35,7 +35,7 @@ class XpManager {
             this.level += 1;
             this.onLevelUp(this.level);
             this.gainXp(xpOverflow);
-            this.xpBar.level = this.level;
+            this.xpBar.setLevel(this.level);
         }
         this.xpBar.updateBar(this.xp, this.xpToNextLevel);
     }
