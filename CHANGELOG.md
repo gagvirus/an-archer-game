@@ -9,6 +9,7 @@
     - log
 - Log Improvements
     - Added ability to "close" & "open" the log
+    - Separate logic for storing log entries and rendering them
 
 ### v0.0.6
 
