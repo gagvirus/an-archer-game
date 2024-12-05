@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
 import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
-import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {formatNumber, showDamage, showGainedXp} from "../helpers/text-helpers.ts";
 import Enemy from './Enemy.ts';
 import Hero from './Hero.ts';
 import StatsManager from '../helpers/stats-manager.ts';
-import {addLogEntry} from '../helpers/log-utils.ts';
+import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
     target: Attackable;
@@ -63,18 +63,18 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (isCritical) {
-            addLogEntry(`${this.owner.name} inflicted ${formatNumber(attackDamage)} CRIT on ${this.target.name}`);
+            addLogEntry(`${this.owner.name} inflicted ${formatNumber(attackDamage)} CRIT on ${this.target.name}`, LogEntryCategory.Combat);
         } else {
-            addLogEntry(`${this.owner.name} attacked ${this.target.name} for ${formatNumber(attackDamage)} DMG`);
+            addLogEntry(`${this.owner.name} attacked ${this.target.name} for ${formatNumber(attackDamage)} DMG`, LogEntryCategory.Combat);
         }
         this.target.takeDamage(attackDamage, (target: Attackable) => {
             this.owner.onKilledTarget(target)
             const baseXp = (target.owner as Enemy).xpAmount;
             const xpGainModifier = stats.xpGainMultiplier;
-            addLogEntry(`${this.owner.name} killed ${this.target.name}`);
+            addLogEntry(`${this.owner.name} killed ${this.target.name}`, LogEntryCategory.Combat);
             const gainedXP = baseXp * xpGainModifier;
             showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, gainedXP)
-            addLogEntry(`${this.owner.name} gained ${formatNumber(gainedXP)} XP`);
+            addLogEntry(`${this.owner.name} gained ${formatNumber(gainedXP)} XP`, LogEntryCategory.Loot);
         });
         showDamage(this.scene, this.target.owner as Vector2Like, attackDamage, isCritical);
 

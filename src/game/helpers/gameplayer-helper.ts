@@ -1,11 +1,11 @@
 import HealthBar from '../logic/HealthBar.ts';
 import XpBar from '../logic/XpBar.ts';
 import StatsManager from './stats-manager.ts';
-import Sprite = Phaser.GameObjects.Sprite;
 import {Scene} from 'phaser';
 import {formatNumber, showReplenishedHealth} from "./text-helpers.ts";
+import {addLogEntry, LogEntryCategory} from './log-utils.ts';
+import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {addLogEntry} from './log-utils.ts';
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -96,8 +96,8 @@ class Attackable {
         if (amount > 1) {
             if (this.scene) {
                 if (this.health < this.maxHealth) {
-                    showReplenishedHealth(this.scene, this.owner as Vector2Like, amount)
-                    addLogEntry(`Replenished ${formatNumber(amount)} HP`)
+                    showReplenishedHealth(this.scene, this.owner as Vector2Like, amount);
+                    addLogEntry(`Replenished ${formatNumber(amount)} HP`, LogEntryCategory.Combat);
                 }
             }
             this.health += amount;
