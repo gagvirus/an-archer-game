@@ -14,7 +14,7 @@ class DpsIndicator {
 
     createDpsIndicator() {
         return createText(this.scene, '', {
-            x: this.scene.scale.width - 50, // Bottom-right corner
+            x: this.scene.scale.width - 50,
             y: 20,
         }, 16)
     }

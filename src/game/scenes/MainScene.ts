@@ -12,8 +12,12 @@ import Tower from "../logic/Tower.ts";
 import {addLogEntry, LogEntryCategory, LogManager} from "../helpers/log-utils.ts";
 import DpsIndicator from '../logic/DpsIndicator.ts';
 import {createCursorKeys} from '../helpers/keyboard-helper.ts';
+import ModuleManager, {Module} from '../modules/module-manager.ts';
+import FpsCounterModule from '../modules/fps-counter-module.ts';
 
 class MainScene extends Scene {
+    private moduleManager!: ModuleManager;
+
     stage: number;
     enemies: Group;
     hero: Hero;
@@ -29,6 +33,15 @@ class MainScene extends Scene {
 
     // Create game objects
     create() {
+        // Initialize the module manager
+        this.moduleManager = new ModuleManager();
+
+        // Register modules
+        const fpsCounter = new FpsCounterModule(this);
+        this.moduleManager.register(Module.fpsCounter, fpsCounter);
+        // Enable the FPS counter initially
+        this.moduleManager.enable(Module.fpsCounter);
+
         this.stage = 1;
         this.scene.get('BuildMenuScene').events.on('buildComplete', (data: { buildings: Tower[][] }) => {
             if (data.buildings) {
@@ -39,6 +52,7 @@ class MainScene extends Scene {
                 })
             }
         })
+
         this.scene.get('StatsScene').events.on('statsUpdated', () => {
             this.hero.attackable.registerHealthRegenerationIfNecessary()
             this.hero.attackable.setMaxHealth(this.hero.maxHealth);
@@ -94,7 +108,11 @@ class MainScene extends Scene {
 
             if (event.key === 'c') {
                 this.scene.pause();
-                this.scene.launch('StatsScene', { statsManager: this.hero.stats });
+                this.scene.launch('StatsScene', {statsManager: this.hero.stats});
+            }
+
+            if (event.key == 'f') {
+                this.moduleManager.toggle(Module.fpsCounter);
             }
         });
         this.dpsIndicator = new DpsIndicator(this);
@@ -145,6 +163,8 @@ class MainScene extends Scene {
 
     // Update game state (called every frame)
     update(time: number, delta: number) {
+        this.moduleManager.update();
+
         // Make enemies move towards the hero and avoid collision with each other
         this.enemies.getChildren().forEach((gameObject: GameObject) => {
             (gameObject as Enemy).update(time, delta);
