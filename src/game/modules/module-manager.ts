@@ -3,6 +3,7 @@ import AbstractModule from './abstract-module.ts';
 export enum Module
 {
     fpsCounter = 'fpsCounter',
+    dpsIndicator = 'dpsIndicator',
 }
 
 class ModuleManager {
@@ -10,6 +11,13 @@ class ModuleManager {
 
     register(key: string, moduleInstance: AbstractModule) {
         this.modules[key] = {instance: moduleInstance, active: false};
+    }
+
+    getModule<T extends AbstractModule>(key: string): T | null {
+        if (this.modules[key] && this.modules[key].active) {
+            return this.modules[key].instance as T;
+        }
+        return null;
     }
 
     enable(key: string) {

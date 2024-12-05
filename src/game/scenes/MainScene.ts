@@ -10,10 +10,10 @@ import {createAnimatedText, formatNumber} from '../helpers/text-helpers.ts';
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
 import {addLogEntry, LogEntryCategory, LogManager} from "../helpers/log-utils.ts";
-import DpsIndicator from '../logic/DpsIndicator.ts';
 import {createCursorKeys} from '../helpers/keyboard-helper.ts';
 import ModuleManager, {Module} from '../modules/module-manager.ts';
 import FpsCounterModule from '../modules/fps-counter-module.ts';
+import DpsIndicatorModule from '../modules/dps-indicator-module.ts';
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -24,7 +24,6 @@ class MainScene extends Scene {
     portal: Portal;
     buildings: Group;
     logManager: LogManager;
-    dpsIndicator: DpsIndicator;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -35,12 +34,17 @@ class MainScene extends Scene {
     create() {
         // Initialize the module manager
         this.moduleManager = new ModuleManager();
+        // initialize the portal
+        this.portal = new Portal(this, 400, 400);
+        // Initialize the hero in the center of the canvas
+        this.hero = new Hero(this, this.scale.width / 2, this.scale.height / 2);
 
         // Register modules
-        const fpsCounter = new FpsCounterModule(this);
-        this.moduleManager.register(Module.fpsCounter, fpsCounter);
+        this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
+        this.moduleManager.register(Module.dpsIndicator, new DpsIndicatorModule(this, this.hero));
         // Enable the FPS counter initially
         this.moduleManager.enable(Module.fpsCounter);
+        this.moduleManager.enable(Module.dpsIndicator);
 
         this.stage = 1;
         this.scene.get('BuildMenuScene').events.on('buildComplete', (data: { buildings: Tower[][] }) => {
@@ -59,13 +63,9 @@ class MainScene extends Scene {
             this.hero.attackable.attackDamage = this.hero.attackDamage;
             this.hero.attackable.attacksPerSecond = this.hero.attacksPerSecond;
             this.hero.xpManager.xpBar.setUnallocatedStats(this.hero.stats.unallocatedStats);
-            this.updateDpsIndicator();
             // update the health bar ui
             // update the health regen tick
         });
-        this.events.on('levelUp', () => {
-            this.updateDpsIndicator();
-        })
         LogManager.getInstance(this);
         // Listener for pointer (mouse/touch) inputs
         // this.input.on('pointerdown', (pointer: Pointer) => {
@@ -81,17 +81,11 @@ class MainScene extends Scene {
         // this.input.on('pointermove', () => {
         //     // console.log(`Pointer moved to x: ${pointer.x}, y: ${pointer.y}`);
         // });
-        this.portal = new Portal(this, 400, 400);
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
 
         this.buildings = this.physics.add.group();
-
-        // Initialize the hero in the center of the canvas
-        const centerX = this.scale.width / 2;
-        const centerY = this.scale.height / 2;
-        this.hero = new Hero(this, centerX, centerY);
 
         // Listener for keyboard inputs
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
@@ -114,14 +108,12 @@ class MainScene extends Scene {
             if (event.key == 'f') {
                 this.moduleManager.toggle(Module.fpsCounter);
             }
-        });
-        this.dpsIndicator = new DpsIndicator(this);
-        this.updateDpsIndicator();
-        this.startStage();
-    }
 
-    updateDpsIndicator() {
-        this.dpsIndicator.setDps(formatNumber(this.hero.damagePerSecond));
+            if (event.key == 'g') {
+                this.moduleManager.toggle(Module.dpsIndicator);
+            }
+        });
+        this.startStage();
     }
 
     getOccupiedTiles() {
