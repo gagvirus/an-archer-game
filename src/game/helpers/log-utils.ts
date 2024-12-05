@@ -4,9 +4,17 @@ import {createText} from "./text-helpers.ts";
 import {COLOR_WHITE} from "./colors.ts";
 import {VectorZeroes} from "./position-helper.ts";
 
+type LogEntryCategory = 'general' | 'combat' | 'event';
+
+interface LogEntry {
+    message: string;
+    category: LogEntryCategory;
+}
+
 class LogManager {
     scene: Scene;
     logPanel: ScrollablePanel;
+    _entries: LogEntry[] = [];
 
     private static _instance: LogManager;
 
@@ -60,8 +68,10 @@ class LogManager {
     /**
      * Adds a new log entry to the log panel.
      * @param message The log message to display.
+     * @param category The category of the message.
      */
-    addLogEntry(message: string) {
+    addLogEntry(message: string, category: LogEntryCategory = 'general') {
+        this._entries.push({message, category});
         const logText = createText(this.scene, message, VectorZeroes(), 12, "left", false, COLOR_WHITE, {fixedWidth: 480});
 
         if (this.logPanel) {
@@ -74,9 +84,9 @@ class LogManager {
     }
 }
 
-const addLogEntry = (message: string) => {
+const addLogEntry = (message: string, category: LogEntryCategory = 'general') => {
     const logManager = LogManager.getInstance();
-    logManager.addLogEntry(message);
+    logManager.addLogEntry(message, category);
 }
 
 export {LogManager, addLogEntry};
