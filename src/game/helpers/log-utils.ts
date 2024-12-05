@@ -4,7 +4,12 @@ import {createText} from "./text-helpers.ts";
 import {COLOR_WHITE} from "./colors.ts";
 import {VectorZeroes} from "./position-helper.ts";
 
-type LogEntryCategory = 'general' | 'combat' | 'event';
+export enum LogEntryCategory {
+    General, // anything not falling in categories below
+    Combat, // attack, death or skill usage
+    World, // level started, something spawned, event started
+    Loot, // resource, xp or item gained
+}
 
 interface LogEntry {
     message: string;
@@ -70,7 +75,7 @@ class LogManager {
      * @param message The log message to display.
      * @param category The category of the message.
      */
-    addLogEntry(message: string, category: LogEntryCategory = 'general') {
+    addLogEntry(message: string, category: LogEntryCategory = LogEntryCategory.General) {
         this._entries.push({message, category});
         const logText = createText(this.scene, message, VectorZeroes(), 12, "left", false, COLOR_WHITE, {fixedWidth: 480});
 
@@ -84,7 +89,7 @@ class LogManager {
     }
 }
 
-const addLogEntry = (message: string, category: LogEntryCategory = 'general') => {
+const addLogEntry = (message: string, category: LogEntryCategory = LogEntryCategory.General) => {
     const logManager = LogManager.getInstance();
     logManager.addLogEntry(message, category);
 }
