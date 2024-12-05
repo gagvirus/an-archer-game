@@ -6,6 +6,7 @@
 - make UI elements modular
     - fps counter
     - dps counter
+    - log
 
 ### v0.0.6
 

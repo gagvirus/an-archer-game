@@ -2,8 +2,6 @@
 
 ### Bugs & Improvements
 
-- make UI elements modular
-  - log
 - log improvements
     - separate log storing and displaying
     - partial bold in log entries
