@@ -4,9 +4,12 @@ import {VectorZeroes} from '../helpers/position-helper.ts';
 import {COLOR_WHITE} from '../helpers/colors.ts';
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel';
 import {LogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {GameObjects} from 'phaser';
 
 class LogModule extends AbstractModule {
+    MAX_ENTRIES = 1000;
     _entries: LogEntry[] = [];
+    _entryTexts: GameObjects.Text[] = [];
     logPanel?: ScrollablePanel;
 
 
@@ -32,10 +35,16 @@ class LogModule extends AbstractModule {
      */
     addLogEntry(message: string, category: LogEntryCategory = LogEntryCategory.General) {
         this._entries.push({message, category});
+        if (this._entries.length >= this.MAX_ENTRIES) {
+            this._entries.shift(); // Remove the oldest entry
+            this._entryTexts[0].destroy();
+            this._entryTexts.shift();
+        }
         const logText = createText(this.scene, message, VectorZeroes(), 12, "left", false, COLOR_WHITE, {fixedWidth: 480});
 
         if (this.logPanel) {
             const panel = this.logPanel.getElement("panel") as ScrollablePanel;
+            this._entryTexts.push(logText)
             panel.add(logText); // Add the log entry to the scrollable panel
             this.logPanel.layout(); // Re-layout the panel to adjust to new content
             // Auto-scroll to the bottom to show the latest entry
