@@ -3,7 +3,6 @@
 ### Bugs & Improvements
 
 - make UI elements modular
-  - dps counter
   - log
 - log improvements
     - separate log storing and displaying
