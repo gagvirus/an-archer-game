@@ -17,6 +17,18 @@
     - errors in the console
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
   arrow arrives at destination, XP is awarded again
+- Attack speed and armor rating improvements
+    - instead of plain calculating the attacks per second and damage reduction percent, must define some logic, that
+      will return some numerical value (for example base attack speed is 50, each agility stat increases +5). have a
+      getter "get attack speed" which will return this number. then this number will be combined with the base stat,
+      will also add stat from item in future, and calculate attacks per second based on this. the correlation between
+      attack speed and attacks per second shall not be linear, instead the increase amount shall decline the higher the
+      number is.
+- Attack speed issues
+    - when the attack speed is very high, it causes lag / instability
+    - have a max attack speed limit constant
+    - when limit is reached, increment damage instead of attack speed
+    - ensure calculate the damage boost amount in a way that it would add same DPS as attack speed would add
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 
 ```phaser.js?v=3ad8faf7:119974 Uncaught TypeError: Cannot read properties of null (reading 'cut')
