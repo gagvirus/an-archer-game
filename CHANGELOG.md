@@ -1,5 +1,11 @@
 ## Changelog
 
+### WIP
+
+- add FPS counter
+- make UI elements modular
+    - fps counter
+
 ### v0.0.6
 
 - Displaying number of unallocated stat points without opening stats page

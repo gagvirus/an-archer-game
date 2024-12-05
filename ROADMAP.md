@@ -2,9 +2,7 @@
 
 ### Bugs & Improvements
 
-- add FPS counter
 - make UI elements modular
-  - fps counter
   - dps counter
   - log
 - log improvements
