@@ -1,6 +1,6 @@
 ## Changelog
 
-### WIP
+### v0.0.7
 
 - add FPS counter
 - make UI elements modular
