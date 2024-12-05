@@ -100,7 +100,7 @@ export class StatsScene extends Scene {
         // @ts-expect-error the stat names is present on the stat manager
         const currentStat = this.statsManager[statGroup.prop];
         const icon = this.holdingShift ? '++' : '+'
-        return `[${statGroup.hotkey}] ${statGroup.label} [${currentStat}]$ ${icon}`;
+        return `[${statGroup.hotkey}] ${statGroup.label} [${currentStat}] ${icon}`;
     }
 
     handleStatSelection(index: number) {
