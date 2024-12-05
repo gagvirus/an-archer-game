@@ -42,6 +42,8 @@ class MainScene extends Scene {
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
         this.moduleManager.register(Module.dpsIndicator, new DpsIndicatorModule(this, this.hero));
+        // cleanup any previous logs
+        LogModule.cleanEntries();
         this.moduleManager.register(Module.logs, new LogModule(this));
         // Enable the FPS counter initially
         this.moduleManager.enable(Module.fpsCounter);

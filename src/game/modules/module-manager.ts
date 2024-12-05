@@ -37,6 +37,13 @@ class ModuleManager {
     }
 
     getModule<T extends AbstractModule>(key: string): T | null {
+        if (this.modules[key]) {
+            return this.modules[key].instance as T;
+        }
+        return null;
+    }
+
+    getModuleIfActive<T extends AbstractModule>(key: string): T | null {
         if (this.modules[key] && this.modules[key].active) {
             return this.modules[key].instance as T;
         }

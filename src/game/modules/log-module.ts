@@ -8,23 +8,31 @@ import {GameObjects} from 'phaser';
 
 class LogModule extends AbstractModule {
     MAX_ENTRIES = 1000;
-    _entries: LogEntry[] = [];
+    private static _entries: LogEntry[] = [];
     _entryTexts: GameObjects.Text[] = [];
     logPanel?: ScrollablePanel;
 
-
     start(): void {
         this.logPanel = this.createLogPanel();
+        // re-render messages if there are already stored ones
+        LogModule._entries.forEach((logEntry) => this.renderLogEntry(logEntry))
     }
 
     stop(): void {
         if (this.logPanel) {
             this.logPanel.destroy();
+            this._entryTexts.forEach(text => text.destroy())
+            this._entryTexts = [];
+
             this.logPanel = undefined;
         }
     }
 
     update(): void {
+    }
+
+    static cleanEntries(): void {
+        LogModule._entries = [];
     }
 
 
@@ -34,16 +42,20 @@ class LogModule extends AbstractModule {
      * @param category The category of the message.
      */
     addLogEntry(message: string, category: LogEntryCategory = LogEntryCategory.General) {
-        this._entries.push({message, category});
-        if (this._entries.length >= this.MAX_ENTRIES) {
-            this._entries.shift(); // Remove the oldest entry
-            this._entryTexts[0].destroy();
-            this._entryTexts.shift();
+        const logEntry: LogEntry = {message, category};
+        LogModule._entries.push(logEntry);
+        if (LogModule._entries.length >= this.MAX_ENTRIES) {
+            LogModule._entries.shift(); // Remove the oldest entry
+            this._entryTexts.shift()?.destroy(); // Remove reference to the text object as well and destroy
         }
-        const logText = createText(this.scene, message, VectorZeroes(), 12, "left", false, COLOR_WHITE, {fixedWidth: 480});
+        this.renderLogEntry(logEntry);
+    }
 
+    private renderLogEntry(logEntry: LogEntry) {
+        const {message} = logEntry;
         if (this.logPanel) {
-            const panel = this.logPanel.getElement("panel") as ScrollablePanel;
+            const logText = createText(this.scene, message, VectorZeroes(), 12, 'left', false, COLOR_WHITE, {fixedWidth: 480});
+            const panel = this.logPanel.getElement('panel') as ScrollablePanel;
             this._entryTexts.push(logText)
             panel.add(logText); // Add the log entry to the scrollable panel
             this.logPanel.layout(); // Re-layout the panel to adjust to new content
@@ -64,7 +76,7 @@ class LogModule extends AbstractModule {
 
             panel: {
                 child: this.scene.rexUI.add.sizer({
-                    orientation: "vertical",
+                    orientation: 'vertical',
                     space: {item: 10} // Space between log entries
                 }),
 
