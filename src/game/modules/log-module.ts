@@ -1,0 +1,82 @@
+import AbstractModule from './abstract-module.ts';
+import {createText} from '../helpers/text-helpers.ts';
+import {VectorZeroes} from '../helpers/position-helper.ts';
+import {COLOR_WHITE} from '../helpers/colors.ts';
+import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel';
+import {LogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+
+class LogModule extends AbstractModule {
+    _entries: LogEntry[] = [];
+    logPanel?: ScrollablePanel;
+
+
+    start(): void {
+        this.logPanel = this.createLogPanel();
+    }
+
+    stop(): void {
+        if (this.logPanel) {
+            this.logPanel.destroy();
+            this.logPanel = undefined;
+        }
+    }
+
+    update(): void {
+    }
+
+
+    /**
+     * Adds a new log entry to the log panel.
+     * @param message The log message to display.
+     * @param category The category of the message.
+     */
+    addLogEntry(message: string, category: LogEntryCategory = LogEntryCategory.General) {
+        this._entries.push({message, category});
+        const logText = createText(this.scene, message, VectorZeroes(), 12, "left", false, COLOR_WHITE, {fixedWidth: 480});
+
+        if (this.logPanel) {
+            const panel = this.logPanel.getElement("panel") as ScrollablePanel;
+            panel.add(logText); // Add the log entry to the scrollable panel
+            this.logPanel.layout(); // Re-layout the panel to adjust to new content
+            // Auto-scroll to the bottom to show the latest entry
+            this.logPanel.scrollToBottom();
+        }
+    }
+
+    private createLogPanel(): ScrollablePanel {
+        return this.scene.rexUI.add.scrollablePanel({
+            x: this.scene.scale.width - 260, // Bottom-right corner
+            y: this.scene.scale.height - 150,
+            width: 480,
+            height: 300,
+
+            scrollMode: 0, // 0 for vertical scrolling
+            background: this.scene.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x333333),
+
+            panel: {
+                child: this.scene.rexUI.add.sizer({
+                    orientation: "vertical",
+                    space: {item: 10} // Space between log entries
+                }),
+
+                mask: {
+                    padding: 1
+                }
+            },
+
+            slider: {
+                track: this.scene.rexUI.add.roundRectangle(0, 0, 20, 10, 10, 0x888888),
+                thumb: this.scene.rexUI.add.roundRectangle(0, 0, 20, 30, 10, 0xffffff)
+            },
+            space: {
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 10,
+                panel: 10
+            }
+        }).layout();
+    }
+}
+
+export default LogModule;

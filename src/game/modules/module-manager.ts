@@ -1,13 +1,36 @@
 import AbstractModule from './abstract-module.ts';
+import {Scene} from 'phaser';
 
-export enum Module
-{
+export enum Module {
     fpsCounter = 'fpsCounter',
     dpsIndicator = 'dpsIndicator',
+    logs = 'logs',
 }
 
 class ModuleManager {
     private modules: { [key: string]: { instance: AbstractModule; active: boolean } } = {};
+    private scene: Scene;
+    private static _instance: ModuleManager;
+
+    private constructor() {
+    }
+
+    static getInstance(scene?: Scene) {
+        if (!ModuleManager._instance) {
+            ModuleManager._instance = new ModuleManager();
+            ModuleManager._instance.scene = scene as Scene;
+        }
+        return ModuleManager._instance;
+    }
+
+    setScene(scene: Scene) {
+        this.scene = scene;
+    }
+
+    getScene(): Scene
+    {
+        return this.scene;
+    }
 
     register(key: string, moduleInstance: AbstractModule) {
         this.modules[key] = {instance: moduleInstance, active: false};

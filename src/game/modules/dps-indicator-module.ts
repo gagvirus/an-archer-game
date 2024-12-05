@@ -29,7 +29,6 @@ class DpsIndicatorModule extends AbstractModule {
     }
 
     update() {
-        console.log(this.hero);
         if (this.dpsText && this.hero) {
             this.dpsText.setText(`DPS ${formatNumber(this.hero.damagePerSecond)}`);
         }

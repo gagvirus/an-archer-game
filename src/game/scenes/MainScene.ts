@@ -9,11 +9,12 @@ import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../h
 import {createAnimatedText, formatNumber} from '../helpers/text-helpers.ts';
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
-import {addLogEntry, LogEntryCategory, LogManager} from "../helpers/log-utils.ts";
+import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
 import {createCursorKeys} from '../helpers/keyboard-helper.ts';
 import ModuleManager, {Module} from '../modules/module-manager.ts';
 import FpsCounterModule from '../modules/fps-counter-module.ts';
 import DpsIndicatorModule from '../modules/dps-indicator-module.ts';
+import LogModule from '../modules/log-module.ts';
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -23,7 +24,6 @@ class MainScene extends Scene {
     hero: Hero;
     portal: Portal;
     buildings: Group;
-    logManager: LogManager;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -33,7 +33,7 @@ class MainScene extends Scene {
     // Create game objects
     create() {
         // Initialize the module manager
-        this.moduleManager = new ModuleManager();
+        this.moduleManager = ModuleManager.getInstance(this);
         // initialize the portal
         this.portal = new Portal(this, 400, 400);
         // Initialize the hero in the center of the canvas
@@ -42,9 +42,11 @@ class MainScene extends Scene {
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
         this.moduleManager.register(Module.dpsIndicator, new DpsIndicatorModule(this, this.hero));
+        this.moduleManager.register(Module.logs, new LogModule(this));
         // Enable the FPS counter initially
         this.moduleManager.enable(Module.fpsCounter);
         this.moduleManager.enable(Module.dpsIndicator);
+        this.moduleManager.enable(Module.logs);
 
         this.stage = 1;
         this.scene.get('BuildMenuScene').events.on('buildComplete', (data: { buildings: Tower[][] }) => {
@@ -66,7 +68,6 @@ class MainScene extends Scene {
             // update the health bar ui
             // update the health regen tick
         });
-        LogManager.getInstance(this);
         // Listener for pointer (mouse/touch) inputs
         // this.input.on('pointerdown', (pointer: Pointer) => {
         //     console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
@@ -111,6 +112,10 @@ class MainScene extends Scene {
 
             if (event.key == 'g') {
                 this.moduleManager.toggle(Module.dpsIndicator);
+            }
+
+            if (event.key == 'l') {
+                this.moduleManager.toggle(Module.logs);
             }
         });
         this.startStage();
