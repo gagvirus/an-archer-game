@@ -54,7 +54,7 @@ class LogModule extends AbstractModule {
     private renderLogEntry(logEntry: LogEntry) {
         const {message} = logEntry;
         if (this.logPanel) {
-            const logText = createText(this.scene, message, VectorZeroes(), 12, 'left', false, COLOR_WHITE, {fixedWidth: 480});
+            const logText = createText(this.scene, message, VectorZeroes(), 12, 'left', false, COLOR_WHITE, {fixedWidth: 300});
             const panel = this.logPanel.getElement('panel') as ScrollablePanel;
             this._entryTexts.push(logText)
             panel.add(logText); // Add the log entry to the scrollable panel
@@ -66,10 +66,10 @@ class LogModule extends AbstractModule {
 
     private createLogPanel(): ScrollablePanel {
         return this.scene.rexUI.add.scrollablePanel({
-            x: this.scene.scale.width - 260, // Bottom-right corner
-            y: this.scene.scale.height - 150,
-            width: 480,
-            height: 300,
+            x: this.scene.scale.width - 170, // Bottom-right corner
+            y: this.scene.scale.height - 100,
+            width: 300,
+            height: 200,
 
             scrollMode: 0, // 0 for vertical scrolling
             background: this.scene.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x333333),
