@@ -6,7 +6,6 @@
     - separate log storing and displaying
     - partial bold in log entries
     - partial color change in log entry (for example "inflicted **red**->50 damage")
-    - ability to "collapse" & "expand" the log
     - ability to resize the log
     - copy log contents
 - Fix regen logic

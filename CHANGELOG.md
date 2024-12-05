@@ -7,6 +7,8 @@
     - fps counter
     - dps counter
     - log
+- Log Improvements
+    - Added ability to "close" & "open" the log
 
 ### v0.0.6
 
