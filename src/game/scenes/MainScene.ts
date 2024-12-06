@@ -16,6 +16,7 @@ import FpsCounterModule from '../modules/fps-counter-module.ts';
 import DpsIndicatorModule from '../modules/dps-indicator-module.ts';
 import LogModule from '../modules/log-module.ts';
 import {COLOR_WARNING} from '../helpers/colors.ts';
+import {isDebugMode} from '../helpers/registry-helper.ts';
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -97,6 +98,13 @@ class MainScene extends Scene {
             if (event.key === 'c') {
                 this.pauseCurrentScene();
                 this.scene.launch('StatsScene', {statsManager: this.hero.stats});
+            }
+
+            if (event.key === 'k') {
+                if (isDebugMode(this.game)) {
+                    this.hero.attackable.takeDamage(Infinity);
+                }
+
             }
 
             if (event.key == 'f') {
