@@ -6,8 +6,8 @@ function App() {
   //  References to the PhaserGame component (game and scene are exposed)
   const phaserRef = useRef<IRefPhaserGame | null>(null);
 
-  const setScene = (scene: Phaser.Scene) => {
-    console.log(`Setting active scene ${scene.scene.key}`)
+  const setScene = () => {
+    // we can listen here for a scene change
   }
 
   return (

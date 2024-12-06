@@ -48,7 +48,10 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
             this.attackDamage, // attack damage
             this.maxHealth, // initial health
             (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth, VectorZeroes(), true),
-            () => this.scene.scene.start('GameOver'),
+            () => {
+                this.attackable.stopRegeneration();
+                this.scene.scene.start('GameOver');
+            },
             () => {
                 const nearestEnemy = this.getNearestEnemy();
                 if (nearestEnemy) {

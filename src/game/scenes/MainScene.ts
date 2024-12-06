@@ -77,21 +77,25 @@ class MainScene extends Scene {
 
         this.buildings = this.physics.add.group();
 
+        this.events.on('resume', () => {
+            this.hero.attackable.registerHealthRegenerationIfNecessary();
+        });
+
         // Listener for keyboard inputs
         this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                this.scene.pause();
+                this.pauseCurrentScene();
                 this.scene.launch('PauseMenu');
             }
 
             if (event.key === 'b') {
-                this.scene.pause();
+                this.pauseCurrentScene();
                 // get disabled tiles and pass to build scene
                 this.scene.launch('BuildMenuScene', {occupiedTiles: this.getOccupiedTiles()});
             }
 
             if (event.key === 'c') {
-                this.scene.pause();
+                this.pauseCurrentScene();
                 this.scene.launch('StatsScene', {statsManager: this.hero.stats});
             }
 
@@ -108,6 +112,12 @@ class MainScene extends Scene {
             }
         });
         this.startStage();
+    }
+
+    pauseCurrentScene()
+    {
+        this.scene.pause();
+        this.hero.attackable.stopRegeneration();
     }
 
     getOccupiedTiles() {

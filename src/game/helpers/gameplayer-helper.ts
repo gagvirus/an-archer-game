@@ -4,9 +4,9 @@ import StatsManager from './stats-manager.ts';
 import {Scene} from 'phaser';
 import {showReplenishedHealth} from './text-helpers.ts';
 import {addLogEntry, LogEntryCategory} from './log-utils.ts';
+import {COLOR_SUCCESS} from './colors.ts';
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {COLOR_SUCCESS} from './colors.ts';
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -140,9 +140,7 @@ class Attackable {
 
     registerHealthRegenerationIfNecessary() {
         if ('stats' in this.owner) {
-            if (this.regenerationInterval) {
-                clearInterval(this.regenerationInterval);
-            }
+            this.stopRegeneration();
             const statsManager = this.owner.stats as StatsManager;
             if (statsManager.healthRegenerationInterval > 0) {
                 this.regenerationInterval = setInterval(() => {
@@ -152,8 +150,13 @@ class Attackable {
         }
     }
 
-    get name()
-    {
+    stopRegeneration() {
+        if (this.regenerationInterval) {
+            clearInterval(this.regenerationInterval);
+        }
+    }
+
+    get name() {
         return this.owner.name;
     }
 }
