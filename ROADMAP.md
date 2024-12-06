@@ -2,11 +2,7 @@
 
 ### Bugs & Improvements
 
-- Fix regen logic
-    - hp regen shall be paused on different scenes - make sure not to regen hp during pause, stat select etc
-        - intervals not being cleaned properly
 - issues after restarting the game after death
-    - hp regen setInterval is not cleared
     - errors in the console
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
   arrow arrives at destination, XP is awarded again
