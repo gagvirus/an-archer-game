@@ -7,11 +7,12 @@ import {Attackable, XpManager} from '../helpers/gameplayer-helper.ts';
 import XpBar from './XpBar.ts';
 import {isAutoAttackEnabled} from '../helpers/registry-helper.ts';
 import StatsManager from '../helpers/stats-manager.ts';
-import {addFancyLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
 import {CustomCursorKeysDown} from '../helpers/keyboard-helper.ts';
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
+import {COLOR_SUCCESS, COLOR_WARNING} from '../helpers/colors.ts';
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
@@ -89,8 +90,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
 
     onLevelUp = (newLevel: number) => {
-        addFancyLogEntry(':hero has become LVL: level', {
-            level: newLevel,
+        addLogEntry(':hero has become LVL: level', {
+            level: [newLevel, COLOR_SUCCESS],
         }, LogEntryCategory.World);
         this._level = newLevel;
         this.attackable.setMaxHealth(this.maxHealth, false)
@@ -98,9 +99,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.attackable.attacksPerSecond = this.attacksPerSecond;
         const statPointsToGrant = this.statPointsToGrant;
         this.stats.unallocatedStats += statPointsToGrant;
-        addFancyLogEntry(':hero has received :stats stat points', {
-            hero: this.name,
-            stats: statPointsToGrant,
+        addLogEntry(':hero has received :stats stat points', {
+            hero: [this.name, COLOR_WARNING],
+            stats: [statPointsToGrant, COLOR_SUCCESS],
         }, LogEntryCategory.Loot);
         this.xpManager.xpBar.setUnallocatedStats(this.stats.unallocatedStats);
         this.scene.events.emit('levelUp');

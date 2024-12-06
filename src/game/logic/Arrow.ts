@@ -4,8 +4,8 @@ import {showDamage, showGainedXp} from '../helpers/text-helpers.ts';
 import Enemy from './Enemy.ts';
 import Hero from './Hero.ts';
 import StatsManager from '../helpers/stats-manager.ts';
-import {addFancyLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
-import {COLOR_DANGER, COLOR_WARNING} from '../helpers/colors.ts';
+import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {COLOR_DANGER, COLOR_SUCCESS, COLOR_WARNING} from '../helpers/colors.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
@@ -64,13 +64,13 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (isCritical) {
-            addFancyLogEntry(':attacker inflicted :damage WRIT on :opponent', {
+            addLogEntry(':attacker inflicted :damage WRIT on :opponent', {
                 attacker: [this.owner.name, COLOR_WARNING],
                 damage: [attackDamage, COLOR_DANGER],
                 opponent: [this.target.name, COLOR_DANGER],
             }, LogEntryCategory.Combat);
         } else {
-            addFancyLogEntry(`:attacker attacked :opponent for :damage DMG`, {
+            addLogEntry(`:attacker attacked :opponent for :damage DMG`, {
                 attacker: [this.owner.name, COLOR_WARNING],
                 opponent: [this.target.name, COLOR_DANGER],
                 damage: [attackDamage, COLOR_DANGER],
@@ -80,15 +80,15 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
             this.owner.onKilledTarget(target)
             const baseXp = (target.owner as Enemy).xpAmount;
             const xpGainModifier = stats.xpGainMultiplier;
-            addFancyLogEntry(':attacker killed :opponent', {
-                attacker: this.owner.name,
-                opponent: this.target.name,
+            addLogEntry(':attacker killed :opponent', {
+                attacker: [this.owner.name, COLOR_WARNING],
+                opponent: [this.target.name, COLOR_DANGER],
             }, LogEntryCategory.Combat);
             const gainedXP = baseXp * xpGainModifier;
             showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, gainedXP)
-            addFancyLogEntry(':owner gained :xp XP', {
-                owner: this.owner.name,
-                xp: gainedXP,
+            addLogEntry(':owner gained :xp XP', {
+                owner: [this.owner.name, COLOR_WARNING],
+                xp: [gainedXP, COLOR_SUCCESS],
             }, LogEntryCategory.Loot);
         });
         showDamage(this.scene, this.target.owner as Vector2Like, attackDamage, isCritical);

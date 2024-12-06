@@ -9,7 +9,7 @@ import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../h
 import {createAnimatedText} from '../helpers/text-helpers.ts';
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
-import {addFancyLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
+import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
 import {createCursorKeys} from '../helpers/keyboard-helper.ts';
 import ModuleManager, {Module} from '../modules/module-manager.ts';
 import FpsCounterModule from '../modules/fps-counter-module.ts';
@@ -71,20 +71,6 @@ class MainScene extends Scene {
             // update the health bar ui
             // update the health regen tick
         });
-        // Listener for pointer (mouse/touch) inputs
-        // this.input.on('pointerdown', (pointer: Pointer) => {
-        //     console.log(`Pointer down at x: ${pointer.x}, y: ${pointer.y}`);
-        // });
-
-        // Listener for keyboard inputs
-        // this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
-        //     console.log(`Key down: ${event.key}`);
-        // });
-
-        // Listener for pointer movement
-        // this.input.on('pointermove', () => {
-        //     // console.log(`Pointer moved to x: ${pointer.x}, y: ${pointer.y}`);
-        // });
 
         // Initialize enemy group
         this.enemies = this.physics.add.group(); // Group to hold all enemies
@@ -157,7 +143,7 @@ class MainScene extends Scene {
         createAnimatedText(this, `Stage ${this.stage}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new stage
         this.portal.setDisabled(true);
-        addFancyLogEntry('Start Stage :stage - :enemies_count enemies spawned.', {
+        addLogEntry('Start Stage :stage - :enemies_count enemies spawned.', {
             stage: [this.stage, COLOR_WARNING],
             enemies_count: [this.enemies.countActive(true), COLOR_WARNING],
         }, LogEntryCategory.World);

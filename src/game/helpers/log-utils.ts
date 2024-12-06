@@ -13,7 +13,7 @@ export enum LogEntryCategory {
 export interface LogEntry {
     message: string;
     category: LogEntryCategory;
-    highlights?: Highlights;
+    highlights: Highlights;
 }
 
 interface HighlightDict {
@@ -33,17 +33,19 @@ const convertHighlightToHighlightDict = (highlight: Highlight): HighlightDict =>
     }
     if (typeof highlight === 'string') {
         highlight = {value: highlight, color: COLOR_WHITE};
-    } else if (Array.isArray(highlight)) {
-        highlight = {value: highlight[0], color: highlight[1] ?? COLOR_WHITE}
+    }
+    if (Array.isArray(highlight)) {
+        highlight[0] = typeof highlight[0] === 'number' ? formatNumber(highlight[0]) : highlight[0];
+        highlight = {value: highlight[0], color: highlight[1] ?? COLOR_WHITE} as HighlightDict
     }
     return highlight;
 }
 
-const addFancyLogEntry = (message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) => {
+const addLogEntry = (message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) => {
     const logManager = ModuleManager.getInstance().getModule<LogModule>(Module.logs);
     if (logManager) {
-        logManager.addFancyLogEntry(message, highlights, category);
+        logManager.addLogEntry(message, highlights, category);
     }
 }
 
-export {addFancyLogEntry, convertHighlightToHighlightDict};
+export {addLogEntry, convertHighlightToHighlightDict};

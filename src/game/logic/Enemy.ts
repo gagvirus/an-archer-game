@@ -6,9 +6,9 @@ import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
 import {enemies, EnemyDef} from './enemies.ts';
 import {getRandomItem} from '../helpers/random-helper.ts';
 import {isDebugMode} from '../helpers/registry-helper.ts';
-import {HEX_COLOR_WARNING} from '../helpers/colors.ts';
+import {COLOR_DANGER, COLOR_WARNING, HEX_COLOR_WARNING} from '../helpers/colors.ts';
 import {showDamage, showEvaded} from '../helpers/text-helpers.ts';
-import {addFancyLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
@@ -60,9 +60,9 @@ class Enemy extends Sprite {
             () => {
                 const isEvaded = randomChance(this.hero.stats.evadeChancePercent);
                 if (isEvaded) {
-                    addFancyLogEntry(':hero evaded attack from :opponent', {
-                        hero: this.hero.name,
-                        opponent: this.name,
+                    addLogEntry(':hero evaded attack from :opponent', {
+                        hero: [this.hero.name, COLOR_WARNING],
+                        opponent: [this.name, COLOR_DANGER],
                     }, LogEntryCategory.Combat);
                     showEvaded(this.scene, this.hero as Vector2Like);
                 } else {
@@ -70,12 +70,12 @@ class Enemy extends Sprite {
                     const pureDamage = this.attackDamage;
                     const blockedDamage = pureDamage * armorRating / 100;
                     const damageDealt = pureDamage - blockedDamage;
-                    addFancyLogEntry(':enemy attacked :opponent for :damage DMG, but :opponent2 blocked :blocked DMG', {
-                        enemy: this.name,
-                        opponent: this.hero.name,
-                        damage: damageDealt,
-                        opponent2: this.hero.name,
-                        blocked: blockedDamage,
+                    addLogEntry(':enemy attacked :opponent for :damage DMG, but :blocker blocked :blocked DMG', {
+                        enemy: [this.name, COLOR_DANGER],
+                        opponent: [this.hero.name, COLOR_WARNING],
+                        damage: [damageDealt, COLOR_DANGER],
+                        blocker: [this.hero.name, COLOR_WARNING],
+                        blocked: [blockedDamage, COLOR_WARNING],
                     }, LogEntryCategory.Combat);
                     this.hero.attackable.takeDamage(this.attackDamage);
                     showDamage(this.scene, this.hero as Vector2Like, damageDealt, false);
