@@ -5,6 +5,7 @@ import {GameObjects} from 'phaser';
 import {createText} from '../helpers/text-helpers.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
 import {COLOR_WHITE} from '../helpers/colors.ts';
+import TextStyle = Phaser.GameObjects.TextStyle;
 
 class LogModule extends AbstractModule {
     MAX_ENTRIES = 1000;
@@ -69,20 +70,50 @@ class LogModule extends AbstractModule {
     }
 
     private renderFancyLogEntry(logEntry: LogEntry) {
+        if (!this.logPanel) {
+            return;
+        }
         const {message, highlights} = logEntry;
         if (!highlights || Object.keys(highlights).length < 1) {
             return this.renderCommonLogEntry(logEntry);
         }
-        const messageParts = [];
+        const messageParts: {message: string, style?: Partial<TextStyle>}[] = [];
         let remainingMessage = message;
         Object.keys(highlights).forEach((highlightKey: string) => {
             const parts = remainingMessage.split(`:${highlightKey}`);
-            messageParts.push(parts[0]);
-            messageParts.push(convertHighlightToHighlightDict(highlights[highlightKey]))
+            const highlightDict = convertHighlightToHighlightDict(highlights[highlightKey]);
+            messageParts.push({message: parts[0]});
+            messageParts.push({message: highlightDict.value, style: {color: highlightDict.color, fontStyle: 'bold'}})
             remainingMessage = parts[1];
         })
 
-        messageParts.push(remainingMessage);
+        messageParts.push({message: remainingMessage});
+
+        const container = this.scene.rexUI.add.fixWidthSizer({
+            width: 300,
+            align: 'left'
+        });
+        let xOffset = 0;
+        messageParts.forEach((messagePart) => {
+            const text = createText(
+                this.scene,
+                messagePart.message,
+                {x: xOffset, y: 0},
+                12, 'left', false,
+                COLOR_WHITE,
+                {...messagePart.style}
+            );
+            container.add(text);
+            xOffset += text.width + 5;
+            console.log(xOffset)
+        });
+
+        const panel = this.logPanel.getElement('panel') as ScrollablePanel;
+        this._entryTexts.push(container)
+        panel.add(container); // Add the log entry to the scrollable panel
+        this.logPanel.layout(); // Re-layout the panel to adjust to new content
+        // Auto-scroll to the bottom to show the latest entry
+        this.logPanel.scrollToBottom();
 
         console.log({messageParts, message})
     }

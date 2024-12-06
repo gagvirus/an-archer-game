@@ -4,7 +4,8 @@ import {formatNumber, showDamage, showGainedXp} from "../helpers/text-helpers.ts
 import Enemy from './Enemy.ts';
 import Hero from './Hero.ts';
 import StatsManager from '../helpers/stats-manager.ts';
-import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {addFancyLogEntry, addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {COLOR_DANGER, COLOR_WARNING} from '../helpers/colors.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
@@ -63,9 +64,17 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (isCritical) {
-            addLogEntry(`${this.owner.name} inflicted ${formatNumber(attackDamage)} CRIT on ${this.target.name}`, LogEntryCategory.Combat);
+            addFancyLogEntry(':attacker inflicted :damage WRIT on :opponent', {
+                attacker: [this.owner.name, COLOR_WARNING],
+                damage: [attackDamage, COLOR_DANGER],
+                opponent: [this.target.name, COLOR_DANGER],
+            }, LogEntryCategory.Combat);
         } else {
-            addLogEntry(`${this.owner.name} attacked ${this.target.name} for ${formatNumber(attackDamage)} DMG`, LogEntryCategory.Combat);
+            addFancyLogEntry(`:attacker attacked :opponent for :damage DMG`, {
+                attacker: [this.owner.name, COLOR_WARNING],
+                opponent: [this.target.name, COLOR_DANGER],
+                damage: [attackDamage, COLOR_DANGER],
+            }, LogEntryCategory.Combat);
         }
         this.target.takeDamage(attackDamage, (target: Attackable) => {
             this.owner.onKilledTarget(target)

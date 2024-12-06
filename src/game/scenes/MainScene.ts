@@ -15,6 +15,7 @@ import ModuleManager, {Module} from '../modules/module-manager.ts';
 import FpsCounterModule from '../modules/fps-counter-module.ts';
 import DpsIndicatorModule from '../modules/dps-indicator-module.ts';
 import LogModule from '../modules/log-module.ts';
+import {COLOR_WARNING} from '../helpers/colors.ts';
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -157,8 +158,8 @@ class MainScene extends Scene {
         this.spawnEnemies(); // Spawn more enemies for the new stage
         this.portal.setDisabled(true);
         addFancyLogEntry('Start Stage :stage - :enemies_count enemies spawned.', {
-            stage: this.stage,
-            enemies_count: this.enemies.countActive(true),
+            stage: [this.stage, COLOR_WARNING],
+            enemies_count: [this.enemies.countActive(true), COLOR_WARNING],
         }, LogEntryCategory.World);
     }
 

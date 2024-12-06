@@ -21,7 +21,7 @@ interface HighlightDict {
     color?: string;
 }
 
-type HighlightList = [string, string];
+type HighlightList = [number | string, string];
 
 type Highlight = HighlightDict | HighlightList | string | number;
 
