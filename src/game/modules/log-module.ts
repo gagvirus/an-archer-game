@@ -1,6 +1,6 @@
 import AbstractModule from './abstract-module.ts';
 import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel';
-import {Highlights, LogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {convertHighlightToHighlightDict, Highlights, LogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
 import {GameObjects} from 'phaser';
 import {createText} from '../helpers/text-helpers.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
@@ -69,7 +69,22 @@ class LogModule extends AbstractModule {
     }
 
     private renderFancyLogEntry(logEntry: LogEntry) {
-        console.log(LogModule._entries)
+        const {message, highlights} = logEntry;
+        if (!highlights || Object.keys(highlights).length < 1) {
+            return this.renderCommonLogEntry(logEntry);
+        }
+        const messageParts = [];
+        let remainingMessage = message;
+        Object.keys(highlights).forEach((highlightKey: string) => {
+            const parts = remainingMessage.split(`:${highlightKey}`);
+            messageParts.push(parts[0]);
+            messageParts.push(convertHighlightToHighlightDict(highlights[highlightKey]))
+            remainingMessage = parts[1];
+        })
+
+        messageParts.push(remainingMessage);
+
+        console.log({messageParts, message})
     }
 
     private renderCommonLogEntry(logEntry: LogEntry) {
