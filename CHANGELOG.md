@@ -1,5 +1,11 @@
 ## Changelog
 
+### WIP
+
+- log improvements
+    - partial bold in log entries
+    - partial color change in log entry (for example "inflicted **red**->50 damage")
+
 ### v0.0.7
 
 - add FPS counter
