@@ -39,14 +39,6 @@ const convertHighlightToHighlightDict = (highlight: Highlight): HighlightDict =>
     return highlight;
 }
 
-const addLogEntry = (message: string, category: LogEntryCategory = LogEntryCategory.General) => {
-    const logManager = ModuleManager.getInstance().getModule<LogModule>(Module.logs);
-    if (logManager) {
-        logManager.addLogEntry(message, category);
-    }
-}
-
-
 const addFancyLogEntry = (message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) => {
     const logManager = ModuleManager.getInstance().getModule<LogModule>(Module.logs);
     if (logManager) {
@@ -54,4 +46,4 @@ const addFancyLogEntry = (message: string, highlights: Highlights = {}, category
     }
 }
 
-export {addLogEntry, addFancyLogEntry, convertHighlightToHighlightDict};
+export {addFancyLogEntry, convertHighlightToHighlightDict};

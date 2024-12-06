@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
-import Hero from "./Hero";
-import MainScene from "../scenes/MainScene.ts";
-import HealthBar from "./HealthBar.ts";
+import Hero from './Hero';
+import MainScene from '../scenes/MainScene.ts';
+import HealthBar from './HealthBar.ts';
 import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
-import {enemies, EnemyDef} from "./enemies.ts";
-import {getRandomItem} from "../helpers/random-helper.ts";
-import {isDebugMode} from "../helpers/registry-helper.ts";
+import {enemies, EnemyDef} from './enemies.ts';
+import {getRandomItem} from '../helpers/random-helper.ts';
+import {isDebugMode} from '../helpers/registry-helper.ts';
 import {HEX_COLOR_WARNING} from '../helpers/colors.ts';
-import {formatNumber, showDamage, showEvaded} from "../helpers/text-helpers.ts";
-import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {showDamage, showEvaded} from '../helpers/text-helpers.ts';
+import {addFancyLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
@@ -60,15 +60,23 @@ class Enemy extends Sprite {
             () => {
                 const isEvaded = randomChance(this.hero.stats.evadeChancePercent);
                 if (isEvaded) {
-                    addLogEntry(`${this.hero.name} evaded attack from ${this.name}`, LogEntryCategory.Combat);
+                    addFancyLogEntry(':hero evaded attack from :opponent', {
+                        hero: this.hero.name,
+                        opponent: this.name,
+                    }, LogEntryCategory.Combat);
                     showEvaded(this.scene, this.hero as Vector2Like);
                 } else {
                     const armorRating = this.hero.stats.armorRatingAttribute;
                     const pureDamage = this.attackDamage;
                     const blockedDamage = pureDamage * armorRating / 100;
                     const damageDealt = pureDamage - blockedDamage;
-                    const blockedDamageMessage = blockedDamage > 1 ? `, but ${this.hero.attackable.name} blocked ${formatNumber(blockedDamage)} DMG` : '';
-                    addLogEntry(`${this.name} attacked ${this.hero.attackable.name} for ${formatNumber(damageDealt)} DMG${blockedDamageMessage}`, LogEntryCategory.Combat)
+                    addFancyLogEntry(':enemy attacked :opponent for :damage DMG, but :opponent2 blocked :blocked DMG', {
+                        enemy: this.name,
+                        opponent: this.hero.name,
+                        damage: damageDealt,
+                        opponent2: this.hero.name,
+                        blocked: blockedDamage,
+                    }, LogEntryCategory.Combat);
                     this.hero.attackable.takeDamage(this.attackDamage);
                     showDamage(this.scene, this.hero as Vector2Like, damageDealt, false);
                 }

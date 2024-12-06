@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
-import {formatNumber, showDamage, showGainedXp} from "../helpers/text-helpers.ts";
+import {showDamage, showGainedXp} from '../helpers/text-helpers.ts';
 import Enemy from './Enemy.ts';
 import Hero from './Hero.ts';
 import StatsManager from '../helpers/stats-manager.ts';
-import {addFancyLogEntry, addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {addFancyLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
 import {COLOR_DANGER, COLOR_WARNING} from '../helpers/colors.ts';
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -80,10 +80,16 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
             this.owner.onKilledTarget(target)
             const baseXp = (target.owner as Enemy).xpAmount;
             const xpGainModifier = stats.xpGainMultiplier;
-            addLogEntry(`${this.owner.name} killed ${this.target.name}`, LogEntryCategory.Combat);
+            addFancyLogEntry(':attacker killed :opponent', {
+                attacker: this.owner.name,
+                opponent: this.target.name,
+            }, LogEntryCategory.Combat);
             const gainedXP = baseXp * xpGainModifier;
             showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, gainedXP)
-            addLogEntry(`${this.owner.name} gained ${formatNumber(gainedXP)} XP`, LogEntryCategory.Loot);
+            addFancyLogEntry(':owner gained :xp XP', {
+                owner: this.owner.name,
+                xp: gainedXP,
+            }, LogEntryCategory.Loot);
         });
         showDamage(this.scene, this.target.owner as Vector2Like, attackDamage, isCritical);
 
