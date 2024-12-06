@@ -2,8 +2,6 @@
 
 ### Bugs & Improvements
 
-- issues after restarting the game after death
-    - errors in the console
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
   arrow arrives at destination, XP is awarded again
 - Attack speed and armor rating improvements
