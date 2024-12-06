@@ -5,12 +5,7 @@
 - log improvements
     - partial bold in log entries
     - partial color change in log entry (for example "inflicted **red**->50 damage")
-- Fix regen logic
-    - hp regen shall be paused on different scenes - make sure not to regen hp during pause, stat select etc
-        - intervals not being cleaned properly
-- issues after restarting the game after death
-    - hp regen setInterval is not cleared
-
+- Fix issues with regeneration - Property cleaning intervals which were causing issues
 
 
 ### v0.0.7

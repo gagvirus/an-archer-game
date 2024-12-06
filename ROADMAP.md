@@ -20,21 +20,6 @@
     - ensure calculate the damage boost amount in a way that it would add same DPS as attack speed would add
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 
-```phaser.js?v=3ad8faf7:119974 Uncaught TypeError: Cannot read properties of null (reading 'cut')
-  at HealthBar.draw (Bar.ts:62:23)
-  at HealthBar.updateBar (Bar.ts:73:14)
-  at Attackable.replenishHealth (gameplayer-helper.ts:106:28)
-  at gameplayer-helper.ts:145:26
-```
-
-```
-    phaser.js?v=3ad8faf7:46950 Uncaught TypeError: Cannot read properties of null (reading 'glTexture')
-    at HealthBar.draw (Bar.ts:62:23)
-    at HealthBar.updateBar (Bar.ts:73:14)
-    at Attackable.replenishHealth (gameplayer-helper.ts:106:28)
-    at gameplayer-helper.ts:145:26
-```
-
 ### Gameplay Features
 
 - show stage info
