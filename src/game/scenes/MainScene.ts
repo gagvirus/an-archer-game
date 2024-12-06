@@ -6,10 +6,10 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../helpers/position-helper.ts";
-import {createAnimatedText, formatNumber} from '../helpers/text-helpers.ts';
+import {createAnimatedText} from '../helpers/text-helpers.ts';
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
-import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
+import {addFancyLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
 import {createCursorKeys} from '../helpers/keyboard-helper.ts';
 import ModuleManager, {Module} from '../modules/module-manager.ts';
 import FpsCounterModule from '../modules/fps-counter-module.ts';
@@ -142,7 +142,6 @@ class MainScene extends Scene {
                     }
                 }
             }
-
         })
         return occupiedTiles;
     }
@@ -157,7 +156,10 @@ class MainScene extends Scene {
         createAnimatedText(this, `Stage ${this.stage}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new stage
         this.portal.setDisabled(true);
-        addLogEntry(`Start Stage ${this.stage} - ${formatNumber(this.enemies.countActive(true))} enemies spawned.`, LogEntryCategory.World);
+        addFancyLogEntry('Start Stage :stage - :enemies_count enemies spawned.', {
+            stage: this.stage,
+            enemies_count: this.enemies.countActive(true),
+        }, LogEntryCategory.World);
     }
 
     // Update game state (called every frame)

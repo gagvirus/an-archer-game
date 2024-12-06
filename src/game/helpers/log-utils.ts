@@ -11,7 +11,20 @@ export enum LogEntryCategory {
 export interface LogEntry {
     message: string;
     category: LogEntryCategory;
+    highlights?: Highlights;
 }
+
+interface HighlightDict {
+    value: string;
+    color?: string;
+}
+
+type HighlightList = [string, string];
+
+type Highlight = HighlightDict | HighlightList | string | number;
+
+export type Highlights = { [key: string]: Highlight };
+
 
 const addLogEntry = (message: string, category: LogEntryCategory = LogEntryCategory.General) => {
     const logManager = ModuleManager.getInstance().getModule<LogModule>(Module.logs);
@@ -20,4 +33,12 @@ const addLogEntry = (message: string, category: LogEntryCategory = LogEntryCateg
     }
 }
 
-export {addLogEntry};
+
+const addFancyLogEntry = (message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) => {
+    const logManager = ModuleManager.getInstance().getModule<LogModule>(Module.logs);
+    if (logManager) {
+        logManager.addFancyLogEntry(message, highlights, category);
+    }
+}
+
+export {addLogEntry, addFancyLogEntry};

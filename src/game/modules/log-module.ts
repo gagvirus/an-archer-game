@@ -1,10 +1,10 @@
 import AbstractModule from './abstract-module.ts';
+import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel';
+import {Highlights, LogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import {GameObjects} from 'phaser';
 import {createText} from '../helpers/text-helpers.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
 import {COLOR_WHITE} from '../helpers/colors.ts';
-import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel';
-import {LogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
-import {GameObjects} from 'phaser';
 
 class LogModule extends AbstractModule {
     MAX_ENTRIES = 1000;
@@ -43,6 +43,10 @@ class LogModule extends AbstractModule {
      */
     addLogEntry(message: string, category: LogEntryCategory = LogEntryCategory.General) {
         const logEntry: LogEntry = {message, category};
+        this.pushLogEntry(logEntry)
+    }
+
+    private pushLogEntry(logEntry: LogEntry) {
         LogModule._entries.push(logEntry);
         if (LogModule._entries.length >= this.MAX_ENTRIES) {
             LogModule._entries.shift(); // Remove the oldest entry
@@ -51,7 +55,24 @@ class LogModule extends AbstractModule {
         this.renderLogEntry(logEntry);
     }
 
+    addFancyLogEntry(message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) {
+        const logEntry: LogEntry = {message, highlights, category};
+        this.pushLogEntry(logEntry)
+    }
+
     private renderLogEntry(logEntry: LogEntry) {
+        if (logEntry.highlights) {
+            this.renderFancyLogEntry(logEntry);
+        } else {
+            this.renderCommonLogEntry(logEntry);
+        }
+    }
+
+    private renderFancyLogEntry(logEntry: LogEntry) {
+        console.log(LogModule._entries)
+    }
+
+    private renderCommonLogEntry(logEntry: LogEntry) {
         const {message} = logEntry;
         if (this.logPanel) {
             const logText = createText(this.scene, message, VectorZeroes(), 12, 'left', false, COLOR_WHITE, {fixedWidth: 300});
