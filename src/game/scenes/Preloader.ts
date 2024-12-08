@@ -38,6 +38,7 @@ export class Preloader extends Scene {
         this.load.spritesheet('hero_attack', 'hero/attack.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('portal', 'portal.png', {frameWidth: 190, frameHeight: 190});
         this.load.spritesheet('towers', 'towers.png', {frameWidth: 192 / 3, frameHeight: 128});
+        this.load.spritesheet('coin', 'coin.png', {frameWidth: 40, frameHeight: 40});
 
         for (let i = 1; i <= 6; i++) {
             this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
@@ -73,6 +74,13 @@ export class Preloader extends Scene {
             frames: this.anims.generateFrameNumbers('portal', {start: 0, end: 1}),
             frameRate: 1,  // Animation speed
         });
+
+        this.anims.create({
+            key: 'coin',
+            frames: this.anims.generateFrameNumbers('coin', {start: 0, end: 6}),
+            frameRate: 14,
+            repeat: -1,
+        })
 
 
         // Define the portal animation

@@ -32,3 +32,4 @@ This project utilizes the following resources:
   - [Spire - Tower Pack 2](https://foozlecc.itch.io/spire-tower-pack-2)
   - [Archer Hero](https://darkpixel-kronovi.itch.io/archer-hero)
   - [Pixel Art - Portal Monolith](https://arijkx.itch.io/pixel-art-portal-monolith)
+  - [Coin](https://merlym.itch.io/coin)
