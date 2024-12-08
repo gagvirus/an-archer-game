@@ -11,6 +11,17 @@
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Added easy mode in settings
 - Added rapid level up mode in settings
+- Attack speed and armor rating improvements
+    - instead of plain calculating the attacks per second and damage reduction percent, must define some logic, that
+      will return some numerical value (for example base attack speed is 50, each agility stat increases +5). have a
+      getter "get attack speed" which will return this number. then this number will be combined with the base stat,
+      will also add stat from item in future, and calculate attacks per second based on this. the correlation between
+      attack speed and attacks per second shall not be linear, instead the increase amount shall decline the higher the
+      number is.
+- Attack speed issues
+    - when the attack speed is very high, it causes lag / instability
+    - have a max attack speed limit constant
+
 
 ### v0.0.7
 
