@@ -3,7 +3,7 @@ import Enemy from "./Enemy.ts";
 import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
 import MainScene from "../scenes/MainScene.ts";
-import {Attackable, randomChance, XpManager} from "../helpers/gameplayer-helper.ts";
+import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
 import {isAutoAttackEnabled} from "../helpers/registry-helper.ts";
 import StatsManager from "../helpers/stats-manager.ts";
@@ -15,6 +15,7 @@ import {ResourceType} from "./ResourceDrop.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
+import {randomChance} from "../helpers/random-helper.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;

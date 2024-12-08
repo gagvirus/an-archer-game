@@ -24,8 +24,7 @@ import {Coin} from "../logic/Coin.ts";
 import {Soul} from "../logic/Soul.ts";
 import {ResourceDrop, ResourceType} from "../logic/ResourceDrop.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
-import {getRandomNumberBetweenRange} from "../helpers/random-helper.ts";
-import {randomChance} from "../helpers/gameplayer-helper.ts";
+import {getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";
 import {ResourceDropChance} from "../logic/enemies.ts";
 
 class MainScene extends Scene {

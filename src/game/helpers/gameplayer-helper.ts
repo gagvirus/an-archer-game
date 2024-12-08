@@ -1,10 +1,10 @@
-import HealthBar from '../logic/HealthBar.ts';
-import XpBar from '../logic/XpBar.ts';
-import StatsManager from './stats-manager.ts';
-import {Scene} from 'phaser';
-import {showReplenishedHealth} from './text-helpers.ts';
-import {addLogEntry, LogEntryCategory} from './log-utils.ts';
-import {COLOR_SUCCESS} from './colors.ts';
+import HealthBar from "../logic/HealthBar.ts";
+import XpBar from "../logic/XpBar.ts";
+import StatsManager from "./stats-manager.ts";
+import {Scene} from "phaser";
+import {showReplenishedHealth} from "./text-helpers.ts";
+import {addLogEntry, LogEntryCategory} from "./log-utils.ts";
+import {COLOR_SUCCESS} from "./colors.ts";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -161,19 +161,4 @@ class Attackable {
     }
 }
 
-/**
- * Returns a random boolean value based on the probability of getting a true
- * Useful for example in determining isCritical
- * @param trueProbability
- * @param maxProbability
- */
-const randomChance = (trueProbability: number, maxProbability: number = 95): boolean => {
-    // the crit chance could be 0.2 - for handling such precision, let's multiply everything by 10
-    trueProbability = Phaser.Math.Clamp(trueProbability * 10, 0, maxProbability * 10);
-    // Generate a random number between 0 and 100
-    const roll = Phaser.Math.Between(0, 1000);
-    // Return true if the roll is less than the trueProbability
-    return roll < trueProbability;
-}
-
-export {Attackable, XpManager, randomChance};
+export {Attackable, XpManager};
