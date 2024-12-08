@@ -4,6 +4,7 @@ export enum Module {
     fpsCounter = 'fpsCounter',
     dpsIndicator = 'dpsIndicator',
     logs = 'logs',
+    stageInfo = 'stageInfo',
 }
 
 export abstract class AbstractModule {

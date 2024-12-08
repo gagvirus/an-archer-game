@@ -6,17 +6,18 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../helpers/position-helper.ts";
-import {createAnimatedText} from '../helpers/text-helpers.ts';
+import {createAnimatedText} from "../helpers/text-helpers.ts";
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
 import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
-import {createCursorKeys} from '../helpers/keyboard-helper.ts';
-import ModuleManager, {Module} from '../modules/module-manager.ts';
-import FpsCounterModule from '../modules/fps-counter-module.ts';
-import DpsIndicatorModule from '../modules/dps-indicator-module.ts';
-import LogModule from '../modules/log-module.ts';
-import {COLOR_WARNING} from '../helpers/colors.ts';
-import {isDebugMode} from '../helpers/registry-helper.ts';
+import {createCursorKeys} from "../helpers/keyboard-helper.ts";
+import ModuleManager, {Module} from "../modules/module-manager.ts";
+import FpsCounterModule from "../modules/fps-counter-module.ts";
+import DpsIndicatorModule from "../modules/dps-indicator-module.ts";
+import LogModule from "../modules/log-module.ts";
+import {COLOR_WARNING} from "../helpers/colors.ts";
+import {isDebugMode} from "../helpers/registry-helper.ts";
+import StageInfoModule from "../modules/stage-info-module.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -29,7 +30,7 @@ class MainScene extends Scene {
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
-        super('MainScene');
+        super("MainScene");
     }
 
     // Create game objects
@@ -44,6 +45,7 @@ class MainScene extends Scene {
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
         this.moduleManager.register(Module.dpsIndicator, new DpsIndicatorModule(this, this.hero));
+        this.moduleManager.register(Module.stageInfo, new StageInfoModule(this));
         // cleanup any previous logs
         LogModule.cleanEntries();
         this.moduleManager.register(Module.logs, new LogModule(this));
@@ -51,9 +53,10 @@ class MainScene extends Scene {
         this.moduleManager.enable(Module.fpsCounter);
         this.moduleManager.enable(Module.dpsIndicator);
         this.moduleManager.enable(Module.logs);
+        this.moduleManager.enable(Module.stageInfo);
 
         this.stage = 1;
-        this.scene.get('BuildMenuScene').events.on('buildComplete', (data: { buildings: Tower[][] }) => {
+        this.scene.get("BuildMenuScene").events.on("buildComplete", (data: { buildings: Tower[][] }) => {
             if (data.buildings) {
                 data.buildings.forEach((towersRow: Tower[]) => {
                     towersRow.forEach((tower: Tower) => {
@@ -63,7 +66,7 @@ class MainScene extends Scene {
             }
         })
 
-        this.scene.get('StatsScene').events.on('statsUpdated', () => {
+        this.scene.get("StatsScene").events.on("statsUpdated", () => {
             this.hero.attackable.registerHealthRegenerationIfNecessary()
             this.hero.attackable.setMaxHealth(this.hero.maxHealth);
             this.hero.attackable.attackDamage = this.hero.attackDamage;
@@ -78,52 +81,51 @@ class MainScene extends Scene {
 
         this.buildings = this.physics.add.group();
 
-        this.events.on('resume', () => {
+        this.events.on("resume", () => {
             this.hero.attackable.registerHealthRegenerationIfNecessary();
         });
 
         // Listener for keyboard inputs
-        this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
+        this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
                 this.pauseCurrentScene();
-                this.scene.launch('PauseMenu');
+                this.scene.launch("PauseMenu");
             }
 
-            if (event.key === 'b') {
+            if (event.key === "b") {
                 this.pauseCurrentScene();
                 // get disabled tiles and pass to build scene
-                this.scene.launch('BuildMenuScene', {occupiedTiles: this.getOccupiedTiles()});
+                this.scene.launch("BuildMenuScene", {occupiedTiles: this.getOccupiedTiles()});
             }
 
-            if (event.key === 'c') {
+            if (event.key === "c") {
                 this.pauseCurrentScene();
-                this.scene.launch('StatsScene', {statsManager: this.hero.stats});
+                this.scene.launch("StatsScene", {statsManager: this.hero.stats});
             }
 
-            if (event.key === 'k') {
+            if (event.key === "k") {
                 if (isDebugMode(this.game)) {
                     this.hero.attackable.takeDamage(Infinity);
                 }
 
             }
 
-            if (event.key == 'f') {
+            if (event.key == "f") {
                 this.moduleManager.toggle(Module.fpsCounter);
             }
 
-            if (event.key == 'g') {
+            if (event.key == "g") {
                 this.moduleManager.toggle(Module.dpsIndicator);
             }
 
-            if (event.key == 'l') {
+            if (event.key == "l") {
                 this.moduleManager.toggle(Module.logs);
             }
         });
         this.startStage();
     }
 
-    pauseCurrentScene()
-    {
+    pauseCurrentScene() {
         this.scene.pause();
         this.hero.attackable.stopRegeneration();
     }
@@ -142,7 +144,7 @@ class MainScene extends Scene {
                 const maxY = bounds.y + bounds.height;
                 for (let x = minX; x <= maxX; x += TILE_SIZE) {
                     for (let y = minY; y <= maxY; y += TILE_SIZE) {
-                        console.log('OTHER', getTileCoordinate({x, y}));
+                        console.log("OTHER", getTileCoordinate({x, y}));
                         occupiedTiles.push(getTileCoordinate({x, y}))
                     }
                 }
@@ -161,7 +163,7 @@ class MainScene extends Scene {
         this.portal.setDisabled(true);
         createAnimatedText(this, `Stage ${this.stage}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new stage
-        addLogEntry('Start Stage :stage - :enemies_count enemies spawned.', {
+        addLogEntry("Start Stage :stage - :enemies_count enemies spawned.", {
             stage: [this.stage, COLOR_WARNING],
             enemies_count: [this.enemies.countActive(true), COLOR_WARNING],
         }, LogEntryCategory.World);
@@ -203,8 +205,12 @@ class MainScene extends Scene {
         this.portal.checkHeroIsWithinBounds(this.hero);
     }
 
+    get enemiesForStage() {
+        return this.stage * 3;
+    }
+
     spawnEnemies() {
-        const numEnemies = this.stage * 3; // Increase the number of enemies each stage
+        const numEnemies = this.enemiesForStage; // Increase the number of enemies each stage
 
         for (let i = 0; i < numEnemies; i++) {
             const {
