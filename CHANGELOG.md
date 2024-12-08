@@ -1,5 +1,11 @@
 ## Changelog
 
+### WIP
+
+- show stage info
+    - what stage are you on
+    - how many total enemies / remaining enemies are there
+
 ### v0.0.8
 
 - Log improvements - added ability to display parts of log entries in extended styling
