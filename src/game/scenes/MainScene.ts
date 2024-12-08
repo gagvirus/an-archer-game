@@ -33,7 +33,8 @@ class MainScene extends Scene {
     hero: Hero;
     portal: Portal;
     buildings: Group;
-    resources: Group;
+    drops: Group;
+    dropsFollowing: Group;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -49,14 +50,15 @@ class MainScene extends Scene {
         // Initialize the hero in the center of the canvas
         this.hero = new Hero(this, this.scale.width / 2, this.scale.height / 2);
 
-        this.resources = this.physics.add.group();
+        this.drops = this.physics.add.group();
+        this.dropsFollowing = this.physics.add.group();
 
         // Add some coins to the scene
         this.spawnCoin(200, 200);
         this.spawnCoin(250, 250);
         this.spawnSoul(150, 150);
 
-        this.physics.add.overlap(this.hero.pullCircle, this.resources, this.onResourcePull, undefined, this);
+        this.physics.add.overlap(this.hero.pullCircle, this.drops, this.onResourcePull, undefined, this);
 
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
@@ -144,31 +146,43 @@ class MainScene extends Scene {
     }
 
     onResourcePull(_: Tile | GameObjectWithBody, resource: Tile | GameObjectWithBody) {
-        // Calculate the direction to pull the resource
-        const {x, y, amount, resourceName: name} = resource as ResourceDrop;
-        const {body} = resource as GameObjectWithBody;
-        const angle = Phaser.Math.Angle.Between(x, y, this.hero.x, this.hero.y);
-
-        const pullX = Math.cos(angle) * this.hero.pullForce;
-        const pullY = Math.sin(angle) * this.hero.pullForce;
-
-        body.velocity.x = pullX;
-        body.velocity.y = pullY;
-
-        // Check if the resource is within collectDistance
-        const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, x, y);
-        if (distance < this.hero.collectDistance) {
-            this.resources.remove(resource as ResourceDrop, true, true);
-            this.hero.collectResource(name as ResourceType, amount);
+        // if drop is not following hero, add to "follow list"
+        if (!this.dropsFollowing.contains(resource as GameObject)) {
+            this.dropsFollowing.add(resource as GameObject);
         }
     }
 
+    dropsFollowHero()
+    {
+        this.dropsFollowing.getChildren().forEach((drop) => {
+            // Calculate the direction to pull the resource
+            const {x, y, amount, resourceName: name} = drop as ResourceDrop;
+            const {body} = drop as GameObjectWithBody;
+
+            const angle = Phaser.Math.Angle.Between(x, y, this.hero.x, this.hero.y);
+
+            const pullX = Math.cos(angle) * this.hero.pullForce;
+            const pullY = Math.sin(angle) * this.hero.pullForce;
+
+            body.velocity.x = pullX;
+            body.velocity.y = pullY;
+
+            // Check if the resource is within collectDistance
+            const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, x, y);
+            if (distance < this.hero.collectDistance) {
+                this.dropsFollowing.remove(drop as ResourceDrop, true, true);
+                this.drops.remove(drop as ResourceDrop);
+                this.hero.collectResource(name as ResourceType, amount);
+            }
+        });
+    }
+
     spawnSoul(x: number, y: number) {
-        this.resources.add(new Soul(this, x, y));
+        this.drops.add(new Soul(this, x, y));
     }
 
     spawnCoin(x: number, y: number) {
-        this.resources.add(new Coin(this, x, y));
+        this.drops.add(new Coin(this, x, y));
     }
 
 
@@ -250,6 +264,7 @@ class MainScene extends Scene {
         }
 
         this.portal.checkHeroIsWithinBounds(this.hero);
+        this.dropsFollowHero();
     }
 
     get enemiesForStage() {
