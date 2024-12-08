@@ -41,7 +41,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                 this.attackable.attack();
             });
         }
-        this.stats = new StatsManager(this.scene, 1, 1, 1, 1);
+        this.stats = new StatsManager(this.scene, this, 1, 1, 1, 1);
         this.attackable = new Attackable(
             this.scene,
             this.attacksPerSecond, // attacks per second
@@ -71,9 +71,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     get attacksPerSecond() {
-        const BASE_ATTACKS_PER_SECOND = 2;
-        const levelModifier = (BASE_ATTACKS_PER_SECOND * this._level * 0.05);
-        return (BASE_ATTACKS_PER_SECOND + levelModifier) * this.stats.attackSpeedMultiplier;
+        return this.stats.attacksPerSecond;
     }
 
     get maxHealth() {

@@ -1,5 +1,6 @@
 import {isEasyMode} from './registry-helper.ts';
 import {Scene} from 'phaser';
+import Hero from '../logic/Hero.ts';
 
 export interface Stat {
     label: string;
@@ -16,14 +17,16 @@ export interface StatGroup {
 
 class StatsManager {
     private scene: Scene;
+    private owner: Hero;
     private _finesse: number;
     private _awareness: number;
     private _resilience: number;
     private _thoughtfulness: number;
     public unallocatedStats: number;
 
-    constructor(scene: Scene, finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1, unallocatedStats: number = 0) {
+    constructor(scene: Scene, owner: Hero, finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1, unallocatedStats: number = 0) {
         this.scene = scene;
+        this.owner = owner;
         this._finesse = finesse;
         this._awareness = awareness;
         this._resilience = resilience;
@@ -72,12 +75,12 @@ class StatsManager {
 
     protected get dexterity() {
         // affects Attack speed
-        return this.finesse * this.easyModeModifier;
+        return this.finesse * 1;
     }
 
     protected get agility() {
         // affects Evade chance
-        return this.finesse * this.easyModeModifier;
+        return this.finesse * 1;
     }
 
     protected get perception() {
@@ -115,14 +118,19 @@ class StatsManager {
         return this.thoughtfulness * this.easyModeModifier;
     }
 
+    get baseAttackTime() {
+        // when heroes are implemented, this value may be different per hero
+        return 1.7;
+    }
+
     get damageMultiplier() {
         // each strength point adds +5% to the level-adjusted damage
         return 1 + (this.strength - 1) * 0.05;
     }
 
-    get attackSpeedMultiplier() {
-        // each agility point adds +5% to the level-adjusted attack speed
-        return 1 + (this.agility - 1) * 0.05;
+    get attackSpeedBonus() {
+        // each agility point adds +5 to attack speed rate
+        return this.agility * 5;
     }
 
     get evadeChancePercent() {
@@ -167,6 +175,20 @@ class StatsManager {
         // each fortitude attribute adds +0.6667% to armor rating (not more than +60%)
         const rating = (this.fortitude - 1) * 2 / 3;
         return rating > 80 ? 80 : rating;
+    }
+
+    get attackRate() {
+        const BASE_ATTACK_RATE = 100;
+        const levelModifier = this.owner._level * 2;
+        return BASE_ATTACK_RATE + levelModifier + this.attackSpeedBonus;
+    }
+
+
+    get attacksPerSecond() {
+        const attackRate = this.attackRate;
+        const attacksPerSecond = attackRate / 100 / this.baseAttackTime;
+        console.log(attacksPerSecond);
+        return attacksPerSecond;
     }
 
     static listStatsGroups(): StatGroup[] {
