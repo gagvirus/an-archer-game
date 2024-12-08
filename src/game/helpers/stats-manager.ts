@@ -12,18 +12,50 @@ export interface StatGroup {
 }
 
 class StatsManager {
-    finesse: number;
-    awareness: number;
-    resilience: number;
-    thoughtfulness: number;
-    unallocatedStats: number;
+    private _finesse: number;
+    private _awareness: number;
+    private _resilience: number;
+    private _thoughtfulness: number;
+    public unallocatedStats: number;
 
     constructor(finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1, unallocatedStats: number = 0) {
-        this.finesse = finesse;
-        this.awareness = awareness;
-        this.resilience = resilience;
-        this.thoughtfulness = thoughtfulness;
+        this._finesse = finesse;
+        this._awareness = awareness;
+        this._resilience = resilience;
+        this._thoughtfulness = thoughtfulness;
         this.unallocatedStats = unallocatedStats;
+    }
+
+    public set finesse(value: number) {
+        this._finesse = value;
+    }
+
+    public set awareness(value: number) {
+        this._awareness = value;
+    }
+
+    public set resilience(value: number) {
+        this._resilience = value;
+    }
+
+    public set thoughtfulness(value: number) {
+        this._thoughtfulness = value;
+    }
+
+    public get finesse(): number {
+        return this._finesse;
+    }
+
+    public get awareness(): number {
+        return this._awareness;
+    }
+
+    public get resilience(): number {
+        return this._resilience;
+    }
+
+    public get thoughtfulness(): number {
+        return this._thoughtfulness;
     }
 
     protected get dexterity() {
@@ -81,8 +113,7 @@ class StatsManager {
         return 1 + (this.agility - 1) * 0.05;
     }
 
-    get evadeChancePercent()
-    {
+    get evadeChancePercent() {
         // each dexterity attribute adds +0.6667% to evade chance (not more than +60%)
         const chance = (this.dexterity - 1) * 2 / 3;
         return chance > 60 ? 60 : chance;
