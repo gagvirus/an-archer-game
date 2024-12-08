@@ -75,12 +75,12 @@ class StatsManager {
 
     protected get dexterity() {
         // affects Attack speed
-        return this.finesse * 1;
+        return this.finesse * this.easyModeModifier;
     }
 
     protected get agility() {
         // affects Evade chance
-        return this.finesse * 1;
+        return this.finesse * this.easyModeModifier;
     }
 
     protected get perception() {
