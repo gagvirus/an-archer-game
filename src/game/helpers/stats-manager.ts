@@ -1,4 +1,4 @@
-import {isEasyMode} from './registry-helper.ts';
+import {isEasyMode, isRapidLevelUp} from './registry-helper.ts';
 import {Scene} from 'phaser';
 import Hero from '../logic/Hero.ts';
 
@@ -120,7 +120,8 @@ class StatsManager {
 
     get baseAttackTime() {
         // when heroes are implemented, this value may be different per hero
-        return 1.7;
+        // the higher the number, the slower the attack speed will end up
+        return 1.5;
     }
 
     get damageMultiplier() {
@@ -145,7 +146,7 @@ class StatsManager {
     }
 
     get xpGainMultiplier() {
-        return Math.pow(1.05, this.intelligence - 1);
+        return Math.pow(1.05, this.intelligence - 1) * (isRapidLevelUp(this.scene.game) ? 100 : 1);
     }
 
     get healthRegenPerInterval() {
