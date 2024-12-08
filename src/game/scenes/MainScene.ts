@@ -22,7 +22,8 @@ import {isDebugMode} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
 import {Coin} from "../logic/Coin.ts";
 import {Soul} from "../logic/Soul.ts";
-import {ResourceDrop} from "../logic/ResourceDrop.ts";
+import {ResourceDrop, ResourceType} from "../logic/ResourceDrop.ts";
+import ResourceListModule from "../modules/resource-list-module.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -61,6 +62,7 @@ class MainScene extends Scene {
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
         this.moduleManager.register(Module.dpsIndicator, new DpsIndicatorModule(this, this.hero));
         this.moduleManager.register(Module.stageInfo, new StageInfoModule(this));
+        this.moduleManager.register(Module.resourceList, new ResourceListModule(this, this.hero));
         // cleanup any previous logs
         LogModule.cleanEntries();
         this.moduleManager.register(Module.logs, new LogModule(this));
@@ -69,6 +71,7 @@ class MainScene extends Scene {
         this.moduleManager.enable(Module.dpsIndicator);
         this.moduleManager.enable(Module.logs);
         this.moduleManager.enable(Module.stageInfo);
+        this.moduleManager.enable(Module.resourceList);
 
         this.stage = 1;
         this.scene.get("BuildMenuScene").events.on("buildComplete", (data: { buildings: Tower[][] }) => {

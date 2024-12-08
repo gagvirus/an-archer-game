@@ -1,10 +1,11 @@
-import {Scene} from 'phaser';
+import {Scene} from "phaser";
 
 export enum Module {
-    fpsCounter = 'fpsCounter',
-    dpsIndicator = 'dpsIndicator',
-    logs = 'logs',
-    stageInfo = 'stageInfo',
+    fpsCounter = "fpsCounter",
+    dpsIndicator = "dpsIndicator",
+    logs = "logs",
+    stageInfo = "stageInfo",
+    resourceList = "resourceList",
 }
 
 export abstract class AbstractModule {
@@ -41,8 +42,7 @@ class ModuleManager {
         this.scene = scene;
     }
 
-    getScene(): Scene
-    {
+    getScene(): Scene {
         return this.scene;
     }
 
