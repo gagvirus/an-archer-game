@@ -186,10 +186,8 @@ class StatsManager {
 
 
     get attacksPerSecond() {
-        const attackRate = this.attackRate;
-        const attacksPerSecond = attackRate / 100 / this.baseAttackTime;
-        console.log(attacksPerSecond);
-        return attacksPerSecond;
+        const attackRate = Phaser.Math.Clamp(this.attackRate, 120, 800);
+        return attackRate / 100 / this.baseAttackTime;
     }
 
     static listStatsGroups(): StatGroup[] {
