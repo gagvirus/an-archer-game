@@ -158,9 +158,9 @@ class MainScene extends Scene {
     }
 
     startStage() {
+        this.portal.setDisabled(true);
         createAnimatedText(this, `Stage ${this.stage}`, 2000)
         this.spawnEnemies(); // Spawn more enemies for the new stage
-        this.portal.setDisabled(true);
         addLogEntry('Start Stage :stage - :enemies_count enemies spawned.', {
             stage: [this.stage, COLOR_WARNING],
             enemies_count: [this.enemies.countActive(true), COLOR_WARNING],
