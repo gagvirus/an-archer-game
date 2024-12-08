@@ -70,18 +70,16 @@ class Enemy extends Sprite {
                     }, LogEntryCategory.Combat);
                     showEvaded(this.scene, this.hero as Vector2Like);
                 } else {
-                    const armorRating = this.hero.stats.armorRatingAttribute;
-                    const pureDamage = this.attackDamage;
-                    const blockedDamage = pureDamage * armorRating / 100;
-                    const damageDealt = pureDamage - blockedDamage;
+                    const blockedDamage = this.hero.stats.getFinalDamageReduction(this.attackDamage);
+                    const damageDealt = this.attackDamage - blockedDamage;
                     addLogEntry(':enemy attacked :opponent for :damage DMG, but :blocker blocked :blocked DMG', {
                         enemy: [this.name, COLOR_DANGER],
                         opponent: [this.hero.name, COLOR_WARNING],
-                        damage: [damageDealt, COLOR_DANGER],
+                        damage: [this.attackDamage, COLOR_DANGER],
                         blocker: [this.hero.name, COLOR_WARNING],
                         blocked: [blockedDamage, COLOR_WARNING],
                     }, LogEntryCategory.Combat);
-                    this.hero.attackable.takeDamage(this.attackDamage);
+                    this.hero.attackable.takeDamage(damageDealt);
                     showDamage(this.scene, this.hero as Vector2Like, damageDealt, false);
                 }
             },

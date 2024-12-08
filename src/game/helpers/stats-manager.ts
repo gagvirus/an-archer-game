@@ -172,10 +172,33 @@ class StatsManager {
         return 1 + (50 + (this.perception - 1) * 5) / 100
     }
 
-    get armorRatingAttribute() {
-        // each fortitude attribute adds +0.6667% to armor rating (not more than +60%)
-        const rating = (this.fortitude - 1) * 2 / 3;
-        return rating > 80 ? 80 : rating;
+    get armorRatingBonus() {
+        // each fortitude attribute adds +5 to armor rating
+        return this.fortitude * 4;
+    }
+
+    get armorRating() {
+        const BASE_ARMOR_RATING = 1;
+        const levelModifier = this.owner._level * 2;
+        return BASE_ARMOR_RATING + levelModifier + this.armorRatingBonus;
+    }
+
+    get flatDamageReduction() {
+        return this.armorRating / 10;
+    }
+
+    get percentReduction(): number {
+        const maxReduction = 0.9; // Maximum 90% reduction
+        const scalingFactor = 800; // Higher value makes percentage scale slower
+        const reduction = 1 - (scalingFactor / (scalingFactor + this.armorRating));
+        return Math.min(reduction, maxReduction);
+    }
+
+    getFinalDamageReduction(damageReceived: number): number {
+        const flatReduction = Phaser.Math.Clamp(this.flatDamageReduction, 0, damageReceived - 1);
+        const percentReduction = this.percentReduction;
+        const afterFlatReduction = damageReceived - flatReduction;
+        return flatReduction + afterFlatReduction * percentReduction;
     }
 
     get attackRate() {
