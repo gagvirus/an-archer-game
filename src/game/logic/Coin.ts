@@ -1,7 +1,7 @@
 import Phaser, {Scene} from "phaser";
 
 export class Coin extends Phaser.Physics.Arcade.Sprite {
-    amount: number = 50;
+    amount: number;
     constructor(scene: Scene, x: number, y: number, amount: number = 1) {
         super(scene, x, y, 'coin');
         scene.add.existing(this);
