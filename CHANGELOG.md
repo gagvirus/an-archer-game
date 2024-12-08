@@ -5,6 +5,10 @@
 - show stage info
     - what stage are you on
     - how many total enemies / remaining enemies are there
+- Ability to un-allocate points
+  - Hold Alt then click on stat, shall un-allocate
+  - While holding "Alt" key, change the Green "Plus" to a Red "Minus"
+  - Add ability to un-allocate points in bulk
 
 ### v0.0.8
 
