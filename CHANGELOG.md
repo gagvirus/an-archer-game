@@ -10,6 +10,7 @@
   arrow arrives at destination, XP is awarded again
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Added easy mode in settings
+- Added rapid level up mode in settings
 
 ### v0.0.7
 
