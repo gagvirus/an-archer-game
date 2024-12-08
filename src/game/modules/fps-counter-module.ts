@@ -1,12 +1,12 @@
-import AbstractModule from './abstract-module.ts';
-import {createText} from '../helpers/text-helpers.ts';
+import {createText} from "../helpers/text-helpers.ts";
+import {AbstractModule} from "./module-manager.ts";
 
 class FpsCounterModule extends AbstractModule {
     private fpsText?: Phaser.GameObjects.Text;
 
     start() {
         if (!this.fpsText) {
-            this.fpsText = createText(this.scene, 'FPS: 0', {
+            this.fpsText = createText(this.scene, "FPS: 0", {
                 x: this.scene.scale.width - 50,
                 y: 50,
             }, 16)

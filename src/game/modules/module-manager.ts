@@ -1,10 +1,23 @@
-import AbstractModule from './abstract-module.ts';
 import {Scene} from 'phaser';
 
 export enum Module {
     fpsCounter = 'fpsCounter',
     dpsIndicator = 'dpsIndicator',
     logs = 'logs',
+}
+
+export abstract class AbstractModule {
+    protected scene: Phaser.Scene;
+
+    constructor(scene: Phaser.Scene) {
+        this.scene = scene;
+    }
+
+    abstract start(): void;
+
+    abstract stop(): void;
+
+    abstract update(): void;
 }
 
 class ModuleManager {

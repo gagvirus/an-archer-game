@@ -1,9 +1,9 @@
-import AbstractModule from './abstract-module.ts';
-import ScrollablePanel from 'phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel';
-import {convertHighlightToHighlightDict, Highlights, LogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
-import {createText} from '../helpers/text-helpers.ts';
-import {COLOR_WHITE} from '../helpers/colors.ts';
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin';
+import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
+import {convertHighlightToHighlightDict, Highlights, LogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
+import {createText} from "../helpers/text-helpers.ts";
+import {COLOR_WHITE} from "../helpers/colors.ts";
+import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import {AbstractModule} from "./module-manager.ts";
 import TextStyle = Phaser.GameObjects.TextStyle;
 import FixWidthSizer = UIPlugin.FixWidthSizer;
 
@@ -61,7 +61,7 @@ class LogModule extends AbstractModule {
             const parts = remainingMessage.split(`:${highlightKey}`);
             const highlightDict = convertHighlightToHighlightDict(highlights[highlightKey]);
             messageParts.push({message: parts[0]});
-            messageParts.push({message: highlightDict.value, style: {color: highlightDict.color, fontStyle: 'bold'}})
+            messageParts.push({message: highlightDict.value, style: {color: highlightDict.color, fontStyle: "bold"}})
             remainingMessage = parts[1];
         })
 
@@ -69,7 +69,7 @@ class LogModule extends AbstractModule {
 
         const container = this.scene.rexUI.add.fixWidthSizer({
             width: 300,
-            align: 'left'
+            align: "left"
         });
         let xOffset = 0;
         messageParts.forEach((messagePart) => {
@@ -77,7 +77,7 @@ class LogModule extends AbstractModule {
                 this.scene,
                 messagePart.message,
                 {x: xOffset, y: 0},
-                12, 'left', false,
+                12, "left", false,
                 COLOR_WHITE,
                 {...messagePart.style}
             );
@@ -85,7 +85,7 @@ class LogModule extends AbstractModule {
             xOffset += text.width + 5;
         });
 
-        const panel = this.logPanel.getElement('panel') as ScrollablePanel;
+        const panel = this.logPanel.getElement("panel") as ScrollablePanel;
         this._entryTexts.push(container)
         panel.add(container); // Add the log entry to the scrollable panel
         this.logPanel.layout(); // Re-layout the panel to adjust to new content
@@ -105,7 +105,7 @@ class LogModule extends AbstractModule {
 
             panel: {
                 child: this.scene.rexUI.add.sizer({
-                    orientation: 'vertical',
+                    orientation: "vertical",
                     space: {item: 10} // Space between log entries
                 }),
 
