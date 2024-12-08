@@ -39,6 +39,8 @@ export class Preloader extends Scene {
         this.load.spritesheet('portal', 'portal.png', {frameWidth: 190, frameHeight: 190});
         this.load.spritesheet('towers', 'towers.png', {frameWidth: 192 / 3, frameHeight: 128});
         this.load.spritesheet('coin', 'coin.png', {frameWidth: 40, frameHeight: 40});
+        this.load.spritesheet('effects_purple', 'effects-purple.png', {frameWidth: 16, frameHeight: 16});
+        this.load.spritesheet('effects_purple_tall', 'effects-purple.png', {frameWidth: 16, frameHeight: 32});
 
         for (let i = 1; i <= 6; i++) {
             this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
@@ -79,6 +81,13 @@ export class Preloader extends Scene {
             key: 'coin',
             frames: this.anims.generateFrameNumbers('coin', {start: 0, end: 6}),
             frameRate: 14,
+            repeat: -1,
+        })
+
+        this.anims.create({
+            key: 'purple_flame',
+            frames: this.anims.generateFrameNumbers('effects_purple_tall', {start: 190, end: 192}),
+            frameRate: 9,
             repeat: -1,
         })
 
