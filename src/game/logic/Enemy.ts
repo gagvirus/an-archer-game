@@ -1,14 +1,15 @@
-import Phaser from 'phaser';
-import Hero from './Hero';
-import MainScene from '../scenes/MainScene.ts';
-import HealthBar from './HealthBar.ts';
-import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
-import {enemies, EnemyDef} from './enemies.ts';
-import {getRandomItem} from '../helpers/random-helper.ts';
-import {isDebugMode} from '../helpers/registry-helper.ts';
-import {COLOR_DANGER, COLOR_WARNING, HEX_COLOR_WARNING} from '../helpers/colors.ts';
-import {showDamage, showEvaded} from '../helpers/text-helpers.ts';
-import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
+import Phaser from "phaser";
+import Hero from "./Hero";
+import MainScene from "../scenes/MainScene.ts";
+import HealthBar from "./HealthBar.ts";
+import {Attackable, randomChance} from "../helpers/gameplayer-helper.ts";
+import {enemies, EnemyDef} from "./enemies.ts";
+import {getRandomItem} from "../helpers/random-helper.ts";
+import {isDebugMode} from "../helpers/registry-helper.ts";
+import {COLOR_DANGER, COLOR_WARNING, HEX_COLOR_WARNING} from "../helpers/colors.ts";
+import {showDamage, showEvaded} from "../helpers/text-helpers.ts";
+import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
+import {ResourceType} from "./ResourceDrop.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
@@ -24,15 +25,16 @@ class Enemy extends Sprite {
     attackDamage: number;
     attacksPerSecond: number = 1;
     attackCooldown: number;
-    type: string = 'enemy';
+    type: string = "enemy";
     attackable: Attackable;
     xpAmount: number;
     // when an arrow is on the way, the health bar is not yet updated, but we need to keep track of "actual" health
     // that will become when the arrow hits the enemy, so we would be able to determine whether it's about to be killed
     soonToBeHealth: number;
+    drops: Partial<{ [key in ResourceType]: [number, number] }>;
 
     constructor(scene: MainScene, x: number, y: number, enemyDef?: EnemyDef) {
-        super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
+        super(scene, x, y, "enemy");  // 'enemy' is the key for the enemy sprite
         scene.add.existing(this);     // Add to the scene
         scene.physics.add.existing(this); // Enable physics
         this.setCollideWorldBounds(true); // Prevent enemy from going offscreen
@@ -59,12 +61,12 @@ class Enemy extends Sprite {
             (maxHealth: number) => new HealthBar(scene, this, 40, 5, maxHealth, {x: -20, y: -30}),
             () => {
                 this.destroy();
-                scene.onEnemyKilled();
+                scene.onEnemyKilled(this);
             },
             () => {
                 const isEvaded = randomChance(this.hero.stats.evadeChancePercent);
                 if (isEvaded) {
-                    addLogEntry(':hero evaded attack from :opponent', {
+                    addLogEntry(":hero evaded attack from :opponent", {
                         hero: [this.hero.name, COLOR_WARNING],
                         opponent: [this.name, COLOR_DANGER],
                     }, LogEntryCategory.Combat);
@@ -72,7 +74,7 @@ class Enemy extends Sprite {
                 } else {
                     const blockedDamage = this.hero.stats.getFinalDamageReduction(this.attackDamage);
                     const damageDealt = this.attackDamage - blockedDamage;
-                    addLogEntry(':enemy attacked :opponent for :damage DMG, but :blocker blocked :blocked DMG', {
+                    addLogEntry(":enemy attacked :opponent for :damage DMG, but :blocker blocked :blocked DMG", {
                         enemy: [this.name, COLOR_DANGER],
                         opponent: [this.hero.name, COLOR_WARNING],
                         damage: [this.attackDamage, COLOR_DANGER],
@@ -87,8 +89,7 @@ class Enemy extends Sprite {
         )
     }
 
-    get isToBeKilled()
-    {
+    get isToBeKilled() {
         return this.soonToBeHealth <= 0;
     }
 
@@ -105,12 +106,12 @@ class Enemy extends Sprite {
         this.attackRange = enemyDef.attackRange;
         this.attackDamage = enemyDef.attackDamage;
         this.attacksPerSecond = enemyDef.attacksPerSecond;
+        this.drops = enemyDef.drops;
         this.xpAmount = enemyDef.xpAmount;
         this.type = enemyDef.type;
         this.scale = enemyDef.scale;
         this.name = enemyDef.name;
-        if (enemyDef.tint)
-        {
+        if (enemyDef.tint) {
             this.tint = enemyDef.tint;
         }
     };

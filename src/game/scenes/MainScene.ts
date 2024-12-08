@@ -24,6 +24,7 @@ import {Coin} from "../logic/Coin.ts";
 import {Soul} from "../logic/Soul.ts";
 import {ResourceDrop, ResourceType} from "../logic/ResourceDrop.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
+import {getRandomNumberBetweenRange} from "../helpers/random-helper.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -177,12 +178,24 @@ class MainScene extends Scene {
         });
     }
 
-    spawnSoul(x: number, y: number) {
-        this.drops.add(new Soul(this, x, y));
+    spawnSoul(x: number, y: number, amount: number = 1) {
+        this.drops.add(new Soul(this, x, y, amount));
     }
 
-    spawnCoin(x: number, y: number) {
-        this.drops.add(new Coin(this, x, y));
+    spawnCoin(x: number, y: number, amount: number = 1) {
+        this.drops.add(new Coin(this, x, y, amount));
+    }
+
+    drop(x: number, y: number, type: ResourceType, amount: number) {
+        // todo: push the x/y a little so it won't be crowded
+        switch (type) {
+            case ResourceType.coin:
+                return this.spawnCoin(x, y, amount);
+            case ResourceType.soul:
+                return this.spawnSoul(x, y, amount);
+            default:
+                return;
+        }
     }
 
 
@@ -214,10 +227,22 @@ class MainScene extends Scene {
         return occupiedTiles;
     }
 
-    onEnemyKilled() {
+    onEnemyKilled(enemy: Enemy) {
+        this.dropLoot(enemy);
         if (this.enemies.countActive() < 1) {
             this.portal.setDisabled(false);
         }
+    }
+
+    dropLoot(enemy: Enemy) {
+        console.log(enemy)
+        Object.keys(enemy.drops).forEach((resourceType) => {
+            const range = enemy.drops[resourceType as ResourceType];
+            const amount = getRandomNumberBetweenRange(range as [number, number]);
+            console.log(this, this.scene);
+            this.drop(enemy.x, enemy.y, resourceType as ResourceType, amount)
+        });
+
     }
 
     startStage() {
