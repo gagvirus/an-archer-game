@@ -3,13 +3,12 @@ import Hero from "./Hero";
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
 import {Attackable, randomChance} from "../helpers/gameplayer-helper.ts";
-import {enemies, EnemyDef} from "./enemies.ts";
+import {enemies, EnemyDef, EnemyDrops} from "./enemies.ts";
 import {getRandomItem} from "../helpers/random-helper.ts";
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import {COLOR_DANGER, COLOR_WARNING, HEX_COLOR_WARNING} from "../helpers/colors.ts";
 import {showDamage, showEvaded} from "../helpers/text-helpers.ts";
 import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
-import {ResourceType} from "./ResourceDrop.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
@@ -31,7 +30,7 @@ class Enemy extends Sprite {
     // when an arrow is on the way, the health bar is not yet updated, but we need to keep track of "actual" health
     // that will become when the arrow hits the enemy, so we would be able to determine whether it's about to be killed
     soonToBeHealth: number;
-    drops: Partial<{ [key in ResourceType]: [number, number] }>;
+    drops: EnemyDrops;
 
     constructor(scene: MainScene, x: number, y: number, enemyDef?: EnemyDef) {
         super(scene, x, y, "enemy");  // 'enemy' is the key for the enemy sprite

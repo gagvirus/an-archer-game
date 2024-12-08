@@ -1,6 +1,10 @@
 import {HEX_COLOR_DANGER, HEX_COLOR_WARNING} from "../helpers/colors.ts";
 import {ResourceType} from "./ResourceDrop.ts";
 
+// min amount, max amount, chance
+export type ResourceDropChance = [number, number, number];
+export type EnemyDrops = Partial<{ [key in ResourceType]: ResourceDropChance }>;
+
 export interface EnemyDef {
     name: string;
     maxHealth: number;
@@ -15,7 +19,7 @@ export interface EnemyDef {
     weight: number;
     scale: number;
     tint?: number;
-    drops: Partial<{ [key in ResourceType]: [number, number] }>;
+    drops: EnemyDrops;
 }
 
 
@@ -34,8 +38,7 @@ export const enemies: EnemyDef[] = [
         scale: 1.2,
         weight: 3,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.coin]: [3, 10, 50],
         },
     },
     {
@@ -53,8 +56,7 @@ export const enemies: EnemyDef[] = [
         weight: 3,
         tint: HEX_COLOR_WARNING,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.coin]: [10, 40, 50],
         },
     },
     {
@@ -72,8 +74,7 @@ export const enemies: EnemyDef[] = [
         weight: 2,
         tint: HEX_COLOR_DANGER,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.coin]: [50, 200, 50],
         },
     },
     {
@@ -90,8 +91,8 @@ export const enemies: EnemyDef[] = [
         scale: 0.8,
         weight: 10,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.coin]: [1, 2, 75],
+            [ResourceType.soul]: [1, 1, 100],
         },
     },
     {
@@ -109,8 +110,8 @@ export const enemies: EnemyDef[] = [
         weight: 10,
         tint: HEX_COLOR_WARNING,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.coin]: [3, 10, 75],
+            [ResourceType.soul]: [2, 3, 100],
         },
     },
     {
@@ -128,8 +129,8 @@ export const enemies: EnemyDef[] = [
         weight: 10,
         tint: HEX_COLOR_DANGER,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.coin]: [10, 25, 75],
+            [ResourceType.soul]: [3, 5, 100],
         },
     },
     {
@@ -146,8 +147,7 @@ export const enemies: EnemyDef[] = [
         scale: 1.8,
         weight: 1,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.soul]: [10, 20, 100],
         },
     },
     {
@@ -165,8 +165,8 @@ export const enemies: EnemyDef[] = [
         weight: 0.2,
         tint: HEX_COLOR_DANGER,
         drops: {
-            [ResourceType.coin]: [1, 1],
-            [ResourceType.soul]: [1, 1],
+            [ResourceType.coin]: [500, 1000, 100],
+            [ResourceType.soul]: [100, 200, 100],
         },
     }
 ]

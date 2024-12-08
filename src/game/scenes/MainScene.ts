@@ -25,6 +25,8 @@ import {Soul} from "../logic/Soul.ts";
 import {ResourceDrop, ResourceType} from "../logic/ResourceDrop.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
 import {getRandomNumberBetweenRange} from "../helpers/random-helper.ts";
+import {randomChance} from "../helpers/gameplayer-helper.ts";
+import {ResourceDropChance} from "../logic/enemies.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -237,10 +239,11 @@ class MainScene extends Scene {
     dropLoot(enemy: Enemy) {
         console.log(enemy)
         Object.keys(enemy.drops).forEach((resourceType) => {
-            const range = enemy.drops[resourceType as ResourceType];
-            const amount = getRandomNumberBetweenRange(range as [number, number]);
-            console.log(this, this.scene);
-            this.drop(enemy.x, enemy.y, resourceType as ResourceType, amount)
+            const [minAmount, maxAmount, chance] = enemy.drops[resourceType as ResourceType] as ResourceDropChance;
+            if (randomChance(chance)) {
+                const amount = getRandomNumberBetweenRange([minAmount, maxAmount] as [number, number]);
+                this.drop(enemy.x, enemy.y, resourceType as ResourceType, amount)
+            }
         });
 
     }
