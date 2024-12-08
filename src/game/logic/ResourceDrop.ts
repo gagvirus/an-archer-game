@@ -1,10 +1,16 @@
 import Phaser, {Scene} from "phaser";
 
+export enum ResourceType {
+    resource = "resource",
+    coin = "coin",
+    soul = "soul",
+}
+
 export abstract class ResourceDrop extends Phaser.Physics.Arcade.Sprite {
     amount: number;
     resourceName: string;
 
-    constructor(scene: Scene, x: number, y: number, amount: number = 1, name: string = "resource-drop") {
+    constructor(scene: Scene, x: number, y: number, amount: number = 1, name: ResourceType = ResourceType.resource) {
         super(scene, x, y, name);
         scene.add.existing(this);
 
