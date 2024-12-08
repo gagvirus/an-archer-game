@@ -154,8 +154,7 @@ class MainScene extends Scene {
         }
     }
 
-    dropsFollowHero()
-    {
+    dropsFollowHero() {
         this.dropsFollowing.getChildren().forEach((drop) => {
             // Calculate the direction to pull the resource
             const {x, y, amount, resourceName: name} = drop as ResourceDrop;
@@ -236,9 +235,12 @@ class MainScene extends Scene {
     }
 
     dropLoot(enemy: Enemy) {
-        console.log(enemy)
+        const {dropChanceModifier, dropAmountModifier} = this.hero.stats;
         Object.keys(enemy.drops).forEach((resourceType) => {
-            const [minAmount, maxAmount, chance] = enemy.drops[resourceType as ResourceType] as ResourceDropChance;
+            const [baseMinAmount, baseMaxAmount, baseChance] = enemy.drops[resourceType as ResourceType] as ResourceDropChance;
+            const minAmount = baseMinAmount * dropAmountModifier;
+            const maxAmount = baseMaxAmount * dropAmountModifier;
+            const chance = Phaser.Math.Clamp(baseChance * dropChanceModifier, 1, baseChance <= 10 ? 50 : 90);
             if (randomChance(chance)) {
                 const amount = getRandomNumberBetweenRange([minAmount, maxAmount] as [number, number]);
                 this.drop(enemy.x, enemy.y, resourceType as ResourceType, amount)

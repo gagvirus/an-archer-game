@@ -164,6 +164,14 @@ class StatsManager {
         return Math.pow(1.05, this.intelligence - 1) * (isRapidLevelUp(this.scene.game) ? 100 : 1);
     }
 
+    get dropChanceModifier() {
+        return Phaser.Math.Clamp(1 + this.luck * 2 / 100, 1, 4);
+    }
+
+    get dropAmountModifier() {
+        return Phaser.Math.Clamp(1 + this.luck * 1.1 / 100, 1, 7);
+    }
+
     get healthRegenPerInterval() {
         // each endurance point adds +((1.2^level) - 1) health regenerated per second
         return Math.pow(1.2, this.endurance - 1);
