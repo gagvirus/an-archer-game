@@ -13,6 +13,7 @@ export class StatsScene extends Scene {
     chooseStatsText: Phaser.GameObjects.Text;
     statsButtons: Label[];
     holdingShift: boolean = false;
+    holdingAlt: boolean = false;
 
     constructor() {
         super("StatsScene");
@@ -35,7 +36,7 @@ export class StatsScene extends Scene {
             space: {item: 10}
         })
             .layout()
-            .on("button.click", (_: Label, index: number) => this.handleStatSelection(index));
+            .on("button.click", (_: Label, index: number) => this.handleStatClick(index));
 
         this.chooseStatsText = createText(this, "Choose Stats", {x: 400, y: 100}, 24)
         this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
@@ -47,10 +48,14 @@ export class StatsScene extends Scene {
             }
             if (statsHotkeys.includes(event.key.toUpperCase())) {
                 const index = this.statsGroup.findIndex(f => f.hotkey == event.key.toUpperCase());
-                this.handleStatSelection(index);
+                this.handleStatClick(index);
             }
             if (["Shift"].includes(event.key)) {
                 this.holdingShift = true;
+                this.updateUI();
+            }
+            if (["Alt"].includes(event.key)) {
+                this.holdingAlt = true;
                 this.updateUI();
             }
         });
@@ -58,6 +63,10 @@ export class StatsScene extends Scene {
         this.input.keyboard?.on("keyup", (event: KeyboardEvent) => {
             if (["Shift"].includes(event.key)) {
                 this.holdingShift = false;
+                this.updateUI();
+            }
+            if (["Alt"].includes(event.key)) {
+                this.holdingAlt = false;
                 this.updateUI();
             }
         });
@@ -97,27 +106,38 @@ export class StatsScene extends Scene {
     }
 
     getStatText(statGroup: StatGroup) {
-        // @ts-expect-error the stat names is present on the stat manager
-        const currentStat = this.statsManager[statGroup.prop];
-        const icon = this.holdingShift ? '++' : '+'
+        const currentStat = this.statsManager.getStat(statGroup.prop);
+        const icon = this.holdingAlt ? (this.holdingShift ? '--' : '-') : this.holdingShift ? '++' : '+';
         return `[${statGroup.hotkey}] ${statGroup.label} [${currentStat}] ${icon}`;
     }
 
-    handleStatSelection(index: number) {
-        if (this.statsManager.unallocatedStats < 1) {
+    handleStatClick(index: number) {
+        const selectedStatGroup = this.statsGroup[index];
+        const selectedStatCurrentAmount = this.statsManager.getStat(selectedStatGroup.prop);
+        if (!this.holdingAlt && this.statsManager.unallocatedStats < 1) {
             return;
         }
-        let statsToAllocate = 1;
+        if (this.holdingAlt && selectedStatCurrentAmount <= 1) {
+            return;
+        }
+        let statsCount = 1;
         if (this.holdingShift) {
-            statsToAllocate = 10;
-            if (statsToAllocate > this.statsManager.unallocatedStats) {
-                statsToAllocate = this.statsManager.unallocatedStats
+            statsCount = 10;
+            if (this.holdingAlt) {
+                // if there is not enough allocated points on the selected stat group,
+                // set stats count to current stat number
+                if (selectedStatCurrentAmount - 1 < statsCount) {
+                    statsCount = selectedStatCurrentAmount - 1;
+                }
+            } else {
+                if (statsCount > this.statsManager.unallocatedStats) {
+                    statsCount = this.statsManager.unallocatedStats
+                }
             }
         }
-        const selectedStatGroup = this.statsGroup[index];
-        this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsToAllocate);
-        // @ts-expect-error the stat names is present on the stat manager
-        this.statsManager[selectedStatGroup.prop] += statsToAllocate;
+        const isUnallocatingMultiplier = this.holdingAlt ? -1 : 1;
+        this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount * isUnallocatingMultiplier);
+        this.statsManager.addStat(selectedStatGroup.prop, statsCount * isUnallocatingMultiplier);
         this.statsButtons[index].setText(this.getStatText(selectedStatGroup))
         this.events.emit("statsUpdated")
     }

@@ -1,15 +1,22 @@
-import {isEasyMode, isRapidLevelUp} from './registry-helper.ts';
-import {Scene} from 'phaser';
-import Hero from '../logic/Hero.ts';
+import {isEasyMode, isRapidLevelUp} from "./registry-helper.ts";
+import {Scene} from "phaser";
+import Hero from "../logic/Hero.ts";
 
 export interface Stat {
     label: string;
     prop: string;
 }
 
+enum CoreStat {
+    finesse = "finesse",
+    awareness = "awareness",
+    resilience = "resilience",
+    thoughtfulness = "thoughtfulness",
+}
+
 export interface StatGroup {
     label: string;
-    prop: string;
+    prop: CoreStat;
     description: string;
     stats: Stat[];
     hotkey: string;
@@ -32,6 +39,14 @@ class StatsManager {
         this._resilience = resilience;
         this._thoughtfulness = thoughtfulness;
         this.unallocatedStats = unallocatedStats;
+    }
+
+    public getStat(name: CoreStat) {
+        return this[name];
+    }
+
+    public addStat(name: CoreStat, amount: number) {
+        this[name] += amount;
     }
 
     public get easyModeModifier(): number {
@@ -225,44 +240,44 @@ class StatsManager {
     static listStatsGroups(): StatGroup[] {
         return [
             {
-                label: 'Finesse',
-                prop: 'finesse',
-                hotkey: 'F',
-                description: '(OFF/DEF) affects Attack speed & Evade chance',
+                label: "Finesse",
+                prop: CoreStat.finesse,
+                hotkey: "F",
+                description: "(OFF/DEF) affects Attack speed & Evade chance",
                 stats: [
-                    {label: 'Dexterity', prop: 'dexterity'},
-                    {label: 'Agility', prop: 'agility'}
+                    {label: "Dexterity", prop: "dexterity"},
+                    {label: "Agility", prop: "agility"}
                 ],
             },
             {
-                label: 'Awareness',
-                prop: 'awareness',
-                hotkey: 'A',
-                description: '(OFF/OFF) affects Critical chance / Critical damage & Attack damage',
+                label: "Awareness",
+                prop: CoreStat.awareness,
+                hotkey: "A",
+                description: "(OFF/OFF) affects Critical chance / Critical damage & Attack damage",
                 stats: [
-                    {label: 'Perception', prop: 'perception'},
-                    {label: 'Strength', prop: 'strength'}
+                    {label: "Perception", prop: "perception"},
+                    {label: "Strength", prop: "strength"}
                 ],
             },
             {
-                label: 'Resilience',
-                prop: 'resilience',
-                hotkey: 'R',
-                description: '(DEF/DEF) affects armor rating & Max Health / Health Regen',
+                label: "Resilience",
+                prop: CoreStat.resilience,
+                hotkey: "R",
+                description: "(DEF/DEF) affects armor rating & Max Health / Health Regen",
                 stats: [
-                    {label: 'Fortitude', prop: 'fortitude'},
-                    {label: 'Endurance', prop: 'endurance'}
+                    {label: "Fortitude", prop: "fortitude"},
+                    {label: "Endurance", prop: "endurance"}
                 ],
             },
             {
-                label: 'Thoughtfulness',
-                prop: 'thoughtfulness',
-                hotkey: 'T',
-                description: '(MISC) affects XP Gain & Bartering & Coin Gain',
+                label: "Thoughtfulness",
+                prop: CoreStat.thoughtfulness,
+                hotkey: "T",
+                description: "(MISC) affects XP Gain & Bartering & Coin Gain",
                 stats: [
-                    {label: 'Intelligence', prop: 'intelligence'},
-                    {label: 'Charisma', prop: 'charisma'},
-                    {label: 'Luck', prop: 'luck'}
+                    {label: "Intelligence", prop: "intelligence"},
+                    {label: "Charisma", prop: "charisma"},
+                    {label: "Luck", prop: "luck"}
                 ],
             },
         ];
