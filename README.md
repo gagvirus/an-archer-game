@@ -33,3 +33,4 @@ This project utilizes the following resources:
   - [Archer Hero](https://darkpixel-kronovi.itch.io/archer-hero)
   - [Pixel Art - Portal Monolith](https://arijkx.itch.io/pixel-art-portal-monolith)
   - [Coin](https://merlym.itch.io/coin)
+  - [Free Effect and Bullet 16x16](https://bdragon1727.itch.io/free-effect-and-bullet-16x16)
