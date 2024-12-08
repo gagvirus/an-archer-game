@@ -32,9 +32,10 @@ class DpsIndicatorModule extends AbstractModule {
     }
 
     update() {
-        // if (this.dpsText && this.hero) {
-        //     this.dpsText.setText(`DPS ${formatNumber(this.hero.damagePerSecond)}`);
-        // }
+        const resources = this.hero.getResources();
+        Object.keys(resources).forEach((resourceType) => {
+            this.resourceTexts[resourceType as ResourceType]?.setText(`${resourceType}s: ${resources[resourceType as ResourceType]}`)
+        })
     }
 }
 

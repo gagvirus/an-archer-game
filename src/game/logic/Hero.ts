@@ -11,6 +11,7 @@ import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import {CustomCursorKeysDown} from "../helpers/keyboard-helper.ts";
 import {COLOR_SUCCESS, COLOR_WARNING} from "../helpers/colors.ts";
+import {ResourceType} from "./ResourceDrop.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
@@ -25,6 +26,10 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     pullForce: number = 50;
     collectDistance: number = 25;
     pullCircle: Arc;
+    private resources: { [key in ResourceType]: number } = {
+        [ResourceType.soul]: 0,
+        [ResourceType.coin]: 0,
+    };
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, "hero");  // 'hero' is the key for the hero sprite
@@ -69,6 +74,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         )
 
         this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
+    }
+
+    collectResource(name: ResourceType, amount: number = 1) {
+        this.resources[name] += amount;
+    }
+
+    getResources() {
+        return this.resources;
     }
 
     get attackDamage() {

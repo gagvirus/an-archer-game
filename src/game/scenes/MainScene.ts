@@ -159,7 +159,7 @@ class MainScene extends Scene {
         const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, x, y);
         if (distance < this.hero.collectDistance) {
             this.resources.remove(resource as ResourceDrop, true, true);
-            console.log(`${amount} ${name}(s) collected`);
+            this.hero.collectResource(name as ResourceType, amount);
         }
     }
 
