@@ -3,16 +3,16 @@ import Enemy from './Enemy.ts';
 import Arrow from './Arrow.ts';
 import HealthBar from './HealthBar.ts';
 import MainScene from '../scenes/MainScene.ts';
-import {Attackable, XpManager} from '../helpers/gameplayer-helper.ts';
+import {Attackable, randomChance, XpManager} from '../helpers/gameplayer-helper.ts';
 import XpBar from './XpBar.ts';
 import {isAutoAttackEnabled} from '../helpers/registry-helper.ts';
 import StatsManager from '../helpers/stats-manager.ts';
 import {addLogEntry, LogEntryCategory} from '../helpers/log-utils.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
 import {CustomCursorKeysDown} from '../helpers/keyboard-helper.ts';
+import {COLOR_SUCCESS, COLOR_WARNING} from '../helpers/colors.ts';
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
-import {COLOR_SUCCESS, COLOR_WARNING} from '../helpers/colors.ts';
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
     arrows: Group;
@@ -161,7 +161,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
 
     shootArrow(target: Enemy) {
-        const arrow = new Arrow(this.scene, this.x, this.y, target, target.attackable, 500, this.attackable);
+        let attackDamage = this.attackable.attackDamage;
+
+        const isCritical = randomChance(this.stats.criticalChancePercent);
+        if (isCritical) {
+            attackDamage *= this.stats.criticalExtraDamageMultiplier;
+        }
+        target.soonToBeHealth -= attackDamage;
+        const arrow = new Arrow(this.scene, this.x, this.y, target, target.attackable, 500, this.attackable, attackDamage, isCritical);
         this.scene.add.existing(arrow);
         return arrow;
     }
@@ -170,7 +177,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         let nearestEnemy: Enemy | null = null;
         let minDistance = Number.MAX_VALUE;
 
-        (this.scene as MainScene).enemies.getChildren().forEach((gameObject: GameObject) => {
+        const enemies = (this.scene as MainScene).enemies.getChildren().filter((enemy: GameObject) => !(enemy as Enemy).isToBeKilled);
+
+        enemies.forEach((gameObject: GameObject) => {
             const enemy = gameObject as Enemy;
             const distance = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
             if (distance < minDistance) {

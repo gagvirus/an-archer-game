@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import {Attackable, randomChance} from '../helpers/gameplayer-helper.ts';
+import {Attackable} from '../helpers/gameplayer-helper.ts';
 import {showDamage, showGainedXp} from '../helpers/text-helpers.ts';
 import Enemy from './Enemy.ts';
 import Hero from './Hero.ts';
@@ -13,13 +13,17 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     speed: number;
     owner: Attackable;
     targetPosition: Vector2Like;
+    attackDamage: number;
+    isCritical: boolean;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, targetPosition: Vector2Like, target: Attackable, speed: number = 500, owner: Attackable) {
+    constructor(scene: Phaser.Scene, x: number, y: number, targetPosition: Vector2Like, target: Attackable, speed: number = 500, owner: Attackable, attackDamage: number, isCritical: boolean) {
         super(scene, x, y, 'arrow');
         this.target = target;
         this.targetPosition = targetPosition;
         this.owner = owner;
         this.speed = speed;
+        this.attackDamage = attackDamage;
+        this.isCritical = isCritical;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -53,30 +57,26 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
 
     // Handle what happens when the arrow hits the target
     private handleHit() {
-        let attackDamage = this.owner.attackDamage;
         // todo: check if this is hero
         // todo:  perhaps there is a better way to do this ?
         const hero: Hero = this.owner.owner as Hero;
         const stats: StatsManager = hero.stats;
-        const isCritical = randomChance(stats.criticalChancePercent);
-        if (isCritical) {
-            attackDamage *= stats.criticalExtraDamageMultiplier;
-        }
 
-        if (isCritical) {
+
+        if (this.isCritical) {
             addLogEntry(':attacker inflicted :damage WRIT on :opponent', {
                 attacker: [this.owner.name, COLOR_WARNING],
-                damage: [attackDamage, COLOR_DANGER],
+                damage: [this.attackDamage, COLOR_DANGER],
                 opponent: [this.target.name, COLOR_DANGER],
             }, LogEntryCategory.Combat);
         } else {
             addLogEntry(`:attacker attacked :opponent for :damage DMG`, {
                 attacker: [this.owner.name, COLOR_WARNING],
                 opponent: [this.target.name, COLOR_DANGER],
-                damage: [attackDamage, COLOR_DANGER],
+                damage: [this.attackDamage, COLOR_DANGER],
             }, LogEntryCategory.Combat);
         }
-        this.target.takeDamage(attackDamage, (target: Attackable) => {
+        this.target.takeDamage(this.attackDamage, (target: Attackable) => {
             this.owner.onKilledTarget(target)
             const baseXp = (target.owner as Enemy).xpAmount;
             const xpGainModifier = stats.xpGainMultiplier;
@@ -91,9 +91,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
                 xp: [gainedXP, COLOR_SUCCESS],
             }, LogEntryCategory.Loot);
         });
-        showDamage(this.scene, this.target.owner as Vector2Like, attackDamage, isCritical);
-
-        // this.target.takeDamage(10); // Assume the Enemy class has a takeDamage method
+        showDamage(this.scene, this.target.owner as Vector2Like, this.attackDamage, this.isCritical);
         this.destroy();
     }
 }

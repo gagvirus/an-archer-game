@@ -27,6 +27,9 @@ class Enemy extends Sprite {
     type: string = 'enemy';
     attackable: Attackable;
     xpAmount: number;
+    // when an arrow is on the way, the health bar is not yet updated, but we need to keep track of "actual" health
+    // that will become when the arrow hits the enemy, so we would be able to determine whether it's about to be killed
+    soonToBeHealth: number;
 
     constructor(scene: MainScene, x: number, y: number, enemyDef?: EnemyDef) {
         super(scene, x, y, 'enemy');  // 'enemy' is the key for the enemy sprite
@@ -46,6 +49,7 @@ class Enemy extends Sprite {
         this.attackCooldown = 0;
         // Create a health bar for the enemy
         this.anims.play(`${this.type}_walk`)
+        this.soonToBeHealth = this.maxHealth;
 
         this.attackable = new Attackable(
             this.scene,
@@ -83,6 +87,11 @@ class Enemy extends Sprite {
             },
             this,
         )
+    }
+
+    get isToBeKilled()
+    {
+        return this.soonToBeHealth <= 0;
     }
 
     // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
