@@ -7,9 +7,8 @@
     - partial color change in log entry (for example "inflicted **red**->50 damage")
 - Fix issues with regeneration - Property cleaning intervals which were causing issues
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
-    arrow arrives at destination, XP is awarded again
-
-
+  arrow arrives at destination, XP is awarded again
+- Fix portal logic - can somehow use portal multiple times by spamming enter key
 
 ### v0.0.7
 

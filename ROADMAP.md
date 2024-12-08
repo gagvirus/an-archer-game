@@ -14,7 +14,6 @@
     - have a max attack speed limit constant
     - when limit is reached, increment damage instead of attack speed
     - ensure calculate the damage boost amount in a way that it would add same DPS as attack speed would add
-- Fix portal logic - can somehow use portal multiple times by spamming enter key
 
 ### Gameplay Features
 
