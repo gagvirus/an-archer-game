@@ -14,6 +14,7 @@ Step on the portal to activate it, then press enter to proceed to the next stage
 - **B** opens the build menu (Work in progress)
 - **C** opens the stats menu
   - Hold **Shift** to bulk-allocate stat points
+  - Hold **Alt** to un-allocate stat points
 - **Space** to attack (if auto-attack is not enabled)
 - **Enter** progress to the next stage when portal is active
 - **F** during gameplay to hide / show FPS counter
