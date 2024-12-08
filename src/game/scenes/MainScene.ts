@@ -18,6 +18,7 @@ import LogModule from "../modules/log-module.ts";
 import {COLOR_WARNING} from "../helpers/colors.ts";
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
+import {Coin} from "../logic/Coin.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -41,6 +42,8 @@ class MainScene extends Scene {
         this.portal = new Portal(this, 400, 400);
         // Initialize the hero in the center of the canvas
         this.hero = new Hero(this, this.scale.width / 2, this.scale.height / 2);
+
+        new Coin(this, 300, 300);
 
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
