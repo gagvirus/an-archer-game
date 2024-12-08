@@ -1,22 +1,13 @@
 ## Changelog
 
-### WIP
+### v0.0.9
 
-- show stage info
-    - what stage are you on
-    - how many total enemies / remaining enemies are there
-- Ability to un-allocate points
-    - Hold Alt then click on stat, shall un-allocate
-    - While holding "Alt" key, change the Green "Plus" to a Red "Minus"
-    - Add ability to un-allocate points in bulk
-- Drops - Coins / Resources
-    - When killing an enemy, it shall have a chance to drop some resources
-        - Coins - Display a number of total coins on top-right corner
-        - Souls - Display a number of total souls on top-right corner
-    - Shall have a "dictionary" where each type of resource is defined
-    - Each enemy shall define what resource it can drop and with what probability
-    - "Thoughtfulness" stat shall increase number of resources gained
-    - "Thoughtfulness" stat shall increase chances of resource drops
+- Added Stage Info - Showing which stage are You on, how many enemies are alive / total
+- Ability to un-allocate points - Hold "Alt" button to un-allocate stat points
+- Implemented "Loot" functionality - each enemy now has a chance of dropping resources (souls & coins)
+  - At this points, the resources are not usable in any way
+  - "Thoughtfulness" stat affects how many resources enemies will drop, and how frequently they drop
+
 
 ### v0.0.8
 
