@@ -213,6 +213,15 @@ class StatsManager {
         return attackRate / 100 / this.baseAttackTime;
     }
 
+    get extraDamageFromOverflowAttackSpeed() {
+        const clampedAttackSpeed = this.attacksPerSecond;
+        const unclampedAttackSpeed = this.attackRate / 100 / this.baseAttackTime;
+        if (unclampedAttackSpeed > clampedAttackSpeed) {
+            return unclampedAttackSpeed / clampedAttackSpeed;
+        }
+        return 1;
+    }
+
     static listStatsGroups(): StatGroup[] {
         return [
             {

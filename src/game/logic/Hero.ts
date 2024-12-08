@@ -67,7 +67,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     get attackDamage() {
         const BASE_DAMAGE = 10;
         const levelModifier = BASE_DAMAGE * (this._level - 1) * 0.2;
-        return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier;
+        return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier * this.stats.extraDamageFromOverflowAttackSpeed;
     }
 
     get attacksPerSecond() {
