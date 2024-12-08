@@ -22,6 +22,7 @@ import {isDebugMode} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
 import {Coin} from "../logic/Coin.ts";
 import {Soul} from "../logic/Soul.ts";
+import {ResourceDrop} from "../logic/ResourceDrop.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -31,7 +32,7 @@ class MainScene extends Scene {
     hero: Hero;
     portal: Portal;
     buildings: Group;
-    coins: Group;
+    resources: Group;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -47,15 +48,14 @@ class MainScene extends Scene {
         // Initialize the hero in the center of the canvas
         this.hero = new Hero(this, this.scale.width / 2, this.scale.height / 2);
 
-        this.coins = this.physics.add.group();
+        this.resources = this.physics.add.group();
 
         // Add some coins to the scene
         this.spawnCoin(200, 200);
         this.spawnCoin(250, 250);
+        this.spawnSoul(150, 150);
 
-        new Soul(this, 150, 150);
-
-        this.physics.add.overlap(this.hero.pullCircle, this.coins, this.onCoinPull, undefined, this);
+        this.physics.add.overlap(this.hero.pullCircle, this.resources, this.onResourcePull, undefined, this);
 
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
@@ -140,10 +140,10 @@ class MainScene extends Scene {
         this.startStage();
     }
 
-    onCoinPull(_: Tile | GameObjectWithBody, coin: Tile | GameObjectWithBody) {
-        // Calculate the direction to pull the coin
-        const {x, y, amount} = coin as Coin;
-        const {body} = coin as GameObjectWithBody;
+    onResourcePull(_: Tile | GameObjectWithBody, resource: Tile | GameObjectWithBody) {
+        // Calculate the direction to pull the resource
+        const {x, y, amount, resourceName: name} = resource as ResourceDrop;
+        const {body} = resource as GameObjectWithBody;
         const angle = Phaser.Math.Angle.Between(x, y, this.hero.x, this.hero.y);
 
         const pullX = Math.cos(angle) * this.hero.pullForce;
@@ -152,16 +152,20 @@ class MainScene extends Scene {
         body.velocity.x = pullX;
         body.velocity.y = pullY;
 
-        // Check if the coin is within collectDistance
+        // Check if the resource is within collectDistance
         const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, x, y);
         if (distance < this.hero.collectDistance) {
-            this.coins.remove(coin as Coin, true, true);
-            console.log("Coin collected", amount);
+            this.resources.remove(resource as ResourceDrop, true, true);
+            console.log(`${amount} ${name}(s) collected`);
         }
     }
 
+    spawnSoul(x: number, y: number) {
+        this.resources.add(new Soul(this, x, y));
+    }
+
     spawnCoin(x: number, y: number) {
-        this.coins.add(new Coin(this, x, y));
+        this.resources.add(new Coin(this, x, y));
     }
 
 
