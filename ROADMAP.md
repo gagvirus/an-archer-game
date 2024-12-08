@@ -13,7 +13,6 @@
     - Each enemy shall define what resource it can drop and with what probability
     - "Thoughtfulness" stat shall increase number of resources gained
     - "Thoughtfulness" stat shall increase chances of resource drops
-    - In game statistics, add how much coin collected
 - Powerups
     - Add functionality that will spawn powerups, which the player can collect and activate
     - Powers shall be the following
@@ -65,6 +64,7 @@
         - how much damage received
         - how many levels gained
         - how many stages passed
+        - how many resources collected
     - Total Statistics
         - combine all the collected data and calculate sum
         - have a page "stats" that shall just display all this info
