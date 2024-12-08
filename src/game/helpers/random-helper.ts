@@ -29,7 +29,7 @@ const getRandomNumberBetweenRange = (range: [number, number]): number => {
 const getRandomNumberBetween = (a: number, b: number): number => {
     const min = Math.min(a, b);
     const max = Math.max(a, b);
-    return Math.random() * (max - min) + min;
+    return Math.ceil(Math.random() * (max - min) + min);
 }
 
 /**
