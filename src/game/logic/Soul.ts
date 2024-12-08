@@ -1,15 +1,9 @@
-import Phaser, {Scene} from "phaser";
+import {Scene} from "phaser";
+import {ResourceDrop} from "./ResourceDrop.ts";
 
-export class Soul extends Phaser.Physics.Arcade.Sprite {
-    amount: number;
+export class Soul extends ResourceDrop {
     constructor(scene: Scene, x: number, y: number, amount: number = 1) {
-        super(scene, x, y, 'soul');
-        scene.add.existing(this);
-
-        this.scene.physics.add.existing(this); // Enable physics
-        this.body?.setCircle(16); // Adjust size based on your sprite
-        this.amount = amount;
-
-        this.anims.play('purple_flame')
+        super(scene, x, y, amount, "soul");
+        this.anims.play("purple_flame")
     }
 }

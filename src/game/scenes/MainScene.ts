@@ -21,6 +21,7 @@ import {COLOR_WARNING} from "../helpers/colors.ts";
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
 import {Coin} from "../logic/Coin.ts";
+import {Soul} from "../logic/Soul.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -51,6 +52,8 @@ class MainScene extends Scene {
         // Add some coins to the scene
         this.spawnCoin(200, 200);
         this.spawnCoin(250, 250);
+
+        new Soul(this, 150, 150);
 
         this.physics.add.overlap(this.hero.pullCircle, this.coins, this.onCoinPull, undefined, this);
 
