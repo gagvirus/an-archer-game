@@ -8,7 +8,6 @@
 - Fix issues with regeneration - Property cleaning intervals which were causing issues
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
   arrow arrives at destination, XP is awarded again
-- Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Added easy mode in settings
 - Added rapid level up mode in settings
 - Attack speed and armor rating improvements
@@ -21,7 +20,9 @@
 - Attack speed issues
     - when the attack speed is very high, it causes lag / instability
     - have a max attack speed limit constant
-
+- Attack speed issues
+    - when limit is reached, increment damage instead of attack speed
+    - ensure calculate the damage boost amount in a way that it would add same DPS as attack speed would add
 
 ### v0.0.7
 
