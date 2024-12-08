@@ -9,6 +9,7 @@
 - Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
   arrow arrives at destination, XP is awarded again
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
+- Added easy mode in settings
 
 ### v0.0.7
 

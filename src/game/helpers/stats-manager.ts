@@ -1,3 +1,6 @@
+import {isEasyMode} from './registry-helper.ts';
+import {Scene} from 'phaser';
+
 export interface Stat {
     label: string;
     prop: string;
@@ -12,18 +15,27 @@ export interface StatGroup {
 }
 
 class StatsManager {
+    private scene: Scene;
     private _finesse: number;
     private _awareness: number;
     private _resilience: number;
     private _thoughtfulness: number;
     public unallocatedStats: number;
 
-    constructor(finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1, unallocatedStats: number = 0) {
+    constructor(scene: Scene, finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1, unallocatedStats: number = 0) {
+        this.scene = scene;
         this._finesse = finesse;
         this._awareness = awareness;
         this._resilience = resilience;
         this._thoughtfulness = thoughtfulness;
         this.unallocatedStats = unallocatedStats;
+    }
+
+    public get easyModeModifier(): number {
+        if (isEasyMode(this.scene.game)) {
+            return 10;
+        }
+        return 1;
     }
 
     public set finesse(value: number) {
@@ -60,47 +72,47 @@ class StatsManager {
 
     protected get dexterity() {
         // affects Attack speed
-        return this.finesse;
+        return this.finesse * this.easyModeModifier;
     }
 
     protected get agility() {
         // affects Evade chance
-        return this.finesse;
+        return this.finesse * this.easyModeModifier;
     }
 
     protected get perception() {
         // affects Critical chance / Critical damage
-        return this.awareness;
+        return this.awareness * this.easyModeModifier;
     }
 
     protected get strength() {
         // affects Attack damage
-        return this.awareness;
+        return this.awareness * this.easyModeModifier;
     }
 
     protected get fortitude() {
         // affects armor rating
-        return this.resilience;
+        return this.resilience * this.easyModeModifier;
     }
 
     protected get endurance() {
         // affects Max Health / Health Regen
-        return this.resilience;
+        return this.resilience * this.easyModeModifier;
     }
 
     protected get intelligence() {
         // affects XP Gain
-        return this.thoughtfulness;
+        return this.thoughtfulness * this.easyModeModifier;
     }
 
     protected get charisma() {
         // affects Bartering
-        return this.thoughtfulness;
+        return this.thoughtfulness * this.easyModeModifier;
     }
 
     protected get luck() {
         // affects Coin Gain
-        return this.thoughtfulness;
+        return this.thoughtfulness * this.easyModeModifier;
     }
 
     get damageMultiplier() {

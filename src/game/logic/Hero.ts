@@ -41,7 +41,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
                 this.attackable.attack();
             });
         }
-        this.stats = new StatsManager(1, 1, 1, 1);
+        this.stats = new StatsManager(this.scene, 1, 1, 1, 1);
         this.attackable = new Attackable(
             this.scene,
             this.attacksPerSecond, // attacks per second
