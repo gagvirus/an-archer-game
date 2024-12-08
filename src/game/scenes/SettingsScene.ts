@@ -4,12 +4,13 @@ import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import {VectorZeroes} from '../helpers/position-helper.ts';
 
-type SettingKey = 'debugMode' | 'autoAttack' | 'easyMode';
+type SettingKey = 'debugMode' | 'autoAttack' | 'easyMode' | 'rapidLevelUp';
 
 class SettingsScene extends Phaser.Scene {
     private debugMode: boolean = false;
     private autoAttack: boolean = false;
     private easyMode: boolean = false;
+    private rapidLevelUp: boolean = false;
 
     constructor() {
         super('SettingsScene')
@@ -28,6 +29,7 @@ class SettingsScene extends Phaser.Scene {
         panel.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, VectorZeroes()));
         panel.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, VectorZeroes()));
         panel.add(this.addSettingsRow('easyMode', 'Easy Mode', {x: 40, y: -5}, VectorZeroes()));
+        panel.add(this.addSettingsRow('rapidLevelUp', 'Rapid Level Up', {x: 40, y: -5}, VectorZeroes()));
 
         return panel;
     }
@@ -71,6 +73,7 @@ class SettingsScene extends Phaser.Scene {
         this.debugMode = this.game.registry.get('debugMode') == 'true';
         this.autoAttack = this.game.registry.get('autoAttack') == 'true';
         this.easyMode = this.game.registry.get('easyMode') == 'true';
+        this.rapidLevelUp = this.game.registry.get('rapidLevelUp') == 'true';
     }
 }
 
