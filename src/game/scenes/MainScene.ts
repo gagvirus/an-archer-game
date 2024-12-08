@@ -2,6 +2,8 @@ import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import GameObjectWithBody = Phaser.Types.Physics.Arcade.GameObjectWithBody;
+import Tile = Phaser.Tilemaps.Tile;
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
@@ -28,6 +30,7 @@ class MainScene extends Scene {
     hero: Hero;
     portal: Portal;
     buildings: Group;
+    coins: Group;
 
     constructor() {
         // Call the Phaser.Scene constructor and pass the scene key
@@ -43,7 +46,13 @@ class MainScene extends Scene {
         // Initialize the hero in the center of the canvas
         this.hero = new Hero(this, this.scale.width / 2, this.scale.height / 2);
 
-        new Coin(this, 300, 300);
+        this.coins = this.physics.add.group();
+
+        // Add some coins to the scene
+        this.spawnCoin(200, 200);
+        this.spawnCoin(250, 250);
+
+        this.physics.add.overlap(this.hero.pullCircle, this.coins, this.onCoinPull, undefined, this);
 
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
@@ -127,6 +136,31 @@ class MainScene extends Scene {
         });
         this.startStage();
     }
+
+    onCoinPull(_: Tile | GameObjectWithBody, coin: Tile | GameObjectWithBody) {
+        // Calculate the direction to pull the coin
+        const {x, y, amount} = coin as Coin;
+        const {body} = coin as GameObjectWithBody;
+        const angle = Phaser.Math.Angle.Between(x, y, this.hero.x, this.hero.y);
+
+        const pullX = Math.cos(angle) * this.hero.pullForce;
+        const pullY = Math.sin(angle) * this.hero.pullForce;
+
+        body.velocity.x = pullX;
+        body.velocity.y = pullY;
+
+        // Check if the coin is within collectDistance
+        const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, x, y);
+        if (distance < this.hero.collectDistance) {
+            this.coins.remove(coin as Coin, true, true);
+            console.log("Coin collected", amount);
+        }
+    }
+
+    spawnCoin(x: number, y: number) {
+        this.coins.add(new Coin(this, x, y));
+    }
+
 
     pauseCurrentScene() {
         this.scene.pause();
