@@ -23,7 +23,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     stats: StatsManager;
     _level: number;
     pullDistance: number = 100;
-    pullForce: number = 100;
+    pullForce: number = 200;
     collectDistance: number = 25;
     pullCircle: Arc;
     private resources: { [key in ResourceType]: number } = {
