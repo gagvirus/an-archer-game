@@ -5,14 +5,6 @@
 
 ### Gameplay Features
 
-- Drops - Coins / Resources
-    - When killing an enemy, it shall have a chance to drop some resources
-        - Coins - Display a number of total coins on top-right corner
-        - Souls - Display a number of total souls on top-right corner
-    - Shall have a "dictionary" where each type of resource is defined
-    - Each enemy shall define what resource it can drop and with what probability
-    - "Thoughtfulness" stat shall increase number of resources gained
-    - "Thoughtfulness" stat shall increase chances of resource drops
 - Powerups
     - Add functionality that will spawn powerups, which the player can collect and activate
     - Powers shall be the following

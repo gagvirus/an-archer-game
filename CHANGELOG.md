@@ -6,9 +6,17 @@
     - what stage are you on
     - how many total enemies / remaining enemies are there
 - Ability to un-allocate points
-  - Hold Alt then click on stat, shall un-allocate
-  - While holding "Alt" key, change the Green "Plus" to a Red "Minus"
-  - Add ability to un-allocate points in bulk
+    - Hold Alt then click on stat, shall un-allocate
+    - While holding "Alt" key, change the Green "Plus" to a Red "Minus"
+    - Add ability to un-allocate points in bulk
+- Drops - Coins / Resources
+    - When killing an enemy, it shall have a chance to drop some resources
+        - Coins - Display a number of total coins on top-right corner
+        - Souls - Display a number of total souls on top-right corner
+    - Shall have a "dictionary" where each type of resource is defined
+    - Each enemy shall define what resource it can drop and with what probability
+    - "Thoughtfulness" stat shall increase number of resources gained
+    - "Thoughtfulness" stat shall increase chances of resource drops
 
 ### v0.0.8
 
