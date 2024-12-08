@@ -1,28 +1,13 @@
 ## Changelog
 
-### WIP
+### v0.0.8
 
-- log improvements
-    - partial bold in log entries
-    - partial color change in log entry (for example "inflicted **red**->50 damage")
-- Fix issues with regeneration - Property cleaning intervals which were causing issues
-- Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
-  arrow arrives at destination, XP is awarded again
-- Added easy mode in settings
-- Added rapid level up mode in settings
-- Attack speed and armor rating improvements
-    - instead of plain calculating the attacks per second and damage reduction percent, must define some logic, that
-      will return some numerical value (for example base attack speed is 50, each agility stat increases +5). have a
-      getter "get attack speed" which will return this number. then this number will be combined with the base stat,
-      will also add stat from item in future, and calculate attacks per second based on this. the correlation between
-      attack speed and attacks per second shall not be linear, instead the increase amount shall decline the higher the
-      number is.
-- Attack speed issues
-    - when the attack speed is very high, it causes lag / instability
-    - have a max attack speed limit constant
-- Attack speed issues
-    - when limit is reached, increment damage instead of attack speed
-    - ensure calculate the damage boost amount in a way that it would add same DPS as attack speed would add
+- Log improvements - added ability to display parts of log entries in extended styling
+- Fixed issues with HP Regeneration, which was causing errors in console
+- Fixed issue with arrows - when multiple arrows are shot, and enemy is defeated but XP is awarded multiple times
+- Added "Easy Mode" in settings - each stat is 10 times more effective
+- Added "Rapid Level-Up" mode in settings - gain 100 times more XP
+- Attack speed and armor rating revamp
 
 ### v0.0.7
 
