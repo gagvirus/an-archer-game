@@ -6,6 +6,9 @@
     - partial bold in log entries
     - partial color change in log entry (for example "inflicted **red**->50 damage")
 - Fix issues with regeneration - Property cleaning intervals which were causing issues
+- Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
+    arrow arrives at destination, XP is awarded again
+
 
 
 ### v0.0.7

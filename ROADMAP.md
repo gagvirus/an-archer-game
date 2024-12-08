@@ -2,8 +2,6 @@
 
 ### Bugs & Improvements
 
-- Fix arrow logic - currently there is a bug when multiple arrows are shot, the enemy is already defeated but after the
-  arrow arrives at destination, XP is awarded again
 - Attack speed and armor rating improvements
     - instead of plain calculating the attacks per second and damage reduction percent, must define some logic, that
       will return some numerical value (for example base attack speed is 50, each agility stat increases +5). have a
