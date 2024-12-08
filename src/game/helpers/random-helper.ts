@@ -32,7 +32,6 @@ const getRandomNumberBetween = (a: number, b: number): number => {
     return Math.random() * (max - min) + min;
 }
 
-export {getRandomItem, getRandomNumberBetween, getRandomNumberBetweenRange}
 /**
  * Returns a random boolean value based on the probability of getting a true
  * Useful for example in determining isCritical
@@ -47,4 +46,5 @@ const randomChance = (trueProbability: number, maxProbability: number = 95): boo
     // Return true if the roll is less than the trueProbability
     return roll < trueProbability;
 }
-export {randomChance};
+
+export {getRandomItem, getRandomNumberBetween, getRandomNumberBetweenRange, randomChance}
