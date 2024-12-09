@@ -1,6 +1,7 @@
 import {isEasyMode, isRapidLevelUp} from "./registry-helper.ts";
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
+import {BooleanStats} from "./extra-effects.ts";
 
 export interface Stat {
   label: string;
@@ -211,6 +212,9 @@ class StatsManager {
   }
 
   get percentReduction(): number {
+    if (this.owner.extra.getBooleanStat(BooleanStats.invulnerability)) {
+      return 1;
+    }
     const maxReduction = 0.9; // Maximum 90% reduction
     const scalingFactor = 800; // Higher value makes percentage scale slower
     const reduction = 1 - (scalingFactor / (scalingFactor + this.armorRating));

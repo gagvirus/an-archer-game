@@ -13,10 +13,10 @@ import {CustomCursorKeysDown} from "../helpers/keyboard-helper.ts";
 import {COLOR_SUCCESS, COLOR_WARNING} from "../helpers/colors.ts";
 import {ResourceType} from "./drop/resource/Resource.ts";
 import {randomChance} from "../helpers/random-helper.ts";
+import ExtraEffectsManager, {MultipliableStat} from "../helpers/extra-effects.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
-import ExtraEffectsManager from "../helpers/extra-effects.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
   arrows: Group;
@@ -93,11 +93,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   get attackDamage() {
     const BASE_DAMAGE = 10;
     const levelModifier = BASE_DAMAGE * (this._level - 1) * 0.2;
-    return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier * this.stats.extraDamageFromOverflowAttackSpeed * this.extra.damageMultiplier;
+    return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier * this.stats.extraDamageFromOverflowAttackSpeed * this.extra.getMultiplierStat(MultipliableStat.damage);
   }
 
   get attacksPerSecond() {
-    return this.stats.attacksPerSecond * this.extra.attackSpeedMultiplier;
+    return this.stats.attacksPerSecond * this.extra.getMultiplierStat(MultipliableStat.attackSpeed);
   }
 
   get maxHealth() {
@@ -189,7 +189,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
   handleHeroMovement(cursors: CustomCursorKeysDown)
   {
-    const speed = this.walkSpeed * this.extra.walkSpeedMultiplier;
+    const speed = this.walkSpeed * this.extra.getMultiplierStat(MultipliableStat.walkSpeed);
     // Handle hero movement
     if (cursors.left) {
       this.setFlipX(true);  // Flip the sprite to face left

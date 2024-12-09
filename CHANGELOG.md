@@ -11,12 +11,11 @@
 - Loot drops a little animation
 - Press "M" for magnet when in debug mode
 - Drop multiple coins / souls for fancy effect
-- Powerups
-  - Add functionality that will spawn powerups, which the player can collect and activate
-  - types:
-    - Magnet - collects all dropped coins & resources
-    - Double damage - provide double damage for 30 seconds
-    - Fast speed - increases hero's attack speed by 2 and hero's movement speed by 2 for 30 seconds
+- Enemies now may drop the following powerups
+  - Magnet - collects all dropped coins & resources
+  - Double damage - provide double damage for 30 seconds
+  - Fast speed - increases hero's attack speed by 2 and hero's movement speed by 1.5 for 30 seconds
+  - Invulnerability - hero becomes invulnerable for 30 seconds
 
 ### v0.0.9
 

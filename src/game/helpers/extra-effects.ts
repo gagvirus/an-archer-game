@@ -1,29 +1,30 @@
+export enum MultipliableStat {
+  damage = "damage",
+  attackSpeed = "attackSpeed",
+  walkSpeed = "walkSpeed",
+}
+
+export enum BooleanStats {
+  invulnerability = "invulnerability",
+}
+
 export default class ExtraEffectsManager {
-  private _damageMultiplier: number = 1;
-  private _attackSpeedMultiplier: number = 1;
-  private _walkSpeedMultiplier: number = 1;
+  private multiplierStats: { [key: string]: number } = {};
+  private booleanStats: { [key: string]: boolean } = {};
 
-  multiplyDamage(value: number) {
-    this._damageMultiplier *= value;
+  setMultiplierStat(name: MultipliableStat, value: number) {
+    this.multiplierStats[name] = value;
   }
 
-  get damageMultiplier() {
-    return this._damageMultiplier;
+  getMultiplierStat(name: MultipliableStat) {
+    return this.multiplierStats[name] ?? 1;
   }
 
-  multiplyAttackSpeed(value: number) {
-    this._attackSpeedMultiplier *= value;
+  setBooleanStat(name: BooleanStats, value: boolean) {
+    this.booleanStats[name] = value;
   }
 
-  get attackSpeedMultiplier() {
-    return this._attackSpeedMultiplier;
-  }
-
-  multiplyWalkSpeed(value: number) {
-    this._walkSpeedMultiplier *= value;
-  }
-
-  get walkSpeedMultiplier() {
-    return this._walkSpeedMultiplier;
+  getBooleanStat(name: BooleanStats) {
+    return this.booleanStats[name] ?? false;
   }
 }

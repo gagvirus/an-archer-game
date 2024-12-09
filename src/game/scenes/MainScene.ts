@@ -32,6 +32,7 @@ import {Drop} from "../logic/drop/Drop.ts";
 import {powerups} from "../logic/drop/powerup/powerups.ts";
 import DoubleDamage from "../logic/drop/powerup/timed/DoubleDamage.ts";
 import DoubleSpeed from "../logic/drop/powerup/timed/DoubleSpeed.ts";
+import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
 
 class MainScene extends Scene {
   private moduleManager!: ModuleManager;
@@ -63,7 +64,8 @@ class MainScene extends Scene {
 
     this.drops.add(new Magnet(this, 150, 150));
     this.drops.add(new DoubleDamage(this, 200, 150));
-    this.drops.add(new DoubleSpeed(this, 250, 150));
+    this.drops.add(new DoubleSpeed(this, 150, 200));
+    this.drops.add(new Invulnerability(this, 200, 200));
 
     this.physics.add.overlap(this.hero.collectLootCircle, this.drops, this.onResourcePull, undefined, this);
 

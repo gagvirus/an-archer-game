@@ -6,9 +6,6 @@
 
 ### Gameplay Features
 
-- Powerups
-  - Powers shall be the following
-    - Invulnerability - hero becomes invulnerable for 30 seconds
 - Active skills
   - when the player reaches certain level (e.g. 5, 15, 25, 50), allow the player to select one of the skills
   - can be enabled by clicking on correct buttons, displayed on the screen (e.g. icons on bottom-left)

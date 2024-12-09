@@ -118,6 +118,13 @@ export class Preloader extends Scene {
       repeat: -1,
     })
 
+    this.anims.create({
+      key: 'invulnerability',
+      frames: this.anims.generateFrameNumbers('effects_purple', {start: 446, end: 449}),
+      frameRate: 9,
+      repeat: -1,
+    })
+
     // Define the portal animation
     this.anims.create({
       key: 'portal-idle',
