@@ -6,6 +6,7 @@
 - Floating texts for resources collected
 - Show collected resource amounts with numberFormat
 - Add a "isDebugMode" check for displaying collection radius (blue circle)
+- Drop pull acceleration - instead of constant pull speed, it shall start slow and accelerate
 
 ### v0.0.9
 

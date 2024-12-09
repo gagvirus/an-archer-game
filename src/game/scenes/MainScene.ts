@@ -150,6 +150,7 @@ class MainScene extends Scene {
     onResourcePull(_: Tile | GameObjectWithBody, resource: Tile | GameObjectWithBody) {
         // if drop is not following hero, add to "follow list"
         if (!this.dropsFollowing.contains(resource as GameObject)) {
+            (resource as ResourceDrop).setStartedPulling();
             this.dropsFollowing.add(resource as GameObject);
         }
     }
@@ -157,13 +158,14 @@ class MainScene extends Scene {
     dropsFollowHero() {
         this.dropsFollowing.getChildren().forEach((drop) => {
             // Calculate the direction to pull the resource
-            const {x, y, amount, resourceName: name} = drop as ResourceDrop;
+            const {x, y, amount, resourceName: name, startedPulling} = drop as ResourceDrop;
             const {body} = drop as GameObjectWithBody;
 
+            const elapsedTime = (Date.now() - startedPulling) / 1000;
             const angle = Phaser.Math.Angle.Between(x, y, this.hero.x, this.hero.y);
 
-            const pullX = Math.cos(angle) * this.hero.pullForce;
-            const pullY = Math.sin(angle) * this.hero.pullForce;
+            const pullX = Math.cos(angle) * this.hero.pullForce * elapsedTime;
+            const pullY = Math.sin(angle) * this.hero.pullForce * elapsedTime;
 
             body.velocity.x = pullX;
             body.velocity.y = pullY;
