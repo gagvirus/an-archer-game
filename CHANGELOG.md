@@ -9,8 +9,12 @@
 - Drop pull acceleration - instead of constant pull speed, it shall start slow and accelerate
 - Loot drops not on the same spot but around it
 - Loot drops a little animation
-- Press "M" for magnet
+- Press "M" for magnet when in debug mode
 - Drop multiple coins / souls for fancy effect
+- Powerups
+  - Add functionality that will spawn powerups, which the player can collect and activate
+  - types:
+    - Magnet - collects all dropped coins & resources
 
 ### v0.0.9
 

@@ -7,12 +7,10 @@
 ### Gameplay Features
 
 - Powerups
-  - Add functionality that will spawn powerups, which the player can collect and activate
   - Powers shall be the following
     - Double damage - provide double damage for 30 seconds
     - Invulnerability - hero becomes invulnerable for 30 seconds
     - Fast speed - increases hero's attack speed by 3 and hero's movement speed by 2 for 30 seconds
-    - Magnet - collects all dropped coins & resources
 - Active skills
   - when the player reaches certain level (e.g. 5, 15, 25, 50), allow the player to select one of the skills
   - can be enabled by clicking on correct buttons, displayed on the screen (e.g. icons on bottom-left)
