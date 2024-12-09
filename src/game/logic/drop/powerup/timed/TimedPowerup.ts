@@ -1,5 +1,5 @@
-import MainScene from "../../../scenes/MainScene.ts";
-import {Powerup} from "../powerup/Powerup.ts";
+import MainScene from "../../../../scenes/MainScene.ts";
+import {Powerup} from "../Powerup.ts";
 
 abstract class TimedPowerup extends Powerup {
   durationSeconds: number = 30;

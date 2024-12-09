@@ -21,7 +21,7 @@ import {COLOR_WARNING} from "../helpers/colors.ts";
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
 import {Coin} from "../logic/drop/resource/Coin.ts";
-import {Soul} from "../logic/Soul.ts";
+import {Soul} from "../logic/drop/resource/Soul.ts";
 import {Resource, ResourceType} from "../logic/drop/resource/Resource.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
 import {getRandomItem, getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";

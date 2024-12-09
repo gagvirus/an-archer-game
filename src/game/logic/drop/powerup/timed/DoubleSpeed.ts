@@ -1,5 +1,5 @@
 import MainScene from "../../../../scenes/MainScene.ts";
-import TimedPowerup from "../../timed/TimedPowerup.ts";
+import TimedPowerup from "./TimedPowerup.ts";
 
 class DoubleSpeed extends TimedPowerup {
   applyEffect(scene: MainScene): void {
