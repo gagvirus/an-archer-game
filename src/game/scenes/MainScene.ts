@@ -124,15 +124,14 @@ class MainScene extends Scene {
         this.scene.launch("StatsScene", {statsManager: this.hero.stats});
       }
 
-      if (event.key === "m") {
-        this.magnetEffect();
-      }
-
-      if (event.key === "k") {
-        if (isDebugMode(this.game)) {
-          this.hero.attackable.takeDamage(Infinity);
+      if (isDebugMode(this.game)) {
+        if (event.key === "m") {
+          this.magnetEffect();
         }
 
+        if (event.key === "k") {
+          this.hero.attackable.takeDamage(Infinity);
+        }
       }
 
       if (event.key == "f") {
