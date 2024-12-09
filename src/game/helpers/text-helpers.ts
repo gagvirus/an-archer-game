@@ -137,6 +137,14 @@ const showEvaded = (scene: Scene, position: Vector2Like) => {
     showFloatingText(scene, position, 'Evaded !', 'md', COLOR_SUCCESS);
 }
 
+const showCollectedLoot = (scene: Scene, position: Vector2Like, name: string, amount: number) => {
+    showFloatingText(scene, position, `+ ${amount} ${pluralize(amount, name)}`, 'sm', COLOR_WARNING);
+}
+
+const pluralize = (count: number, noun: string, suffix = 's') => {
+    return `${noun}${count !== 1 ? suffix : ''}`;
+}
+
 export {
     createCenteredText,
     createAnimatedText,
@@ -147,4 +155,6 @@ export {
     showGainedXp,
     showReplenishedHealth,
     showEvaded,
+    showCollectedLoot,
+    pluralize,
 };

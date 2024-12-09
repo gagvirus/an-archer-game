@@ -8,7 +8,7 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../helpers/position-helper.ts";
-import {createAnimatedText} from "../helpers/text-helpers.ts";
+import {createAnimatedText, formatNumber, pluralize, showCollectedLoot} from "../helpers/text-helpers.ts";
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
 import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
@@ -174,6 +174,11 @@ class MainScene extends Scene {
                 this.dropsFollowing.remove(drop as ResourceDrop, true, true);
                 this.drops.remove(drop as ResourceDrop);
                 this.hero.collectResource(name as ResourceType, amount);
+                addLogEntry("Collected :amount :name", {
+                    amount: [formatNumber(amount), COLOR_WARNING],
+                    name: [pluralize(amount, name), COLOR_WARNING],
+                }, LogEntryCategory.Loot);
+                showCollectedLoot(this, this.hero, name, amount);
             }
         });
     }
