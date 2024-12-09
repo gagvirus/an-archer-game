@@ -22,7 +22,7 @@ import {isDebugMode} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
 import {Coin} from "../logic/Coin.ts";
 import {Soul} from "../logic/Soul.ts";
-import {ResourceDrop, ResourceType} from "../logic/ResourceDrop.ts";
+import {Resource, ResourceType} from "../logic/Resource.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
 import {getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";
 import {ResourceDropChance} from "../logic/enemies.ts";
@@ -154,7 +154,7 @@ class MainScene extends Scene {
     onResourcePull(_: Tile | GameObjectWithBody | undefined, resource: Tile | GameObjectWithBody) {
         // if drop is not following hero, add to "follow list"
         if (!this.dropsFollowing.contains(resource as GameObject)) {
-            (resource as ResourceDrop).setStartedPulling();
+            (resource as Resource).setStartedPulling();
             this.dropsFollowing.add(resource as GameObject);
         }
     }
@@ -162,7 +162,7 @@ class MainScene extends Scene {
     dropsFollowHero() {
         this.dropsFollowing.getChildren().forEach((drop) => {
             // Calculate the direction to pull the resource
-            const {x, y, amount, resourceName: name, startedPulling} = drop as ResourceDrop;
+            const {x, y, amount, name: name, startedPulling} = drop as Resource;
             const {body} = drop as GameObjectWithBody;
 
             const elapsedTime = (Date.now() - startedPulling) / 1000;
@@ -177,8 +177,8 @@ class MainScene extends Scene {
             // Check if the resource is within collectDistance
             const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, x, y);
             if (distance < this.hero.collectDistance) {
-                this.dropsFollowing.remove(drop as ResourceDrop, true, true);
-                this.drops.remove(drop as ResourceDrop);
+                this.dropsFollowing.remove(drop as Resource, true, true);
+                this.drops.remove(drop as Resource);
                 this.hero.collectResource(name as ResourceType, amount);
                 addLogEntry("Collected :amount :name", {
                     amount: [formatNumber(amount), COLOR_WARNING],
@@ -197,7 +197,7 @@ class MainScene extends Scene {
         return new Coin(this, x, y, amount);
     }
 
-    getDropFromType(x: number, y: number, type: ResourceType, amount: number): ResourceDrop {
+    getDropFromType(x: number, y: number, type: ResourceType, amount: number): Resource {
         switch (type) {
             case ResourceType.soul:
                 return this.spawnSoul(x, y, amount);
@@ -208,7 +208,7 @@ class MainScene extends Scene {
     }
 
     drop(x: number, y: number, type: ResourceType, amount: number) {
-        const drop: ResourceDrop = this.getDropFromType(x, y, type, amount);
+        const drop: Resource = this.getDropFromType(x, y, type, amount);
         this.drops.add(drop);
         // Randomize direction and distance for the throw
         const angle = Phaser.Math.FloatBetween(0, Math.PI * 2); // Random direction

@@ -2,7 +2,7 @@ import {createText, formatNumber} from "../helpers/text-helpers.ts";
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import {AbstractModule} from "./module-manager.ts";
-import {ResourceType} from "../logic/ResourceDrop.ts";
+import {ResourceType} from "../logic/Resource.ts";
 
 class DpsIndicatorModule extends AbstractModule {
     private resourceTexts: Partial<{ [key in ResourceType]: Phaser.GameObjects.Text }> = {};

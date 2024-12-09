@@ -11,7 +11,7 @@ import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import {CustomCursorKeysDown} from "../helpers/keyboard-helper.ts";
 import {COLOR_SUCCESS, COLOR_WARNING} from "../helpers/colors.ts";
-import {ResourceType} from "./ResourceDrop.ts";
+import {ResourceType} from "./Resource.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;

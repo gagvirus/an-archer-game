@@ -1,5 +1,5 @@
 import {HEX_COLOR_DANGER, HEX_COLOR_WARNING} from "../helpers/colors.ts";
-import {ResourceType} from "./ResourceDrop.ts";
+import {ResourceType} from "./Resource.ts";
 
 // min amount, max amount, chance
 export type ResourceDropChance = [number, number, number];
