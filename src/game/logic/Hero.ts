@@ -5,7 +5,7 @@ import HealthBar from "./HealthBar.ts";
 import MainScene from "../scenes/MainScene.ts";
 import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
-import {isAutoAttackEnabled} from "../helpers/registry-helper.ts";
+import {isAutoAttackEnabled, isDebugMode} from "../helpers/registry-helper.ts";
 import StatsManager from "../helpers/stats-manager.ts";
 import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
@@ -26,7 +26,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     pullDistance: number = 100;
     pullForce: number = 200;
     collectDistance: number = 25;
-    pullCircle: Arc;
+    collectLootCircle: Arc;
     private resources: { [key in ResourceType]: number } = {
         [ResourceType.soul]: 0,
         [ResourceType.coin]: 0,
@@ -39,8 +39,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
         this._level = 1;
         this.name = "Hero";
-        this.pullCircle = scene.physics.add.existing(this.scene.add.circle(this.x, this.y, this.pullDistance, 0x0000ff, 0.2));
-
+        this.collectLootCircle = scene.physics.add.existing(this.scene.add.circle(this.x, this.y, this.pullDistance, 0x0000ff, 0.2));
+        this.collectLootCircle.setVisible(isDebugMode(scene.game));
 
         // Initialize arrow group
         this.arrows = scene.add.group(); // Group to hold all arrows
@@ -178,8 +178,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         });
         this.attackable.update(delta);
         // pull circle follows the hero
-        this.pullCircle.x = this.x;
-        this.pullCircle.y = this.y;
+        this.collectLootCircle.x = this.x;
+        this.collectLootCircle.y = this.y;
 
     }
 

@@ -17,7 +17,7 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 class Enemy extends Sprite {
     attackRange: number;
     isAttacking: boolean = false;
-    debugCircle: Phaser.GameObjects.Arc;
+    attackRadiusCircle: Phaser.GameObjects.Arc;
     hero: Hero;
     speed: number;
     maxHealth: number;
@@ -44,8 +44,8 @@ class Enemy extends Sprite {
 
         this.instantiate(enemyDef);
 
-        this.debugCircle = scene.add.circle(this.x, this.y, this.attackRange, HEX_COLOR_WARNING, 0.3);
-        this.debugCircle.setVisible(isDebugMode(scene.game));
+        this.attackRadiusCircle = scene.add.circle(this.x, this.y, this.attackRange, HEX_COLOR_WARNING, 0.3);
+        this.attackRadiusCircle.setVisible(isDebugMode(scene.game));
 
         this.attackCooldown = 0;
         // Create a health bar for the enemy
@@ -117,7 +117,7 @@ class Enemy extends Sprite {
 
     destroy() {
         this.attackable.healthBar.destroy();
-        this.debugCircle.destroy();
+        this.attackRadiusCircle.destroy();
         super.destroy()
     }
 
@@ -131,7 +131,7 @@ class Enemy extends Sprite {
 
     move() {
         // Update the debug circle position
-        this.debugCircle.setPosition(this.x, this.y);
+        this.attackRadiusCircle.setPosition(this.x, this.y);
 
         // Check if the hero is within the attack range
         const distanceToHero = Phaser.Math.Distance.Between(this.x, this.y, this.hero.x, this.hero.y);

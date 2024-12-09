@@ -5,6 +5,7 @@
 - Log entries for resources collected
 - Floating texts for resources collected
 - Show collected resource amounts with numberFormat
+- Add a "isDebugMode" check for displaying collection radius (blue circle)
 
 ### v0.0.9
 

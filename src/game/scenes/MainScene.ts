@@ -60,7 +60,7 @@ class MainScene extends Scene {
         this.spawnCoin(250, 250);
         this.spawnSoul(150, 150);
 
-        this.physics.add.overlap(this.hero.pullCircle, this.drops, this.onResourcePull, undefined, this);
+        this.physics.add.overlap(this.hero.collectLootCircle, this.drops, this.onResourcePull, undefined, this);
 
         // Register modules
         this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
