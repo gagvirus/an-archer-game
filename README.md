@@ -17,10 +17,12 @@ Step on the portal to activate it, then press enter to proceed to the next stage
   - Hold **Alt** to un-allocate stat points
 - **Space** to attack (if auto-attack is not enabled)
 - **Enter** progress to the next stage when portal is active
-- **M** during gameplay to pull all drops
 - **F** during gameplay to hide / show FPS counter
 - **G** during gameplay to hide / show DPS counter
 - **L** during gameplay to hide / show the logs
+- If debug mode is enabled:
+  - **M** during gameplay to pull all drops
+  - **K** during gameplay to kill Yourself and end the run
 - **Esc** pause menu
 
 ## Attributions

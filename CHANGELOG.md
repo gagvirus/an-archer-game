@@ -2,15 +2,14 @@
 
 ### v0.0.10
 
-- Log entries for resources collected
-- Floating texts for resources collected
-- Show collected resource amounts with numberFormat
-- Add a "isDebugMode" check for displaying collection radius (blue circle)
-- Drop pull acceleration - instead of constant pull speed, it shall start slow and accelerate
-- Loot drops not on the same spot but around it
-- Loot drops a little animation
-- Press "M" for magnet when in debug mode
-- Drop multiple coins / souls for fancy effect
+- Showing log entries and floating texts when collecting resources
+- Showing collected resource amounts with formatted numbers
+- Blue circle (collect distance) only visible when "Debug Mode" is enabled
+- Improvements on Loot Drops
+  - Drop pull acceleration - instead of constant pull speed, it shall start slow and accelerate
+  - "Throwing around" the loot drops for more aesthetic looks
+  - Drop multiple coins / souls for fancy effect
+- If debug mode is enabled - Press "M" for magnet effect when in debug mode
 - Enemies now may drop the following powerups
   - Magnet - collects all dropped coins & resources
   - Double damage - provide double damage for 30 seconds
