@@ -4,85 +4,84 @@ import {formatNumber} from '../helpers/text-helpers.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
 
 abstract class Bar {
-    scene: Phaser.Scene;
-    position: Vector2Like;
-    positionOffset: Vector2Like;
-    width: number;
-    height: number;
-    bar: Phaser.GameObjects.Graphics;
-    text: Phaser.GameObjects.Text;
-    maxValue: number;
-    currentValue: number;
-    filledColor: number;
-    emptyColor: number;
+  scene: Phaser.Scene;
+  position: Vector2Like;
+  positionOffset: Vector2Like;
+  width: number;
+  height: number;
+  bar: Phaser.GameObjects.Graphics;
+  text: Phaser.GameObjects.Text;
+  maxValue: number;
+  currentValue: number;
+  filledColor: number;
+  emptyColor: number;
 
-    protected constructor(scene: Phaser.Scene, position: Vector2Like, width: number, height: number, maxValue: number, currentValue: number, positionOffset?: Vector2Like, filledColor?: number, emptyColor?: number, displayText: boolean = false) {
-        this.scene = scene;
-        this.position = position
-        this.width = width;
-        this.height = height;
-        this.maxValue = maxValue;
-        this.currentValue = currentValue;
-        this.positionOffset = positionOffset ?? VectorZeroes();
-        this.filledColor = filledColor ?? HEX_COLOR_SUCCESS;
-        this.emptyColor = emptyColor ?? HEX_COLOR_DANGER;
-        this.bar = this.scene.add.graphics();
+  protected constructor(scene: Phaser.Scene, position: Vector2Like, width: number, height: number, maxValue: number, currentValue: number, positionOffset?: Vector2Like, filledColor?: number, emptyColor?: number, displayText: boolean = false) {
+    this.scene = scene;
+    this.position = position
+    this.width = width;
+    this.height = height;
+    this.maxValue = maxValue;
+    this.currentValue = currentValue;
+    this.positionOffset = positionOffset ?? VectorZeroes();
+    this.filledColor = filledColor ?? HEX_COLOR_SUCCESS;
+    this.emptyColor = emptyColor ?? HEX_COLOR_DANGER;
+    this.bar = this.scene.add.graphics();
 
-        if (displayText) {
-            this.text = scene.add.text(position.x, position.y, '', {
-                fontFamily: 'Arial Black',
-                fontSize: 12,
-                color: '#ffffff',
-                stroke: '#000000',
-                strokeThickness: 4,
-                align: 'center',
-            }).setFixedSize(width, height)
-        }
-
-        this.draw();
+    if (displayText) {
+      this.text = scene.add.text(position.x, position.y, '', {
+        fontFamily: 'Arial Black',
+        fontSize: 12,
+        color: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 4,
+        align: 'center',
+      }).setFixedSize(width, height)
     }
 
-    // Draw the bar
-    draw() {
-        this.bar.clear();
+    this.draw();
+  }
 
-        // Draw background (red bar)
-        this.bar.fillStyle(this.emptyColor);
-        this.bar.fillRect(this.position.x + this.positionOffset.x, this.position.y + this.positionOffset.y, this.width, this.height);
+  // Draw the bar
+  draw() {
+    this.bar.clear();
 
-        // Calculate the percentage
-        const currentValueWidth = (this.currentValue / this.maxValue) * this.width;
+    // Draw background (red bar)
+    this.bar.fillStyle(this.emptyColor);
+    this.bar.fillRect(this.position.x + this.positionOffset.x, this.position.y + this.positionOffset.y, this.width, this.height);
 
-        // Draw filled (green bar)
-        if (currentValueWidth > 0) {
-            this.bar.fillStyle(this.filledColor);
-            this.bar.fillRect(this.position.x + this.positionOffset.x, this.position.y + this.positionOffset.y, currentValueWidth, this.height);
-        }
+    // Calculate the percentage
+    const currentValueWidth = (this.currentValue / this.maxValue) * this.width;
 
-        if (this.text) {
-            this.text.setText(this.formatText());
-        }
+    // Draw filled (green bar)
+    if (currentValueWidth > 0) {
+      this.bar.fillStyle(this.filledColor);
+      this.bar.fillRect(this.position.x + this.positionOffset.x, this.position.y + this.positionOffset.y, currentValueWidth, this.height);
     }
 
-    // Update the bar with the new current value
-    updateBar(newValue: number, maxValue?: number) {
-        this.currentValue = newValue;
-        if (maxValue)
-        {
-            this.maxValue = maxValue;
-        }
-        this.draw();
+    if (this.text) {
+      this.text.setText(this.formatText());
     }
+  }
 
-    destroy() {
-        this.bar.destroy();
+  // Update the bar with the new current value
+  updateBar(newValue: number, maxValue?: number) {
+    this.currentValue = newValue;
+    if (maxValue) {
+      this.maxValue = maxValue;
     }
+    this.draw();
+  }
 
-    formatText() {
-        const from = formatNumber(this.currentValue);
-        const to = formatNumber(this.maxValue);
-        return `${from}/${to}`;
-    }
+  destroy() {
+    this.bar.destroy();
+  }
+
+  formatText() {
+    const from = formatNumber(this.currentValue);
+    const to = formatNumber(this.maxValue);
+    return `${from}/${to}`;
+  }
 }
 
 export default Bar;

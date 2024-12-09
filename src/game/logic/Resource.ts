@@ -19,14 +19,14 @@ export abstract class Resource extends Drop {
   }
 
   onCollected() {
-      const scene = this.scene as MainScene;
-      const name = this.name as ResourceType;
-      const amount = this.amount;
-      scene.hero.collectResource(name, amount);
-      addLogEntry("Collected :amount :name", {
-          amount: [formatNumber(amount), COLOR_WARNING],
-          name: [pluralize(amount, name), COLOR_WARNING],
-      }, LogEntryCategory.Loot);
-      showCollectedLoot(scene, scene.hero, name, amount);
+    const scene = this.scene as MainScene;
+    const name = this.name as ResourceType;
+    const amount = this.amount;
+    scene.hero.collectResource(name, amount);
+    addLogEntry("Collected :amount :name", {
+      amount: [formatNumber(amount), COLOR_WARNING],
+      name: [pluralize(amount, name), COLOR_WARNING],
+    }, LogEntryCategory.Loot);
+    showCollectedLoot(scene, scene.hero, name, amount);
   }
 }

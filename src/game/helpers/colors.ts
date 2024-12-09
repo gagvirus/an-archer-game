@@ -8,7 +8,6 @@ export const HEX_COLOR_PRIMARY = 0x4e342e;
 export const HEX_COLOR_LIGHT = 0x7b5e57;
 export const HEX_COLOR_DARK = 0x260e04;
 
-
 export const COLOR_SUCCESS = '#00ff00';
 export const COLOR_WARNING = '#ffff00';
 export const COLOR_DANGER = '#ff0000';

@@ -23,7 +23,6 @@ export const PhaserGame = forwardRef<IRefPhaserGame, IProps>(function PhaserGame
         game.current?.scale.resize(window.innerWidth, window.innerHeight);
       });
 
-
       if (typeof ref === 'function') {
         ref({game: game.current, scene: null});
       } else if (ref) {
