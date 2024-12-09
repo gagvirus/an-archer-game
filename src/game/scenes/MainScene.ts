@@ -26,6 +26,7 @@ import {ResourceDrop, ResourceType} from "../logic/ResourceDrop.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
 import {getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";
 import {ResourceDropChance} from "../logic/enemies.ts";
+import Vortex from "../logic/Vortex.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -54,6 +55,8 @@ class MainScene extends Scene {
 
         this.drops = this.physics.add.group();
         this.dropsFollowing = this.physics.add.group();
+
+        new Vortex(this, 150, 150);
 
         this.physics.add.overlap(this.hero.collectLootCircle, this.drops, this.onResourcePull, undefined, this);
 
