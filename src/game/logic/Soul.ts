@@ -1,5 +1,5 @@
 import {Scene} from "phaser";
-import {Resource, ResourceType} from "./Resource.ts";
+import {Resource, ResourceType} from "./drop/resource/Resource.ts";
 
 export class Soul extends Resource {
   constructor(scene: Scene, x: number, y: number, amount: number = 1) {

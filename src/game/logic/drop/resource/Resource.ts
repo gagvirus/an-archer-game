@@ -1,9 +1,9 @@
 import {Scene} from "phaser";
-import {Drop} from "./Drop.ts";
-import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
-import {formatNumber, pluralize, showCollectedLoot} from "../helpers/text-helpers.ts";
-import {COLOR_WARNING} from "../helpers/colors.ts";
-import MainScene from "../scenes/MainScene.ts";
+import {Drop} from "../Drop.ts";
+import {addLogEntry, LogEntryCategory} from "../../../helpers/log-utils.ts";
+import {formatNumber, pluralize, showCollectedLoot} from "../../../helpers/text-helpers.ts";
+import {COLOR_WARNING} from "../../../helpers/colors.ts";
+import MainScene from "../../../scenes/MainScene.ts";
 
 export enum ResourceType {
   coin = "coin",

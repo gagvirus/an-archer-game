@@ -20,18 +20,18 @@ import LogModule from "../modules/log-module.ts";
 import {COLOR_WARNING} from "../helpers/colors.ts";
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
-import {Coin} from "../logic/Coin.ts";
+import {Coin} from "../logic/drop/resource/Coin.ts";
 import {Soul} from "../logic/Soul.ts";
-import {Resource, ResourceType} from "../logic/Resource.ts";
+import {Resource, ResourceType} from "../logic/drop/resource/Resource.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
 import {getRandomItem, getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";
 import {ResourceDropChance} from "../logic/enemies.ts";
-import Magnet from "../logic/Magnet.ts";
-import {Drop} from "../logic/Drop.ts";
+import Magnet from "../logic/drop/powerup/Magnet.ts";
+import {Drop} from "../logic/drop/Drop.ts";
 
-import {powerups} from "../logic/powerups.ts";
-import DoubleDamage from "../logic/DoubleDamage.ts";
-import DoubleSpeed from "../logic/DoubleSpeed.ts";
+import {powerups} from "../logic/drop/powerup/powerups.ts";
+import DoubleDamage from "../logic/drop/powerup/timed/DoubleDamage.ts";
+import DoubleSpeed from "../logic/drop/powerup/timed/DoubleSpeed.ts";
 
 class MainScene extends Scene {
   private moduleManager!: ModuleManager;

@@ -1,5 +1,5 @@
-import MainScene from "../scenes/MainScene.ts";
-import TimedPowerup from "./TimedPowerup.ts";
+import MainScene from "../../../../scenes/MainScene.ts";
+import TimedPowerup from "../../timed/TimedPowerup.ts";
 
 class DoubleDamage extends TimedPowerup {
   applyEffect(scene: MainScene): void {
