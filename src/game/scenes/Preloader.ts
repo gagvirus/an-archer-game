@@ -85,8 +85,15 @@ export class Preloader extends Scene {
         })
 
         this.anims.create({
-            key: 'purple_flame',
+            key: 'purple-flame',
             frames: this.anims.generateFrameNumbers('effects_purple_tall', {start: 190, end: 192}),
+            frameRate: 9,
+            repeat: -1,
+        })
+
+        this.anims.create({
+            key: 'purple-vortex',
+            frames: this.anims.generateFrameNumbers('effects_purple', {start: 158, end: 161}),
             frameRate: 9,
             repeat: -1,
         })
