@@ -105,6 +105,13 @@ export class Preloader extends Scene {
     })
 
     this.anims.create({
+      key: 'double-speed',
+      frames: this.anims.generateFrameNumbers('effects_green', {start: 282, end: 287}),
+      frameRate: 9,
+      repeat: -1,
+    })
+
+    this.anims.create({
       key: 'double-damage',
       frames: this.anims.generateFrameNumbers('effects_yellow', {start: 30, end: 35}),
       frameRate: 9,

@@ -31,6 +31,7 @@ import {Drop} from "../logic/Drop.ts";
 
 import {powerups} from "../logic/powerups.ts";
 import DoubleDamage from "../logic/DoubleDamage.ts";
+import DoubleSpeed from "../logic/DoubleSpeed.ts";
 
 class MainScene extends Scene {
   private moduleManager!: ModuleManager;
@@ -62,6 +63,7 @@ class MainScene extends Scene {
 
     this.drops.add(new Magnet(this, 150, 150));
     this.drops.add(new DoubleDamage(this, 200, 150));
+    this.drops.add(new DoubleSpeed(this, 250, 150));
 
     this.physics.add.overlap(this.hero.collectLootCircle, this.drops, this.onResourcePull, undefined, this);
 

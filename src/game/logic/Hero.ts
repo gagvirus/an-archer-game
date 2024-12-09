@@ -95,7 +95,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   get attacksPerSecond() {
-    return this.stats.attacksPerSecond;
+    return this.stats.attacksPerSecond * this.extra.speedMultiplier;
   }
 
   get maxHealth() {
