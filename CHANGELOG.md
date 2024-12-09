@@ -1,6 +1,6 @@
 ## Changelog
 
-### WIP
+### v0.0.10
 
 - Log entries for resources collected
 - Floating texts for resources collected
