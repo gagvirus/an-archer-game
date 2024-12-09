@@ -1,6 +1,7 @@
 export default class ExtraEffectsManager {
   private _damageMultiplier: number = 1;
-  private _speedMultiplier: number = 1;
+  private _attackSpeedMultiplier: number = 1;
+  private _walkSpeedMultiplier: number = 1;
 
   multiplyDamage(value: number) {
     this._damageMultiplier *= value;
@@ -10,11 +11,19 @@ export default class ExtraEffectsManager {
     return this._damageMultiplier;
   }
 
-  multiplySpeed(value: number) {
-    this._speedMultiplier *= value;
+  multiplyAttackSpeed(value: number) {
+    this._attackSpeedMultiplier *= value;
   }
 
-  get speedMultiplier() {
-    return this._speedMultiplier;
+  get attackSpeedMultiplier() {
+    return this._attackSpeedMultiplier;
+  }
+
+  multiplyWalkSpeed(value: number) {
+    this._walkSpeedMultiplier *= value;
+  }
+
+  get walkSpeedMultiplier() {
+    return this._walkSpeedMultiplier;
   }
 }

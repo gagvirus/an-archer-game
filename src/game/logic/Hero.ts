@@ -33,6 +33,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     [ResourceType.soul]: 0,
     [ResourceType.coin]: 0,
   };
+  walkSpeed: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "hero");  // 'hero' is the key for the hero sprite
@@ -41,6 +42,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
     this._level = 1;
     this.name = "Hero";
+    this.walkSpeed = 160;
     this.collectLootCircle = scene.physics.add.existing(this.scene.add.circle(this.x, this.y, this.pullDistance, 0x0000ff, 0.2));
     this.collectLootCircle.setVisible(isDebugMode(scene.game));
 
@@ -95,7 +97,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   get attacksPerSecond() {
-    return this.stats.attacksPerSecond * this.extra.speedMultiplier;
+    return this.stats.attacksPerSecond * this.extra.attackSpeedMultiplier;
   }
 
   get maxHealth() {
@@ -187,21 +189,22 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
   handleHeroMovement(cursors: CustomCursorKeysDown)
   {
+    const speed = this.walkSpeed * this.extra.walkSpeedMultiplier;
     // Handle hero movement
     if (cursors.left) {
       this.setFlipX(true);  // Flip the sprite to face left
-      this.setVelocityX(-160);
+      this.setVelocityX(-speed);
     } else if (cursors.right) {
       this.setFlipX(false);  // Flip the sprite to face left
-      this.setVelocityX(160);
+      this.setVelocityX(speed);
     } else {
       this.setVelocityX(0);
     }
 
     if (cursors.up) {
-      this.setVelocityY(-160);
+      this.setVelocityY(-speed);
     } else if (cursors.down) {
-      this.setVelocityY(160);
+      this.setVelocityY(speed);
     } else {
       this.setVelocityY(0);
     }
