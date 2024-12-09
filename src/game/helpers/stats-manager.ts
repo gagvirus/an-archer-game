@@ -165,7 +165,7 @@ class StatsManager {
   }
 
   get dropChanceModifier() {
-    return Phaser.Math.Clamp(1 + this.luck * 2 / 100, 1, 10);
+    return Phaser.Math.Clamp(1 + this.luck * 2 / 100, 1, 4);
   }
 
   get dropAmountModifier() {

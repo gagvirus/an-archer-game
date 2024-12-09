@@ -91,15 +91,9 @@ class MainScene extends Scene {
       }
     })
 
-    this.scene.get("StatsScene").events.on("statsUpdated", () => {
-      this.hero.attackable.registerHealthRegenerationIfNecessary()
-      this.hero.attackable.setMaxHealth(this.hero.maxHealth);
-      this.hero.attackable.attackDamage = this.hero.attackDamage;
-      this.hero.attackable.attacksPerSecond = this.hero.attacksPerSecond;
-      this.hero.xpManager.xpBar.setUnallocatedStats(this.hero.stats.unallocatedStats);
-      // update the health bar ui
-      // update the health regen tick
-    });
+    this.scene.get("StatsScene").events.on("statsUpdated", () => this.recalculateStats());
+    this.events.on("powerupCollected", () => this.recalculateStats());
+    this.events.on("powerupEnded", () => this.recalculateStats());
 
     // Initialize enemy group
     this.enemies = this.physics.add.group(); // Group to hold all enemies
@@ -205,14 +199,12 @@ class MainScene extends Scene {
     }
   }
 
-  dropResource(x: number, y: number, type: ResourceType, amount: number)
-  {
+  dropResource(x: number, y: number, type: ResourceType, amount: number) {
     const drop: Resource = this.getDropFromType(x, y, type, amount);
     return this.drop(x, y, drop);
   }
 
-  dropPowerup(x: number, y: number)
-  {
+  dropPowerup(x: number, y: number) {
     const powerup = getRandomItem(powerups);
     return this.drop(x, y, new powerup.className(this, x, y))
   }
@@ -385,6 +377,16 @@ class MainScene extends Scene {
         this.onResourcePull(undefined, drop as Tile | GameObjectWithBody);
       }
     })
+  }
+
+  recalculateStats() {
+    this.hero.attackable.registerHealthRegenerationIfNecessary()
+    this.hero.attackable.setMaxHealth(this.hero.maxHealth);
+    this.hero.attackable.attackDamage = this.hero.attackDamage;
+    this.hero.attackable.attacksPerSecond = this.hero.attacksPerSecond;
+    this.hero.xpManager.xpBar.setUnallocatedStats(this.hero.stats.unallocatedStats);
+    // update the health bar ui
+    // update the health regen tick
   }
 }
 

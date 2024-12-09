@@ -16,12 +16,14 @@ import {randomChance} from "../helpers/random-helper.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
+import ExtraEffectsManager from "../helpers/extra-effects.ts";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
   arrows: Group;
   attackable: Attackable;
   xpManager: XpManager;
   stats: StatsManager;
+  extra: ExtraEffectsManager;
   _level: number;
   pullDistance: number = 100;
   pullForce: number = 200;
@@ -55,6 +57,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       });
     }
     this.stats = new StatsManager(this.scene, this, 1, 1, 1, 1);
+    this.extra = new ExtraEffectsManager();
     this.attackable = new Attackable(
       this.scene,
       this.attacksPerSecond, // attacks per second
@@ -88,7 +91,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   get attackDamage() {
     const BASE_DAMAGE = 10;
     const levelModifier = BASE_DAMAGE * (this._level - 1) * 0.2;
-    return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier * this.stats.extraDamageFromOverflowAttackSpeed;
+    return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier * this.stats.extraDamageFromOverflowAttackSpeed * this.extra.damageMultiplier;
   }
 
   get attacksPerSecond() {
