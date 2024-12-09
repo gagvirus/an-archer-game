@@ -275,12 +275,18 @@ class MainScene extends Scene {
         const {dropChanceModifier, dropAmountModifier} = this.hero.stats;
         Object.keys(enemy.drops).forEach((resourceType) => {
             const [baseMinAmount, baseMaxAmount, baseChance] = enemy.drops[resourceType as ResourceType] as ResourceDropChance;
-            const minAmount = baseMinAmount * dropAmountModifier;
-            const maxAmount = baseMaxAmount * dropAmountModifier;
             const chance = Phaser.Math.Clamp(baseChance * dropChanceModifier, 1, baseChance <= 10 ? 50 : 90);
             if (randomChance(chance)) {
-                const amount = getRandomNumberBetweenRange([minAmount, maxAmount] as [number, number]);
-                this.drop(enemy.x, enemy.y, resourceType as ResourceType, amount)
+                const baseAmount = getRandomNumberBetweenRange([baseMinAmount, baseMaxAmount]);
+                if (dropAmountModifier >= 2) {
+                    const dropsCount = dropAmountModifier < 6 ? dropAmountModifier : 5;
+                    const amount = Math.round(baseAmount / dropsCount);
+                    for (let i = 0; i < dropsCount; i++) {
+                        this.drop(enemy.x, enemy.y, resourceType as ResourceType, amount);
+                    }
+                } else {
+                    this.drop(enemy.x, enemy.y, resourceType as ResourceType, Math.round(baseAmount * dropAmountModifier));
+                }
             }
         });
 

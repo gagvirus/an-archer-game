@@ -9,6 +9,8 @@
 - Drop pull acceleration - instead of constant pull speed, it shall start slow and accelerate
 - Loot drops not on the same spot but around it
 - Loot drops a little animation
+- Press "M" for magnet
+- Drop multiple coins / souls for fancy effect
 
 ### v0.0.9
 
