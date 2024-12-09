@@ -2,8 +2,7 @@
 
 ### Bugs & Improvements
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
-- Loot drops not on the same spot but around it
-- Loot drops a little animation
+- Press "M" for magnet
 
 ### Gameplay Features
 

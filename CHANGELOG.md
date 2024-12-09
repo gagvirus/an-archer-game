@@ -7,6 +7,8 @@
 - Show collected resource amounts with numberFormat
 - Add a "isDebugMode" check for displaying collection radius (blue circle)
 - Drop pull acceleration - instead of constant pull speed, it shall start slow and accelerate
+- Loot drops not on the same spot but around it
+- Loot drops a little animation
 
 ### v0.0.9
 

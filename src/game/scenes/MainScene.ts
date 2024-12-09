@@ -55,11 +55,6 @@ class MainScene extends Scene {
         this.drops = this.physics.add.group();
         this.dropsFollowing = this.physics.add.group();
 
-        // Add some coins to the scene
-        this.spawnCoin(200, 200);
-        this.spawnCoin(250, 250);
-        this.spawnSoul(150, 150);
-
         this.physics.add.overlap(this.hero.collectLootCircle, this.drops, this.onResourcePull, undefined, this);
 
         // Register modules
@@ -186,23 +181,52 @@ class MainScene extends Scene {
     }
 
     spawnSoul(x: number, y: number, amount: number = 1) {
-        this.drops.add(new Soul(this, x, y, amount));
+        return new Soul(this, x, y, amount);
     }
 
     spawnCoin(x: number, y: number, amount: number = 1) {
-        this.drops.add(new Coin(this, x, y, amount));
+        return new Coin(this, x, y, amount);
+    }
+
+    getDropFromType(x: number, y: number, type: ResourceType, amount: number): ResourceDrop {
+        switch (type) {
+            case ResourceType.soul:
+                return this.spawnSoul(x, y, amount);
+            case ResourceType.coin:
+            default:
+                return this.spawnCoin(x, y, amount);
+        }
     }
 
     drop(x: number, y: number, type: ResourceType, amount: number) {
-        // todo: push the x/y a little so it won't be crowded
-        switch (type) {
-            case ResourceType.coin:
-                return this.spawnCoin(x, y, amount);
-            case ResourceType.soul:
-                return this.spawnSoul(x, y, amount);
-            default:
-                return;
-        }
+        const drop: ResourceDrop = this.getDropFromType(x, y, type, amount);
+        this.drops.add(drop);
+        // Randomize direction and distance for the throw
+        const angle = Phaser.Math.FloatBetween(0, Math.PI * 2); // Random direction
+        const radius = Phaser.Math.FloatBetween(50, 100); // Distance to "throw"
+
+        const targetX = x + Math.cos(angle) * radius;
+        const targetY = y + Math.sin(angle) * radius;
+
+        // Set the drop's velocity to "throw" it
+        const throwSpeed = 200; // Speed of the throw
+        const velocityX = Math.cos(angle) * throwSpeed;
+        const velocityY = Math.sin(angle) * throwSpeed;
+
+        (drop as GameObjectWithBody).body.velocity.set(velocityX, velocityY);
+
+        // Optional: Add a tween for a smooth "throw" animation
+        this.scene.scene.tweens.add({
+            targets: drop,
+            x: targetX,
+            y: targetY,
+            ease: 'Power2',
+            duration: 500,
+            onComplete: () => {
+                // Stop the drop after it lands
+                (drop as GameObjectWithBody).body.velocity.set(0, 0);
+            }
+        });
     }
 
 
