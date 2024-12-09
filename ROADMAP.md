@@ -3,6 +3,7 @@
 ### Bugs & Improvements
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Press "M" for magnet
+- Drop multiple coins / souls for fancy effect
 
 ### Gameplay Features
 
