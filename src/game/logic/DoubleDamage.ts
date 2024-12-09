@@ -6,8 +6,8 @@ class DoubleDamage extends Powerup {
 
   onCollected(): void {
     const scene = this.scene as MainScene;
-    scene.events.emit('powerupCollected');
     scene.hero.extra.multiplyDamage(2);
+    scene.events.emit('powerupCollected');
     setTimeout(() => {
       scene.hero.extra.multiplyDamage(1 / 2);
       scene.events.emit('powerupEnded');
