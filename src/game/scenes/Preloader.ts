@@ -41,6 +41,12 @@ export class Preloader extends Scene {
     this.load.spritesheet('coin', 'coin.png', {frameWidth: 40, frameHeight: 40});
     this.load.spritesheet('effects_purple', 'effects-purple.png', {frameWidth: 16, frameHeight: 16});
     this.load.spritesheet('effects_purple_tall', 'effects-purple.png', {frameWidth: 16, frameHeight: 32});
+    this.load.spritesheet('effects_blue', 'effects-blue.png', {frameWidth: 16, frameHeight: 16});
+    this.load.spritesheet('effects_blue_tall', 'effects-blue.png', {frameWidth: 16, frameHeight: 32});
+    this.load.spritesheet('effects_yellow', 'effects-yellow.png', {frameWidth: 16, frameHeight: 16});
+    this.load.spritesheet('effects_yellow_tall', 'effects-yellow.png', {frameWidth: 16, frameHeight: 32});
+    this.load.spritesheet('effects_green', 'effects-green.png', {frameWidth: 16, frameHeight: 16});
+    this.load.spritesheet('effects_green_tall', 'effects-green.png', {frameWidth: 16, frameHeight: 32});
 
     for (let i = 1; i <= 6; i++) {
       this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
