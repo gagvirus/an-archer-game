@@ -36,3 +36,10 @@ This project utilizes the following resources:
   - [Pixel Art - Portal Monolith](https://arijkx.itch.io/pixel-art-portal-monolith)
   - [Coin](https://merlym.itch.io/coin)
   - [Free Effect and Bullet 16x16](https://bdragon1727.itch.io/free-effect-and-bullet-16x16)
+
+- Free assets that might be useful
+  - [Kyrise's Free 16x16 RPG Icon Pack](https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack)
+  - [16x16 Assorted RPG Icons](https://merchant-shade.itch.io/16x16-mixed-rpg-icons)
+  - [NPC Pack 2D Pixel Art](https://xzany.itch.io/npc-characters-2d-pixel-art)
+  - [Pocket Inventory Series #5 : Player Status](https://humblepixel.itch.io/pocket-inventory-series-5-player-status)
+  - [Coins & Gems & Chests & More](https://greatdocbrown.itch.io/coins-gems-etc)
