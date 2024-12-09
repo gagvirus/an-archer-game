@@ -16,6 +16,7 @@
   - types:
     - Magnet - collects all dropped coins & resources
     - Double damage - provide double damage for 30 seconds
+    - Fast speed - increases hero's attack speed by 2 and hero's movement speed by 2 for 30 seconds
 
 ### v0.0.9
 
