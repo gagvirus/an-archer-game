@@ -120,6 +120,12 @@ class MainScene extends Scene {
                 this.scene.launch("StatsScene", {statsManager: this.hero.stats});
             }
 
+            if (event.key === "m") {
+                this.drops.getChildren().forEach((drop) => {
+                    this.onResourcePull(undefined, drop as Tile | GameObjectWithBody);
+                })
+            }
+
             if (event.key === "k") {
                 if (isDebugMode(this.game)) {
                     this.hero.attackable.takeDamage(Infinity);
@@ -142,7 +148,7 @@ class MainScene extends Scene {
         this.startStage();
     }
 
-    onResourcePull(_: Tile | GameObjectWithBody, resource: Tile | GameObjectWithBody) {
+    onResourcePull(_: Tile | GameObjectWithBody | undefined, resource: Tile | GameObjectWithBody) {
         // if drop is not following hero, add to "follow list"
         if (!this.dropsFollowing.contains(resource as GameObject)) {
             (resource as ResourceDrop).setStartedPulling();
@@ -224,7 +230,7 @@ class MainScene extends Scene {
             duration: 500,
             onComplete: () => {
                 // Stop the drop after it lands
-                (drop as GameObjectWithBody).body.velocity.set(0, 0);
+                (drop as GameObjectWithBody)?.body?.velocity.set(0, 0);
             }
         });
     }
