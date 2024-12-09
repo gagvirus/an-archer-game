@@ -8,7 +8,6 @@
 
 - Powerups
   - Powers shall be the following
-    - Double damage - provide double damage for 30 seconds
     - Invulnerability - hero becomes invulnerable for 30 seconds
     - Fast speed - increases hero's attack speed by 3 and hero's movement speed by 2 for 30 seconds
 - Active skills

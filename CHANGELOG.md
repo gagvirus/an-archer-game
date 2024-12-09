@@ -15,6 +15,7 @@
   - Add functionality that will spawn powerups, which the player can collect and activate
   - types:
     - Magnet - collects all dropped coins & resources
+    - Double damage - provide double damage for 30 seconds
 
 ### v0.0.9
 
