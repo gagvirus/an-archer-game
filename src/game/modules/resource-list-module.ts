@@ -1,4 +1,4 @@
-import {createText} from "../helpers/text-helpers.ts";
+import {createText, formatNumber} from "../helpers/text-helpers.ts";
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import {AbstractModule} from "./module-manager.ts";
@@ -34,7 +34,8 @@ class DpsIndicatorModule extends AbstractModule {
     update() {
         const resources = this.hero.getResources();
         Object.keys(resources).forEach((resourceType) => {
-            this.resourceTexts[resourceType as ResourceType]?.setText(`${resourceType}s: ${resources[resourceType as ResourceType]}`)
+            const text = `${resourceType}s: ${formatNumber(resources[resourceType as ResourceType])}`;
+            this.resourceTexts[resourceType as ResourceType]?.setText(text);
         })
     }
 }

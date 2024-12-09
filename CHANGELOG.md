@@ -1,13 +1,18 @@
 ## Changelog
 
+### WIP
+
+- Log entries for resources collected
+- Floating texts for resources collected
+- Show collected resource amounts with numberFormat
+
 ### v0.0.9
 
 - Added Stage Info - Showing which stage are You on, how many enemies are alive / total
 - Ability to un-allocate points - Hold "Alt" button to un-allocate stat points
 - Implemented "Loot" functionality - each enemy now has a chance of dropping resources (souls & coins)
-  - At this points, the resources are not usable in any way
-  - "Thoughtfulness" stat affects how many resources enemies will drop, and how frequently they drop
-
+    - At this points, the resources are not usable in any way
+    - "Thoughtfulness" stat affects how many resources enemies will drop, and how frequently they drop
 
 ### v0.0.8
 
