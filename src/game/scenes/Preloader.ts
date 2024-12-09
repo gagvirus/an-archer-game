@@ -98,8 +98,8 @@ export class Preloader extends Scene {
     })
 
     this.anims.create({
-      key: 'purple-vortex',
-      frames: this.anims.generateFrameNumbers('effects_purple', {start: 158, end: 161}),
+      key: 'magnet',
+      frames: this.anims.generateFrameNumbers('effects_blue', {start: 158, end: 161}),
       frameRate: 9,
       repeat: -1,
     })
