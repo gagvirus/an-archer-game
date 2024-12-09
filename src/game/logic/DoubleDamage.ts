@@ -1,23 +1,17 @@
 import MainScene from "../scenes/MainScene.ts";
-import {Powerup} from "./Powerup.ts";
+import TimedPowerup from "./TimedPowerup.ts";
 
-class DoubleDamage extends Powerup {
-  durationSeconds: number;
-
-  onCollected(): void {
-    const scene = this.scene as MainScene;
+class DoubleDamage extends TimedPowerup {
+  applyEffect(scene: MainScene): void {
     scene.hero.extra.multiplyDamage(2);
-    scene.events.emit('powerupCollected');
-    setTimeout(() => {
-      scene.hero.extra.multiplyDamage(1 / 2);
-      scene.events.emit('powerupEnded');
-    }, this.durationSeconds * 1000);
+  }
+  removeEffect(scene: MainScene): void {
+    scene.hero.extra.multiplyDamage(1 / 2);
   }
 
   constructor(scene: MainScene, x: number, y: number, durationSeconds: number = 30) {
-    super(scene, x, y, 'double-damage');
-    scene.add.existing(this);
-    this.anims.play('double-damage')
+    super(scene, x, y, "double-damage");
+    this.anims.play("double-damage")
     this.durationSeconds = durationSeconds;
   }
 }
