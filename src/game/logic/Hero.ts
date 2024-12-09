@@ -162,7 +162,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
   // Method to update the hero's animation based on movement
   // @ts-expect-error we *must* receive time
-  update(cursors: CustomCursorKeysDown, time: numer, delta: number) {
+  update(cursors: CustomCursorKeysDown, time: number, delta: number) {
     if (cursors.left || cursors.right || cursors.up || cursors.down) {
       if (this.state !== "run") {
         this.state = "run";
@@ -182,8 +182,31 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     // pull circle follows the hero
     this.collectLootCircle.x = this.x;
     this.collectLootCircle.y = this.y;
-
+    this.handleHeroMovement(cursors);
   }
+
+  handleHeroMovement(cursors: CustomCursorKeysDown)
+  {
+    // Handle hero movement
+    if (cursors.left) {
+      this.setFlipX(true);  // Flip the sprite to face left
+      this.setVelocityX(-160);
+    } else if (cursors.right) {
+      this.setFlipX(false);  // Flip the sprite to face left
+      this.setVelocityX(160);
+    } else {
+      this.setVelocityX(0);
+    }
+
+    if (cursors.up) {
+      this.setVelocityY(-160);
+    } else if (cursors.down) {
+      this.setVelocityY(160);
+    } else {
+      this.setVelocityY(0);
+    }
+  }
+
 
   shootArrow(target: Enemy) {
     let attackDamage = this.attackable.attackDamage;

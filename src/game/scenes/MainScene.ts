@@ -327,25 +327,6 @@ class MainScene extends Scene {
     // Update hero based on input
     this.hero.update(cursors, time, delta);
 
-    // Handle hero movement
-    if (cursors.left) {
-      this.hero.setFlipX(true);  // Flip the sprite to face left
-      this.hero.setVelocityX(-160);
-    } else if (cursors.right) {
-      this.hero.setFlipX(false);  // Flip the sprite to face left
-      this.hero.setVelocityX(160);
-    } else {
-      this.hero.setVelocityX(0);
-    }
-
-    if (cursors.up) {
-      this.hero.setVelocityY(-160);
-    } else if (cursors.down) {
-      this.hero.setVelocityY(160);
-    } else {
-      this.hero.setVelocityY(0);
-    }
-
     this.portal.checkHeroIsWithinBounds(this.hero);
     this.dropsFollowHero();
   }
