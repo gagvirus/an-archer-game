@@ -24,10 +24,12 @@ import {Coin} from "../logic/Coin.ts";
 import {Soul} from "../logic/Soul.ts";
 import {Resource, ResourceType} from "../logic/Resource.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
-import {getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";
+import {getRandomItem, getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";
 import {ResourceDropChance} from "../logic/enemies.ts";
 import Magnet from "../logic/Magnet.ts";
 import {Drop} from "../logic/Drop.ts";
+
+import {powerups} from "../logic/powerups.ts";
 
 class MainScene extends Scene {
   private moduleManager!: ModuleManager;
@@ -201,8 +203,19 @@ class MainScene extends Scene {
     }
   }
 
-  drop(x: number, y: number, type: ResourceType, amount: number) {
+  dropResource(x: number, y: number, type: ResourceType, amount: number)
+  {
     const drop: Resource = this.getDropFromType(x, y, type, amount);
+    return this.drop(x, y, drop);
+  }
+
+  dropPowerup(x: number, y: number)
+  {
+    const powerup = getRandomItem(powerups);
+    return this.drop(x, y, new powerup.className(this, x, y))
+  }
+
+  drop(x: number, y: number, drop: Drop) {
     this.drops.add(drop);
     // Randomize direction and distance for the throw
     const angle = Phaser.Math.FloatBetween(0, Math.PI * 2); // Random direction
@@ -269,6 +282,12 @@ class MainScene extends Scene {
 
   dropLoot(enemy: Enemy) {
     const {dropChanceModifier, dropAmountModifier} = this.hero.stats;
+    // there is a constant chance to drop a powerup
+    const BASE_POWERUP_DROP_CHANCE = 1;
+    const powerupChance = Phaser.Math.Clamp(BASE_POWERUP_DROP_CHANCE * dropChanceModifier, BASE_POWERUP_DROP_CHANCE, BASE_POWERUP_DROP_CHANCE * 10)
+    if (randomChance(powerupChance)) {
+      this.dropPowerup(enemy.x, enemy.y);
+    }
     Object.keys(enemy.drops).forEach((resourceType) => {
       const [baseMinAmount, baseMaxAmount, baseChance] = enemy.drops[resourceType as ResourceType] as ResourceDropChance;
       const chance = Phaser.Math.Clamp(baseChance * dropChanceModifier, 1, baseChance <= 10 ? 50 : 90);
@@ -278,10 +297,10 @@ class MainScene extends Scene {
           const dropsCount = dropAmountModifier < 6 ? dropAmountModifier : 5;
           const amount = Math.round(baseAmount / dropsCount);
           for (let i = 0; i < dropsCount; i++) {
-            this.drop(enemy.x, enemy.y, resourceType as ResourceType, amount);
+            this.dropResource(enemy.x, enemy.y, resourceType as ResourceType, amount);
           }
         } else {
-          this.drop(enemy.x, enemy.y, resourceType as ResourceType, Math.round(baseAmount * dropAmountModifier));
+          this.dropResource(enemy.x, enemy.y, resourceType as ResourceType, Math.round(baseAmount * dropAmountModifier));
         }
       }
     });
