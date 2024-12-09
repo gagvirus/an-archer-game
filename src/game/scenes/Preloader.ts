@@ -104,6 +104,13 @@ export class Preloader extends Scene {
       repeat: -1,
     })
 
+    this.anims.create({
+      key: 'double-damage',
+      frames: this.anims.generateFrameNumbers('effects_yellow', {start: 30, end: 35}),
+      frameRate: 9,
+      repeat: -1,
+    })
+
     // Define the portal animation
     this.anims.create({
       key: 'portal-idle',
