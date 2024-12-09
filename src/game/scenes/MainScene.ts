@@ -8,7 +8,7 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import Enemy from "../logic/Enemy.ts";
 import {getRandomPositionAwayFromPoint, getTileCoordinate, TILE_SIZE} from "../helpers/position-helper.ts";
-import {createAnimatedText, formatNumber, pluralize, showCollectedLoot} from "../helpers/text-helpers.ts";
+import {createAnimatedText} from "../helpers/text-helpers.ts";
 import Portal from "../logic/Portal.ts";
 import Tower from "../logic/Tower.ts";
 import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
@@ -26,7 +26,8 @@ import {Resource, ResourceType} from "../logic/Resource.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
 import {getRandomNumberBetweenRange, randomChance} from "../helpers/random-helper.ts";
 import {ResourceDropChance} from "../logic/enemies.ts";
-import Vortex from "../logic/Vortex.ts";
+import Magnet from "../logic/Magnet.ts";
+import {Drop} from "../logic/Drop.ts";
 
 class MainScene extends Scene {
     private moduleManager!: ModuleManager;
@@ -56,7 +57,7 @@ class MainScene extends Scene {
         this.drops = this.physics.add.group();
         this.dropsFollowing = this.physics.add.group();
 
-        new Vortex(this, 150, 150);
+        new Magnet(this, 150, 150);
 
         this.physics.add.overlap(this.hero.collectLootCircle, this.drops, this.onResourcePull, undefined, this);
 
@@ -160,9 +161,10 @@ class MainScene extends Scene {
     }
 
     dropsFollowHero() {
-        this.dropsFollowing.getChildren().forEach((drop) => {
+        this.dropsFollowing.getChildren().forEach((gameObject) => {
             // Calculate the direction to pull the resource
-            const {x, y, amount, name: name, startedPulling} = drop as Resource;
+            const drop: Drop = gameObject as Drop;
+            const {x, y, startedPulling} = drop;
             const {body} = drop as GameObjectWithBody;
 
             const elapsedTime = (Date.now() - startedPulling) / 1000;
@@ -177,14 +179,9 @@ class MainScene extends Scene {
             // Check if the resource is within collectDistance
             const distance = Phaser.Math.Distance.Between(this.hero.x, this.hero.y, x, y);
             if (distance < this.hero.collectDistance) {
+                drop.onCollected();
                 this.dropsFollowing.remove(drop as Resource, true, true);
                 this.drops.remove(drop as Resource);
-                this.hero.collectResource(name as ResourceType, amount);
-                addLogEntry("Collected :amount :name", {
-                    amount: [formatNumber(amount), COLOR_WARNING],
-                    name: [pluralize(amount, name), COLOR_WARNING],
-                }, LogEntryCategory.Loot);
-                showCollectedLoot(this, this.hero, name, amount);
             }
         });
     }
