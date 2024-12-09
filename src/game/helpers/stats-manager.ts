@@ -161,7 +161,7 @@ class StatsManager {
     }
 
     get xpGainMultiplier() {
-        return Math.pow(1.05, this.intelligence - 1) * (isRapidLevelUp(this.scene.game) ? 100 : 1);
+        return (isRapidLevelUp(this.scene.game) ? 100 : 1) + (this.intelligence - 1) * 1.1;
     }
 
     get dropChanceModifier() {
