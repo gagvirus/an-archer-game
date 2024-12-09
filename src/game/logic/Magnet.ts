@@ -3,7 +3,8 @@ import {Powerup} from "./Powerup.ts";
 
 class Magnet extends Powerup {
     onCollected(): void {
-      console.log("yess");
+      const scene = this.scene as MainScene;
+      scene.magnetEffect();
     }
     constructor(scene: MainScene, x: number, y: number) {
         super(scene, x, y, 'magnet');

@@ -57,7 +57,7 @@ class MainScene extends Scene {
         this.drops = this.physics.add.group();
         this.dropsFollowing = this.physics.add.group();
 
-        new Magnet(this, 150, 150);
+        this.drops.add(new Magnet(this, 150, 150));
 
         this.physics.add.overlap(this.hero.collectLootCircle, this.drops, this.onResourcePull, undefined, this);
 
@@ -125,9 +125,7 @@ class MainScene extends Scene {
             }
 
             if (event.key === "m") {
-                this.drops.getChildren().forEach((drop) => {
-                    this.onResourcePull(undefined, drop as Tile | GameObjectWithBody);
-                })
+                this.magnetEffect();
             }
 
             if (event.key === "k") {
@@ -362,6 +360,13 @@ class MainScene extends Scene {
         this.startStage();
     }
 
+    magnetEffect() {
+        this.drops.getChildren().forEach((drop) => {
+            if (drop instanceof Resource) {
+                this.onResourcePull(undefined, drop as Tile | GameObjectWithBody);
+            }
+        })
+    }
 }
 
 export default MainScene;
