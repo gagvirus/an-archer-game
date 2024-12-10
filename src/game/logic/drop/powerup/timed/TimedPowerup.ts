@@ -3,7 +3,7 @@ import {Powerup} from "../Powerup.ts";
 import {PowerupType} from "./powerupType.ts";
 
 abstract class TimedPowerup extends Powerup {
-  durationSeconds: number = 3;
+  durationSeconds: number = 30;
 
   abstract get powerupType(): PowerupType;
 
