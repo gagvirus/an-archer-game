@@ -1,6 +1,6 @@
 import MainScene from "../../../../scenes/MainScene.ts";
 import TimedPowerup from "./TimedPowerup.ts";
-import {MultipliableStat} from "../../../../helpers/extra-effects.ts";
+import {MultipliableStat} from "../../../../helpers/powerup-manager.ts";
 
 class DoubleSpeed extends TimedPowerup {
   applyEffect(scene: MainScene): void {
@@ -13,10 +13,9 @@ class DoubleSpeed extends TimedPowerup {
     scene.hero.extra.setMultiplierStat(MultipliableStat.walkSpeed, 1 / 1.5);
   }
 
-  constructor(scene: MainScene, x: number, y: number, durationSeconds: number = 30) {
+  constructor(scene: MainScene, x: number, y: number) {
     super(scene, x, y, "double-speed");
     this.anims.play("double-speed")
-    this.durationSeconds = durationSeconds;
   }
 }
 
