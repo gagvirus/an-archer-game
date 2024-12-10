@@ -18,19 +18,19 @@ class ActiveEffectsModule extends AbstractModule {
       this.container = this.scene.rexUI.add.sizer({orientation: "horizontal", space: {item: 10}});
 
       this.panel = this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
-        this.scene, this.container, 70, 100, 100, 32,
+        this.scene, this.container, 70, 100, 100, 36,
         {slider: false, /*background: undefined*/},
       ))
-
       this.panel.layout();
+
+      this.scene.events.on("powerupCollected", ({type}: { type: PowerupType }) => this.updateUI(type, true));
+      this.scene.events.on("powerupEnded", ({type}: { type: PowerupType }) => this.updateUI(type, false));
     }
     Object.values(PowerupType).forEach(type => {
       const icon = createAnimatedSprite(this.scene, PowerupIconMap[type]);
       this.icons[type] = icon
       icon.setVisible(false);
     });
-    this.scene.events.on("powerupCollected", ({type}: { type: PowerupType }) => this.updateUI(type, true));
-    this.scene.events.on("powerupEnded", ({type}: { type: PowerupType }) => this.updateUI(type, false));
   }
 
   stop(): void {
@@ -46,6 +46,7 @@ class ActiveEffectsModule extends AbstractModule {
       this.icons[key]?.destroy();
       this.icons[key] = undefined;
     })
+    this.scene.events.off("powerupCollected").off("powerupEnded")
   }
 
   update(): void {
