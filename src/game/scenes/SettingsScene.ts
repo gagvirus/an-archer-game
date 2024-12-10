@@ -1,5 +1,10 @@
-import {HEX_COLOR_DANGER, HEX_COLOR_DARK, HEX_COLOR_LIGHT, HEX_COLOR_SUCCESS} from '../helpers/colors.ts';
-import {getScrollableUIConfig} from '../helpers/ui-helper.ts';
+import {
+  HEX_COLOR_DANGER,
+  HEX_COLOR_DARK,
+  HEX_COLOR_LIGHT,
+  HEX_COLOR_PRIMARY,
+  HEX_COLOR_SUCCESS
+} from '../helpers/colors.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
@@ -18,9 +23,46 @@ class SettingsScene extends Phaser.Scene {
 
   create() {
     this.loadStoredSettingsValues();
-    this.rexUI.add.scrollablePanel(getScrollableUIConfig(this, 'Settings'))
-      .layout()
-
+    this.rexUI.add.scrollablePanel({
+        x: this.scale.width / 2,
+        y: this.scale.height / 2,
+        height: this.scale.height - 100,
+        scrollMode: 'y',
+        background: this.rexUI.add.roundRectangle({
+          strokeColor: HEX_COLOR_LIGHT,
+          color: HEX_COLOR_PRIMARY,
+          radius: 10
+        }),
+        panel: {
+          child: this.createPanel(),
+          mask: {padding: 1,},
+        },
+        slider: {
+          track: this.rexUI.add.roundRectangle({radius: 5, color: HEX_COLOR_DARK}),
+          thumb: this.rexUI.add.roundRectangle({width: 20, height: 40, radius: 10, color: HEX_COLOR_LIGHT})
+        },
+        mouseWheelScroller: {
+          focus: false,
+          speed: 0.1
+        },
+        header: this.rexUI.add.label({
+          space: {left: 5, right: 5, top: 5, bottom: 15},
+          background: this.rexUI.add.roundRectangle({color: HEX_COLOR_PRIMARY}),
+          text: this.add.text(0, 0, "Settings", {fontSize: 20}),
+          align: 'center',
+        }),
+        footer: this.rexUI.add.label({
+          space: {left: 5, right: 5, top: 5, bottom: 5},
+          background: this.rexUI.add.roundRectangle({color: HEX_COLOR_PRIMARY}),
+          text: this.add.text(0, 0, 'Go Back', {fontSize: 20})
+            .setInteractive()
+            .on('pointerup', () => {
+              this.scene.start('MainMenu');
+            })
+        }),
+        space: {left: 15, right: 15, top: 15, bottom: 15, panel: 15, header: 15, footer: 15}
+      }
+    ).layout()
   }
 
   createPanel() {
