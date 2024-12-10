@@ -34,7 +34,7 @@ class SettingsScene extends Phaser.Scene {
           radius: 10
         }),
         panel: {
-          child: this.createPanel(),
+          child: this.createContainer(),
           mask: {padding: 1,},
         },
         slider: {
@@ -65,15 +65,15 @@ class SettingsScene extends Phaser.Scene {
     ).layout()
   }
 
-  createPanel() {
-    const panel = this.rexUI.add.sizer({orientation: 'y', space: {item: 5}})
+  createContainer() {
+    const container = this.rexUI.add.sizer({orientation: 'y', space: {item: 5}})
 
-    panel.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, VectorZeroes()));
-    panel.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, VectorZeroes()));
-    panel.add(this.addSettingsRow('easyMode', 'Easy Mode', {x: 40, y: -5}, VectorZeroes()));
-    panel.add(this.addSettingsRow('rapidLevelUp', 'Rapid Level Up', {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow('easyMode', 'Easy Mode', {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow('rapidLevelUp', 'Rapid Level Up', {x: 40, y: -5}, VectorZeroes()));
 
-    return panel;
+    return container;
   }
 
   private addSettingsRow(settingKey: SettingKey, label: string, textOffset: Vector2Like, checkboxOffset: Vector2Like) {
