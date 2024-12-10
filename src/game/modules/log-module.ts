@@ -75,7 +75,7 @@ class LogModule extends AbstractModule {
       align: "left"
     });
     let xOffset = 0;
-    messageParts.forEach((messagePart) => {
+    messageParts.filter(({message}) => message !== '').forEach((messagePart) => {
       const text = createText(
         this.scene,
         messagePart.message,
