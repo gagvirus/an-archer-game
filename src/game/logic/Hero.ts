@@ -116,7 +116,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   onLevelUp = (newLevel: number) => {
-    addLogEntry(":hero has become LVL: level", {
+    addLogEntry(":hero has become LVL :level", {
+      hero: [this.name, COLOR_WARNING],
       level: [newLevel, COLOR_SUCCESS],
     }, LogEntryCategory.World);
     this._level = newLevel;
