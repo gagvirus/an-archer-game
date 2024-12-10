@@ -33,6 +33,7 @@ import {powerups} from "../logic/drop/powerup/powerups.ts";
 import DoubleDamage from "../logic/drop/powerup/timed/DoubleDamage.ts";
 import DoubleSpeed from "../logic/drop/powerup/timed/DoubleSpeed.ts";
 import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
+import ActiveEffectsModule from "../modules/active-effects-module.ts";
 
 class MainScene extends Scene {
   private moduleManager!: ModuleManager;
@@ -74,15 +75,17 @@ class MainScene extends Scene {
     this.moduleManager.register(Module.dpsIndicator, new DpsIndicatorModule(this, this.hero));
     this.moduleManager.register(Module.stageInfo, new StageInfoModule(this));
     this.moduleManager.register(Module.resourceList, new ResourceListModule(this, this.hero));
+    this.moduleManager.register(Module.activeEffects, new ActiveEffectsModule(this, this.hero));
     // cleanup any previous logs
     LogModule.cleanEntries();
     this.moduleManager.register(Module.logs, new LogModule(this));
     // Enable the FPS counter initially
     this.moduleManager.enable(Module.fpsCounter);
     this.moduleManager.enable(Module.dpsIndicator);
-    this.moduleManager.enable(Module.logs);
     this.moduleManager.enable(Module.stageInfo);
     this.moduleManager.enable(Module.resourceList);
+    this.moduleManager.enable(Module.activeEffects);
+    this.moduleManager.enable(Module.logs);
 
     this.stage = 1;
     this.scene.get("BuildMenuScene").events.on("buildComplete", (data: { buildings: Tower[][] }) => {

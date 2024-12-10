@@ -66,7 +66,7 @@ class SettingsScene extends Phaser.Scene {
   }
 
   createContainer() {
-    const container = this.rexUI.add.sizer({orientation: 'y', space: {item: 5}})
+    const container = this.rexUI.add.sizer({orientation: 'vertical', space: {item: 5}})
 
     container.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, VectorZeroes()));
     container.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, VectorZeroes()));

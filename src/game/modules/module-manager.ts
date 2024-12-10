@@ -6,6 +6,7 @@ export enum Module {
   logs = "logs",
   stageInfo = "stageInfo",
   resourceList = "resourceList",
+  activeEffects = "activeEffects",
 }
 
 export abstract class AbstractModule {
