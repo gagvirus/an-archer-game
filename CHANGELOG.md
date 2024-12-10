@@ -1,5 +1,9 @@
 ## Changelog
 
+### WIP
+
+- Display active boosts / powerups
+
 ### v0.0.10
 
 - Showing log entries and floating texts when collecting resources

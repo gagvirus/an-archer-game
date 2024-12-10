@@ -3,7 +3,7 @@
 ### Bugs & Improvements
 
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
-- Display active boosts / powerups
+- Improve code to not use setTimeout for powerup duration
 
 ### Gameplay Features
 
