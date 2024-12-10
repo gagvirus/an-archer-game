@@ -108,6 +108,7 @@ class MainScene extends Scene {
     this.buildings = this.physics.add.group();
 
     this.events.on("resume", () => this.onResume());
+    this.events.on("shutdown", () => this.onShutdown());
 
     // Listener for keyboard inputs
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
@@ -253,6 +254,15 @@ class MainScene extends Scene {
   onResume() {
     this.hero.attackable.registerHealthRegenerationIfNecessary();
     this.events.emit("GameResumed");
+  }
+
+  onShutdown() {
+    this.moduleManager.disable(Module.fpsCounter);
+    this.moduleManager.disable(Module.dpsIndicator);
+    this.moduleManager.disable(Module.stageInfo);
+    this.moduleManager.disable(Module.resourceList);
+    this.moduleManager.disable(Module.activeEffects);
+    this.moduleManager.disable(Module.logs);
   }
 
   getOccupiedTiles() {
