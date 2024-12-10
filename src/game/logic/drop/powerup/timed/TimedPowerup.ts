@@ -7,10 +7,10 @@ abstract class TimedPowerup extends Powerup {
   onCollected(): void {
     const scene = this.scene as MainScene;
     this.applyEffect(scene);
-    scene.events.emit("powerupCollected");
+    scene.events.emit("powerupCollected", {instance: this});
     setTimeout(() => {
       this.removeEffect(scene);
-      scene.events.emit("powerupEnded");
+      scene.events.emit("powerupEnded", {instance: this});
     }, this.durationSeconds * 1000);
   }
 
