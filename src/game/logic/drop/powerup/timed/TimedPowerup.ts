@@ -1,16 +1,19 @@
 import MainScene from "../../../../scenes/MainScene.ts";
 import {Powerup} from "../Powerup.ts";
+import {PowerupType} from "./powerupType.ts";
 
 abstract class TimedPowerup extends Powerup {
   durationSeconds: number = 3;
 
+  abstract get powerupType(): PowerupType;
+
   onCollected(): void {
     const scene = this.scene as MainScene;
     this.applyEffect(scene);
-    scene.events.emit("powerupCollected", {instance: this});
+    scene.events.emit("powerupCollected", {type: this.powerupType});
     setTimeout(() => {
       this.removeEffect(scene);
-      scene.events.emit("powerupEnded", {instance: this});
+      scene.events.emit("powerupEnded", {type: this.powerupType});
     }, this.durationSeconds * 1000);
   }
 

@@ -1,5 +1,4 @@
 import {AbstractModule} from "./module-manager.ts";
-import Hero from "../logic/Hero.ts";
 import {Scene} from "phaser";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
@@ -8,15 +7,15 @@ import UiHelper from "../helpers/ui-helper.ts";
 import {PowerupIconMap, PowerupType} from "../logic/drop/powerup/timed/powerupType.ts";
 import {createAnimatedSprite} from "../helpers/text-helpers.ts";
 import Sizer = UIPlugin.Sizer;
+import Sprite = Phaser.GameObjects.Sprite;
 
 class ActiveEffectsModule extends AbstractModule {
-  private hero: Hero;
   private container?: Sizer;
   private panel?: ScrollablePanel;
+  private icons: { [key: string]: Sprite } = {};
 
-  constructor(scene: Scene, hero: Hero) {
+  constructor(scene: Scene) {
     super(scene);
-    this.hero = hero;
   }
 
   start(): void {
@@ -40,8 +39,14 @@ class ActiveEffectsModule extends AbstractModule {
 
       this.panel.layout();
     }
-    this.scene.events.on("powerupCollected", () => this.updateUI());
-    this.scene.events.on("powerupEnded", () => this.updateUI());
+    Object.values(PowerupType).forEach(type => {
+      const icon = createAnimatedSprite(this.scene, PowerupIconMap[type]);
+      // this.container?.add(icon);
+      this.icons[type] = icon
+      icon.setVisible(false);
+    });
+    this.scene.events.on("powerupCollected", ({type}: { type: PowerupType }) => this.updateUI(type, true));
+    this.scene.events.on("powerupEnded", ({type}: { type: PowerupType }) => this.updateUI(type, false));
   }
 
   stop(): void {
@@ -58,21 +63,12 @@ class ActiveEffectsModule extends AbstractModule {
   update(): void {
   }
 
-  private updateUI() {
+  private updateUI(type: PowerupType, enabled: boolean) {
     if (this.panel && this.container) {
-      this.container.getChildren().forEach((child) => {
-        child.destroy();
-      });
-
-      for (const type of Object.values(PowerupType)) {
-        if (this.hero.extra.isEnabled(type)) {
-          console.log("adding", type)
-          this.container?.add(createAnimatedSprite(this.scene, PowerupIconMap[type]))
-        }
-      }
-      this.container.layout()
+      const icon = this.icons[type]
+      icon.setVisible(enabled);
+      enabled ? this.container.add(icon) : this.container.remove(icon);
       this.panel.layout()
-
     }
   }
 }
