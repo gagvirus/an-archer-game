@@ -1,5 +1,4 @@
 import {AbstractModule} from "./module-manager.ts";
-import {Scene} from "phaser";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import UiHelper from "../helpers/ui-helper.ts";
@@ -14,26 +13,12 @@ class ActiveEffectsModule extends AbstractModule {
   private panel?: ScrollablePanel;
   private icons: { [key: string]: Sprite } = {};
 
-  constructor(scene: Scene) {
-    super(scene);
-  }
-
   start(): void {
     if (!this.container && !this.panel) {
       this.container = this.scene.rexUI.add.sizer({orientation: "horizontal", space: {item: 10}});
 
-      const width = 100;
-      const height = 32;
-      const x = 70;
-      const y = 100;
-
       this.panel = this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
-        this.scene,
-        this.container,
-        x,
-        y,
-        width,
-        height,
+        this.scene, this.container, 70, 100, 100, 32,
         {slider: false, /*background: undefined*/},
       ))
 
