@@ -13,22 +13,22 @@ class LogModule extends AbstractModule {
   MAX_ENTRIES = 1000;
   private static entries: LogEntry[] = [];
   _entryTexts: FixWidthSizer[] = [];
-  logPanel?: ScrollablePanel;
+  private panel?: ScrollablePanel;
   private container: Sizer;
 
   start(): void {
-    this.logPanel = this.createLogPanel();
+    this.panel = this.createLogPanel();
     // re-render messages if there are already stored ones
     LogModule.entries.forEach((logEntry) => this.renderLogEntry(logEntry))
   }
 
   stop(): void {
-    if (this.logPanel) {
-      this.logPanel.destroy();
+    if (this.panel) {
+      this.panel.destroy();
       this._entryTexts.forEach(text => text.destroy())
       this._entryTexts = [];
 
-      this.logPanel = undefined;
+      this.panel = undefined;
     }
   }
 
@@ -54,7 +54,7 @@ class LogModule extends AbstractModule {
   }
 
   private renderLogEntry(logEntry: LogEntry) {
-    if (!this.logPanel) {
+    if (!this.panel) {
       return;
     }
     const {message, highlights} = logEntry;
@@ -90,16 +90,13 @@ class LogModule extends AbstractModule {
 
     this._entryTexts.push(container)
     this.container.add(container); // Add the log entry to the scrollable panel
-    this.logPanel.layout(); // Re-layout the panel to adjust to new content
+    this.panel.layout(); // Re-layout the panel to adjust to new content
     // Auto-scroll to the bottom to show the latest entry
-    this.logPanel.scrollToBottom();
+    this.panel.scrollToBottom();
   }
 
   private createLogPanel(): ScrollablePanel {
-    this.container = this.scene.rexUI.add.sizer({
-      orientation: "vertical",
-      space: {item: 10} // Space between log entries
-    });
+    this.container = this.scene.rexUI.add.sizer({orientation: "vertical", space: {item: 10}});
     return this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
       this.scene,
       this.container,
