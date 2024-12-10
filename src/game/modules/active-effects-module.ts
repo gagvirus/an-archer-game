@@ -11,7 +11,7 @@ import Sprite = Phaser.GameObjects.Sprite;
 class ActiveEffectsModule extends AbstractModule {
   private container?: Sizer;
   private panel?: ScrollablePanel;
-  private icons: { [key: string]: Sprite } = {};
+  private icons: Partial<{ [key: string]: Sprite }> = {};
 
   start(): void {
     if (!this.container && !this.panel) {
@@ -26,7 +26,6 @@ class ActiveEffectsModule extends AbstractModule {
     }
     Object.values(PowerupType).forEach(type => {
       const icon = createAnimatedSprite(this.scene, PowerupIconMap[type]);
-      // this.container?.add(icon);
       this.icons[type] = icon
       icon.setVisible(false);
     });
@@ -43,6 +42,10 @@ class ActiveEffectsModule extends AbstractModule {
       this.panel.destroy();
       this.panel = undefined;
     }
+    Object.keys(this.icons).forEach((key) => {
+      this.icons[key]?.destroy();
+      this.icons[key] = undefined;
+    })
   }
 
   update(): void {
@@ -50,7 +53,7 @@ class ActiveEffectsModule extends AbstractModule {
 
   private updateUI(type: PowerupType, enabled: boolean) {
     if (this.panel && this.container) {
-      const icon = this.icons[type]
+      const icon = this.icons[type] as Sprite;
       icon.setVisible(enabled);
       enabled ? this.container.add(icon) : this.container.remove(icon);
       this.panel.layout()
