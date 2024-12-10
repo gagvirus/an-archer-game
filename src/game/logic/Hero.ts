@@ -13,7 +13,7 @@ import {CustomCursorKeysDown} from "../helpers/keyboard-helper.ts";
 import {COLOR_SUCCESS, COLOR_WARNING} from "../helpers/colors.ts";
 import {ResourceType} from "./drop/resource/Resource.ts";
 import {randomChance} from "../helpers/random-helper.ts";
-import ExtraEffectsManager, {MultipliableStat} from "../helpers/extra-effects.ts";
+import PowerupManager, {MultipliableStat} from "../helpers/powerup-manager.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
@@ -23,7 +23,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   attackable: Attackable;
   xpManager: XpManager;
   stats: StatsManager;
-  extra: ExtraEffectsManager;
+  extra: PowerupManager;
   _level: number;
   pullDistance: number = 100;
   pullForce: number = 200;
@@ -59,7 +59,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       });
     }
     this.stats = new StatsManager(this.scene, this, 1, 1, 1, 1);
-    this.extra = new ExtraEffectsManager();
+    this.extra = new PowerupManager();
     this.attackable = new Attackable(
       this.scene,
       this.attacksPerSecond, // attacks per second

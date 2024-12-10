@@ -1,7 +1,7 @@
 import {isEasyMode, isRapidLevelUp} from "./registry-helper.ts";
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
-import {BooleanStats} from "./extra-effects.ts";
+import {BooleanStats} from "./powerup-manager.ts";
 
 export interface Stat {
   label: string;

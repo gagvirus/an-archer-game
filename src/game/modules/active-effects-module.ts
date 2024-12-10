@@ -5,8 +5,8 @@ import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import UiHelper from "../helpers/ui-helper.ts";
 import Sizer = UIPlugin.Sizer;
-import {createText} from "../helpers/text-helpers.ts";
-import {VectorZeroes} from "../helpers/position-helper.ts";
+
+import {PowerupType} from "../logic/drop/powerup/timed/powerupType.ts";
 
 class ActiveEffectsModule extends AbstractModule {
   private hero: Hero;
@@ -34,12 +34,13 @@ class ActiveEffectsModule extends AbstractModule {
         y,
         width,
         height,
-        {slider: false},
+        {slider: false, background: undefined},
       ))
 
-      this.container.add(createText(this.scene, 'hello world', VectorZeroes()))
       this.panel.layout();
     }
+    this.scene.events.on("powerupCollected", () => this.updateUI());
+    this.scene.events.on("powerupEnded", () => this.updateUI());
   }
 
   stop(): void {
@@ -54,9 +55,16 @@ class ActiveEffectsModule extends AbstractModule {
   }
 
   update(): void {
-    console.log(this.hero);
   }
 
+  private updateUI() {
+    const activePowers = [];
+    for (const type of Object.values(PowerupType)) {
+      if (this.hero.extra.isEnabled(type)) {
+        activePowers.push(type);
+      }
+    }
+  }
 }
 
 export default ActiveEffectsModule;

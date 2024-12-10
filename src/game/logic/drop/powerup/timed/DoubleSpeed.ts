@@ -11,7 +11,6 @@ class DoubleSpeed extends TimedPowerup {
   removeEffect(scene: MainScene): void {
     scene.hero.extra.setMultiplierStat(MultipliableStat.attackSpeed, 1);
     scene.hero.extra.setMultiplierStat(MultipliableStat.walkSpeed, 1);
-    console.log('revert')
   }
 
   constructor(scene: MainScene, x: number, y: number) {
