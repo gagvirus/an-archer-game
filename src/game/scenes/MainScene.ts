@@ -263,6 +263,7 @@ class MainScene extends Scene {
     this.moduleManager.disable(Module.resourceList);
     this.moduleManager.disable(Module.activeEffects);
     this.moduleManager.disable(Module.logs);
+    this.hero.attackable.stopRegeneration();
   }
 
   getOccupiedTiles() {

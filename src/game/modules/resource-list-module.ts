@@ -7,6 +7,7 @@ import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/Sc
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import UiHelper from "../helpers/ui-helper.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
+import {COLOR_WHITE} from "../helpers/colors.ts";
 
 class ResourceListModule extends AbstractModule {
   private container?: Sizer;
@@ -24,12 +25,12 @@ class ResourceListModule extends AbstractModule {
       this.container = this.scene.rexUI.add.sizer({orientation: "vertical", space: {item: 10}, width: 100, height: 100});
 
       this.panel = this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
-        this.scene, this.container, this.scene.scale.width - 80, 150, 150, 150,
+        this.scene, this.container, this.scene.scale.width - 65, 150, 100, 150,
         {slider: false, align: {panel: 'right'}, /*background: undefined*/},
       ))
 
       Object.entries(ResourceType).forEach(([key, value]) => {
-        const resourceText = createText(this.scene, `BUBU${key}s: 0`, VectorZeroes(), 16, 'right');
+        const resourceText = createText(this.scene, `${key}s: 0`, VectorZeroes(), 16, 'right', false, COLOR_WHITE, {fixedWidth: 100});
         this.resources[value] = resourceText;
         this.container?.add(resourceText);
       })
