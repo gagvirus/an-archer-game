@@ -5,7 +5,7 @@ import {BooleanStats} from "./powerup-manager.ts";
 
 export interface Stat {
   label: string;
-  prop: string;
+  prop: ChildStat;
 }
 
 enum CoreStat {
@@ -13,6 +13,18 @@ enum CoreStat {
   awareness = "awareness",
   resilience = "resilience",
   thoughtfulness = "thoughtfulness",
+}
+
+enum ChildStat {
+  dexterity = "dexterity",
+  agility = "agility",
+  perception = "perception",
+  strength = "strength",
+  fortitude = "fortitude",
+  endurance = "endurance",
+  intelligence = "intelligence",
+  charisma = "charisma",
+  luck = "luck",
 }
 
 export interface StatGroup {
@@ -43,6 +55,10 @@ class StatsManager {
   }
 
   public getStat(name: CoreStat) {
+    return this[name];
+  }
+
+  public getChildStat(name: ChildStat) {
     return this[name];
   }
 
@@ -256,8 +272,8 @@ class StatsManager {
         hotkey: "F",
         description: "(OFF/DEF) affects Attack speed & Evade chance",
         stats: [
-          {label: "Dexterity", prop: "dexterity"},
-          {label: "Agility", prop: "agility"}
+          {label: "Dexterity", prop: ChildStat.dexterity},
+          {label: "Agility", prop: ChildStat.agility}
         ],
       },
       {
@@ -266,8 +282,8 @@ class StatsManager {
         hotkey: "A",
         description: "(OFF/OFF) affects Critical chance / Critical damage & Attack damage",
         stats: [
-          {label: "Perception", prop: "perception"},
-          {label: "Strength", prop: "strength"}
+          {label: "Perception", prop: ChildStat.perception},
+          {label: "Strength", prop: ChildStat.strength}
         ],
       },
       {
@@ -276,8 +292,8 @@ class StatsManager {
         hotkey: "R",
         description: "(DEF/DEF) affects armor rating & Max Health / Health Regen",
         stats: [
-          {label: "Fortitude", prop: "fortitude"},
-          {label: "Endurance", prop: "endurance"}
+          {label: "Fortitude", prop: ChildStat.fortitude},
+          {label: "Endurance", prop: ChildStat.endurance}
         ],
       },
       {
@@ -286,9 +302,9 @@ class StatsManager {
         hotkey: "T",
         description: "(MISC) affects XP Gain & Bartering & Coin Gain",
         stats: [
-          {label: "Intelligence", prop: "intelligence"},
-          {label: "Charisma", prop: "charisma"},
-          {label: "Luck", prop: "luck"}
+          {label: "Intelligence", prop: ChildStat.intelligence},
+          {label: "Charisma", prop: ChildStat.charisma},
+          {label: "Luck", prop: ChildStat.luck}
         ],
       },
     ];

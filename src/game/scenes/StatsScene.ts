@@ -3,17 +3,19 @@ import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import StatsManager, {StatGroup} from "../helpers/stats-manager.ts";
 import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
+import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
 
 export class StatsScene extends Scene {
-  menu: Buttons;
+  statsSelectButtons: Buttons;
   statsGroup: StatGroup[];
   statsManager: StatsManager;
   chooseStatsText: Phaser.GameObjects.Text;
   statsButtons: Label[];
   holdingShift: boolean = false;
   holdingAlt: boolean = false;
+  private wrapper: Sizer;
 
   constructor() {
     super("StatsScene");
@@ -25,20 +27,23 @@ export class StatsScene extends Scene {
   }
 
   create() {
-    this.statsButtons = this.statsGroup.map(stat => this.createButtonForStatGroup(stat));
     const statsHotkeys = this.statsGroup.map((statGroup) => statGroup.hotkey);
 
-    this.menu = this.rexUI.add.buttons({
-      x: 400,
-      y: 300,
-      orientation: "y",
-      buttons: this.statsButtons,
-      space: {item: 10}
-    })
-      .layout()
-      .on("button.click", (_: Label, index: number) => this.handleStatClick(index));
+    const parentWidth = this.scale.width / 2 - 40
 
-    this.chooseStatsText = createText(this, "Choose Stats", {x: 400, y: 100}, 24)
+    this.wrapper = this.rexUI.add.sizer({
+      x: this.scale.width / 2,
+      y: this.scale.height / 2,
+      width: parentWidth,
+      height: this.scale.height - 40,
+      orientation: "horizontal",
+    })
+
+    this.wrapper
+      .add(this.createStatsSelectColumn())
+      .add(this.createChildStatsColumn())
+      .layout();
+
     this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
 
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
@@ -72,6 +77,46 @@ export class StatsScene extends Scene {
     });
   }
 
+  createStatsSelectColumn() {
+    this.statsButtons = this.statsGroup.map(stat => this.createButtonForStatGroup(stat));
+    const statsSelectWrapper = this.rexUI.add.sizer({
+      orientation: "vertical",
+    })
+
+    this.statsSelectButtons = this.rexUI.add.buttons({
+      orientation: "y",
+      buttons: this.statsButtons,
+      space: {item: 10}
+    })
+      .layout()
+      .on("button.click", (_: Label, index: number) => this.handleStatClick(index));
+
+    this.chooseStatsText = createText(this, "Choose Stats", VectorZeroes(), 24)
+
+    statsSelectWrapper
+      .add(this.chooseStatsText)
+      .add(this.statsSelectButtons).layout();
+
+    return statsSelectWrapper;
+  }
+
+  createChildStatsColumn() {
+    const childStatsWrapper = this.rexUI.add.sizer({
+      orientation: "vertical",
+    })
+
+    childStatsWrapper.add(createText(this, "Child Stats", VectorZeroes()))
+
+    this.statsGroup.forEach((statGroup) => {
+      statGroup.stats.forEach((stat) => {
+        const value = this.statsManager.getChildStat(stat.prop);
+        childStatsWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, 'left', false))
+      })
+    })
+
+    return childStatsWrapper
+  }
+
   updateUnallocatedStatsNumber(newNumber: number) {
     let chooseStatsLabel = "Choose Stats"
 
@@ -85,7 +130,7 @@ export class StatsScene extends Scene {
   createButtonForStatGroup(statGroup: StatGroup) {
 
     return this.rexUI.add.label({
-      background: this.rexUI.add.roundRectangleCanvas(100, 330, 100, 100, {
+      background: this.rexUI.add.roundRectangleCanvas(0, 0, 0, 0, {
         radius: 15,
         iteration: 0
       }, 0x008888),
@@ -107,7 +152,7 @@ export class StatsScene extends Scene {
 
   getStatText(statGroup: StatGroup) {
     const currentStat = this.statsManager.getStat(statGroup.prop);
-    const icon = this.holdingAlt ? (this.holdingShift ? '--' : '-') : this.holdingShift ? '++' : '+';
+    const icon = this.holdingAlt ? (this.holdingShift ? "--" : "-") : this.holdingShift ? "++" : "+";
     return `[${statGroup.hotkey}] ${statGroup.label} [${currentStat}] ${icon}`;
   }
 
