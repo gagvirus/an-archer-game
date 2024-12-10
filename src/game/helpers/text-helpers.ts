@@ -145,6 +145,12 @@ const pluralize = (count: number, noun: string, suffix = 's') => {
   return `${noun}${count !== 1 ? suffix : ''}`;
 }
 
+const createAnimatedSprite = (scene: Scene, animation: string) => {
+  const sprite = scene.add.sprite(0, 0, '')
+  sprite.play(animation)
+  return sprite;
+}
+
 export {
   createCenteredText,
   createAnimatedText,
@@ -157,4 +163,5 @@ export {
   showEvaded,
   showCollectedLoot,
   pluralize,
+  createAnimatedSprite,
 };

@@ -5,9 +5,8 @@ import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import UiHelper from "../helpers/ui-helper.ts";
 
-import {PowerupType} from "../logic/drop/powerup/timed/powerupType.ts";
-import {createText} from "../helpers/text-helpers.ts";
-import {VectorZeroes} from "../helpers/position-helper.ts";
+import {PowerupIconMap, PowerupType} from "../logic/drop/powerup/timed/powerupType.ts";
+import {createAnimatedSprite} from "../helpers/text-helpers.ts";
 import Sizer = UIPlugin.Sizer;
 
 class ActiveEffectsModule extends AbstractModule {
@@ -22,12 +21,12 @@ class ActiveEffectsModule extends AbstractModule {
 
   start(): void {
     if (!this.container && !this.panel) {
-      this.container = this.scene.rexUI.add.sizer({orientation: "vertical", space: {item: 10}});
+      this.container = this.scene.rexUI.add.sizer({orientation: "horizontal", space: {item: 10}});
 
       const width = 100;
-      const height = 100;
-      const x = 500;
-      const y = 500;
+      const height = 32;
+      const x = 70;
+      const y = 100;
 
       this.panel = this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
         this.scene,
@@ -36,7 +35,7 @@ class ActiveEffectsModule extends AbstractModule {
         y,
         width,
         height,
-        {slider: false, background: undefined},
+        {slider: false, /*background: undefined*/},
       ))
 
       this.panel.layout();
@@ -60,13 +59,21 @@ class ActiveEffectsModule extends AbstractModule {
   }
 
   private updateUI() {
-    this.container?.clear();
-    for (const type of Object.values(PowerupType)) {
-      if (this.hero.extra.isEnabled(type)) {
-        this.container?.add(createText(this.scene, type, VectorZeroes()))
+    if (this.panel && this.container) {
+      this.container.getChildren().forEach((child) => {
+        child.destroy();
+      });
+
+      for (const type of Object.values(PowerupType)) {
+        if (this.hero.extra.isEnabled(type)) {
+          console.log("adding", type)
+          this.container?.add(createAnimatedSprite(this.scene, PowerupIconMap[type]))
+        }
       }
+      this.container.layout()
+      this.panel.layout()
+
     }
-    this.panel?.layout()
   }
 }
 
