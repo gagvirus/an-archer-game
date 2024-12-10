@@ -4,7 +4,7 @@ import Hero from "../logic/Hero.ts";
 import {AbstractModule} from "./module-manager.ts";
 import {ResourceType} from "../logic/drop/resource/Resource.ts";
 
-class DpsIndicatorModule extends AbstractModule {
+class ResourceListModule extends AbstractModule {
   private resourceTexts: Partial<{ [key in ResourceType]: Phaser.GameObjects.Text }> = {};
   private hero: Hero;
 
@@ -40,4 +40,4 @@ class DpsIndicatorModule extends AbstractModule {
   }
 }
 
-export default DpsIndicatorModule;
+export default ResourceListModule;
