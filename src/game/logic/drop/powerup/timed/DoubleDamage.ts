@@ -8,7 +8,7 @@ class DoubleDamage extends TimedPowerup {
   }
 
   removeEffect(scene: MainScene): void {
-    scene.hero.extra.setMultiplierStat(MultipliableStat.damage, 1 / 2);
+    scene.hero.extra.setMultiplierStat(MultipliableStat.damage, 1);
   }
 
   constructor(scene: MainScene, x: number, y: number) {
