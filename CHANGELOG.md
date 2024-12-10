@@ -3,6 +3,8 @@
 ### WIP
 
 - Display active boosts / powerups
+- emit event "paused" - when setting timeout - calculate time remaining on paused, remove timeout,then on resume set new
+  timeout with remaining time
 
 ### v0.0.10
 
