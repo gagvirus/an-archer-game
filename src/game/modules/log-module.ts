@@ -4,14 +4,17 @@ import {createText} from "../helpers/text-helpers.ts";
 import {COLOR_WHITE} from "../helpers/colors.ts";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import {AbstractModule} from "./module-manager.ts";
+import UiHelper from "../helpers/ui-helper.ts";
 import TextStyle = Phaser.GameObjects.TextStyle;
 import FixWidthSizer = UIPlugin.FixWidthSizer;
+import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 
 class LogModule extends AbstractModule {
   MAX_ENTRIES = 1000;
   private static entries: LogEntry[] = [];
   _entryTexts: FixWidthSizer[] = [];
   logPanel?: ScrollablePanel;
+  private container: Sizer;
 
   start(): void {
     this.logPanel = this.createLogPanel();
@@ -85,47 +88,26 @@ class LogModule extends AbstractModule {
       xOffset += text.width + 5;
     });
 
-    const panel = this.logPanel.getElement("panel") as ScrollablePanel;
     this._entryTexts.push(container)
-    panel.add(container); // Add the log entry to the scrollable panel
+    this.container.add(container); // Add the log entry to the scrollable panel
     this.logPanel.layout(); // Re-layout the panel to adjust to new content
     // Auto-scroll to the bottom to show the latest entry
     this.logPanel.scrollToBottom();
   }
 
   private createLogPanel(): ScrollablePanel {
-    return this.scene.rexUI.add.scrollablePanel({
-      x: this.scene.scale.width - 170, // Bottom-right corner
-      y: this.scene.scale.height - 100,
-      width: 300,
-      height: 200,
-
-      scrollMode: 0, // 0 for vertical scrolling
-      background: this.scene.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x333333),
-
-      panel: {
-        child: this.scene.rexUI.add.sizer({
-          orientation: "vertical",
-          space: {item: 10} // Space between log entries
-        }),
-
-        mask: {
-          padding: 1
-        }
-      },
-
-      slider: {
-        track: this.scene.rexUI.add.roundRectangle(0, 0, 20, 10, 10, 0x888888),
-        thumb: this.scene.rexUI.add.roundRectangle(0, 0, 20, 30, 10, 0xffffff)
-      },
-      space: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10,
-        panel: 10
-      }
-    }).layout();
+    this.container = this.scene.rexUI.add.sizer({
+      orientation: "vertical",
+      space: {item: 10} // Space between log entries
+    });
+    return this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
+      this.scene,
+      this.container,
+      this.scene.scale.width - 170,
+      this.scene.scale.height - 100,
+      300,
+      200,
+    )).layout();
   }
 }
 
