@@ -128,7 +128,7 @@ export class StatsScene extends Scene {
     attributesWrapper.add(createText(this, "Attributes", VectorZeroes()))
 
     this.attributes.forEach((attribute) => {
-      const value = this.statsManager.getAttribute(attribute.prop);
+      const value = parseFloat(this.statsManager.getAttribute(attribute.prop).toFixed(2));
       attributesWrapper.add(createText(this, `${attribute.label}: ${value}`, VectorZeroes(), 16, 'left', false))
     })
 
