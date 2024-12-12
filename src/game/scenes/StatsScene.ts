@@ -1,6 +1,6 @@
 import {Scene} from "phaser";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
-import StatsManager, {StatGroup} from "../helpers/stats-manager.ts";
+import StatsManager, {IAttribute, ICoreStat} from "../helpers/stats-manager.ts";
 import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
@@ -9,7 +9,8 @@ import Buttons = UIPlugin.Buttons;
 
 export class StatsScene extends Scene {
   statsSelectButtons: Buttons;
-  statsGroup: StatGroup[];
+  statsGroup: ICoreStat[];
+  attributes: IAttribute[];
   statsManager: StatsManager;
   chooseStatsText: Phaser.GameObjects.Text;
   statsButtons: Label[];
@@ -20,6 +21,7 @@ export class StatsScene extends Scene {
   constructor() {
     super("StatsScene");
     this.statsGroup = StatsManager.listStatsGroups();
+    this.attributes = StatsManager.listAttributes();
   }
 
   init(data: { statsManager: StatsManager }) {
@@ -125,11 +127,9 @@ export class StatsScene extends Scene {
 
     attributesWrapper.add(createText(this, "Attributes", VectorZeroes()))
 
-    this.statsGroup.forEach((statGroup) => {
-      statGroup.stats.forEach((stat) => {
-        const value = this.statsManager.getChildStat(stat.prop);
-        attributesWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, 'left', false))
-      })
+    this.attributes.forEach((attribute) => {
+      const value = this.statsManager.getAttribute(attribute.prop);
+      attributesWrapper.add(createText(this, `${attribute.label}: ${value}`, VectorZeroes(), 16, 'left', false))
     })
 
     return attributesWrapper
@@ -145,7 +145,7 @@ export class StatsScene extends Scene {
     this.chooseStatsText.setText(chooseStatsLabel);
   }
 
-  createButtonForStatGroup(statGroup: StatGroup) {
+  createButtonForStatGroup(statGroup: ICoreStat) {
 
     return this.rexUI.add.label({
       background: this.rexUI.add.roundRectangleCanvas(0, 0, 0, 0, {
@@ -153,7 +153,7 @@ export class StatsScene extends Scene {
         iteration: 0
       }, 0x008888),
       text: createText(this, this.getStatText(statGroup), VectorZeroes(), 18, "left"),
-      action: createText(this, statGroup.description, VectorZeroes(), 12, "center", false),
+      action: createText(this, statGroup.description ?? "", VectorZeroes(), 12, "center", false),
       space: {
         left: 10,
         right: 10,
@@ -168,15 +168,15 @@ export class StatsScene extends Scene {
     });
   }
 
-  getStatText(statGroup: StatGroup) {
-    const currentStat = this.statsManager.getStat(statGroup.prop);
+  getStatText(statGroup: ICoreStat) {
+    const currentStat = this.statsManager.getCoreStat(statGroup.prop);
     const icon = this.holdingAlt ? (this.holdingShift ? "--" : "-") : this.holdingShift ? "++" : "+";
     return `[${statGroup.hotkey}] ${statGroup.label} [${currentStat}] ${icon}`;
   }
 
   handleStatClick(index: number) {
     const selectedStatGroup = this.statsGroup[index];
-    const selectedStatCurrentAmount = this.statsManager.getStat(selectedStatGroup.prop);
+    const selectedStatCurrentAmount = this.statsManager.getCoreStat(selectedStatGroup.prop);
     if (!this.holdingAlt && this.statsManager.unallocatedStats < 1) {
       return;
     }

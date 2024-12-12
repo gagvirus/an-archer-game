@@ -3,14 +3,18 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import {BooleanStats} from "./powerup-manager.ts";
 
-export interface Stat {
+export interface IStat {
   label: string;
   prop: string;
   description?: string;
 }
 
-export interface Attribute extends Stat {
+export interface IChildStat extends IStat {
+  prop: ChildStat;
+}
 
+export interface IAttribute extends IStat {
+  prop: Attribute;
 }
 
 enum CoreStat {
@@ -32,8 +36,30 @@ enum ChildStat {
   luck = "luck",
 }
 
-export interface StatGroup extends Stat {
-  stats: Stat[];
+enum Attribute {
+  baseAttackTime = "baseAttackTime",
+  attackSpeedBonus = "attackSpeedBonus",
+  attackRate = "attackRate",
+  attacksPerSecond = "attacksPerSecond",
+  damageMultiplier = "damageMultiplier",
+  criticalChancePercent = "criticalChancePercent",
+  criticalExtraDamageMultiplier = "criticalExtraDamageMultiplier",
+  evadeChancePercent = "evadeChancePercent",
+  maxHealthMultiplier = "maxHealthMultiplier",
+  healthRegenPerInterval = "healthRegenPerInterval",
+  healthRegenerationInterval = "healthRegenerationInterval",
+  armorRatingBonus = "armorRatingBonus",
+  armorRating = "armorRating",
+  flatDamageReduction = "flatDamageReduction",
+  percentReduction = "percentReduction",
+  xpGainMultiplier = "xpGainMultiplier",
+  dropChanceModifier = "dropChanceModifier",
+  dropAmountModifier = "dropAmountModifier",
+}
+
+export interface ICoreStat extends IStat {
+  prop: CoreStat;
+  stats: IChildStat[];
   hotkey: string;
 }
 
@@ -56,11 +82,15 @@ class StatsManager {
     this.unallocatedStats = unallocatedStats;
   }
 
-  public getStat(name: CoreStat) {
+  public getCoreStat(name: CoreStat) {
     return this[name];
   }
 
   public getChildStat(name: ChildStat) {
+    return this[name];
+  }
+
+  public getAttribute(name: Attribute) {
     return this[name];
   }
 
@@ -266,41 +296,41 @@ class StatsManager {
     return 1;
   }
 
-  static listAttributes(): Attribute[] {
+  static listAttributes(): IAttribute[] {
     return [
       // offensive stats
       //   attack speed
-      {label: 'Base Attack Time', prop: 'baseAttackTime'},
-      {label: 'Attack Speed Bonus', prop: 'attackSpeedBonus'},
-      {label: 'Attack Rate', prop: 'attackRate'},
-      {label: 'Attacks Per Second', prop: 'attacksPerSecond'},
+      {label: 'Base Attack Time', prop: Attribute.baseAttackTime},
+      {label: 'Attack Speed Bonus', prop: Attribute.attackSpeedBonus},
+      {label: 'Attack Rate', prop: Attribute.attackRate},
+      {label: 'Attacks Per Second', prop: Attribute.attacksPerSecond},
       //   damage
-      {label: 'Damage multiplier', prop: 'damageMultiplier'},
+      {label: 'Damage multiplier', prop: Attribute.damageMultiplier},
       //   critical
-      {label: 'Critical Chance %', prop: 'criticalChancePercent'},
-      {label: 'Critical Damage Multiplier', prop: 'criticalExtraDamageMultiplier'},
+      {label: 'Critical Chance %', prop: Attribute.criticalChancePercent},
+      {label: 'Critical Damage Multiplier', prop: Attribute.criticalExtraDamageMultiplier},
 
       // defensive stats
       //   evade
-      {label: 'Evade Chance %', prop: 'evadeChancePercent'},
+      {label: 'Evade Chance %', prop: Attribute.evadeChancePercent},
       //   health
-      {label: 'Max Health Multiplier', prop: 'maxHealthMultiplier'},
-      {label: 'Health Regen Amount', prop: 'healthRegenPerInterval'},
-      {label: 'Health Regen Interval', prop: 'healthRegenerationInterval'},
+      {label: 'Max Health Multiplier', prop: Attribute.maxHealthMultiplier},
+      {label: 'Health Regen Amount', prop: Attribute.healthRegenPerInterval},
+      {label: 'Health Regen Interval', prop: Attribute.healthRegenerationInterval},
       //   armor
-      {label: 'Armor Rating Bonus', prop: 'armorRatingBonus'},
-      {label: 'Armor Rating', prop: 'armorRating'},
-      {label: 'Flat Damage Reduction', prop: 'flatDamageReduction'},
-      {label: 'Percent Damage Reduction', prop: 'percentReduction'},
+      {label: 'Armor Rating Bonus', prop: Attribute.armorRatingBonus},
+      {label: 'Armor Rating', prop: Attribute.armorRating},
+      {label: 'Flat Damage Reduction', prop: Attribute.flatDamageReduction},
+      {label: 'Percent Damage Reduction', prop: Attribute.percentReduction},
       // miscellaneous
-      {label: 'XP Gain Multiplier', prop: 'xpGainMultiplier'},
-      {label: 'Drop Chance Multiplier', prop: 'dropChanceModifier'},
-      {label: 'Drop Amount Modifier', prop: 'dropAmountModifier'},
+      {label: 'XP Gain Multiplier', prop: Attribute.xpGainMultiplier},
+      {label: 'Drop Chance Multiplier', prop: Attribute.dropChanceModifier},
+      {label: 'Drop Amount Modifier', prop: Attribute.dropAmountModifier},
     ]
   }
 
 
-  static listStatsGroups(): StatGroup[] {
+  static listStatsGroups(): ICoreStat[] {
     return [
       {
         label: "Finesse",
