@@ -3,6 +3,8 @@
 ### Bugs & Improvements
 
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
+- Crashing bug
+  - Uncaught TypeError: Cannot read properties of null (reading 'worldToLocal')
 
 ### Gameplay Features
 
