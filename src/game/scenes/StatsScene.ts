@@ -42,6 +42,7 @@ export class StatsScene extends Scene {
     this.wrapper
       .add(this.createStatsSelectColumn())
       .add(this.createChildStatsColumn())
+      .add(this.createAttributesColumn())
       .layout();
 
     this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
@@ -115,6 +116,23 @@ export class StatsScene extends Scene {
     })
 
     return childStatsWrapper
+  }
+
+  createAttributesColumn() {
+    const attributesWrapper = this.rexUI.add.sizer({
+      orientation: "vertical",
+    })
+
+    attributesWrapper.add(createText(this, "Attributes", VectorZeroes()))
+
+    this.statsGroup.forEach((statGroup) => {
+      statGroup.stats.forEach((stat) => {
+        const value = this.statsManager.getChildStat(stat.prop);
+        attributesWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, 'left', false))
+      })
+    })
+
+    return attributesWrapper
   }
 
   updateUnallocatedStatsNumber(newNumber: number) {

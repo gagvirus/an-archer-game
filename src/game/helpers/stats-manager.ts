@@ -5,7 +5,12 @@ import {BooleanStats} from "./powerup-manager.ts";
 
 export interface Stat {
   label: string;
-  prop: ChildStat;
+  prop: string;
+  description?: string;
+}
+
+export interface Attribute extends Stat {
+
 }
 
 enum CoreStat {
@@ -27,10 +32,7 @@ enum ChildStat {
   luck = "luck",
 }
 
-export interface StatGroup {
-  label: string;
-  prop: CoreStat;
-  description: string;
+export interface StatGroup extends Stat {
   stats: Stat[];
   hotkey: string;
 }
@@ -263,6 +265,40 @@ class StatsManager {
     }
     return 1;
   }
+
+  static listAttributes(): Attribute[] {
+    return [
+      // offensive stats
+      //   attack speed
+      {label: 'Base Attack Time', prop: 'baseAttackTime'},
+      {label: 'Attack Speed Bonus', prop: 'attackSpeedBonus'},
+      {label: 'Attack Rate', prop: 'attackRate'},
+      {label: 'Attacks Per Second', prop: 'attacksPerSecond'},
+      //   damage
+      {label: 'Damage multiplier', prop: 'damageMultiplier'},
+      //   critical
+      {label: 'Critical Chance %', prop: 'criticalChancePercent'},
+      {label: 'Critical Damage Multiplier', prop: 'criticalExtraDamageMultiplier'},
+
+      // defensive stats
+      //   evade
+      {label: 'Evade Chance %', prop: 'evadeChancePercent'},
+      //   health
+      {label: 'Max Health Multiplier', prop: 'maxHealthMultiplier'},
+      {label: 'Health Regen Amount', prop: 'healthRegenPerInterval'},
+      {label: 'Health Regen Interval', prop: 'healthRegenerationInterval'},
+      //   armor
+      {label: 'Armor Rating Bonus', prop: 'armorRatingBonus'},
+      {label: 'Armor Rating', prop: 'armorRating'},
+      {label: 'Flat Damage Reduction', prop: 'flatDamageReduction'},
+      {label: 'Percent Damage Reduction', prop: 'percentReduction'},
+      // miscellaneous
+      {label: 'XP Gain Multiplier', prop: 'xpGainMultiplier'},
+      {label: 'Drop Chance Multiplier', prop: 'dropChanceModifier'},
+      {label: 'Drop Amount Modifier', prop: 'dropAmountModifier'},
+    ]
+  }
+
 
   static listStatsGroups(): StatGroup[] {
     return [
