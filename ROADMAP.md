@@ -5,6 +5,9 @@
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 - Crashing bug
   - Uncaught TypeError: Cannot read properties of null (reading 'worldToLocal')
+- stats management - better ui / ux for viewing child stats & attributes
+- automatically update child stats / attributes on core stat change
+- display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
 
 ### Gameplay Features
 
