@@ -113,7 +113,7 @@ export class StatsScene extends Scene {
     this.statsGroup.forEach((statGroup) => {
       statGroup.stats.forEach((stat) => {
         const value = this.statsManager.getChildStat(stat.prop);
-        childStatsWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, 'left', false))
+        childStatsWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, "left", false))
       })
     })
 
@@ -129,7 +129,7 @@ export class StatsScene extends Scene {
 
     this.attributes.forEach((attribute) => {
       const value = parseFloat(this.statsManager.getAttribute(attribute.prop).toFixed(2));
-      attributesWrapper.add(createText(this, `${attribute.label}: ${value}`, VectorZeroes(), 16, 'left', false))
+      attributesWrapper.add(createText(this, `${attribute.label}: ${value}`, VectorZeroes(), 16, "left", false))
     })
 
     return attributesWrapper
