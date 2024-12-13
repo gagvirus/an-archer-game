@@ -146,7 +146,6 @@ export class StatsScene extends Scene {
   }
 
   createButtonForStatGroup(statGroup: ICoreStat) {
-
     return this.rexUI.add.label({
       background: this.rexUI.add.roundRectangleCanvas(0, 0, 0, 0, {
         radius: 15,
