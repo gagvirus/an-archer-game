@@ -5,6 +5,10 @@
 - Display active boosts / powerups
 - emit event "paused" - when setting timeout - calculate time remaining on paused, remove timeout,then on resume set new
   timeout with remaining time
+- Stats Screen Improvements
+  - Display list of affected stats
+    - For each stat, display their respective "child attribute"
+      - For each "child attribute", display the affected attribute
 
 ### v0.0.10
 

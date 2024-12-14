@@ -37,10 +37,6 @@
 
 ### Menus / Settings/ Meta
 
-- Stats Screen Improvements
-  - Display list of affected stats
-    - For each stat, display their respective "child attribute"
-      - For each "child attribute", display the affected attribute
 - Scoring
   - On enemy kill add some score
   - Display the score on top-right corner
