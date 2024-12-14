@@ -2,6 +2,12 @@ import {isEasyMode, isRapidLevelUp} from "./registry-helper.ts";
 import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import {BooleanStats} from "./powerup-manager.ts";
+import {
+  HEX_COLOR_RESILIENCE,
+  HEX_COLOR_GREEN_FINESSE,
+  HEX_COLOR_RED_AWARENESS,
+  HEX_COLOR_THOUGHTFULNESS
+} from "./colors.ts";
 
 export interface IStat {
   label: string;
@@ -61,6 +67,8 @@ export interface ICoreStat extends IStat {
   prop: CoreStat;
   stats: IChildStat[];
   hotkey: string;
+  icon: string;
+  color: number;
 }
 
 class StatsManager {
@@ -336,6 +344,8 @@ class StatsManager {
         label: "Finesse",
         prop: CoreStat.finesse,
         hotkey: "F",
+        icon: "agility",
+        color: HEX_COLOR_GREEN_FINESSE,
         description: "Affects Attack speed & Evade chance",
         stats: [
           {label: "Dexterity", prop: ChildStat.dexterity},
@@ -346,6 +356,8 @@ class StatsManager {
         label: "Awareness",
         prop: CoreStat.awareness,
         hotkey: "A",
+        icon: "muscles",
+        color: HEX_COLOR_RED_AWARENESS,
         description: "Affects Attack damage, Critical Chance & damage",
         stats: [
           {label: "Perception", prop: ChildStat.perception},
@@ -356,6 +368,8 @@ class StatsManager {
         label: "Resilience",
         prop: CoreStat.resilience,
         hotkey: "R",
+        icon: "gear",
+        color: HEX_COLOR_RESILIENCE,
         description: "Affects Armor rating & Max Health / Health Regen",
         stats: [
           {label: "Fortitude", prop: ChildStat.fortitude},
@@ -366,6 +380,8 @@ class StatsManager {
         label: "Thoughtfulness",
         prop: CoreStat.thoughtfulness,
         hotkey: "T",
+        icon: "brain",
+        color: HEX_COLOR_THOUGHTFULNESS,
         description: "Affects XP Gain & Bartering & Coin Gain",
         stats: [
           {label: "Intelligence", prop: ChildStat.intelligence},

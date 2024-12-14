@@ -8,10 +8,10 @@ import Tooltip from "../ui/tooltip.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
 import {
-  HEX_COLOR_BLUE_INTELLIGENCE,
-  HEX_COLOR_GREEN_AGILITY,
-  HEX_COLOR_RED_STRENGTH,
-  HEX_COLOR_YELLOW_MISCELLANEOUS
+  HEX_COLOR_RESILIENCE,
+  HEX_COLOR_GREEN_FINESSE,
+  HEX_COLOR_RED_AWARENESS,
+  HEX_COLOR_THOUGHTFULNESS
 } from "../helpers/colors.ts";
 
 export class StatsScene extends Scene {
@@ -97,13 +97,13 @@ export class StatsScene extends Scene {
     const centerY = 300; // Circle center Y
     const radius = 100;  // Circle radius
     const colors = [
-      HEX_COLOR_RED_STRENGTH, // Dark Red for Strength
-      HEX_COLOR_GREEN_AGILITY, // Dark Green for Dexterity
-      HEX_COLOR_BLUE_INTELLIGENCE, // Dark Blue for Intelligence
-      HEX_COLOR_YELLOW_MISCELLANEOUS  // Dark Goldenrod for Luck
+      HEX_COLOR_RED_AWARENESS, // Dark Red for Strength
+      HEX_COLOR_GREEN_FINESSE, // Dark Green for Dexterity
+      HEX_COLOR_RESILIENCE, // Dark Blue for Intelligence
+      HEX_COLOR_THOUGHTFULNESS  // Dark Goldenrod for Luck
     ]; // Colors for each piece
-    const texts = ['Strength', 'Dexterity', 'Intelligence', 'Luck']; // Text for each piece
-    const icons = ['strength-icon', 'dexterity-icon', 'intelligence-icon', 'luck-icon']; // Names of icons in the atlas
+    const texts = this.statsGroup.map((coreStat) => coreStat.label)
+    const icons = ['muscles', 'dexterity-icon', 'intelligence-icon', 'luck-icon']; // Names of icons in the atlas
 
 
     // Create a Graphics object
