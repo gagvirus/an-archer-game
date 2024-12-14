@@ -7,12 +7,6 @@ import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Tooltip from "../ui/tooltip.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
-import {
-  HEX_COLOR_RESILIENCE,
-  HEX_COLOR_GREEN_FINESSE,
-  HEX_COLOR_RED_AWARENESS,
-  HEX_COLOR_THOUGHTFULNESS
-} from "../helpers/colors.ts";
 
 export class StatsScene extends Scene {
   statsSelectButtons: Buttons;
@@ -95,27 +89,20 @@ export class StatsScene extends Scene {
     // Circle properties
     const centerX = 400; // Circle center X
     const centerY = 300; // Circle center Y
-    const radius = 100;  // Circle radius
-    const colors = [
-      HEX_COLOR_RED_AWARENESS, // Dark Red for Strength
-      HEX_COLOR_GREEN_FINESSE, // Dark Green for Dexterity
-      HEX_COLOR_RESILIENCE, // Dark Blue for Intelligence
-      HEX_COLOR_THOUGHTFULNESS  // Dark Goldenrod for Luck
-    ]; // Colors for each piece
-    const texts = this.statsGroup.map((coreStat) => coreStat.label)
-    const icons = ['muscles', 'dexterity-icon', 'intelligence-icon', 'luck-icon']; // Names of icons in the atlas
+    const radius = 150;  // Circle radius
 
 
     // Create a Graphics object
     const graphics = this.add.graphics();
 
-    // Draw each quarter of the circle and add rotated text
-    for (let i = 0; i < 4; i++) {
+    this.statsGroup.forEach((statGroup: ICoreStat, i: number) => {
+      const {color, icon, label} = statGroup;
+      // Draw each quarter of the circle and add rotated text
       const startAngle = (Math.PI / 2) * i; // Start angle
       const endAngle = startAngle + Math.PI / 2; // End angle
 
       // Draw the section of the circle with the plain color
-      graphics.fillStyle(colors[i], 1);
+      graphics.fillStyle(color, 1);
       graphics.beginPath();
       graphics.moveTo(centerX, centerY);
       graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
@@ -130,18 +117,19 @@ export class StatsScene extends Scene {
       const textY = centerY + radius * Math.sin(textAngle) * 0.5;
 
       // Add the text
-      const text = this.add.text(textX, textY, texts[i], {
-        font: '16px Arial',
-        color: '#ffffff',
-        align: 'center',
+      const text = this.add.text(textX, textY, label, {
+        font: "16px Arial",
+        color: "#ffffff",
+        align: "center",
       });
       text.setOrigin(0.5); // Center the text horizontally and vertically
 
-      const icon = this.add.sprite(textX, textY - 20, 'icons', icons[i]);
-      icon.setOrigin(0.5); // Center the icon
-      icon.setScale(0.5); // Adjust scale if necessary (e.g., 50% size of the original)
-    }
+      const iconSprite = this.add.sprite(textX, textY - 20, "icons", icon);
+      iconSprite.setOrigin(0.5); // Center the icon
+      iconSprite.setScale(0.5); // Adjust scale if necessary (e.g., 50% size of the original)
+    });
   }
+
   createStatsSelectColumn() {
     this.statsButtons = this.statsGroup.map(stat => this.createButtonForStatGroup(stat));
     const statsSelectWrapper = this.rexUI.add.sizer({
