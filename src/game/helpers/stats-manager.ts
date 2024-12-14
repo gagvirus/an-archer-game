@@ -6,7 +6,15 @@ import {
   HEX_COLOR_RESILIENCE,
   HEX_COLOR_GREEN_FINESSE,
   HEX_COLOR_RED_AWARENESS,
-  HEX_COLOR_THOUGHTFULNESS
+  HEX_COLOR_THOUGHTFULNESS,
+  HEX_COLOR_GREEN_FINESSE_LIGHT,
+  HEX_COLOR_GREEN_FINESSE_DARK,
+  HEX_COLOR_RED_AWARENESS_LIGHT,
+  HEX_COLOR_RED_AWARENESS_DARK,
+  HEX_COLOR_RESILIENCE_LIGHT,
+  HEX_COLOR_RESILIENCE_DARK,
+  HEX_COLOR_THOUGHTFULNESS_LIGHT,
+  HEX_COLOR_THOUGHTFULNESS_DARK
 } from "./colors.ts";
 
 export interface IStat {
@@ -68,7 +76,7 @@ export interface ICoreStat extends IStat {
   stats: IChildStat[];
   hotkey: string;
   icon: string;
-  color: number;
+  colors: [number, number, number];
 }
 
 class StatsManager {
@@ -345,7 +353,7 @@ class StatsManager {
         prop: CoreStat.finesse,
         hotkey: "F",
         icon: "agility",
-        color: HEX_COLOR_GREEN_FINESSE,
+        colors: [HEX_COLOR_GREEN_FINESSE, HEX_COLOR_GREEN_FINESSE_LIGHT, HEX_COLOR_GREEN_FINESSE_DARK],
         description: "Affects Attack speed & Evade chance",
         stats: [
           {label: "Dexterity", prop: ChildStat.dexterity},
@@ -357,7 +365,7 @@ class StatsManager {
         prop: CoreStat.awareness,
         hotkey: "A",
         icon: "muscles",
-        color: HEX_COLOR_RED_AWARENESS,
+        colors: [HEX_COLOR_RED_AWARENESS, HEX_COLOR_RED_AWARENESS_LIGHT, HEX_COLOR_RED_AWARENESS_DARK],
         description: "Affects Attack damage, Critical Chance & damage",
         stats: [
           {label: "Perception", prop: ChildStat.perception},
@@ -369,7 +377,7 @@ class StatsManager {
         prop: CoreStat.resilience,
         hotkey: "R",
         icon: "gear",
-        color: HEX_COLOR_RESILIENCE,
+        colors: [HEX_COLOR_RESILIENCE, HEX_COLOR_RESILIENCE_LIGHT, HEX_COLOR_RESILIENCE_DARK],
         description: "Affects Armor rating & Max Health / Health Regen",
         stats: [
           {label: "Fortitude", prop: ChildStat.fortitude},
@@ -381,7 +389,7 @@ class StatsManager {
         prop: CoreStat.thoughtfulness,
         hotkey: "T",
         icon: "brain",
-        color: HEX_COLOR_THOUGHTFULNESS,
+        colors: [HEX_COLOR_THOUGHTFULNESS, HEX_COLOR_THOUGHTFULNESS_LIGHT, HEX_COLOR_THOUGHTFULNESS_DARK],
         description: "Affects XP Gain & Bartering & Coin Gain",
         stats: [
           {label: "Intelligence", prop: ChildStat.intelligence},

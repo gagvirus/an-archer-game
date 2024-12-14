@@ -97,8 +97,11 @@ export class StatsScene extends Scene {
     const centerX = 400; // Circle center X
     const centerY = 300; // Circle center Y
     const radius = 150;  // Circle radius
-    const {color, icon, label} = statGroup;
-    // Draw each quarter of the circle and add rotated text
+    const buttonRadius = 50; // Quarter-circle button radius
+    const { colors, icon, label } = statGroup;
+    const [color, lightColor, darkColor] = colors;
+
+    // Draw each section of the circle
     const startAngle = (Math.PI / 2) * i; // Start angle
     const endAngle = startAngle + Math.PI / 2; // End angle
 
@@ -110,12 +113,12 @@ export class StatsScene extends Scene {
     graphics.closePath();
     graphics.fillPath();
 
-    // Calculate the angle for placing text in the center of each section
-    const textAngle = startAngle + Math.PI / 4; // Middle of the quarter
+    // Calculate the angle for placing elements in the center of each section
+    const midAngle = startAngle + Math.PI / 4; // Middle of the quarter
 
-    // Calculate text position in the center of the section
-    const textX = centerX + radius * Math.cos(textAngle) * 0.6; // 50% toward edge
-    const textY = centerY + radius * Math.sin(textAngle) * 0.6;
+    // Text position
+    const textX = centerX + radius * Math.cos(midAngle) * 0.6;
+    const textY = centerY + radius * Math.sin(midAngle) * 0.6;
 
     // Add the text
     const text = this.add.text(textX, textY, label, {
@@ -123,10 +126,42 @@ export class StatsScene extends Scene {
       color: "#ffffff",
       align: "center",
     });
-    text.setOrigin(0.5); // Center the text horizontally and vertically
+    text.setOrigin(0.5);
 
+    // Add the icon above the text
     const iconSprite = this.add.sprite(textX, textY - 20, "icons", icon);
-    iconSprite.setOrigin(0.5); // Center the icon
+    iconSprite.setOrigin(0.5);
+
+
+    // Calculate button position (closer to center)
+    const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
+    const buttonX = centerX + buttonRadius * Math.cos(buttonAngle) * 0.3; // Closer to the center
+    const buttonY = centerY + buttonRadius * Math.sin(buttonAngle) * 0.3;
+
+    // Create quarter-circle button using Graphics
+    const buttonGraphics = this.add.graphics();
+    buttonGraphics.fillStyle(darkColor, 1);
+    buttonGraphics.moveTo(centerX, centerY);
+    buttonGraphics.beginPath();
+    buttonGraphics.arc(centerX, centerY, buttonRadius, startAngle, endAngle, false);
+    buttonGraphics.lineTo(centerX, centerY);
+    buttonGraphics.closePath();
+    buttonGraphics.fillPath();
+
+    // graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
+    // graphics.closePath();
+    // graphics.fillPath();
+
+    // Add a small icon in the quarter-circle button
+    const offsetX = [1,2].includes(i) ? -10 : 10;
+    const offsetY = i > 1 ? -10 : 10;
+    const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "down")
+      .setInteractive()
+      .on('pointerdown', () => {
+        console.log(`${label} button clicked!`);
+      })
+    ;
+    buttonIcon.setOrigin(0.5).setScale(0.75);
   }
 
 
