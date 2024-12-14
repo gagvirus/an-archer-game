@@ -3,12 +3,14 @@
 ### Bugs & Improvements
 
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
-- Crashing bug
+- Crashing bug related to picking up powerups
   - Uncaught TypeError: Cannot read properties of null (reading 'worldToLocal')
 - stats management - better ui / ux for viewing child stats & attributes
 - automatically update child stats / attributes on core stat change
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
-
+- display a help icon "Enter" when portal is ready
+- auto-proceed to next level
+- display an icon that shall open stats screen on click
 ### Gameplay Features
 
 - Active skills
