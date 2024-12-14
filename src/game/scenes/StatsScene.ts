@@ -8,6 +8,7 @@ import Tooltip from "../ui/tooltip.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
 import Graphics = Phaser.GameObjects.Graphics;
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class StatsScene extends Scene {
   statsSelectButtons: Buttons;
@@ -99,7 +100,7 @@ export class StatsScene extends Scene {
     const radius = 150;  // Circle radius
     const buttonRadius = 50; // Quarter-circle button radius
     const { colors, icon, label } = statGroup;
-    const [color, lightColor, darkColor] = colors;
+    const [color, darkColor, darkerColor] = colors;
 
     // Draw each section of the circle
     const startAngle = (Math.PI / 2) * i; // Start angle
@@ -140,13 +141,7 @@ export class StatsScene extends Scene {
 
     // Create quarter-circle button using Graphics
     const buttonGraphics = this.add.graphics();
-    buttonGraphics.fillStyle(darkColor, 1);
-    buttonGraphics.moveTo(centerX, centerY);
-    buttonGraphics.beginPath();
-    buttonGraphics.arc(centerX, centerY, buttonRadius, startAngle, endAngle, false);
-    buttonGraphics.lineTo(centerX, centerY);
-    buttonGraphics.closePath();
-    buttonGraphics.fillPath();
+    this.renderUnallocateButtonGraphics(buttonGraphics, darkColor, {x: centerX, y: centerY}, buttonRadius, startAngle, endAngle);
 
     // graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
     // graphics.closePath();
@@ -159,9 +154,24 @@ export class StatsScene extends Scene {
       .setInteractive()
       .on('pointerdown', () => {
         console.log(`${label} button clicked!`);
+      }).on('pointerover', () => {
+        this.renderUnallocateButtonGraphics(buttonGraphics, darkerColor, {x: centerX, y: centerY}, buttonRadius, startAngle, endAngle);
+        // buttonGraphics.color
+      }).on('pointerout', () => {
+        this.renderUnallocateButtonGraphics(buttonGraphics, darkColor, {x: centerX, y: centerY}, buttonRadius, startAngle, endAngle);
       })
     ;
-    buttonIcon.setOrigin(0.5).setScale(0.75);
+    buttonIcon.setOrigin(0.5).setScale(1);
+  }
+
+  renderUnallocateButtonGraphics(graphics: Graphics, color: number, center: Vector2Like, radius: number, startAngle: number, endAngle: number) {
+    graphics.fillStyle(color, 1);
+    graphics.moveTo(center.x, center.y);
+    graphics.beginPath();
+    graphics.arc(center.x, center.y, radius, startAngle, endAngle, false);
+    graphics.lineTo(center.x, center.y);
+    graphics.closePath();
+    graphics.fillPath();
   }
 
 

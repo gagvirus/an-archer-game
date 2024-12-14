@@ -7,14 +7,13 @@ import {
   HEX_COLOR_GREEN_FINESSE,
   HEX_COLOR_RED_AWARENESS,
   HEX_COLOR_THOUGHTFULNESS,
-  HEX_COLOR_GREEN_FINESSE_LIGHT,
   HEX_COLOR_GREEN_FINESSE_DARK,
-  HEX_COLOR_RED_AWARENESS_LIGHT,
   HEX_COLOR_RED_AWARENESS_DARK,
-  HEX_COLOR_RESILIENCE_LIGHT,
   HEX_COLOR_RESILIENCE_DARK,
-  HEX_COLOR_THOUGHTFULNESS_LIGHT,
-  HEX_COLOR_THOUGHTFULNESS_DARK
+  HEX_COLOR_THOUGHTFULNESS_DARK,
+  HEX_COLOR_GREEN_FINESSE_DARKER,
+  HEX_COLOR_RED_AWARENESS_DARKER,
+  HEX_COLOR_RESILIENCE_DARKER, HEX_COLOR_THOUGHTFULNESS_DARKER
 } from "./colors.ts";
 
 export interface IStat {
@@ -353,7 +352,7 @@ class StatsManager {
         prop: CoreStat.finesse,
         hotkey: "F",
         icon: "agility",
-        colors: [HEX_COLOR_GREEN_FINESSE, HEX_COLOR_GREEN_FINESSE_LIGHT, HEX_COLOR_GREEN_FINESSE_DARK],
+        colors: [HEX_COLOR_GREEN_FINESSE, HEX_COLOR_GREEN_FINESSE_DARK, HEX_COLOR_GREEN_FINESSE_DARKER],
         description: "Affects Attack speed & Evade chance",
         stats: [
           {label: "Dexterity", prop: ChildStat.dexterity},
@@ -365,7 +364,7 @@ class StatsManager {
         prop: CoreStat.awareness,
         hotkey: "A",
         icon: "muscles",
-        colors: [HEX_COLOR_RED_AWARENESS, HEX_COLOR_RED_AWARENESS_LIGHT, HEX_COLOR_RED_AWARENESS_DARK],
+        colors: [HEX_COLOR_RED_AWARENESS, HEX_COLOR_RED_AWARENESS_DARK, HEX_COLOR_RED_AWARENESS_DARKER],
         description: "Affects Attack damage, Critical Chance & damage",
         stats: [
           {label: "Perception", prop: ChildStat.perception},
@@ -377,7 +376,7 @@ class StatsManager {
         prop: CoreStat.resilience,
         hotkey: "R",
         icon: "gear",
-        colors: [HEX_COLOR_RESILIENCE, HEX_COLOR_RESILIENCE_LIGHT, HEX_COLOR_RESILIENCE_DARK],
+        colors: [HEX_COLOR_RESILIENCE, HEX_COLOR_RESILIENCE_DARK, HEX_COLOR_RESILIENCE_DARKER],
         description: "Affects Armor rating & Max Health / Health Regen",
         stats: [
           {label: "Fortitude", prop: ChildStat.fortitude},
@@ -389,7 +388,7 @@ class StatsManager {
         prop: CoreStat.thoughtfulness,
         hotkey: "T",
         icon: "brain",
-        colors: [HEX_COLOR_THOUGHTFULNESS, HEX_COLOR_THOUGHTFULNESS_LIGHT, HEX_COLOR_THOUGHTFULNESS_DARK],
+        colors: [HEX_COLOR_THOUGHTFULNESS, HEX_COLOR_THOUGHTFULNESS_DARK, HEX_COLOR_THOUGHTFULNESS_DARKER],
         description: "Affects XP Gain & Bartering & Coin Gain",
         stats: [
           {label: "Intelligence", prop: ChildStat.intelligence},
