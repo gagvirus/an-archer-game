@@ -44,7 +44,7 @@ export class StatsScene extends Scene {
       orientation: "horizontal",
     })
 
-    this.createShit()
+    this.createStatsCircle()
     this.wrapper
       // .add(this.createShit())
       // .add(this.createStatsSelectColumn())
@@ -86,12 +86,9 @@ export class StatsScene extends Scene {
     this.tooltip = new Tooltip(this, 0, 0, "");
   }
 
-  createShit() {
-
-
+  createStatsCircle() {
     // Create a Graphics object
     const graphics = this.add.graphics();
-
     this.statsGroup.forEach((statGroup: ICoreStat, i: number) => this.renderStatCirclePartial(statGroup, i, graphics));
   }
 
@@ -130,7 +127,6 @@ export class StatsScene extends Scene {
 
     const iconSprite = this.add.sprite(textX, textY - 20, "icons", icon);
     iconSprite.setOrigin(0.5); // Center the icon
-
   }
 
 
