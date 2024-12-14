@@ -7,6 +7,7 @@ import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Tooltip from "../ui/tooltip.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
+import Graphics = Phaser.GameObjects.Graphics;
 
 export class StatsScene extends Scene {
   statsSelectButtons: Buttons;
@@ -86,49 +87,52 @@ export class StatsScene extends Scene {
   }
 
   createShit() {
-    // Circle properties
-    const centerX = 400; // Circle center X
-    const centerY = 300; // Circle center Y
-    const radius = 150;  // Circle radius
 
 
     // Create a Graphics object
     const graphics = this.add.graphics();
 
-    this.statsGroup.forEach((statGroup: ICoreStat, i: number) => {
-      const {color, icon, label} = statGroup;
-      // Draw each quarter of the circle and add rotated text
-      const startAngle = (Math.PI / 2) * i; // Start angle
-      const endAngle = startAngle + Math.PI / 2; // End angle
-
-      // Draw the section of the circle with the plain color
-      graphics.fillStyle(color, 1);
-      graphics.beginPath();
-      graphics.moveTo(centerX, centerY);
-      graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
-      graphics.closePath();
-      graphics.fillPath();
-
-      // Calculate the angle for placing text in the center of each section
-      const textAngle = startAngle + Math.PI / 4; // Middle of the quarter
-
-      // Calculate text position in the center of the section
-      const textX = centerX + radius * Math.cos(textAngle) * 0.5; // 50% toward edge
-      const textY = centerY + radius * Math.sin(textAngle) * 0.5;
-
-      // Add the text
-      const text = this.add.text(textX, textY, label, {
-        font: "16px Arial",
-        color: "#ffffff",
-        align: "center",
-      });
-      text.setOrigin(0.5); // Center the text horizontally and vertically
-
-      const iconSprite = this.add.sprite(textX, textY - 20, "icons", icon);
-      iconSprite.setOrigin(0.5); // Center the icon
-      iconSprite.setScale(0.5); // Adjust scale if necessary (e.g., 50% size of the original)
-    });
+    this.statsGroup.forEach((statGroup: ICoreStat, i: number) => this.renderStatCirclePartial(statGroup, i, graphics));
   }
+
+  renderStatCirclePartial(statGroup: ICoreStat, i: number, graphics: Graphics) {
+    // Circle properties
+    const centerX = 400; // Circle center X
+    const centerY = 300; // Circle center Y
+    const radius = 150;  // Circle radius
+    const {color, icon, label} = statGroup;
+    // Draw each quarter of the circle and add rotated text
+    const startAngle = (Math.PI / 2) * i; // Start angle
+    const endAngle = startAngle + Math.PI / 2; // End angle
+
+    // Draw the section of the circle with the plain color
+    graphics.fillStyle(color, 1);
+    graphics.beginPath();
+    graphics.moveTo(centerX, centerY);
+    graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
+    graphics.closePath();
+    graphics.fillPath();
+
+    // Calculate the angle for placing text in the center of each section
+    const textAngle = startAngle + Math.PI / 4; // Middle of the quarter
+
+    // Calculate text position in the center of the section
+    const textX = centerX + radius * Math.cos(textAngle) * 0.6; // 50% toward edge
+    const textY = centerY + radius * Math.sin(textAngle) * 0.6;
+
+    // Add the text
+    const text = this.add.text(textX, textY, label, {
+      font: "16px Arial",
+      color: "#ffffff",
+      align: "center",
+    });
+    text.setOrigin(0.5); // Center the text horizontally and vertically
+
+    const iconSprite = this.add.sprite(textX, textY - 20, "icons", icon);
+    iconSprite.setOrigin(0.5); // Center the icon
+
+  }
+
 
   createStatsSelectColumn() {
     this.statsButtons = this.statsGroup.map(stat => this.createButtonForStatGroup(stat));
