@@ -92,6 +92,11 @@
   - ability to login via itch
   - ability to set username
   - save score
+- add functionality for resolution
+  - currently, the game is rendered at current window size, and game depends on window size in some places
+  - change the logic to not depend on window size in any places
+  - create some logic, that will allow to switch game resolution, on which we shall depend
+  - have the game "upscale" / "downscale" on pre-defined set of resolution (hd / full hd etc)
 
 ### Aesthetics
 
