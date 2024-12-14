@@ -9,6 +9,8 @@
   - Display list of affected stats
     - For each stat, display their respective "child attribute"
       - For each "child attribute", display the affected attribute
+- implement a generic tooltip
+- display core stat description when hovering, instead of displaying underneath it
 
 ### v0.0.10
 

@@ -336,7 +336,7 @@ class StatsManager {
         label: "Finesse",
         prop: CoreStat.finesse,
         hotkey: "F",
-        description: "(OFF/DEF) affects Attack speed & Evade chance",
+        description: "Affects Attack speed & Evade chance",
         stats: [
           {label: "Dexterity", prop: ChildStat.dexterity},
           {label: "Agility", prop: ChildStat.agility}
@@ -346,7 +346,7 @@ class StatsManager {
         label: "Awareness",
         prop: CoreStat.awareness,
         hotkey: "A",
-        description: "(OFF/OFF) affects Critical chance / Critical damage & Attack damage",
+        description: "Affects Attack damage, Critical Chance & damage",
         stats: [
           {label: "Perception", prop: ChildStat.perception},
           {label: "Strength", prop: ChildStat.strength}
@@ -356,7 +356,7 @@ class StatsManager {
         label: "Resilience",
         prop: CoreStat.resilience,
         hotkey: "R",
-        description: "(DEF/DEF) affects armor rating & Max Health / Health Regen",
+        description: "Affects Armor rating & Max Health / Health Regen",
         stats: [
           {label: "Fortitude", prop: ChildStat.fortitude},
           {label: "Endurance", prop: ChildStat.endurance}
@@ -366,7 +366,7 @@ class StatsManager {
         label: "Thoughtfulness",
         prop: CoreStat.thoughtfulness,
         hotkey: "T",
-        description: "(MISC) affects XP Gain & Bartering & Coin Gain",
+        description: "Affects XP Gain & Bartering & Coin Gain",
         stats: [
           {label: "Intelligence", prop: ChildStat.intelligence},
           {label: "Charisma", prop: ChildStat.charisma},

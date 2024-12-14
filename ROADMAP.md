@@ -8,10 +8,6 @@
 - stats management - better ui / ux for viewing child stats & attributes
 - automatically update child stats / attributes on core stat change
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
-- implement a generic tooltip
-- display core stat description when hovering, instead of displaying underneath it
-- add shield / sword icons
-- off/def shall be icons
 
 ### Gameplay Features
 

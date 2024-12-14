@@ -4,6 +4,7 @@ import StatsManager, {IAttribute, ICoreStat} from "../helpers/stats-manager.ts";
 import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
+import Tooltip from "../ui/tooltip.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
 
@@ -17,6 +18,7 @@ export class StatsScene extends Scene {
   holdingShift: boolean = false;
   holdingAlt: boolean = false;
   private wrapper: Sizer;
+  private tooltip: Tooltip;
 
   constructor() {
     super("StatsScene");
@@ -78,6 +80,7 @@ export class StatsScene extends Scene {
         this.updateUI();
       }
     });
+    this.tooltip = new Tooltip(this, 0, 0, "");
   }
 
   createStatsSelectColumn() {
@@ -146,13 +149,19 @@ export class StatsScene extends Scene {
   }
 
   createButtonForStatGroup(statGroup: ICoreStat) {
+    const text = createText(this, this.getStatText(statGroup), VectorZeroes(), 18, "left").setInteractive();
+    text.on("pointerover", () => {
+      this.tooltip.show(text.x, text.y);
+      this.tooltip.setText(statGroup.description);
+    }).on("pointerout", () => {
+      this.tooltip.hide();
+    })
     return this.rexUI.add.label({
       background: this.rexUI.add.roundRectangleCanvas(0, 0, 0, 0, {
         radius: 15,
         iteration: 0
       }, 0x008888),
-      text: createText(this, this.getStatText(statGroup), VectorZeroes(), 18, "left"),
-      action: createText(this, statGroup.description ?? "", VectorZeroes(), 12, "center", false),
+      text,
       space: {
         left: 10,
         right: 10,
