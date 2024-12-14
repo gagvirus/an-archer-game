@@ -11,6 +11,11 @@
 - display a help icon "Enter" when portal is ready
 - auto-proceed to next level
 - display an icon that shall open stats screen on click
+- optimization on logs - display log entries in bulk when collecting resources
+  - during 3 seconds if a player collects +10, +12, +13 coins, just display one entry "collected 35 coins"
+- coins / resources "clumping"
+  - after some time of being dropped, combine multiple coins in a radius into one big pile
+
 ### Gameplay Features
 
 - Active skills
