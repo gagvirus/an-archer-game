@@ -30,6 +30,7 @@ Step on the portal to activate it, then press enter to proceed to the next stage
 This project utilizes the following resources:
 
 - [Phaser Framework](https://phaser.io/) – The core game engine used to build this project.
+- [Leshy SpriteSheet Tool](https://www.leshylabs.com/apps/sstool/)
 - The following free game assets have been used:
   - [Imp & Axe Demon Pixel Art Character](https://sanctumpixel.itch.io/imp-axe-demon-pixel-art-character)
   - [Sword Skeleton Pixel Art Character](https://sanctumpixel.itch.io/sword-skeleton-pixel-art-character)
@@ -38,6 +39,7 @@ This project utilizes the following resources:
   - [Pixel Art - Portal Monolith](https://arijkx.itch.io/pixel-art-portal-monolith)
   - [Coin](https://merlym.itch.io/coin)
   - [Free Effect and Bullet 16x16](https://bdragon1727.itch.io/free-effect-and-bullet-16x16)
+  - [Shikashi's Fantasy Icons Pack](https://shikashipx.itch.io/shikashis-fantasy-icons-pack)
 
 - Free assets that might be useful
   - [Kyrise's Free 16x16 RPG Icon Pack](https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack)

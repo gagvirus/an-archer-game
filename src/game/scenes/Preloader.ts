@@ -27,26 +27,28 @@ export class Preloader extends Scene {
 
   preload() {
     //  Load the assets for the game - Replace with your own assets
-    this.load.setPath('assets');
+    this.load.setPath("assets");
 
-    this.load.image('star', 'star.png');
+    this.load.image("star", "star.png");
 
-    this.load.image('arrow', 'arrow.png');
-    this.load.image('enemy', 'enemy.png');
+    this.load.image("arrow", "arrow.png");
+    this.load.image("enemy", "enemy.png");
 
-    this.load.spritesheet('hero', 'hero/running.png', {frameWidth: 64, frameHeight: 64});
-    this.load.spritesheet('hero_attack', 'hero/attack.png', {frameWidth: 64, frameHeight: 64});
-    this.load.spritesheet('portal', 'portal.png', {frameWidth: 190, frameHeight: 190});
-    this.load.spritesheet('towers', 'towers.png', {frameWidth: 192 / 3, frameHeight: 128});
-    this.load.spritesheet('coin', 'coin.png', {frameWidth: 40, frameHeight: 40});
-    this.load.spritesheet('effects_purple', 'effects-purple.png', {frameWidth: 16, frameHeight: 16});
-    this.load.spritesheet('effects_purple_tall', 'effects-purple.png', {frameWidth: 16, frameHeight: 32});
-    this.load.spritesheet('effects_blue', 'effects-blue.png', {frameWidth: 16, frameHeight: 16});
-    this.load.spritesheet('effects_blue_tall', 'effects-blue.png', {frameWidth: 16, frameHeight: 32});
-    this.load.spritesheet('effects_yellow', 'effects-yellow.png', {frameWidth: 16, frameHeight: 16});
-    this.load.spritesheet('effects_yellow_tall', 'effects-yellow.png', {frameWidth: 16, frameHeight: 32});
-    this.load.spritesheet('effects_green', 'effects-green.png', {frameWidth: 16, frameHeight: 16});
-    this.load.spritesheet('effects_green_tall', 'effects-green.png', {frameWidth: 16, frameHeight: 32});
+    this.load.atlas('icons', 'icons.png', 'icons.json');
+
+    this.load.spritesheet("hero", "hero/running.png", {frameWidth: 64, frameHeight: 64});
+    this.load.spritesheet("hero_attack", "hero/attack.png", {frameWidth: 64, frameHeight: 64});
+    this.load.spritesheet("portal", "portal.png", {frameWidth: 190, frameHeight: 190});
+    this.load.spritesheet("towers", "towers.png", {frameWidth: 192 / 3, frameHeight: 128});
+    this.load.spritesheet("coin", "coin.png", {frameWidth: 40, frameHeight: 40});
+    this.load.spritesheet("effects_purple", "effects-purple.png", {frameWidth: 16, frameHeight: 16});
+    this.load.spritesheet("effects_purple_tall", "effects-purple.png", {frameWidth: 16, frameHeight: 32});
+    this.load.spritesheet("effects_blue", "effects-blue.png", {frameWidth: 16, frameHeight: 16});
+    this.load.spritesheet("effects_blue_tall", "effects-blue.png", {frameWidth: 16, frameHeight: 32});
+    this.load.spritesheet("effects_yellow", "effects-yellow.png", {frameWidth: 16, frameHeight: 16});
+    this.load.spritesheet("effects_yellow_tall", "effects-yellow.png", {frameWidth: 16, frameHeight: 32});
+    this.load.spritesheet("effects_green", "effects-green.png", {frameWidth: 16, frameHeight: 16});
+    this.load.spritesheet("effects_green_tall", "effects-green.png", {frameWidth: 16, frameHeight: 32});
 
     for (let i = 1; i <= 6; i++) {
       this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
