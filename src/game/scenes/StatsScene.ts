@@ -95,9 +95,44 @@ export class StatsScene extends Scene {
   }
 
   renderStatCirclePartial(coreStat: ICoreStat, i: number) {
+    this.renderAllocateSkillQuarter(coreStat, i);
     this.renderSkillQuarter(coreStat, i);
     this.renderUnallocateSkillQuarter(coreStat, i);
+  }  private renderAllocateSkillQuarter(coreStat: ICoreStat, i: number) {
+    const {colors, label} = coreStat;
+    const [, darkColor, darkerColor] = colors;
+
+    // Draw each section of the circle
+    const startAngle = (Math.PI / 2) * i; // Start angle
+    const endAngle = startAngle + Math.PI / 2; // End angle
+    const buttonRadius = 180; // Quarter-circle button radius
+
+    // Calculate button position (closer to center)
+    const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
+    const buttonX = this.radialStatsCenter.x + buttonRadius * Math.cos(buttonAngle) * 0.85; // Closer to the center
+    const buttonY = this.radialStatsCenter.y + buttonRadius * Math.sin(buttonAngle) * 0.85;
+
+    // Create quarter-circle button using Graphics
+    const buttonGraphics = this.add.graphics();
+    this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
+
+    // Add a small icon in the quarter-circle button
+    const offsetX = [1, 2].includes(i) ? -10 : 10;
+    const offsetY = i > 1 ? -10 : 10;
+    const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "up")
+      .setInteractive()
+      .on("pointerdown", () => {
+        console.log(`allocate to ${label} button clicked!`);
+      }).on("pointerover", () => {
+        this.renderQuarterCircle(buttonGraphics, darkerColor, buttonRadius, startAngle, endAngle);
+        // buttonGraphics.color
+      }).on("pointerout", () => {
+        this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
+      })
+    ;
+    buttonIcon.setOrigin(0.5).setScale(0.8);
   }
+
 
   private renderSkillQuarter(coreStat: ICoreStat, i: number) {
     const graphics = this.add.graphics();
@@ -150,7 +185,7 @@ export class StatsScene extends Scene {
     const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "down")
       .setInteractive()
       .on("pointerdown", () => {
-        console.log(`${label} button clicked!`);
+        console.log(`unallocate from ${label} button clicked!`);
       }).on("pointerover", () => {
         this.renderQuarterCircle(buttonGraphics, darkerColor, buttonRadius, startAngle, endAngle);
         // buttonGraphics.color
