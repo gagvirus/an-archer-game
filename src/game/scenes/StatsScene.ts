@@ -165,7 +165,7 @@ export class StatsScene extends Scene {
   }
 
   private renderUnallocateStatQuarter(coreStat: ICoreStat, i: number) {
-    const {colors, label} = coreStat;
+    const {colors} = coreStat;
     const [, darkColor, darkerColor] = colors;
 
     // Draw each section of the circle
@@ -188,8 +188,7 @@ export class StatsScene extends Scene {
     const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "down")
       .setInteractive()
       .on("pointerdown", () => {
-        // todo: add unallocate
-        console.log(`unallocate from ${label} button clicked!`);
+        this.handleStatClick(i, true);
       }).on("pointerover", () => {
         this.renderQuarterCircle(buttonGraphics, darkerColor, buttonRadius, startAngle, endAngle);
         // buttonGraphics.color
@@ -247,49 +246,41 @@ export class StatsScene extends Scene {
     this.unallocatedStatsNumberText.setText(newNumber + "");
   }
 
-  createButtonForCoreStat(coreStat: ICoreStat) {
-    const text = createText(this, this.getStatText(coreStat), VectorZeroes(), 18, "left").setInteractive();
-    text.on("pointerover", () => {
-      this.tooltip.show(text.x, text.y);
-      this.tooltip.setText(coreStat.description);
-    }).on("pointerout", () => {
-      this.tooltip.hide();
-    });
-    return this.rexUI.add.label({
-      background: this.rexUI.add.roundRectangleCanvas(0, 0, 0, 0, {
-        radius: 15,
-        iteration: 0
-      }, 0x008888),
-      text,
-      space: {
-        left: 10,
-        right: 10,
-        top: 10,
-        bottom: 10,
-        icon: 10,
-        text: 5, // Space between text and actioncc
-        // action: 5 // Space between text and bottom padding
-      },
-      orientation: "top-to-bottom", // 1 means vertical alignment (text above action)
-      align: "left"
-    });
-  }
-
   getStatText(coreStat: ICoreStat) {
     const currentStat = this.statsManager.getCoreStat(coreStat.prop);
     const icon = this.holdingShift ? "++" : "+";
     return `[${coreStat.hotkey}] ${coreStat.label} [${currentStat}] ${icon}`;
   }
 
-  handleStatClick(index: number) {
+  handleStatClick(index: number, unallocating: boolean = false) {
     const selectedCoreStat = this.statsGroup[index];
-    if (this.statsManager.unallocatedStats < 1) {
+    const selectedStatCurrentAmount = this.statsManager.getCoreStat(selectedCoreStat.prop);
+    if (!unallocating && this.statsManager.unallocatedStats < 1) {
       return;
     }
-    const statsCount = Phaser.Math.Clamp(this.holdingShift ? 10 : 1, 0, this.statsManager.unallocatedStats);
-    this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount);
-    this.statsManager.addStat(selectedCoreStat.prop, statsCount);
-    // this.statsButtons[index].setText(this.getStatText(selectedCoreStat))
+    if (unallocating && selectedStatCurrentAmount <= 1) {
+      return;
+    }
+    let statsCount = 1;
+    if (this.holdingShift) {
+      statsCount = 10;
+      if (unallocating) {
+        // if there is not enough allocated points on the selected stat group,
+        // set stats count to current stat number
+        if (selectedStatCurrentAmount - 1 < statsCount) {
+          statsCount = selectedStatCurrentAmount - 1;
+        }
+      } else {
+        if (statsCount > this.statsManager.unallocatedStats) {
+          statsCount = this.statsManager.unallocatedStats;
+        }
+      }
+    }
+    const isUnallocatingMultiplier = unallocating ? -1 : 1;
+    this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount * isUnallocatingMultiplier);
+    this.statsManager.addStat(selectedCoreStat.prop, statsCount * isUnallocatingMultiplier);
+    // todo: update ui where is shown how much is allocated
+    // this.statsButtons[index].setText(this.getStatText(selectedCoreStat));
     this.events.emit("statsUpdated");
   }
 
