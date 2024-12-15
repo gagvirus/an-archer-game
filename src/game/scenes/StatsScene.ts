@@ -264,12 +264,6 @@ export class StatsScene extends Scene {
     this.unallocatedStatsNumberText.setText(newNumber + "");
   }
 
-  getStatText(coreStat: ICoreStat) {
-    const currentStat = this.statsManager.getCoreStat(coreStat.prop);
-    const icon = this.holdingShift ? "++" : "+";
-    return `[${coreStat.hotkey}] ${coreStat.label} [${currentStat}] ${icon}`;
-  }
-
   handleStatClick(index: number, unallocating: boolean = false) {
     const selectedCoreStat = this.statsGroup[index];
     const selectedStatCurrentAmount = this.statsManager.getCoreStat(selectedCoreStat.prop);
