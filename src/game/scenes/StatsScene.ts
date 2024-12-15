@@ -1,12 +1,10 @@
 import {Scene} from "phaser";
-import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import StatsManager, {IAttribute, ICoreStat} from "../helpers/stats-manager.ts";
 import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Tooltip from "../ui/tooltip.ts";
 import {COLOR_WHITE, HEX_COLOR_DARK} from "../helpers/colors.ts";
-import Label = UIPlugin.Label;
 import Graphics = Phaser.GameObjects.Graphics;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -15,7 +13,7 @@ export class StatsScene extends Scene {
   attributes: IAttribute[];
   statsManager: StatsManager;
   unallocatedStatsNumberText: Phaser.GameObjects.Text;
-  statsButtons: Label[];
+  allocatedStatsNumberText: Phaser.GameObjects.Text[] = [];
   holdingShift: boolean = false;
   private wrapper: Sizer;
   private tooltip: Tooltip;
@@ -77,7 +75,6 @@ export class StatsScene extends Scene {
   }
 
   createStatsCircle() {
-    // Create a Graphics object
     this.statsGroup.forEach((coreStat: ICoreStat, i: number) => this.renderStatCirclePartial(coreStat, i));
     this.renderUnallocatedStatsNumber();
   }
@@ -117,14 +114,22 @@ export class StatsScene extends Scene {
         this.renderQuarterCircle(buttonGraphics, darkerColor, buttonRadius, startAngle, endAngle);
       }).on("pointerout", () => {
         this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
-      })
-    ;
+      });
     buttonIcon.setOrigin(0.5).setScale(0.8);
   }
 
   renderUnallocatedStatsNumber() {
     this.add.circle(this.radialStatsCenter.x, this.radialStatsCenter.y, 25, HEX_COLOR_DARK);
-    this.unallocatedStatsNumberText = createText(this, this.statsManager.unallocatedStats + "", this.radialStatsCenter, 20);
+    this.unallocatedStatsNumberText = createText(this, this.statsManager.unallocatedStats + "", this.radialStatsCenter, 20)
+      .setInteractive()
+      .on('pointerover', () => {
+        this.tooltip.show(this.radialStatsCenter.x, this.radialStatsCenter.y);
+        this.tooltip.setText("Number of unallocated stat points.\n\nHold \"Shift\" button to bulk allocate stat points.");
+      })
+      .on('pointerout', () => {
+        this.tooltip.hide();
+      })
+    ;
   }
 
   private renderStatQuarter(coreStat: ICoreStat, i: number) {
@@ -164,11 +169,14 @@ export class StatsScene extends Scene {
       .on("pointerout", () => {
         this.tooltip.hide();
       });
-    const text = createText(this, '0', {x: 0, y: 10}, 16, 'center', false, COLOR_WHITE);
+    this.allocatedStatsNumberText[i] = createText(this, this.statsManager.getCoreStat(coreStat.prop) + "", {
+      x: 0,
+      y: 10
+    }, 16, "center", false, COLOR_WHITE);
     const circleBackground = this.add.circle(0, 0, 35, darkerColor);
 
 
-    container.add([circleBackground, iconSprite, text]);
+    container.add([circleBackground, iconSprite, this.allocatedStatsNumberText[i]]);
   }
 
   private renderUnallocateStatQuarter(coreStat: ICoreStat, i: number) {
@@ -201,8 +209,7 @@ export class StatsScene extends Scene {
         // buttonGraphics.color
       }).on("pointerout", () => {
         this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
-      })
-    ;
+      });
     buttonIcon.setOrigin(0.5).setScale(1);
   }
 
@@ -286,12 +293,11 @@ export class StatsScene extends Scene {
     const isUnallocatingMultiplier = unallocating ? -1 : 1;
     this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount * isUnallocatingMultiplier);
     this.statsManager.addStat(selectedCoreStat.prop, statsCount * isUnallocatingMultiplier);
-    // todo: update ui where is shown how much is allocated
-    // this.statsButtons[index].setText(this.getStatText(selectedCoreStat));
+    this.allocatedStatsNumberText[index].setText(this.statsManager.getCoreStat(selectedCoreStat.prop) + "");
     this.events.emit("statsUpdated");
   }
 
   updateUI() {
-    this.statsButtons.forEach((button, index) => button.setText(this.getStatText(this.statsGroup[index])));
+    // todo: up button becomes double up ?
   }
 }
