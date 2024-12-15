@@ -21,6 +21,7 @@ export class StatsScene extends Scene {
   holdingAlt: boolean = false;
   private wrapper: Sizer;
   private tooltip: Tooltip;
+  private radialStatsCenter: Vector2Like = {x: 400, y: 300};
 
   constructor() {
     super("StatsScene");
@@ -95,11 +96,9 @@ export class StatsScene extends Scene {
 
   renderStatCirclePartial(coreStat: ICoreStat, i: number, graphics: Graphics) {
     // Circle properties
-    const centerX = 400; // Circle center X
-    const centerY = 300; // Circle center Y
     const radius = 150;  // Circle radius
     const buttonRadius = 50; // Quarter-circle button radius
-    const { colors, icon, label } = coreStat;
+    const {colors, icon, label} = coreStat;
     const [color, darkColor, darkerColor] = colors;
 
     // Draw each section of the circle
@@ -107,19 +106,14 @@ export class StatsScene extends Scene {
     const endAngle = startAngle + Math.PI / 2; // End angle
 
     // Draw the section of the circle with the plain color
-    graphics.fillStyle(color, 1);
-    graphics.beginPath();
-    graphics.moveTo(centerX, centerY);
-    graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
-    graphics.closePath();
-    graphics.fillPath();
+    this.renderQuarterCircle(graphics, color, radius, startAngle, endAngle);
 
     // Calculate the angle for placing elements in the center of each section
     const midAngle = startAngle + Math.PI / 4; // Middle of the quarter
 
     // Text position
-    const textX = centerX + radius * Math.cos(midAngle) * 0.6;
-    const textY = centerY + radius * Math.sin(midAngle) * 0.6;
+    const textX = this.radialStatsCenter.x + radius * Math.cos(midAngle) * 0.6;
+    const textY = this.radialStatsCenter.y + radius * Math.sin(midAngle) * 0.6;
 
     // Add the text
     const text = this.add.text(textX, textY, label, {
@@ -136,44 +130,44 @@ export class StatsScene extends Scene {
 
     // Calculate button position (closer to center)
     const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
-    const buttonX = centerX + buttonRadius * Math.cos(buttonAngle) * 0.3; // Closer to the center
-    const buttonY = centerY + buttonRadius * Math.sin(buttonAngle) * 0.3;
+    const buttonX = this.radialStatsCenter.x + buttonRadius * Math.cos(buttonAngle) * 0.3; // Closer to the center
+    const buttonY = this.radialStatsCenter.y + buttonRadius * Math.sin(buttonAngle) * 0.3;
 
     // Create quarter-circle button using Graphics
     const buttonGraphics = this.add.graphics();
-    this.renderUnallocateButtonGraphics(buttonGraphics, darkColor, {x: centerX, y: centerY}, buttonRadius, startAngle, endAngle);
+    this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
 
     // graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
     // graphics.closePath();
     // graphics.fillPath();
 
     // Add a small icon in the quarter-circle button
-    const offsetX = [1,2].includes(i) ? -10 : 10;
+    const offsetX = [1, 2].includes(i) ? -10 : 10;
     const offsetY = i > 1 ? -10 : 10;
     const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "down")
       .setInteractive()
-      .on('pointerdown', () => {
+      .on("pointerdown", () => {
         console.log(`${label} button clicked!`);
-      }).on('pointerover', () => {
-        this.renderUnallocateButtonGraphics(buttonGraphics, darkerColor, {x: centerX, y: centerY}, buttonRadius, startAngle, endAngle);
+      }).on("pointerover", () => {
+        this.renderQuarterCircle(buttonGraphics, darkerColor, buttonRadius, startAngle, endAngle);
         // buttonGraphics.color
-      }).on('pointerout', () => {
-        this.renderUnallocateButtonGraphics(buttonGraphics, darkColor, {x: centerX, y: centerY}, buttonRadius, startAngle, endAngle);
+      }).on("pointerout", () => {
+        this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
       })
     ;
     buttonIcon.setOrigin(0.5).setScale(1);
   }
 
-  renderUnallocateButtonGraphics(graphics: Graphics, color: number, center: Vector2Like, radius: number, startAngle: number, endAngle: number) {
+  renderQuarterCircle(graphics: Graphics, color: number, radius: number, startAngle: number, endAngle: number) {
+    const {x, y} = this.radialStatsCenter;
     graphics.fillStyle(color, 1);
-    graphics.moveTo(center.x, center.y);
+    graphics.moveTo(x, y);
     graphics.beginPath();
-    graphics.arc(center.x, center.y, radius, startAngle, endAngle, false);
-    graphics.lineTo(center.x, center.y);
+    graphics.arc(x, y, radius, startAngle, endAngle, false);
+    graphics.lineTo(x, y);
     graphics.closePath();
     graphics.fillPath();
   }
-
 
   createStatsSelectColumn() {
     this.statsButtons = this.statsGroup.map(stat => this.createButtonForCoreStat(stat));
