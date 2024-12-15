@@ -63,7 +63,7 @@ class StatsCirclePartial {
     buttonIcon.setOrigin(0.5).setScale(0.8);
   }
 
-  renderUnallocatedStatsNumber() {
+  private renderUnallocatedStatsNumber() {
     this.scene.add.circle(this.radialStatsCenter.x, this.radialStatsCenter.y, 25, HEX_COLOR_DARK);
     this.scene.unallocatedStatsNumberText = createText(this.scene, this.scene.statsManager.unallocatedStats + "", this.radialStatsCenter, 20)
       .setInteractive()
@@ -98,9 +98,6 @@ class StatsCirclePartial {
     };
 
     const container = this.scene.add.container(textPosition.x, textPosition.y);
-
-    // todo: show stat points allocated to this
-
     const iconSprite = this.scene.add.sprite(0, -10, "icons", icon)
       .setOrigin(0.5)
       .setScale(0.8)
@@ -115,8 +112,6 @@ class StatsCirclePartial {
       x: 0, y: 10
     }, 16, "center", false, COLOR_WHITE);
     const circleBackground = this.scene.add.circle(0, 0, 35, darkerColor);
-
-
     container.add([circleBackground, iconSprite, this.scene.allocatedStatsNumberText[i]]);
   }
 
@@ -154,7 +149,7 @@ class StatsCirclePartial {
     buttonIcon.setOrigin(0.5).setScale(1);
   }
 
-  renderQuarterCircle(graphics: Graphics, color: number, radius: number, startAngle: number, endAngle: number) {
+  private renderQuarterCircle(graphics: Graphics, color: number, radius: number, startAngle: number, endAngle: number) {
     const {x, y} = this.radialStatsCenter;
     graphics.fillStyle(color, 1);
     graphics.moveTo(x, y);
@@ -165,7 +160,7 @@ class StatsCirclePartial {
     graphics.fillPath();
   }
 
-  handleStatClick(index: number, unallocating: boolean = false) {
+  private handleStatClick(index: number, unallocating: boolean = false) {
     const selectedCoreStat = this.coreStats[index];
     const selectedStatCurrentAmount = this.scene.statsManager.getCoreStat(selectedCoreStat.prop);
     if (!unallocating && this.scene.statsManager.unallocatedStats < 1) {
@@ -218,7 +213,7 @@ class StatsCirclePartial {
   }
 
 
-  updateUI() {
+  private updateUI() {
     // todo: up button becomes double up ?
   }
 }
