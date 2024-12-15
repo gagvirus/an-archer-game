@@ -9,6 +9,7 @@ import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
 import Graphics = Phaser.GameObjects.Graphics;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import {COLOR_WHITE} from "../helpers/colors.ts";
 
 export class StatsScene extends Scene {
   statsSelectButtons: Buttons;
@@ -112,21 +113,14 @@ export class StatsScene extends Scene {
     const midAngle = startAngle + Math.PI / 4; // Middle of the quarter
 
     // Text position
-    const textX = this.radialStatsCenter.x + radius * Math.cos(midAngle) * 0.6;
-    const textY = this.radialStatsCenter.y + radius * Math.sin(midAngle) * 0.6;
+    const textPosition = {
+      x: this.radialStatsCenter.x + radius * Math.cos(midAngle) * 0.6,
+      y: this.radialStatsCenter.y + radius * Math.sin(midAngle) * 0.6
+    };
 
-    // Add the text
-    const text = this.add.text(textX, textY, label, {
-      font: "16px Arial",
-      color: "#ffffff",
-      align: "center",
-    });
-    text.setOrigin(0.5);
+    createText(this, label, textPosition, 14, "center", false, COLOR_WHITE).setOrigin(0.5)
 
-    // Add the icon above the text
-    const iconSprite = this.add.sprite(textX, textY - 20, "icons", icon);
-    iconSprite.setOrigin(0.5);
-
+    this.add.sprite(textPosition.x, textPosition.y - 20, "icons", icon).setOrigin(0.5);
 
     // Calculate button position (closer to center)
     const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
