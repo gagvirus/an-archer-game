@@ -80,14 +80,12 @@ export class StatsScene extends Scene {
   }
 
   createStatsCircle() {
-    this.statsGroup.forEach((coreStat: ICoreStat, i: number) => this.renderStatCirclePartial(coreStat, i));
+    this.statsGroup.forEach((coreStat: ICoreStat, i: number) => {
+      this.renderAllocateStatQuarter(coreStat, i);
+      this.renderStatQuarter(coreStat, i);
+      this.renderUnallocateStatQuarter(coreStat, i);
+    });
     this.renderUnallocatedStatsNumber();
-  }
-
-  renderStatCirclePartial(coreStat: ICoreStat, i: number) {
-    this.renderAllocateStatQuarter(coreStat, i);
-    this.renderStatQuarter(coreStat, i);
-    this.renderUnallocateStatQuarter(coreStat, i);
   }
 
   private renderAllocateStatQuarter(coreStat: ICoreStat, i: number) {
