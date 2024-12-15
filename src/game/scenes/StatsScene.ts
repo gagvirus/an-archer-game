@@ -5,7 +5,7 @@ import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Tooltip from "../ui/tooltip.ts";
-import {COLOR_WHITE} from "../helpers/colors.ts";
+import {COLOR_WHITE, HEX_COLOR_DARK} from "../helpers/colors.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
 import Graphics = Phaser.GameObjects.Graphics;
@@ -92,13 +92,16 @@ export class StatsScene extends Scene {
   createStatsCircle() {
     // Create a Graphics object
     this.statsGroup.forEach((coreStat: ICoreStat, i: number) => this.renderStatCirclePartial(coreStat, i));
+    this.renderUnallocatedStatsNumber();
   }
 
   renderStatCirclePartial(coreStat: ICoreStat, i: number) {
-    this.renderAllocateSkillQuarter(coreStat, i);
-    this.renderSkillQuarter(coreStat, i);
-    this.renderUnallocateSkillQuarter(coreStat, i);
-  }  private renderAllocateSkillQuarter(coreStat: ICoreStat, i: number) {
+    this.renderAllocateStatQuarter(coreStat, i);
+    this.renderStatQuarter(coreStat, i);
+    this.renderUnallocateStatQuarter(coreStat, i);
+  }
+
+  private renderAllocateStatQuarter(coreStat: ICoreStat, i: number) {
     const {colors, label} = coreStat;
     const [, darkColor, darkerColor] = colors;
 
@@ -133,8 +136,12 @@ export class StatsScene extends Scene {
     buttonIcon.setOrigin(0.5).setScale(0.8);
   }
 
+  renderUnallocatedStatsNumber() {
+    this.add.circle(this.radialStatsCenter.x, this.radialStatsCenter.y, 25, HEX_COLOR_DARK);
+    createText(this, this.statsManager.unallocatedStats + '', this.radialStatsCenter, 20)
+  }
 
-  private renderSkillQuarter(coreStat: ICoreStat, i: number) {
+  private renderStatQuarter(coreStat: ICoreStat, i: number) {
     const graphics = this.add.graphics();
     const radius = 150;  // Circle radius
     const {colors, icon, label} = coreStat;
@@ -161,14 +168,14 @@ export class StatsScene extends Scene {
     this.add.sprite(textPosition.x, textPosition.y - 20, "icons", icon).setOrigin(0.5);
   }
 
-  private renderUnallocateSkillQuarter(coreStat: ICoreStat, i: number) {
+  private renderUnallocateStatQuarter(coreStat: ICoreStat, i: number) {
     const {colors, label} = coreStat;
     const [, darkColor, darkerColor] = colors;
 
     // Draw each section of the circle
     const startAngle = (Math.PI / 2) * i; // Start angle
     const endAngle = startAngle + Math.PI / 2; // End angle
-    const buttonRadius = 50; // Quarter-circle button radius
+    const buttonRadius = 65; // Quarter-circle button radius
 
     // Calculate button position (closer to center)
     const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
@@ -180,8 +187,8 @@ export class StatsScene extends Scene {
     this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
 
     // Add a small icon in the quarter-circle button
-    const offsetX = [1, 2].includes(i) ? -10 : 10;
-    const offsetY = i > 1 ? -10 : 10;
+    const offsetX = [1, 2].includes(i) ? -15 : 15;
+    const offsetY = i > 1 ? -15 : 15;
     const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "down")
       .setInteractive()
       .on("pointerdown", () => {
