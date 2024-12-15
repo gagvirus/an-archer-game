@@ -5,11 +5,11 @@ import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Tooltip from "../ui/tooltip.ts";
+import {COLOR_WHITE} from "../helpers/colors.ts";
 import Label = UIPlugin.Label;
 import Buttons = UIPlugin.Buttons;
 import Graphics = Phaser.GameObjects.Graphics;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {COLOR_WHITE} from "../helpers/colors.ts";
 
 export class StatsScene extends Scene {
   statsSelectButtons: Buttons;
@@ -91,16 +91,19 @@ export class StatsScene extends Scene {
 
   createStatsCircle() {
     // Create a Graphics object
-    const graphics = this.add.graphics();
-    this.statsGroup.forEach((coreStat: ICoreStat, i: number) => this.renderStatCirclePartial(coreStat, i, graphics));
+    this.statsGroup.forEach((coreStat: ICoreStat, i: number) => this.renderStatCirclePartial(coreStat, i));
   }
 
-  renderStatCirclePartial(coreStat: ICoreStat, i: number, graphics: Graphics) {
-    // Circle properties
+  renderStatCirclePartial(coreStat: ICoreStat, i: number) {
+    this.renderSkillQuarter(coreStat, i);
+    this.renderUnallocateSkillQuarter(coreStat, i);
+  }
+
+  private renderSkillQuarter(coreStat: ICoreStat, i: number) {
+    const graphics = this.add.graphics();
     const radius = 150;  // Circle radius
-    const buttonRadius = 50; // Quarter-circle button radius
     const {colors, icon, label} = coreStat;
-    const [color, darkColor, darkerColor] = colors;
+    const [color] = colors;
 
     // Draw each section of the circle
     const startAngle = (Math.PI / 2) * i; // Start angle
@@ -121,6 +124,16 @@ export class StatsScene extends Scene {
     createText(this, label, textPosition, 14, "center", false, COLOR_WHITE).setOrigin(0.5)
 
     this.add.sprite(textPosition.x, textPosition.y - 20, "icons", icon).setOrigin(0.5);
+  }
+
+  private renderUnallocateSkillQuarter(coreStat: ICoreStat, i: number) {
+    const {colors, label} = coreStat;
+    const [, darkColor, darkerColor] = colors;
+
+    // Draw each section of the circle
+    const startAngle = (Math.PI / 2) * i; // Start angle
+    const endAngle = startAngle + Math.PI / 2; // End angle
+    const buttonRadius = 50; // Quarter-circle button radius
 
     // Calculate button position (closer to center)
     const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
@@ -130,10 +143,6 @@ export class StatsScene extends Scene {
     // Create quarter-circle button using Graphics
     const buttonGraphics = this.add.graphics();
     this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
-
-    // graphics.arc(centerX, centerY, radius, startAngle, endAngle, false);
-    // graphics.closePath();
-    // graphics.fillPath();
 
     // Add a small icon in the quarter-circle button
     const offsetX = [1, 2].includes(i) ? -10 : 10;
