@@ -19,7 +19,6 @@ export class StatsScene extends Scene {
   chooseStatsText: Phaser.GameObjects.Text;
   statsButtons: Label[];
   holdingShift: boolean = false;
-  holdingAlt: boolean = false;
   private wrapper: Sizer;
   private tooltip: Tooltip;
   private radialStatsCenter: Vector2Like = {x: 400, y: 300};
@@ -70,19 +69,11 @@ export class StatsScene extends Scene {
         this.holdingShift = true;
         this.updateUI();
       }
-      if (["Alt"].includes(event.key)) {
-        this.holdingAlt = true;
-        this.updateUI();
-      }
     });
 
     this.input.keyboard?.on("keyup", (event: KeyboardEvent) => {
       if (["Shift"].includes(event.key)) {
         this.holdingShift = false;
-        this.updateUI();
-      }
-      if (["Alt"].includes(event.key)) {
-        this.holdingAlt = false;
         this.updateUI();
       }
     });
@@ -138,7 +129,7 @@ export class StatsScene extends Scene {
 
   renderUnallocatedStatsNumber() {
     this.add.circle(this.radialStatsCenter.x, this.radialStatsCenter.y, 25, HEX_COLOR_DARK);
-    createText(this, this.statsManager.unallocatedStats + '', this.radialStatsCenter, 20)
+    createText(this, this.statsManager.unallocatedStats + "", this.radialStatsCenter, 20)
   }
 
   private renderStatQuarter(coreStat: ICoreStat, i: number) {
@@ -309,37 +300,18 @@ export class StatsScene extends Scene {
 
   getStatText(coreStat: ICoreStat) {
     const currentStat = this.statsManager.getCoreStat(coreStat.prop);
-    const icon = this.holdingAlt ? (this.holdingShift ? "--" : "-") : this.holdingShift ? "++" : "+";
+    const icon = this.holdingShift ? "++" : "+";
     return `[${coreStat.hotkey}] ${coreStat.label} [${currentStat}] ${icon}`;
   }
 
   handleStatClick(index: number) {
     const selectedCoreStat = this.statsGroup[index];
-    const selectedStatCurrentAmount = this.statsManager.getCoreStat(selectedCoreStat.prop);
-    if (!this.holdingAlt && this.statsManager.unallocatedStats < 1) {
+    if (this.statsManager.unallocatedStats < 1) {
       return;
     }
-    if (this.holdingAlt && selectedStatCurrentAmount <= 1) {
-      return;
-    }
-    let statsCount = 1;
-    if (this.holdingShift) {
-      statsCount = 10;
-      if (this.holdingAlt) {
-        // if there is not enough allocated points on the selected stat group,
-        // set stats count to current stat number
-        if (selectedStatCurrentAmount - 1 < statsCount) {
-          statsCount = selectedStatCurrentAmount - 1;
-        }
-      } else {
-        if (statsCount > this.statsManager.unallocatedStats) {
-          statsCount = this.statsManager.unallocatedStats
-        }
-      }
-    }
-    const isUnallocatingMultiplier = this.holdingAlt ? -1 : 1;
-    this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount * isUnallocatingMultiplier);
-    this.statsManager.addStat(selectedCoreStat.prop, statsCount * isUnallocatingMultiplier);
+    const statsCount = Phaser.Math.Clamp(this.holdingShift ? 10 : 1, 0, this.statsManager.unallocatedStats);
+    this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount);
+    this.statsManager.addStat(selectedCoreStat.prop, statsCount);
     this.statsButtons[index].setText(this.getStatText(selectedCoreStat))
     this.events.emit("statsUpdated")
   }
