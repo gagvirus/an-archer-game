@@ -5,18 +5,16 @@ import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Tooltip from "../ui/tooltip.ts";
-import {COLOR_WHITE, HEX_COLOR_DARK} from "../helpers/colors.ts";
+import {HEX_COLOR_DARK} from "../helpers/colors.ts";
 import Label = UIPlugin.Label;
-import Buttons = UIPlugin.Buttons;
 import Graphics = Phaser.GameObjects.Graphics;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class StatsScene extends Scene {
-  statsSelectButtons: Buttons;
   statsGroup: ICoreStat[];
   attributes: IAttribute[];
   statsManager: StatsManager;
-  chooseStatsText: Phaser.GameObjects.Text;
+  unallocatedStatsNumberText: Phaser.GameObjects.Text;
   statsButtons: Label[];
   holdingShift: boolean = false;
   private wrapper: Sizer;
@@ -36,7 +34,7 @@ export class StatsScene extends Scene {
   create() {
     const statsHotkeys = this.statsGroup.map((coreStat) => coreStat.hotkey);
 
-    const parentWidth = this.scale.width / 2 - 40
+    const parentWidth = this.scale.width / 2 - 40;
 
     this.wrapper = this.rexUI.add.sizer({
       x: this.scale.width / 2,
@@ -44,21 +42,19 @@ export class StatsScene extends Scene {
       width: parentWidth,
       height: this.scale.height - 40,
       orientation: "horizontal",
-    })
+    });
 
-    this.createStatsCircle()
+    this.createStatsCircle();
     this.wrapper
-      // .add(this.createShit())
-      // .add(this.createStatsSelectColumn())
       .add(this.createChildStatsColumn())
       .add(this.createAttributesColumn())
       .layout();
 
-    // this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
+    this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
 
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
       if (["Escape", "c", "C"].includes(event.key)) {
-        this.scene.resume("MainScene")
+        this.scene.resume("MainScene");
         this.scene.stop();
       }
       if (statsHotkeys.includes(event.key.toUpperCase())) {
@@ -93,7 +89,7 @@ export class StatsScene extends Scene {
   }
 
   private renderAllocateStatQuarter(coreStat: ICoreStat, i: number) {
-    const {colors, label} = coreStat;
+    const {colors} = coreStat;
     const [, darkColor, darkerColor] = colors;
 
     // Draw each section of the circle
@@ -116,10 +112,9 @@ export class StatsScene extends Scene {
     const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "up")
       .setInteractive()
       .on("pointerdown", () => {
-        console.log(`allocate to ${label} button clicked!`);
+        this.handleStatClick(i);
       }).on("pointerover", () => {
         this.renderQuarterCircle(buttonGraphics, darkerColor, buttonRadius, startAngle, endAngle);
-        // buttonGraphics.color
       }).on("pointerout", () => {
         this.renderQuarterCircle(buttonGraphics, darkColor, buttonRadius, startAngle, endAngle);
       })
@@ -129,13 +124,13 @@ export class StatsScene extends Scene {
 
   renderUnallocatedStatsNumber() {
     this.add.circle(this.radialStatsCenter.x, this.radialStatsCenter.y, 25, HEX_COLOR_DARK);
-    createText(this, this.statsManager.unallocatedStats + "", this.radialStatsCenter, 20)
+    this.unallocatedStatsNumberText = createText(this, this.statsManager.unallocatedStats + "", this.radialStatsCenter, 20);
   }
 
   private renderStatQuarter(coreStat: ICoreStat, i: number) {
     const graphics = this.add.graphics();
     const radius = 150;  // Circle radius
-    const {colors, icon, label} = coreStat;
+    const {colors, icon} = coreStat;
     const [color] = colors;
 
     // Draw each section of the circle
@@ -154,9 +149,19 @@ export class StatsScene extends Scene {
       y: this.radialStatsCenter.y + radius * Math.sin(midAngle) * 0.6
     };
 
-    createText(this, label, textPosition, 14, "center", false, COLOR_WHITE).setOrigin(0.5)
+    // todo: show stat points allocated to this
 
-    this.add.sprite(textPosition.x, textPosition.y - 20, "icons", icon).setOrigin(0.5);
+    this.add.sprite(textPosition.x, textPosition.y, "icons", icon)
+      .setOrigin(0.5)
+      .setInteractive()
+      .on("pointerover", () => {
+        this.tooltip.show(textPosition.x, textPosition.y);
+        this.tooltip.setText(coreStat.label + "\n\n" + coreStat.description);
+      })
+      .on("pointerout", () => {
+        this.tooltip.hide();
+      })
+    ;
   }
 
   private renderUnallocateStatQuarter(coreStat: ICoreStat, i: number) {
@@ -183,6 +188,7 @@ export class StatsScene extends Scene {
     const buttonIcon = this.add.sprite(buttonX + offsetX, buttonY + offsetY, "icons", "down")
       .setInteractive()
       .on("pointerdown", () => {
+        // todo: add unallocate
         console.log(`unallocate from ${label} button clicked!`);
       }).on("pointerover", () => {
         this.renderQuarterCircle(buttonGraphics, darkerColor, buttonRadius, startAngle, endAngle);
@@ -205,69 +211,40 @@ export class StatsScene extends Scene {
     graphics.fillPath();
   }
 
-  createStatsSelectColumn() {
-    this.statsButtons = this.statsGroup.map(stat => this.createButtonForCoreStat(stat));
-    const statsSelectWrapper = this.rexUI.add.sizer({
-      orientation: "vertical",
-    })
-
-    this.statsSelectButtons = this.rexUI.add.buttons({
-      orientation: "y",
-      buttons: this.statsButtons,
-      space: {item: 10}
-    })
-      .layout()
-      .on("button.click", (_: Label, index: number) => this.handleStatClick(index));
-
-    this.chooseStatsText = createText(this, "Choose Stats", VectorZeroes(), 24)
-
-    statsSelectWrapper
-      .add(this.chooseStatsText)
-      .add(this.statsSelectButtons).layout();
-
-    return statsSelectWrapper;
-  }
-
   createChildStatsColumn() {
     const childStatsWrapper = this.rexUI.add.sizer({
       orientation: "vertical",
-    })
+    });
 
-    childStatsWrapper.add(createText(this, "Child Stats", VectorZeroes()))
+    childStatsWrapper.add(createText(this, "Child Stats", VectorZeroes()));
 
     this.statsGroup.forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
         const value = this.statsManager.getChildStat(stat.prop);
-        childStatsWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, "left", false))
-      })
-    })
+        childStatsWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, "left", false));
+      });
+    });
 
-    return childStatsWrapper
+    return childStatsWrapper;
   }
 
   createAttributesColumn() {
     const attributesWrapper = this.rexUI.add.sizer({
       orientation: "vertical",
-    })
+    });
 
-    attributesWrapper.add(createText(this, "Attributes", VectorZeroes()))
+    attributesWrapper.add(createText(this, "Attributes", VectorZeroes()));
 
     this.attributes.forEach((attribute) => {
       const value = parseFloat(this.statsManager.getAttribute(attribute.prop).toFixed(2));
-      attributesWrapper.add(createText(this, `${attribute.label}: ${value}`, VectorZeroes(), 16, "left", false))
-    })
+      attributesWrapper.add(createText(this, `${attribute.label}: ${value}`, VectorZeroes(), 16, "left", false));
+    });
 
-    return attributesWrapper
+    return attributesWrapper;
   }
 
   updateUnallocatedStatsNumber(newNumber: number) {
-    let chooseStatsLabel = "Choose Stats"
-
-    if (newNumber > 0) {
-      chooseStatsLabel += " [" + this.statsManager.unallocatedStats + "]";
-    }
-
-    this.chooseStatsText.setText(chooseStatsLabel);
+    this.unallocatedStatsNumberText.setText(newNumber + "");
   }
 
   createButtonForCoreStat(coreStat: ICoreStat) {
@@ -277,7 +254,7 @@ export class StatsScene extends Scene {
       this.tooltip.setText(coreStat.description);
     }).on("pointerout", () => {
       this.tooltip.hide();
-    })
+    });
     return this.rexUI.add.label({
       background: this.rexUI.add.roundRectangleCanvas(0, 0, 0, 0, {
         radius: 15,
@@ -312,11 +289,11 @@ export class StatsScene extends Scene {
     const statsCount = Phaser.Math.Clamp(this.holdingShift ? 10 : 1, 0, this.statsManager.unallocatedStats);
     this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount);
     this.statsManager.addStat(selectedCoreStat.prop, statsCount);
-    this.statsButtons[index].setText(this.getStatText(selectedCoreStat))
-    this.events.emit("statsUpdated")
+    // this.statsButtons[index].setText(this.getStatText(selectedCoreStat))
+    this.events.emit("statsUpdated");
   }
 
   updateUI() {
-    this.statsButtons.forEach((button, index) => button.setText(this.getStatText(this.statsGroup[index])))
+    this.statsButtons.forEach((button, index) => button.setText(this.getStatText(this.statsGroup[index])));
   }
 }
