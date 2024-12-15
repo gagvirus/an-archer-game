@@ -5,7 +5,7 @@ import {createText} from "../helpers/text-helpers.ts";
 import {VectorZeroes} from "../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import Tooltip from "../ui/tooltip.ts";
-import {HEX_COLOR_DARK} from "../helpers/colors.ts";
+import {COLOR_WHITE, HEX_COLOR_DARK} from "../helpers/colors.ts";
 import Label = UIPlugin.Label;
 import Graphics = Phaser.GameObjects.Graphics;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
@@ -131,7 +131,7 @@ export class StatsScene extends Scene {
     const graphics = this.add.graphics();
     const radius = 150;  // Circle radius
     const {colors, icon} = coreStat;
-    const [color] = colors;
+    const [color, darkerColor] = colors;
 
     // Draw each section of the circle
     const startAngle = (Math.PI / 2) * i; // Start angle
@@ -145,14 +145,17 @@ export class StatsScene extends Scene {
 
     // Text position
     const textPosition = {
-      x: this.radialStatsCenter.x + radius * Math.cos(midAngle) * 0.6,
-      y: this.radialStatsCenter.y + radius * Math.sin(midAngle) * 0.6
+      x: this.radialStatsCenter.x + radius * Math.cos(midAngle) * 0.7,
+      y: this.radialStatsCenter.y + radius * Math.sin(midAngle) * 0.7
     };
+
+    const container = this.add.container(textPosition.x, textPosition.y);
 
     // todo: show stat points allocated to this
 
-    this.add.sprite(textPosition.x, textPosition.y, "icons", icon)
+    const iconSprite = this.add.sprite(0, -10, "icons", icon)
       .setOrigin(0.5)
+      .setScale(0.8)
       .setInteractive()
       .on("pointerover", () => {
         this.tooltip.show(textPosition.x, textPosition.y);
@@ -160,8 +163,12 @@ export class StatsScene extends Scene {
       })
       .on("pointerout", () => {
         this.tooltip.hide();
-      })
-    ;
+      });
+    const text = createText(this, '0', {x: 0, y: 10}, 16, 'center', false, COLOR_WHITE);
+    const circleBackground = this.add.circle(0, 0, 35, darkerColor);
+
+
+    container.add([circleBackground, iconSprite, text]);
   }
 
   private renderUnallocateStatQuarter(coreStat: ICoreStat, i: number) {
