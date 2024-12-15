@@ -345,7 +345,7 @@ class StatsManager {
   }
 
 
-  static listStatsGroups(): ICoreStat[] {
+  static listCoreStats(): ICoreStat[] {
     return [
       {
         label: "Finesse",

@@ -24,7 +24,7 @@ export class StatsScene extends Scene {
 
   constructor() {
     super("StatsScene");
-    this.statsGroup = StatsManager.listStatsGroups();
+    this.statsGroup = StatsManager.listCoreStats();
     this.attributes = StatsManager.listAttributes();
   }
 
@@ -33,7 +33,7 @@ export class StatsScene extends Scene {
   }
 
   create() {
-    const statsHotkeys = this.statsGroup.map((statGroup) => statGroup.hotkey);
+    const statsHotkeys = this.statsGroup.map((coreStat) => coreStat.hotkey);
 
     const parentWidth = this.scale.width / 2 - 40
 
@@ -90,16 +90,16 @@ export class StatsScene extends Scene {
   createStatsCircle() {
     // Create a Graphics object
     const graphics = this.add.graphics();
-    this.statsGroup.forEach((statGroup: ICoreStat, i: number) => this.renderStatCirclePartial(statGroup, i, graphics));
+    this.statsGroup.forEach((coreStat: ICoreStat, i: number) => this.renderStatCirclePartial(coreStat, i, graphics));
   }
 
-  renderStatCirclePartial(statGroup: ICoreStat, i: number, graphics: Graphics) {
+  renderStatCirclePartial(coreStat: ICoreStat, i: number, graphics: Graphics) {
     // Circle properties
     const centerX = 400; // Circle center X
     const centerY = 300; // Circle center Y
     const radius = 150;  // Circle radius
     const buttonRadius = 50; // Quarter-circle button radius
-    const { colors, icon, label } = statGroup;
+    const { colors, icon, label } = coreStat;
     const [color, darkColor, darkerColor] = colors;
 
     // Draw each section of the circle
@@ -176,7 +176,7 @@ export class StatsScene extends Scene {
 
 
   createStatsSelectColumn() {
-    this.statsButtons = this.statsGroup.map(stat => this.createButtonForStatGroup(stat));
+    this.statsButtons = this.statsGroup.map(stat => this.createButtonForCoreStat(stat));
     const statsSelectWrapper = this.rexUI.add.sizer({
       orientation: "vertical",
     })
@@ -205,8 +205,8 @@ export class StatsScene extends Scene {
 
     childStatsWrapper.add(createText(this, "Child Stats", VectorZeroes()))
 
-    this.statsGroup.forEach((statGroup) => {
-      statGroup.stats.forEach((stat) => {
+    this.statsGroup.forEach((coreStat) => {
+      coreStat.stats.forEach((stat) => {
         const value = this.statsManager.getChildStat(stat.prop);
         childStatsWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, "left", false))
       })
@@ -240,11 +240,11 @@ export class StatsScene extends Scene {
     this.chooseStatsText.setText(chooseStatsLabel);
   }
 
-  createButtonForStatGroup(statGroup: ICoreStat) {
-    const text = createText(this, this.getStatText(statGroup), VectorZeroes(), 18, "left").setInteractive();
+  createButtonForCoreStat(coreStat: ICoreStat) {
+    const text = createText(this, this.getStatText(coreStat), VectorZeroes(), 18, "left").setInteractive();
     text.on("pointerover", () => {
       this.tooltip.show(text.x, text.y);
-      this.tooltip.setText(statGroup.description);
+      this.tooltip.setText(coreStat.description);
     }).on("pointerout", () => {
       this.tooltip.hide();
     })
@@ -268,15 +268,15 @@ export class StatsScene extends Scene {
     });
   }
 
-  getStatText(statGroup: ICoreStat) {
-    const currentStat = this.statsManager.getCoreStat(statGroup.prop);
+  getStatText(coreStat: ICoreStat) {
+    const currentStat = this.statsManager.getCoreStat(coreStat.prop);
     const icon = this.holdingAlt ? (this.holdingShift ? "--" : "-") : this.holdingShift ? "++" : "+";
-    return `[${statGroup.hotkey}] ${statGroup.label} [${currentStat}] ${icon}`;
+    return `[${coreStat.hotkey}] ${coreStat.label} [${currentStat}] ${icon}`;
   }
 
   handleStatClick(index: number) {
-    const selectedStatGroup = this.statsGroup[index];
-    const selectedStatCurrentAmount = this.statsManager.getCoreStat(selectedStatGroup.prop);
+    const selectedCoreStat = this.statsGroup[index];
+    const selectedStatCurrentAmount = this.statsManager.getCoreStat(selectedCoreStat.prop);
     if (!this.holdingAlt && this.statsManager.unallocatedStats < 1) {
       return;
     }
@@ -300,8 +300,8 @@ export class StatsScene extends Scene {
     }
     const isUnallocatingMultiplier = this.holdingAlt ? -1 : 1;
     this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats -= statsCount * isUnallocatingMultiplier);
-    this.statsManager.addStat(selectedStatGroup.prop, statsCount * isUnallocatingMultiplier);
-    this.statsButtons[index].setText(this.getStatText(selectedStatGroup))
+    this.statsManager.addStat(selectedCoreStat.prop, statsCount * isUnallocatingMultiplier);
+    this.statsButtons[index].setText(this.getStatText(selectedCoreStat))
     this.events.emit("statsUpdated")
   }
 
