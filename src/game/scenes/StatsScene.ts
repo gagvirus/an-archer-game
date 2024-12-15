@@ -30,8 +30,7 @@ export class StatsScene extends Scene {
   }
 
   create() {
-    const statsHotkeys = this.statsGroup.map((coreStat) => coreStat.hotkey);
-
+    this.registerKeyListeners();
     const parentWidth = this.scale.width / 2 - 40;
 
     this.wrapper = this.rexUI.add.sizer({
@@ -49,6 +48,13 @@ export class StatsScene extends Scene {
       .layout();
 
     this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
+
+
+    this.tooltip = new Tooltip(this, 0, 0, "");
+  }
+
+  private registerKeyListeners() {
+    const statsHotkeys = this.statsGroup.map((coreStat) => coreStat.hotkey);
 
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
       if (["Escape", "c", "C"].includes(event.key)) {
@@ -71,7 +77,6 @@ export class StatsScene extends Scene {
         this.updateUI();
       }
     });
-    this.tooltip = new Tooltip(this, 0, 0, "");
   }
 
   createStatsCircle() {
