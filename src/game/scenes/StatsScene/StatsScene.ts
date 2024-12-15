@@ -1,10 +1,10 @@
 import {Scene} from "phaser";
-import StatsManager, {IAttribute, ICoreStat} from "../helpers/stats-manager.ts";
-import {createText} from "../helpers/text-helpers.ts";
-import {VectorZeroes} from "../helpers/position-helper.ts";
+import StatsManager, {IAttribute, ICoreStat} from "../../helpers/stats-manager.ts";
+import {createText} from "../../helpers/text-helpers.ts";
+import {VectorZeroes} from "../../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
-import Tooltip from "../ui/tooltip.ts";
-import {COLOR_WHITE, HEX_COLOR_DARK} from "../helpers/colors.ts";
+import Tooltip from "../../ui/tooltip.ts";
+import {COLOR_WHITE, HEX_COLOR_DARK} from "../../helpers/colors.ts";
 import Graphics = Phaser.GameObjects.Graphics;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
