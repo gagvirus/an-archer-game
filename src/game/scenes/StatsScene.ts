@@ -122,11 +122,13 @@ export class StatsScene extends Scene {
     this.add.circle(this.radialStatsCenter.x, this.radialStatsCenter.y, 25, HEX_COLOR_DARK);
     this.unallocatedStatsNumberText = createText(this, this.statsManager.unallocatedStats + "", this.radialStatsCenter, 20)
       .setInteractive()
-      .on('pointerover', () => {
-        this.tooltip.show(this.radialStatsCenter.x, this.radialStatsCenter.y);
-        this.tooltip.setText("Number of unallocated stat points.\n\nHold \"Shift\" button to bulk allocate stat points.");
+      .on("pointerover", () => {
+        this.tooltip.show(
+          this.radialStatsCenter,
+          "Number of unallocated stat points.\n\nHold \"Shift\" button to bulk allocate stat points."
+        );
       })
-      .on('pointerout', () => {
+      .on("pointerout", () => {
         this.tooltip.hide();
       })
     ;
@@ -163,8 +165,10 @@ export class StatsScene extends Scene {
       .setScale(0.8)
       .setInteractive()
       .on("pointerover", () => {
-        this.tooltip.show(textPosition.x, textPosition.y);
-        this.tooltip.setText(coreStat.label + "\n\n" + coreStat.description);
+        this.tooltip.show(
+          textPosition,
+          coreStat.label + "\n\n" + coreStat.description
+        );
       })
       .on("pointerout", () => {
         this.tooltip.hide();
