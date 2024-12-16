@@ -1,18 +1,18 @@
-import {COLOR_WHITE, HEX_COLOR_LIGHT_GREY} from "../helpers/colors.ts";
+import {COLOR_WHITE, HEX_COLOR_GREY, HEX_COLOR_LIGHT_GREY} from "../helpers/colors.ts";
 import {createText} from "../helpers/text-helpers.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 class Tooltip extends Phaser.GameObjects.Container {
   private readonly background: Phaser.GameObjects.Rectangle;
   private readonly text: Phaser.GameObjects.Text;
+  private readonly padding = 10;
 
   constructor(scene: Phaser.Scene, x: number, y: number, message: string) {
     super(scene, x, y);
 
     // Tooltip background
-    this.background = scene.add.rectangle(0, 0, 200, 50, HEX_COLOR_LIGHT_GREY, 0.8)
-      .setOrigin(0)
-      .setStrokeStyle(2, HEX_COLOR_LIGHT_GREY);
+    this.background = scene.add.rectangle(0, 0, 0, 0, HEX_COLOR_LIGHT_GREY, 0.8)
+      .setOrigin(0);
 
     // Tooltip text
 
@@ -34,16 +34,15 @@ class Tooltip extends Phaser.GameObjects.Container {
   // Show the tooltip
   show(position: Vector2Like, text?: string) {
     let {x, y} = position;
-    const padding = 10;
     const screenWidth = this.scene.scale.width;
     const screenHeight = this.scene.scale.height;
 
     // Adjust position to stay on screen
-    if (x + this.background.width + padding > screenWidth) {
-      x = screenWidth - this.background.width - padding;
+    if (x + this.background.width + this.padding > screenWidth) {
+      x = screenWidth - this.background.width - this.padding;
     }
-    if (y + this.background.height + padding > screenHeight) {
-      y = screenHeight - this.background.height - padding;
+    if (y + this.background.height + this.padding > screenHeight) {
+      y = screenHeight - this.background.height - this.padding;
     }
 
 
@@ -65,9 +64,8 @@ class Tooltip extends Phaser.GameObjects.Container {
   setText(text?: string) {
     this.text.setText(text ?? "");
     // Adjust background size to fit text
-    const padding = 10;
-    this.background.width = this.text.width + padding * 2;
-    this.background.height = this.text.height + padding * 2;
+    this.background.setSize(this.text.width + this.padding * 2, this.text.height + this.padding * 2);
+    this.background.setStrokeStyle(2, HEX_COLOR_GREY);
   }
 
   // Hide the tooltip
