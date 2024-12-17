@@ -5,7 +5,7 @@ import {AbstractModule} from "./module-manager.ts";
 
 class DpsIndicatorModule extends AbstractModule {
   private dpsText?: Phaser.GameObjects.Text;
-  private hero: Hero;
+  private readonly hero: Hero;
 
   constructor(scene: Scene, hero: Hero) {
     super(scene);
