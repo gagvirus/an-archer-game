@@ -1,7 +1,7 @@
-import {createText, formatNumber} from "../helpers/text-helpers.ts";
-import {Scene} from "phaser";
+import { createText, formatNumber } from "../helpers/text-helpers.ts";
+import { Scene } from "phaser";
 import Hero from "../logic/Hero.ts";
-import {AbstractModule} from "./module-manager.ts";
+import { AbstractModule } from "./module-manager.ts";
 
 class DpsIndicatorModule extends AbstractModule {
   private dpsText?: Phaser.GameObjects.Text;
@@ -14,10 +14,15 @@ class DpsIndicatorModule extends AbstractModule {
 
   start() {
     if (!this.dpsText) {
-      this.dpsText = createText(this.scene, "DPS: 0", {
-        x: this.scene.scale.width - 50,
-        y: 20,
-      }, 16);
+      this.dpsText = createText(
+        this.scene,
+        "DPS: 0",
+        {
+          x: this.scene.scale.width - 50,
+          y: 20,
+        },
+        16,
+      );
     }
   }
 

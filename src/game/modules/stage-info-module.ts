@@ -1,5 +1,5 @@
-import {createText} from "../helpers/text-helpers.ts";
-import {AbstractModule} from "./module-manager.ts";
+import { createText } from "../helpers/text-helpers.ts";
+import { AbstractModule } from "./module-manager.ts";
 import MainScene from "../scenes/MainScene.ts";
 
 class StageInfoModule extends AbstractModule {
@@ -12,14 +12,24 @@ class StageInfoModule extends AbstractModule {
 
   start() {
     if (!this.stageNumberText) {
-      this.stageNumberText = createText(this.scene, "Stage 1", {
-        x: 300,
-        y: 25,
-      }, 16);
-      this.enemiesText = createText(this.scene, "Enemies 0 / 0", {
-        x: 300,
-        y: 50,
-      }, 16);
+      this.stageNumberText = createText(
+        this.scene,
+        "Stage 1",
+        {
+          x: 300,
+          y: 25,
+        },
+        16,
+      );
+      this.enemiesText = createText(
+        this.scene,
+        "Enemies 0 / 0",
+        {
+          x: 300,
+          y: 50,
+        },
+        16,
+      );
     }
   }
 
@@ -40,7 +50,9 @@ class StageInfoModule extends AbstractModule {
       this.stageNumberText.setText(`Stage ${scene.stage}`);
     }
     if (this.enemiesText) {
-      this.enemiesText.setText(`Enemies ${scene.enemies.getLength()} / ${scene.enemiesForStage}`);
+      this.enemiesText.setText(
+        `Enemies ${scene.enemies.getLength()} / ${scene.enemiesForStage}`,
+      );
     }
   }
 }

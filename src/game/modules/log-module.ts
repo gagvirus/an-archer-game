@@ -1,9 +1,14 @@
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
-import {convertHighlightToHighlightDict, Highlights, LogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
-import {createText} from "../helpers/text-helpers.ts";
-import {COLOR_WHITE} from "../helpers/colors.ts";
+import {
+  convertHighlightToHighlightDict,
+  Highlights,
+  LogEntry,
+  LogEntryCategory,
+} from "../helpers/log-utils.ts";
+import { createText } from "../helpers/text-helpers.ts";
+import { COLOR_WHITE } from "../helpers/colors.ts";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
-import {AbstractModule} from "./module-manager.ts";
+import { AbstractModule } from "./module-manager.ts";
 import UiHelper from "../helpers/ui-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import TextStyle = Phaser.GameObjects.TextStyle;
@@ -25,15 +30,14 @@ class LogModule extends AbstractModule {
   stop(): void {
     if (this.panel) {
       this.panel.destroy();
-      this._entryTexts.forEach(text => text.destroy());
+      this._entryTexts.forEach((text) => text.destroy());
       this._entryTexts = [];
 
       this.panel = undefined;
     }
   }
 
-  update(): void {
-  }
+  update(): void {}
 
   static cleanEntries(): void {
     LogModule.entries = [];
@@ -48,8 +52,12 @@ class LogModule extends AbstractModule {
     this.renderLogEntry(logEntry);
   }
 
-  addLogEntry(message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) {
-    const logEntry: LogEntry = {message, highlights, category};
+  addLogEntry(
+    message: string,
+    highlights: Highlights = {},
+    category: LogEntryCategory = LogEntryCategory.General,
+  ) {
+    const logEntry: LogEntry = { message, highlights, category };
     this.pushLogEntry(logEntry);
   }
 
@@ -57,36 +65,45 @@ class LogModule extends AbstractModule {
     if (!this.panel) {
       return;
     }
-    const {message, highlights} = logEntry;
-    const messageParts: { message: string, style?: Partial<TextStyle> }[] = [];
+    const { message, highlights } = logEntry;
+    const messageParts: { message: string; style?: Partial<TextStyle> }[] = [];
     let remainingMessage = message;
     Object.keys(highlights).forEach((highlightKey: string) => {
       const parts = remainingMessage.split(`:${highlightKey}`);
-      const highlightDict = convertHighlightToHighlightDict(highlights[highlightKey]);
-      messageParts.push({message: parts[0]});
-      messageParts.push({message: highlightDict.value, style: {color: highlightDict.color, fontStyle: "bold"}});
+      const highlightDict = convertHighlightToHighlightDict(
+        highlights[highlightKey],
+      );
+      messageParts.push({ message: parts[0] });
+      messageParts.push({
+        message: highlightDict.value,
+        style: { color: highlightDict.color, fontStyle: "bold" },
+      });
       remainingMessage = parts[1];
     });
 
-    messageParts.push({message: remainingMessage});
+    messageParts.push({ message: remainingMessage });
 
     const container = this.scene.rexUI.add.fixWidthSizer({
       width: 300,
-      align: "left"
+      align: "left",
     });
     let xOffset = 0;
-    messageParts.filter(({message}) => message !== "").forEach((messagePart) => {
-      const text = createText(
-        this.scene,
-        messagePart.message,
-        {x: xOffset, y: 0},
-        12, "left", false,
-        COLOR_WHITE,
-        {...messagePart.style}
-      );
-      container.add(text);
-      xOffset += text.width + 5;
-    });
+    messageParts
+      .filter(({ message }) => message !== "")
+      .forEach((messagePart) => {
+        const text = createText(
+          this.scene,
+          messagePart.message,
+          { x: xOffset, y: 0 },
+          12,
+          "left",
+          false,
+          COLOR_WHITE,
+          { ...messagePart.style },
+        );
+        container.add(text);
+        xOffset += text.width + 5;
+      });
 
     this._entryTexts.push(container);
     this.container.add(container); // Add the log entry to the scrollable panel
@@ -96,15 +113,22 @@ class LogModule extends AbstractModule {
   }
 
   private createLogPanel(): ScrollablePanel {
-    this.container = this.scene.rexUI.add.sizer({orientation: "vertical", space: {item: 10}});
-    return this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
-      this.scene,
-      this.container,
-      this.scene.scale.width - 170,
-      this.scene.scale.height - 100,
-      300,
-      200,
-    )).layout();
+    this.container = this.scene.rexUI.add.sizer({
+      orientation: "vertical",
+      space: { item: 10 },
+    });
+    return this.scene.rexUI.add
+      .scrollablePanel(
+        UiHelper.getDefaultScrollablePanelConfigs(
+          this.scene,
+          this.container,
+          this.scene.scale.width - 170,
+          this.scene.scale.height - 100,
+          300,
+          200,
+        ),
+      )
+      .layout();
   }
 }
 

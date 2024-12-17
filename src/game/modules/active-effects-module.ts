@@ -1,10 +1,13 @@
-import {AbstractModule} from "./module-manager.ts";
+import { AbstractModule } from "./module-manager.ts";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import UiHelper from "../helpers/ui-helper.ts";
 
-import {PowerupIconMap, PowerupType} from "../logic/drop/powerup/timed/powerupType.ts";
-import {createAnimatedSprite} from "../helpers/text-helpers.ts";
+import {
+  PowerupIconMap,
+  PowerupType,
+} from "../logic/drop/powerup/timed/powerupType.ts";
+import { createAnimatedSprite } from "../helpers/text-helpers.ts";
 import Sizer = UIPlugin.Sizer;
 import Sprite = Phaser.GameObjects.Sprite;
 
@@ -15,18 +18,33 @@ class ActiveEffectsModule extends AbstractModule {
 
   start(): void {
     if (!this.container && !this.panel) {
-      this.container = this.scene.rexUI.add.sizer({orientation: "horizontal", space: {item: 10}});
+      this.container = this.scene.rexUI.add.sizer({
+        orientation: "horizontal",
+        space: { item: 10 },
+      });
 
-      this.panel = this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
-        this.scene, this.container, 70, 100, 100, 36,
-        {slider: false, /*background: undefined*/},
-      ));
+      this.panel = this.scene.rexUI.add.scrollablePanel(
+        UiHelper.getDefaultScrollablePanelConfigs(
+          this.scene,
+          this.container,
+          70,
+          100,
+          100,
+          36,
+          { slider: false /*background: undefined*/ },
+        ),
+      );
       this.panel.layout();
 
-      this.scene.events.on("powerupCollected", ({type}: { type: PowerupType }) => this.updateUI(type, true));
-      this.scene.events.on("powerupEnded", ({type}: { type: PowerupType }) => this.updateUI(type, false));
+      this.scene.events.on(
+        "powerupCollected",
+        ({ type }: { type: PowerupType }) => this.updateUI(type, true),
+      );
+      this.scene.events.on("powerupEnded", ({ type }: { type: PowerupType }) =>
+        this.updateUI(type, false),
+      );
     }
-    Object.values(PowerupType).forEach(type => {
+    Object.values(PowerupType).forEach((type) => {
       const icon = createAnimatedSprite(this.scene, PowerupIconMap[type]);
       this.icons[type] = icon;
       icon.setVisible(false);
@@ -49,8 +67,7 @@ class ActiveEffectsModule extends AbstractModule {
     this.scene.events.off("powerupCollected").off("powerupEnded");
   }
 
-  update(): void {
-  }
+  update(): void {}
 
   private updateUI(type: PowerupType, enabled: boolean) {
     if (this.panel && this.container) {

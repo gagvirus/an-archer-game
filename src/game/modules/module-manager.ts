@@ -1,4 +1,4 @@
-import {Scene} from "phaser";
+import { Scene } from "phaser";
 
 export enum Module {
   fpsCounter = "fpsCounter",
@@ -24,12 +24,13 @@ export abstract class AbstractModule {
 }
 
 class ModuleManager {
-  private modules: { [key: string]: { instance: AbstractModule; active: boolean } } = {};
+  private modules: {
+    [key: string]: { instance: AbstractModule; active: boolean };
+  } = {};
   private scene: Scene;
   private static _instance: ModuleManager;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   static getInstance(scene?: Scene) {
     if (!ModuleManager._instance) {
@@ -48,7 +49,7 @@ class ModuleManager {
   }
 
   register(key: string, moduleInstance: AbstractModule) {
-    this.modules[key] = {instance: moduleInstance, active: false};
+    this.modules[key] = { instance: moduleInstance, active: false };
   }
 
   getModule<T extends AbstractModule>(key: string): T | null {
