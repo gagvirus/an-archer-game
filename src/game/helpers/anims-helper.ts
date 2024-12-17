@@ -8,6 +8,6 @@ const getPingPongAnimationFrames = (start: number, end: number, repeatMiddleFram
     ...middleFrames,
     ...Phaser.Utils.Array.NumberArray(end, start),   // Frames 9 to 2 (reversing)
   ] as number[];
-}
+};
 
-export {getPingPongAnimationFrames}
+export {getPingPongAnimationFrames};

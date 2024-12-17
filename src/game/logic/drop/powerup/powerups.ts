@@ -8,5 +8,5 @@ export const powerups = [
   {className: DoubleDamage, weight: 20},
   {className: DoubleSpeed, weight: 20},
   {className: Invulnerability, weight: 20},
-]
+];
 
