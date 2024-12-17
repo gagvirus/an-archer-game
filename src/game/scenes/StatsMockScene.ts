@@ -14,10 +14,8 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
 
     // Calculate screen dimensions
     const screenWidth = this.scale.width - screenPaddingX * 2;
-    const screenHeight = this.scale.height - screenPaddingY * 2;
-
     // Panel dimensions
-    const panelHeight = screenHeight;
+    const panelHeight = this.scale.height - screenPaddingY * 2;
     const panelWidths = [
       screenWidth * 0.3,
       screenWidth * 0.4,
