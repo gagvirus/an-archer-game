@@ -1,7 +1,8 @@
-import Phaser from 'phaser';
+import {Scene} from 'phaser';
 import {HEX_COLOR_DARK, HEX_COLOR_WHITE} from "../helpers/colors.ts";
+import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 
-export default class StatsMockScene extends Phaser.Scene {
+export default class StatsMockScene extends Scene implements ISceneLifecycle {
   constructor() {
     super({key: 'StatsScene'});
   }

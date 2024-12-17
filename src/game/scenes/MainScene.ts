@@ -34,8 +34,9 @@ import DoubleDamage from "../logic/drop/powerup/timed/DoubleDamage.ts";
 import DoubleSpeed from "../logic/drop/powerup/timed/DoubleSpeed.ts";
 import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
 import ActiveEffectsModule from "../modules/active-effects-module.ts";
+import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 
-class MainScene extends Scene {
+class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
 
   stage: number;
@@ -93,10 +94,10 @@ class MainScene extends Scene {
         data.buildings.forEach((towersRow: Tower[]) => {
           towersRow.forEach((tower: Tower) => {
             this.buildings.add(tower.clone(this));
-          })
-        })
+          });
+        });
       }
-    })
+    });
 
     this.scene.get("StatsScene").events.on("statsUpdated", () => this.recalculateStats());
     this.events.on("powerupCollected", () => this.recalculateStats());
@@ -212,7 +213,7 @@ class MainScene extends Scene {
 
   dropPowerup(x: number, y: number) {
     const powerup = getRandomItem(powerups);
-    return this.drop(x, y, new powerup.className(this, x, y))
+    return this.drop(x, y, new powerup.className(this, x, y));
   }
 
   drop(x: number, y: number, drop: Drop) {
@@ -281,11 +282,11 @@ class MainScene extends Scene {
         for (let x = minX; x <= maxX; x += TILE_SIZE) {
           for (let y = minY; y <= maxY; y += TILE_SIZE) {
             console.log("OTHER", getTileCoordinate({x, y}));
-            occupiedTiles.push(getTileCoordinate({x, y}))
+            occupiedTiles.push(getTileCoordinate({x, y}));
           }
         }
       }
-    })
+    });
     return occupiedTiles;
   }
 
@@ -300,7 +301,7 @@ class MainScene extends Scene {
     const {dropChanceModifier, dropAmountModifier} = this.hero.stats;
     // there is a constant chance to drop a powerup
     const BASE_POWERUP_DROP_CHANCE = 1;
-    const powerupChance = Phaser.Math.Clamp(BASE_POWERUP_DROP_CHANCE * dropChanceModifier, BASE_POWERUP_DROP_CHANCE, BASE_POWERUP_DROP_CHANCE * 10)
+    const powerupChance = Phaser.Math.Clamp(BASE_POWERUP_DROP_CHANCE * dropChanceModifier, BASE_POWERUP_DROP_CHANCE, BASE_POWERUP_DROP_CHANCE * 10);
     if (randomChance(powerupChance)) {
       this.dropPowerup(enemy.x, enemy.y);
     }
@@ -325,7 +326,7 @@ class MainScene extends Scene {
 
   startStage() {
     this.portal.setDisabled(true);
-    createAnimatedText(this, `Stage ${this.stage}`, 2000)
+    createAnimatedText(this, `Stage ${this.stage}`, 2000);
     this.spawnEnemies(); // Spawn more enemies for the new stage
     addLogEntry("Start Stage :stage - :enemies_count enemies spawned.", {
       stage: [this.stage, COLOR_WARNING],
@@ -379,11 +380,11 @@ class MainScene extends Scene {
       if (drop instanceof Resource) {
         this.onResourcePull(undefined, drop as Tile | GameObjectWithBody);
       }
-    })
+    });
   }
 
   recalculateStats() {
-    this.hero.attackable.registerHealthRegenerationIfNecessary()
+    this.hero.attackable.registerHealthRegenerationIfNecessary();
     this.hero.attackable.setMaxHealth(this.hero.maxHealth);
     this.hero.attackable.attackDamage = this.hero.attackDamage;
     this.hero.attackable.attacksPerSecond = this.hero.attacksPerSecond;

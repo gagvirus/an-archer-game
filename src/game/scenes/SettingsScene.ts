@@ -6,19 +6,21 @@ import {
   HEX_COLOR_SUCCESS
 } from '../helpers/colors.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
+import {Scene} from "phaser";
+import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 type SettingKey = 'debugMode' | 'autoAttack' | 'easyMode' | 'rapidLevelUp';
 
-class SettingsScene extends Phaser.Scene {
+class SettingsScene extends Scene implements ISceneLifecycle {
   private debugMode: boolean = false;
   private autoAttack: boolean = false;
   private easyMode: boolean = false;
   private rapidLevelUp: boolean = false;
 
   constructor() {
-    super('SettingsScene')
+    super('SettingsScene');
   }
 
   create() {
@@ -62,11 +64,11 @@ class SettingsScene extends Phaser.Scene {
         }),
         space: {left: 15, right: 15, top: 15, bottom: 15, panel: 15, header: 15, footer: 15}
       }
-    ).layout()
+    ).layout();
   }
 
   createContainer() {
-    const container = this.rexUI.add.sizer({orientation: 'vertical', space: {item: 5}})
+    const container = this.rexUI.add.sizer({orientation: 'vertical', space: {item: 5}});
 
     container.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, VectorZeroes()));
     container.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, VectorZeroes()));
@@ -99,7 +101,7 @@ class SettingsScene extends Phaser.Scene {
         background,
         text,
         checkbox,
-      ])
+      ]);
   }
 
   updateBoolVal(settingKey: SettingKey, cb: Rectangle) {

@@ -1,8 +1,9 @@
 import {Scene} from 'phaser';
 import {getPingPongAnimationFrames} from "../helpers/anims-helper.ts";
 import {HEX_COLOR_WHITE} from '../helpers/colors.ts';
+import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 
-export class Preloader extends Scene {
+export class Preloader extends Scene implements ISceneLifecycle {
   constructor() {
     super('Preloader');
   }
@@ -90,42 +91,42 @@ export class Preloader extends Scene {
       frames: this.anims.generateFrameNumbers('coin', {start: 0, end: 6}),
       frameRate: 14,
       repeat: -1,
-    })
+    });
 
     this.anims.create({
       key: 'soul',
       frames: this.anims.generateFrameNumbers('effects_purple_tall', {start: 190, end: 192}),
       frameRate: 9,
       repeat: -1,
-    })
+    });
 
     this.anims.create({
       key: 'magnet',
       frames: this.anims.generateFrameNumbers('effects_blue', {start: 158, end: 161}),
       frameRate: 9,
       repeat: -1,
-    })
+    });
 
     this.anims.create({
       key: 'double-speed',
       frames: this.anims.generateFrameNumbers('effects_green', {start: 282, end: 287}),
       frameRate: 9,
       repeat: -1,
-    })
+    });
 
     this.anims.create({
       key: 'double-damage',
       frames: this.anims.generateFrameNumbers('effects_yellow', {start: 30, end: 35}),
       frameRate: 9,
       repeat: -1,
-    })
+    });
 
     this.anims.create({
       key: 'invulnerability',
       frames: this.anims.generateFrameNumbers('effects_purple', {start: 446, end: 449}),
       frameRate: 9,
       repeat: -1,
-    })
+    });
 
     // Define the portal animation
     this.anims.create({

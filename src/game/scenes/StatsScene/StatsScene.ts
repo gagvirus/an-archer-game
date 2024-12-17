@@ -4,8 +4,9 @@ import {createText} from "../../helpers/text-helpers.ts";
 import {VectorZeroes} from "../../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import StatsCirclePartial from "./StatsCirclePartial.ts";
+import {ISceneLifecycle} from "../../ISceneLifecycle.ts";
 
-export class StatsScene extends Scene {
+export class StatsScene extends Scene implements ISceneLifecycle {
   coreStats: ICoreStat[];
   attributes: IAttribute[];
   statsManager: StatsManager;
