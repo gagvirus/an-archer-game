@@ -1,5 +1,5 @@
-import {useRef} from "react";
-import {IRefPhaserGame, PhaserGame} from "./game/PhaserGame";
+import { useRef } from "react";
+import { IRefPhaserGame, PhaserGame } from "./game/PhaserGame";
 
 function App() {
   // The sprite can only be moved in the MainMenu Scene
@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div id="app">
-      <PhaserGame ref={phaserRef} currentActiveScene={setScene}/>
+      <PhaserGame ref={phaserRef} currentActiveScene={setScene} />
     </div>
   );
 }
