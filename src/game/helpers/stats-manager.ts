@@ -25,6 +25,7 @@ export interface IStat {
 
 export interface IChildStat extends IStat {
   prop: ChildStat;
+  icon?: string;
 }
 
 export interface IAttribute extends IStat {

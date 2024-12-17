@@ -108,14 +108,43 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
 
   private renderStatRow(stat: IChildStat) {
     const value = this.statsManager.getChildStat(stat.prop);
-    return createText(
-      this,
-      `${stat.label}: ${value}`,
-      VectorZeroes(),
-      16,
-      "left",
-      false,
-    );
+
+    // Create a horizontal sizer for the row
+    const rowSizer = this.rexUI.add.sizer({
+      orientation: "x", // Horizontal layout
+      space: { item: 10 }, // Space between columns
+    });
+
+    // Icon column
+    const icon = this.add
+      // todo: actual icon
+      .image(0, 0, "icons", stat.icon ?? "danger")
+      .setDisplaySize(32, 32) // Adjust size as needed
+      .setOrigin(0, 0.5); // Align vertically center
+    rowSizer.add(icon, 0, "center", 0, false);
+
+    // Label column
+    const label = this.add
+      .text(0, 0, stat.label, {
+        fontSize: "18px",
+        color: "#ffffff",
+      })
+      .setOrigin(0, 0.5); // Align vertically center
+    rowSizer.add(label, 1, "center", 0, false); // Flexible width for the label
+
+    // Value column
+    const valueText = this.add
+      .text(0, 0, parseFloat(value.toFixed(2)).toString(), {
+        fontSize: "18px",
+        color: "#ffffff",
+      })
+      .setOrigin(1, 0.5); // Align vertically center and right-align text
+    rowSizer.add(valueText, 0, "center", 0, false);
+
+    // Layout the row
+    rowSizer.layout();
+
+    return rowSizer;
   }
 
   private createContainer(title: string, width: number, height: number) {
