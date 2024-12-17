@@ -109,19 +109,32 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private renderStatRow(stat: IChildStat) {
     const value = this.statsManager.getChildStat(stat.prop);
 
+    const rowHeight = 50;
+    const iconWidth = 50; // Fixed width for the icon column
+    const labelWidth = 0.8; // 80% of remaining width
+    const valueWidth = 1 - labelWidth; // Remaining width for the value column
+    const rowPadding = 10;
+
+    // Row background with border
+    const rowBackground = this.rexUI.add
+      .roundRectangle(0, 0, 0, 0, 10, 0x333333)
+      .setStrokeStyle(2, 0xffffff);
+
     // Create a horizontal sizer for the row
-    const rowSizer = this.rexUI.add.sizer({
-      orientation: "x", // Horizontal layout
-      space: { item: 10 }, // Space between columns
-    });
+    const rowSizer = this.rexUI.add
+      .sizer({
+        orientation: "x", // Horizontal layout
+        height: rowHeight,
+        space: { left: rowPadding, right: rowPadding }, // Add padding around the row
+      })
+      .addBackground(rowBackground);
 
     // Icon column
     const icon = this.add
-      // todo: actual icon
-      .image(0, 0, "icons", stat.icon ?? "danger")
-      .setDisplaySize(32, 32) // Adjust size as needed
-      .setOrigin(0, 0.5); // Align vertically center
-    rowSizer.add(icon, 0, "center", 0, false);
+      .sprite(0, 0, "icons", stat.icon ?? "danger")
+      .setDisplaySize(iconWidth - 10, iconWidth - 10) // Adjust icon size
+      .setOrigin(0, 0.5); // Align left vertically center
+    rowSizer.add(icon, 0, "left", { right: 10 }, false);
 
     // Label column
     const label = this.add
@@ -129,8 +142,8 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
         fontSize: "18px",
         color: "#ffffff",
       })
-      .setOrigin(0, 0.5); // Align vertically center
-    rowSizer.add(label, 1, "center", 0, false); // Flexible width for the label
+      .setOrigin(0, 0.5); // Align left and vertically center
+    rowSizer.add(label, labelWidth, "left", { right: 10 }, true); // Flexible width for label
 
     // Value column
     const valueText = this.add
@@ -138,10 +151,10 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
         fontSize: "18px",
         color: "#ffffff",
       })
-      .setOrigin(1, 0.5); // Align vertically center and right-align text
-    rowSizer.add(valueText, 0, "center", 0, false);
+      .setOrigin(1, 0.5); // Align right and vertically center
+    rowSizer.add(valueText, valueWidth, "right", 0, false); // Fixed width for value
 
-    // Layout the row
+    // Apply layout to the row
     rowSizer.layout();
 
     return rowSizer;
