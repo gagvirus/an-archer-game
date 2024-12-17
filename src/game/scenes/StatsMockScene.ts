@@ -93,68 +93,70 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private createStatsPanel() {
+    const width = this.scale.width * 0.9 * 0.3;
     const container = this.createContainer(
       "Stats",
-      this.scale.width * 0.9 * 0.3, // 3/10 width of the full screen width minus padding 10%
+      width, // 3/10 width of the full screen width minus padding 10%
       this.scale.height - 40, // full height minus padding
     );
     this.coreStats.forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
-        container.add(this.renderStatRow(stat));
+        container.add(this.renderStatRow(stat, width - 40));
       });
     });
     return container;
   }
 
-  private renderStatRow(stat: IChildStat) {
+  private renderStatRow(stat: IChildStat, rowWidth: number) {
     const value = this.statsManager.getChildStat(stat.prop);
 
     const rowHeight = 50;
     const iconWidth = 50; // Fixed width for the icon column
-    const labelWidth = 0.8; // 80% of remaining width
-    const valueWidth = 1 - labelWidth; // Remaining width for the value column
+    const labelWidthRatio = 0.8; // 80% of remaining width
+    const valueWidthRatio = 1 - labelWidthRatio; // Remaining width for value column
     const rowPadding = 10;
 
     // Row background with border
     const rowBackground = this.rexUI.add
-      .roundRectangle(0, 0, 0, 0, 10, 0x333333)
+      .roundRectangle(0, 0, rowWidth, rowHeight, 10, 0x333333)
       .setStrokeStyle(2, 0xffffff);
 
     // Create a horizontal sizer for the row
     const rowSizer = this.rexUI.add
       .sizer({
         orientation: "x", // Horizontal layout
-        height: rowHeight,
-        space: { left: rowPadding, right: rowPadding }, // Add padding around the row
+        width: rowWidth, // Fixed row width
+        height: rowHeight, // Fixed row height
+        space: { left: rowPadding, right: rowPadding }, // Padding inside the row
       })
       .addBackground(rowBackground);
 
-    // Icon column
+    // Icon column (fixed width)
     const icon = this.add
       .sprite(0, 0, "icons", stat.icon ?? "danger")
       .setDisplaySize(iconWidth - 10, iconWidth - 10) // Adjust icon size
-      .setOrigin(0, 0.5); // Align left vertically center
+      .setOrigin(0, 0.5); // Align left and vertically center
     rowSizer.add(icon, 0, "left", { right: 10 }, false);
 
-    // Label column
+    // Label column (80% of remaining space)
     const label = this.add
       .text(0, 0, stat.label, {
         fontSize: "18px",
         color: "#ffffff",
       })
       .setOrigin(0, 0.5); // Align left and vertically center
-    rowSizer.add(label, labelWidth, "left", { right: 10 }, true); // Flexible width for label
+    rowSizer.add(label, labelWidthRatio, "left", { right: 10 }, true);
 
-    // Value column
+    // Value column (remaining space, right-aligned)
     const valueText = this.add
       .text(0, 0, parseFloat(value.toFixed(2)).toString(), {
         fontSize: "18px",
         color: "#ffffff",
       })
       .setOrigin(1, 0.5); // Align right and vertically center
-    rowSizer.add(valueText, valueWidth, "right", 0, false); // Fixed width for value
+    rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
 
-    // Apply layout to the row
+    // Layout the row
     rowSizer.layout();
 
     return rowSizer;
