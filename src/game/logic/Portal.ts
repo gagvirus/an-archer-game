@@ -9,7 +9,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'portal');
     scene.add.existing(this);
     this.state = 'disabled';
-    this.anims.play('portal-disabled')
+    this.anims.play('portal-disabled');
 
     scene.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
@@ -28,19 +28,19 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     if (distanceToHero <= 50) {
       if (!['activating', 'active'].includes(this.state)) {
         this.state = 'activating';
-        this.anims.play('portal-activate')
+        this.anims.play('portal-activate');
         this.scene.time.delayedCall(this.anims.animationManager.get('portal-activate').duration, () => {
           this.state = 'active';
-        })
+        });
       }
     } else {
       if (!['idle', 'activating'].includes(this.state)) {
         this.state = 'deactivating';
-        this.anims.play('portal-deactivate')
+        this.anims.play('portal-deactivate');
         this.scene.time.delayedCall(this.anims.animationManager.get('portal-deactivate').duration, () => {
           this.state = 'idle';
-          this.anims.play('portal-idle')
-        })
+          this.anims.play('portal-idle');
+        });
       }
     }
   }
@@ -48,10 +48,10 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
   setDisabled(disabled: boolean) {
     if (disabled) {
       this.state = 'disabled';
-      this.anims.play('portal-disabled')
+      this.anims.play('portal-disabled');
     } else {
       this.state = 'idle';
-      this.anims.play('portal-idle')
+      this.anims.play('portal-idle');
     }
   }
 }

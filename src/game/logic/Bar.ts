@@ -18,7 +18,7 @@ abstract class Bar {
 
   protected constructor(scene: Phaser.Scene, position: Vector2Like, width: number, height: number, maxValue: number, currentValue: number, positionOffset?: Vector2Like, filledColor?: number, emptyColor?: number, displayText: boolean = false) {
     this.scene = scene;
-    this.position = position
+    this.position = position;
     this.width = width;
     this.height = height;
     this.maxValue = maxValue;
@@ -36,7 +36,7 @@ abstract class Bar {
         stroke: '#000000',
         strokeThickness: 4,
         align: 'center',
-      }).setFixedSize(width, height)
+      }).setFixedSize(width, height);
     }
 
     this.draw();

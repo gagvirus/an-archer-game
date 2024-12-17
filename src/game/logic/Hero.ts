@@ -77,7 +77,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         }
       },
       this
-    )
+    );
 
     this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
   }
@@ -121,7 +121,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       level: [newLevel, COLOR_SUCCESS],
     }, LogEntryCategory.World);
     this._level = newLevel;
-    this.attackable.setMaxHealth(this.maxHealth, false)
+    this.attackable.setMaxHealth(this.maxHealth, false);
     this.attackable.attackDamage = this.attackDamage;
     this.attackable.attacksPerSecond = this.attacksPerSecond;
     const statPointsToGrant = this.statPointsToGrant;
@@ -132,7 +132,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }, LogEntryCategory.Loot);
     this.xpManager.xpBar.setUnallocatedStats(this.stats.unallocatedStats);
     this.scene.events.emit("levelUp");
-  }
+  };
 
   get statPointsToGrant() {
     if (this._level % 100 < 1) {
@@ -161,7 +161,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   initXpBar = (level: number, currentXp: number, xpToNextLevel: number) => new XpBar(this.scene, {
     x: 20,
     y: 50
-  }, 200, 20, level, currentXp, xpToNextLevel)
+  }, 200, 20, level, currentXp, xpToNextLevel);
 
   // Method to update the hero's animation based on movement
   // @ts-expect-error we *must* receive time

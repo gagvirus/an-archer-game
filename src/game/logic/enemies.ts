@@ -168,4 +168,4 @@ export const enemies: EnemyDef[] = [
       [ResourceType.soul]: [100, 200, 100],
     },
   }
-]
+];
