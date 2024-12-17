@@ -19,13 +19,13 @@ class LogModule extends AbstractModule {
   start(): void {
     this.panel = this.createLogPanel();
     // re-render messages if there are already stored ones
-    LogModule.entries.forEach((logEntry) => this.renderLogEntry(logEntry))
+    LogModule.entries.forEach((logEntry) => this.renderLogEntry(logEntry));
   }
 
   stop(): void {
     if (this.panel) {
       this.panel.destroy();
-      this._entryTexts.forEach(text => text.destroy())
+      this._entryTexts.forEach(text => text.destroy());
       this._entryTexts = [];
 
       this.panel = undefined;
@@ -50,7 +50,7 @@ class LogModule extends AbstractModule {
 
   addLogEntry(message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) {
     const logEntry: LogEntry = {message, highlights, category};
-    this.pushLogEntry(logEntry)
+    this.pushLogEntry(logEntry);
   }
 
   private renderLogEntry(logEntry: LogEntry) {
@@ -64,9 +64,9 @@ class LogModule extends AbstractModule {
       const parts = remainingMessage.split(`:${highlightKey}`);
       const highlightDict = convertHighlightToHighlightDict(highlights[highlightKey]);
       messageParts.push({message: parts[0]});
-      messageParts.push({message: highlightDict.value, style: {color: highlightDict.color, fontStyle: "bold"}})
+      messageParts.push({message: highlightDict.value, style: {color: highlightDict.color, fontStyle: "bold"}});
       remainingMessage = parts[1];
-    })
+    });
 
     messageParts.push({message: remainingMessage});
 
@@ -88,7 +88,7 @@ class LogModule extends AbstractModule {
       xOffset += text.width + 5;
     });
 
-    this._entryTexts.push(container)
+    this._entryTexts.push(container);
     this.container.add(container); // Add the log entry to the scrollable panel
     this.panel.layout(); // Re-layout the panel to adjust to new content
     // Auto-scroll to the bottom to show the latest entry

@@ -17,7 +17,7 @@ class DpsIndicatorModule extends AbstractModule {
       this.dpsText = createText(this.scene, "DPS: 0", {
         x: this.scene.scale.width - 50,
         y: 20,
-      }, 16)
+      }, 16);
     }
   }
 

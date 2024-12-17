@@ -27,13 +27,13 @@ class ResourceListModule extends AbstractModule {
       this.panel = this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
         this.scene, this.container, this.scene.scale.width - 65, 150, 100, 150,
         {slider: false, align: {panel: 'right'}, /*background: undefined*/},
-      ))
+      ));
 
       Object.entries(ResourceType).forEach(([key, value]) => {
         const resourceText = createText(this.scene, `${key}s: 0`, VectorZeroes(), 16, 'right', false, COLOR_WHITE, {fixedWidth: 100});
         this.resources[value] = resourceText;
         this.container?.add(resourceText);
-      })
+      });
 
       this.container.layout();
       this.panel.layout();
@@ -52,7 +52,7 @@ class ResourceListModule extends AbstractModule {
     Object.keys(ResourceType).forEach((key) => {
       this.resources[key]?.destroy();
       this.resources[key] = undefined;
-    })
+    });
   }
 
   update() {
@@ -60,7 +60,7 @@ class ResourceListModule extends AbstractModule {
     Object.keys(resources).forEach((resourceType) => {
       const text = `${resourceType}s: ${formatNumber(resources[resourceType as ResourceType])}`;
       this.resources[resourceType as ResourceType]?.setText(text);
-    })
+    });
   }
 }
 
