@@ -6,10 +6,6 @@ export default class StatsMockScene extends Phaser.Scene {
     super({key: 'StatsScene'});
   }
 
-  preload() {
-    // Preload any assets if necessary (fonts, etc.)
-  }
-
   create() {
     const screenPaddingX = this.scale.width / 10; // 10% of the screen
     const screenPaddingY = 20;
