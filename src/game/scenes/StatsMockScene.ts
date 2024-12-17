@@ -162,12 +162,18 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
     return rowSizer;
   }
 
-  private createContainer(title: string, width: number, height: number) {
+  private createContainer(
+    title: string,
+    width: number,
+    height: number,
+    rowSpacing: number = 10,
+  ) {
     // Create a panel container with background and title text
     const container = this.rexUI.add.sizer({
       width,
       height,
       orientation: "vertical",
+      space: { item: rowSpacing },
     });
     container.addBackground(
       this.rexUI.add
