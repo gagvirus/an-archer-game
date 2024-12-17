@@ -38,7 +38,7 @@ export const PhaserGame = forwardRef<IRefPhaserGame, IProps>(function PhaserGame
           game.current = null;
         }
       }
-    }
+    };
   }, [ref]);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export const PhaserGame = forwardRef<IRefPhaserGame, IProps>(function PhaserGame
     });
     return () => {
       EventBus.removeListener('current-scene-ready');
-    }
+    };
   }, [currentActiveScene, ref]);
 
   return (

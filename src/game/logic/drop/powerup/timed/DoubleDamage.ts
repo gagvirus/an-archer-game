@@ -17,7 +17,7 @@ class DoubleDamage extends TimedPowerup {
 
   constructor(scene: MainScene, x: number, y: number) {
     super(scene, x, y, "double-damage");
-    this.anims.play("double-damage")
+    this.anims.play("double-damage");
   }
 }
 

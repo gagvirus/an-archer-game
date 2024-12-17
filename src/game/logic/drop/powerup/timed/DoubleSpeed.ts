@@ -19,7 +19,7 @@ class DoubleSpeed extends TimedPowerup {
 
   constructor(scene: MainScene, x: number, y: number) {
     super(scene, x, y, "double-speed");
-    this.anims.play("double-speed")
+    this.anims.play("double-speed");
   }
 }
 

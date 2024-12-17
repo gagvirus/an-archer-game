@@ -3,10 +3,11 @@ import Tower from "../logic/Tower.ts";
 import {dampPosition, getTileCoordinate, TILE_SIZE, tileCoordinateToPosition} from "../helpers/position-helper.ts";
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import {HEX_COLOR_DANGER, HEX_COLOR_WHITE} from '../helpers/colors.ts';
+import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
-class BuildMenuScene extends Scene {
+class BuildMenuScene extends Scene implements ISceneLifecycle {
   pendingBuildings: Tower[][];
   towerPreview?: Tower;
   disallowedTiles: true[][];
@@ -16,27 +17,27 @@ class BuildMenuScene extends Scene {
   }
 
   init(data: { occupiedTiles: Vector2Like[] }) {
-    const disallowedTiles = [...data.occupiedTiles, ...this.getBorderTilesAsIgnored()]
+    const disallowedTiles = [...data.occupiedTiles, ...this.getBorderTilesAsIgnored()];
     this.disallowedTiles = [];
     disallowedTiles.forEach(({x, y}) => {
       if (!this.disallowedTiles[x]) {
         this.disallowedTiles[x] = [];
       }
       this.disallowedTiles[x][y] = true;
-    })
+    });
   }
 
   create() {
     isDebugMode(this.game) && this.drawGrid();
     isDebugMode(this.game) && this.drawGridNumbers();
 
-    this.pendingBuildings = []
+    this.pendingBuildings = [];
     this.disallowedTiles.forEach((value, posX) => {
       value.forEach((_, posY) => {
         const {x, y} = tileCoordinateToPosition({x: posX, y: posY});
         this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, HEX_COLOR_DANGER).setAlpha(0.5);
-      })
-    })
+      });
+    });
     // Listener for pointer (mouse/touch) inputs
     this.input.on('pointerdown', (pointer: Pointer) => {
       this.addOrRemoveTile(pointer);
@@ -48,8 +49,8 @@ class BuildMenuScene extends Scene {
       if (event.key === 'b') {
         // todo: pass the buildings to the main scene
         delete this.towerPreview;
-        this.scene.resume('MainScene')
-        this.events.emit('buildComplete', {buildings: this.pendingBuildings})
+        this.scene.resume('MainScene');
+        this.events.emit('buildComplete', {buildings: this.pendingBuildings});
         this.scene.stop();
       }
     });
@@ -126,4 +127,4 @@ class BuildMenuScene extends Scene {
   }
 }
 
-export default BuildMenuScene
+export default BuildMenuScene;

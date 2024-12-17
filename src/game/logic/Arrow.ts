@@ -49,7 +49,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
 
   // Check if the arrow reached the target
   update() {
-    this.moveTowardsTarget()
+    this.moveTowardsTarget();
     if (Phaser.Math.Distance.Between(this.x, this.y, this.targetPosition.x, this.targetPosition.y) < 10) {
       this.handleHit();
     }
@@ -76,7 +76,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
       }, LogEntryCategory.Combat);
     }
     this.target.takeDamage(this.attackDamage, (target: Attackable) => {
-      this.owner.onKilledTarget(target)
+      this.owner.onKilledTarget(target);
       const baseXp = (target.owner as Enemy).xpAmount;
       const xpGainModifier = stats.xpGainMultiplier;
       addLogEntry(':attacker killed :opponent', {
@@ -84,7 +84,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
         opponent: [this.target.name, COLOR_DANGER],
       }, LogEntryCategory.Combat);
       const gainedXP = baseXp * xpGainModifier;
-      showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, gainedXP)
+      showGainedXp(this.scene, this.owner.owner as unknown as Vector2Like, gainedXP);
       addLogEntry(':owner gained :xp XP', {
         owner: [this.owner.name, COLOR_WARNING],
         xp: [gainedXP, COLOR_SUCCESS],

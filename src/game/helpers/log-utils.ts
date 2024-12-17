@@ -36,16 +36,16 @@ const convertHighlightToHighlightDict = (highlight: Highlight): HighlightDict =>
   }
   if (Array.isArray(highlight)) {
     highlight[0] = typeof highlight[0] === 'number' ? formatNumber(highlight[0]) : highlight[0];
-    highlight = {value: highlight[0], color: highlight[1] ?? COLOR_WHITE} as HighlightDict
+    highlight = {value: highlight[0], color: highlight[1] ?? COLOR_WHITE} as HighlightDict;
   }
   return highlight;
-}
+};
 
 const addLogEntry = (message: string, highlights: Highlights = {}, category: LogEntryCategory = LogEntryCategory.General) => {
   const logManager = ModuleManager.getInstance().getModule<LogModule>(Module.logs);
   if (logManager) {
     logManager.addLogEntry(message, highlights, category);
   }
-}
+};
 
 export {addLogEntry, convertHighlightToHighlightDict};

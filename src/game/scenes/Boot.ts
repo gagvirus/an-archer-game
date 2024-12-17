@@ -1,6 +1,7 @@
 import {Scene} from 'phaser';
+import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 
-export class Boot extends Scene {
+export class Boot extends Scene implements ISceneLifecycle {
   constructor() {
     super('Boot');
   }

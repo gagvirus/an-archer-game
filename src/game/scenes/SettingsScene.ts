@@ -6,12 +6,14 @@ import {
   HEX_COLOR_SUCCESS
 } from '../helpers/colors.ts';
 import {VectorZeroes} from '../helpers/position-helper.ts';
+import {Scene} from "phaser";
+import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 type SettingKey = 'debugMode' | 'autoAttack' | 'easyMode' | 'rapidLevelUp';
 
-class SettingsScene extends Phaser.Scene {
+class SettingsScene extends Scene implements ISceneLifecycle {
   private debugMode: boolean = false;
   private autoAttack: boolean = false;
   private easyMode: boolean = false;

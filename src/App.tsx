@@ -8,13 +8,13 @@ function App() {
 
   const setScene = () => {
     // we can listen here for a scene change
-  }
+  };
 
   return (
     <div id="app">
       <PhaserGame ref={phaserRef} currentActiveScene={setScene}/>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

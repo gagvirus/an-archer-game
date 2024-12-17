@@ -100,7 +100,7 @@ class Attackable {
           showReplenishedHealth(this.scene, this.owner as Vector2Like, amount);
           addLogEntry('Replenished :hp HP', {
             hp: [amount, COLOR_SUCCESS],
-          }, LogEntryCategory.Combat)
+          }, LogEntryCategory.Combat);
         }
       }
       this.health += amount;
@@ -144,7 +144,7 @@ class Attackable {
       const statsManager = this.owner.stats as StatsManager;
       if (statsManager.healthRegenerationInterval > 0) {
         this.regenerationInterval = setInterval(() => {
-          this.replenishHealth(statsManager.healthRegenPerInterval)
+          this.replenishHealth(statsManager.healthRegenPerInterval);
         }, statsManager.healthRegenerationInterval);
       }
     }

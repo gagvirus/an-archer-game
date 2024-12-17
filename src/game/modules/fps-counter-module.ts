@@ -9,7 +9,7 @@ class FpsCounterModule extends AbstractModule {
       this.fpsText = createText(this.scene, "FPS: 0", {
         x: this.scene.scale.width - 50,
         y: 50,
-      }, 16)
+      }, 16);
     }
   }
 

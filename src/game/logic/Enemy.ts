@@ -49,7 +49,7 @@ class Enemy extends Sprite {
 
     this.attackCooldown = 0;
     // Create a health bar for the enemy
-    this.anims.play(`${this.type}_walk`)
+    this.anims.play(`${this.type}_walk`);
     this.soonToBeHealth = this.maxHealth;
 
     this.attackable = new Attackable(
@@ -85,7 +85,7 @@ class Enemy extends Sprite {
         }
       },
       this,
-    )
+    );
   }
 
   get isToBeKilled() {
@@ -98,7 +98,7 @@ class Enemy extends Sprite {
       const enemiesFilteredByHeroLevel = enemies.filter((enemyDef: EnemyDef) => {
         return enemyDef.minLevel <= this.hero.xpManager.level && enemyDef.maxLevel >= this.hero.xpManager.level;
       });
-      enemyDef = getRandomItem<EnemyDef>(enemiesFilteredByHeroLevel)
+      enemyDef = getRandomItem<EnemyDef>(enemiesFilteredByHeroLevel);
     }
     this.maxHealth = enemyDef.maxHealth;
     this.speed = enemyDef.speed;
@@ -118,7 +118,7 @@ class Enemy extends Sprite {
   destroy() {
     this.attackable.healthBar.destroy();
     this.attackRadiusCircle.destroy();
-    super.destroy()
+    super.destroy();
   }
 
   // @ts-expect-error we *must* receive time
@@ -126,7 +126,7 @@ class Enemy extends Sprite {
     this.move();
     this.avoidCollision((this.scene as MainScene).enemies, 50);
     this.avoidCollision((this.scene as MainScene).buildings, 50);
-    this.attackable.update(delta)
+    this.attackable.update(delta);
   }
 
   move() {
@@ -144,7 +144,7 @@ class Enemy extends Sprite {
       this.isAttacking = false;
       this.chaseHero();  // Continue chasing the hero
     }
-    this.attackable.healthBar.draw()
+    this.attackable.healthBar.draw();
   }
 
   // Move the enemy towards the target (the hero)

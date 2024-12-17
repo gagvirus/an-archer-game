@@ -15,16 +15,16 @@ const createText = (scene: Scene, text: string, position: Vector2Like, fontSize:
       ...textConfig,
       stroke: '#000000',
       strokeThickness: Math.floor(fontSize / 4)
-    }
+    };
   }
-  return scene.add.text(position.x, position.y, text, {...textConfig, ...styleOverride}).setOrigin(0.5).setDepth(100)
-}
+  return scene.add.text(position.x, position.y, text, {...textConfig, ...styleOverride}).setOrigin(0.5).setDepth(100);
+};
 
 const createCenteredText = (scene: Scene, text: string, verticalOffset: number = 0, fontSize: number = 32, isInteractive: boolean = false, onClick?: () => void) => {
   const textObject = createText(scene, text, {
     x: scene.scale.width / 2,
     y: scene.scale.height / 2 + verticalOffset
-  }, fontSize)
+  }, fontSize);
 
   if (isInteractive) {
     textObject.setInteractive();
@@ -33,15 +33,15 @@ const createCenteredText = (scene: Scene, text: string, verticalOffset: number =
     }
   }
 
-  return textObject
-}
+  return textObject;
+};
 
 const createAnimatedText = (scene: Scene, text: string, duration: number) => {
   const screenWidth = scene.scale.width;
   const screenHeight = scene.scale.height;
 
   // Create the text at the bottom of the screen
-  const animatedText = createText(scene, text, {x: screenWidth / 2, y: screenHeight}, 48)
+  const animatedText = createText(scene, text, {x: screenWidth / 2, y: screenHeight}, 48);
 
   // Animate the text to move up to the middle of the screen
   scene.tweens.add({
@@ -64,7 +64,7 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
   });
 
   return animatedText;
-}
+};
 
 function formatNumber(value: number) {
   value = Math.round(value);
@@ -117,39 +117,39 @@ const showFloatingText = (scene: Scene, position: Vector2Like, text: string, siz
       floatingText.destroy(); // Remove the text after the animation completes
     }
   });
-}
+};
 
 const showDamage = (scene: Scene, position: Vector2Like, amount: number, isCritical: boolean = false) => {
   const color = isCritical ? COLOR_WARNING : COLOR_DANGER;
   const size = isCritical ? 'lg' : 'sm';
   showFloatingText(scene, position, `-${formatNumber(amount)}`, size, color);
-}
+};
 
 const showGainedXp = (scene: Scene, position: Vector2Like, amount: number) => {
   showFloatingText(scene, position, `+ ${formatNumber(amount)} XP`, 'xs', COLOR_SUCCESS);
-}
+};
 
 const showReplenishedHealth = (scene: Scene, position: Vector2Like, amount: number) => {
   showFloatingText(scene, position, `+ ${formatNumber(amount)} HP`, 'sm', COLOR_LIGHT);
-}
+};
 
 const showEvaded = (scene: Scene, position: Vector2Like) => {
   showFloatingText(scene, position, 'Evaded !', 'md', COLOR_SUCCESS);
-}
+};
 
 const showCollectedLoot = (scene: Scene, position: Vector2Like, name: string, amount: number) => {
   showFloatingText(scene, position, `+ ${amount} ${pluralize(amount, name)}`, 'sm', COLOR_WARNING);
-}
+};
 
 const pluralize = (count: number, noun: string, suffix = 's') => {
   return `${noun}${count !== 1 ? suffix : ''}`;
-}
+};
 
 const createAnimatedSprite = (scene: Scene, animation: string) => {
-  const sprite = scene.add.sprite(0, 0, '')
-  sprite.play(animation)
+  const sprite = scene.add.sprite(0, 0, '');
+  sprite.play(animation);
   return sprite;
-}
+};
 
 export {
   createCenteredText,

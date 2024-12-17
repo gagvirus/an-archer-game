@@ -15,11 +15,11 @@ class StageInfoModule extends AbstractModule {
       this.stageNumberText = createText(this.scene, "Stage 1", {
         x: 300,
         y: 25,
-      }, 16)
+      }, 16);
       this.enemiesText = createText(this.scene, "Enemies 0 / 0", {
         x: 300,
         y: 50,
-      }, 16)
+      }, 16);
     }
   }
 

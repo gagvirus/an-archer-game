@@ -24,7 +24,7 @@ const createCursorKeys = (scene: Scene): CustomCursorKeysDown => {
     down: defaultCursorKeys.down.isDown || wasdCursorKeys.down.isDown,
     left: defaultCursorKeys.left.isDown || wasdCursorKeys.left.isDown,
     right: defaultCursorKeys.right.isDown || wasdCursorKeys.right.isDown,
-  }
-}
+  };
+};
 
-export {createCursorKeys}
+export {createCursorKeys};
