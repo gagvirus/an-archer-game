@@ -1,4 +1,4 @@
-import {Game} from "phaser";
+import { Game } from "phaser";
 
 export const isDebugMode = (game: Game): boolean => {
   return getBooleanValueFromRegistry(game, "debugMode");

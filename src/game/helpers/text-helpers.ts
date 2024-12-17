@@ -1,9 +1,24 @@
-import {GameObjects, Scene} from "phaser";
-import {COLOR_DANGER, COLOR_LIGHT, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from "./colors.ts";
+import { GameObjects, Scene } from "phaser";
+import {
+  COLOR_DANGER,
+  COLOR_LIGHT,
+  COLOR_SUCCESS,
+  COLOR_WARNING,
+  COLOR_WHITE,
+} from "./colors.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
 
-const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = "center", defaultStroke: boolean = true, color: string = COLOR_WHITE, styleOverride: TextStyle = {}): GameObjects.Text => {
+const createText = (
+  scene: Scene,
+  text: string,
+  position: Vector2Like,
+  fontSize: number = 32,
+  align: string = "center",
+  defaultStroke: boolean = true,
+  color: string = COLOR_WHITE,
+  styleOverride: TextStyle = {},
+): GameObjects.Text => {
   let textConfig: TextStyle = {
     fontFamily: "Arial Black",
     color,
@@ -14,17 +29,32 @@ const createText = (scene: Scene, text: string, position: Vector2Like, fontSize:
     textConfig = {
       ...textConfig,
       stroke: "#000000",
-      strokeThickness: Math.floor(fontSize / 4)
+      strokeThickness: Math.floor(fontSize / 4),
     };
   }
-  return scene.add.text(position.x, position.y, text, {...textConfig, ...styleOverride}).setOrigin(0.5).setDepth(100);
+  return scene.add
+    .text(position.x, position.y, text, { ...textConfig, ...styleOverride })
+    .setOrigin(0.5)
+    .setDepth(100);
 };
 
-const createCenteredText = (scene: Scene, text: string, verticalOffset: number = 0, fontSize: number = 32, isInteractive: boolean = false, onClick?: () => void) => {
-  const textObject = createText(scene, text, {
-    x: scene.scale.width / 2,
-    y: scene.scale.height / 2 + verticalOffset
-  }, fontSize);
+const createCenteredText = (
+  scene: Scene,
+  text: string,
+  verticalOffset: number = 0,
+  fontSize: number = 32,
+  isInteractive: boolean = false,
+  onClick?: () => void,
+) => {
+  const textObject = createText(
+    scene,
+    text,
+    {
+      x: scene.scale.width / 2,
+      y: scene.scale.height / 2 + verticalOffset,
+    },
+    fontSize,
+  );
 
   if (isInteractive) {
     textObject.setInteractive();
@@ -41,7 +71,12 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
   const screenHeight = scene.scale.height;
 
   // Create the text at the bottom of the screen
-  const animatedText = createText(scene, text, {x: screenWidth / 2, y: screenHeight}, 48);
+  const animatedText = createText(
+    scene,
+    text,
+    { x: screenWidth / 2, y: screenHeight },
+    48,
+  );
 
   // Animate the text to move up to the middle of the screen
   scene.tweens.add({
@@ -59,7 +94,7 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
       duration: 1000, // 1 second duration to fade out
       onComplete: () => {
         animatedText.destroy(); // Destroy the text after fading out
-      }
+      },
     });
   });
 
@@ -89,7 +124,13 @@ function formatNumber(value: number) {
  * @param {string} size - Size of the text
  * @param {"md" | "lg" | "xl" | "sm" | "sx"} color - Color of the text
  */
-const showFloatingText = (scene: Scene, position: Vector2Like, text: string, size: "md" | "lg" | "xl" | "sm" | "xs" = "md", color: string = COLOR_WHITE) => {
+const showFloatingText = (
+  scene: Scene,
+  position: Vector2Like,
+  text: string,
+  size: "md" | "lg" | "xl" | "sm" | "xs" = "md",
+  color: string = COLOR_WHITE,
+) => {
   let fontSize = 16;
   switch (size) {
     case "xs":
@@ -105,7 +146,15 @@ const showFloatingText = (scene: Scene, position: Vector2Like, text: string, siz
       fontSize = 24;
       break;
   }
-  const floatingText = createText(scene, text, position, fontSize, "center", false, color);
+  const floatingText = createText(
+    scene,
+    text,
+    position,
+    fontSize,
+    "center",
+    false,
+    color,
+  );
 
   scene.tweens.add({
     targets: floatingText,
@@ -115,30 +164,62 @@ const showFloatingText = (scene: Scene, position: Vector2Like, text: string, siz
     ease: "Power1",
     onComplete: () => {
       floatingText.destroy(); // Remove the text after the animation completes
-    }
+    },
   });
 };
 
-const showDamage = (scene: Scene, position: Vector2Like, amount: number, isCritical: boolean = false) => {
+const showDamage = (
+  scene: Scene,
+  position: Vector2Like,
+  amount: number,
+  isCritical: boolean = false,
+) => {
   const color = isCritical ? COLOR_WARNING : COLOR_DANGER;
   const size = isCritical ? "lg" : "sm";
   showFloatingText(scene, position, `-${formatNumber(amount)}`, size, color);
 };
 
 const showGainedXp = (scene: Scene, position: Vector2Like, amount: number) => {
-  showFloatingText(scene, position, `+ ${formatNumber(amount)} XP`, "xs", COLOR_SUCCESS);
+  showFloatingText(
+    scene,
+    position,
+    `+ ${formatNumber(amount)} XP`,
+    "xs",
+    COLOR_SUCCESS,
+  );
 };
 
-const showReplenishedHealth = (scene: Scene, position: Vector2Like, amount: number) => {
-  showFloatingText(scene, position, `+ ${formatNumber(amount)} HP`, "sm", COLOR_LIGHT);
+const showReplenishedHealth = (
+  scene: Scene,
+  position: Vector2Like,
+  amount: number,
+) => {
+  showFloatingText(
+    scene,
+    position,
+    `+ ${formatNumber(amount)} HP`,
+    "sm",
+    COLOR_LIGHT,
+  );
 };
 
 const showEvaded = (scene: Scene, position: Vector2Like) => {
   showFloatingText(scene, position, "Evaded !", "md", COLOR_SUCCESS);
 };
 
-const showCollectedLoot = (scene: Scene, position: Vector2Like, name: string, amount: number) => {
-  showFloatingText(scene, position, `+ ${amount} ${pluralize(amount, name)}`, "sm", COLOR_WARNING);
+const showCollectedLoot = (
+  scene: Scene,
+  position: Vector2Like,
+  name: string,
+  amount: number,
+) => {
+  showFloatingText(
+    scene,
+    position,
+    `+ ${amount} ${pluralize(amount, name)}`,
+    "sm",
+    COLOR_WARNING,
+  );
 };
 
 const pluralize = (count: number, noun: string, suffix = "s") => {

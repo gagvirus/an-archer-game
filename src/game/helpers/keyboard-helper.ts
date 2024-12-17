@@ -1,12 +1,12 @@
-import {Scene} from "phaser";
+import { Scene } from "phaser";
 import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 
 export interface CustomCursorKeysDown {
-  up: boolean,
-  down: boolean,
-  left: boolean,
-  right: boolean
+  up: boolean;
+  down: boolean;
+  left: boolean;
+  right: boolean;
 }
 
 const createCursorKeys = (scene: Scene): CustomCursorKeysDown => {
@@ -16,7 +16,7 @@ const createCursorKeys = (scene: Scene): CustomCursorKeysDown => {
     up: Phaser.Input.Keyboard.KeyCodes.W,
     down: Phaser.Input.Keyboard.KeyCodes.S,
     left: Phaser.Input.Keyboard.KeyCodes.A,
-    right: Phaser.Input.Keyboard.KeyCodes.D
+    right: Phaser.Input.Keyboard.KeyCodes.D,
   }) as CursorKeys;
 
   return {
@@ -27,4 +27,4 @@ const createCursorKeys = (scene: Scene): CustomCursorKeysDown => {
   };
 };
 
-export {createCursorKeys};
+export { createCursorKeys };

@@ -1,4 +1,4 @@
-import {PowerupType} from "../logic/drop/powerup/timed/powerupType.ts";
+import { PowerupType } from "../logic/drop/powerup/timed/powerupType.ts";
 
 export enum MultipliableStat {
   damage = "damage",

@@ -1,10 +1,10 @@
 import HealthBar from "../logic/HealthBar.ts";
 import XpBar from "../logic/XpBar.ts";
 import StatsManager from "./stats-manager.ts";
-import {Scene} from "phaser";
-import {showReplenishedHealth} from "./text-helpers.ts";
-import {addLogEntry, LogEntryCategory} from "./log-utils.ts";
-import {COLOR_SUCCESS} from "./colors.ts";
+import { Scene } from "phaser";
+import { showReplenishedHealth } from "./text-helpers.ts";
+import { addLogEntry, LogEntryCategory } from "./log-utils.ts";
+import { COLOR_SUCCESS } from "./colors.ts";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -16,7 +16,14 @@ class XpManager {
   xpBar: XpBar;
   onLevelUp: (newLevel: number) => void;
 
-  constructor(initXpBar: (level: number, currentXp: number, xpToNextLevel: number) => XpBar, onLevelUp: (newLevel: number) => void) {
+  constructor(
+    initXpBar: (
+      level: number,
+      currentXp: number,
+      xpToNextLevel: number,
+    ) => XpBar,
+    onLevelUp: (newLevel: number) => void,
+  ) {
     this.level = 1;
     this.xp = 0;
     this.xpBar = initXpBar(this.level, this.xp, this.xpToNextLevel);
@@ -55,7 +62,16 @@ class Attackable {
   onAttack: () => void;
   regenerationInterval: number;
 
-  constructor(scene: Scene, attacksPerSecond: number, attackDamage: number, maxHealth: number, initHealthBar: ((initialHealth: number) => HealthBar), onDeath: () => void, onAttack: () => void, owner: Sprite) {
+  constructor(
+    scene: Scene,
+    attacksPerSecond: number,
+    attackDamage: number,
+    maxHealth: number,
+    initHealthBar: (initialHealth: number) => HealthBar,
+    onDeath: () => void,
+    onAttack: () => void,
+    owner: Sprite,
+  ) {
     this.scene = scene;
     this.attackCooldown = 0;
     this.attacksPerSecond = attacksPerSecond;
@@ -98,9 +114,13 @@ class Attackable {
       if (this.scene) {
         if (this.health < this.maxHealth) {
           showReplenishedHealth(this.scene, this.owner as Vector2Like, amount);
-          addLogEntry("Replenished :hp HP", {
-            hp: [amount, COLOR_SUCCESS],
-          }, LogEntryCategory.Combat);
+          addLogEntry(
+            "Replenished :hp HP",
+            {
+              hp: [amount, COLOR_SUCCESS],
+            },
+            LogEntryCategory.Combat,
+          );
         }
       }
       this.health += amount;
@@ -130,7 +150,8 @@ class Attackable {
         const xpAmount: number = target.owner.xpAmount as number;
         let xpGainMultiplier = 1;
         if ("stats" in this.owner) {
-          xpGainMultiplier = (this.owner.stats as StatsManager).xpGainMultiplier;
+          xpGainMultiplier = (this.owner.stats as StatsManager)
+            .xpGainMultiplier;
         }
 
         (this.owner.xpManager as XpManager).gainXp(xpAmount * xpGainMultiplier);
@@ -161,4 +182,4 @@ class Attackable {
   }
 }
 
-export {Attackable, XpManager};
+export { Attackable, XpManager };

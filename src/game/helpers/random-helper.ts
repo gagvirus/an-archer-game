@@ -1,5 +1,5 @@
 interface Item {
-  weight: number
+  weight: number;
 }
 
 const getRandomItem = <T extends Item>(listOfItems: T[]): T => {
@@ -38,13 +38,25 @@ const getRandomNumberBetween = (a: number, b: number): number => {
  * @param trueProbability
  * @param maxProbability
  */
-const randomChance = (trueProbability: number, maxProbability: number = 95): boolean => {
+const randomChance = (
+  trueProbability: number,
+  maxProbability: number = 95,
+): boolean => {
   // the crit chance could be 0.2 - for handling such precision, let's multiply everything by 10
-  trueProbability = Phaser.Math.Clamp(trueProbability * 10, 0, maxProbability * 10);
+  trueProbability = Phaser.Math.Clamp(
+    trueProbability * 10,
+    0,
+    maxProbability * 10,
+  );
   // Generate a random number between 0 and 100
   const roll = Phaser.Math.Between(0, 1000);
   // Return true if the roll is less than the trueProbability
   return roll < trueProbability;
 };
 
-export {getRandomItem, getRandomNumberBetween, getRandomNumberBetweenRange, randomChance};
+export {
+  getRandomItem,
+  getRandomNumberBetween,
+  getRandomNumberBetweenRange,
+  randomChance,
+};

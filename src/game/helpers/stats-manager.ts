@@ -1,7 +1,7 @@
-import {isEasyMode, isRapidLevelUp} from "./registry-helper.ts";
-import {Scene} from "phaser";
+import { isEasyMode, isRapidLevelUp } from "./registry-helper.ts";
+import { Scene } from "phaser";
 import Hero from "../logic/Hero.ts";
-import {BooleanStats} from "./powerup-manager.ts";
+import { BooleanStats } from "./powerup-manager.ts";
 import {
   HEX_COLOR_GREEN_FINESSE,
   HEX_COLOR_GREEN_FINESSE_DARK,
@@ -14,7 +14,7 @@ import {
   HEX_COLOR_RESILIENCE_DARKER,
   HEX_COLOR_THOUGHTFULNESS,
   HEX_COLOR_THOUGHTFULNESS_DARK,
-  HEX_COLOR_THOUGHTFULNESS_DARKER
+  HEX_COLOR_THOUGHTFULNESS_DARKER,
 } from "./colors.ts";
 
 export interface IStat {
@@ -88,7 +88,15 @@ class StatsManager {
   private _thoughtfulness: number;
   public unallocatedStats: number;
 
-  constructor(scene: Scene, owner: Hero, finesse: number = 1, awareness: number = 1, resilience: number = 1, thoughtfulness: number = 1, unallocatedStats: number = 0) {
+  constructor(
+    scene: Scene,
+    owner: Hero,
+    finesse: number = 1,
+    awareness: number = 1,
+    resilience: number = 1,
+    thoughtfulness: number = 1,
+    unallocatedStats: number = 0,
+  ) {
     this.scene = scene;
     this.owner = owner;
     this._finesse = finesse;
@@ -216,7 +224,7 @@ class StatsManager {
 
   get evadeChancePercent() {
     // each dexterity attribute adds +0.6667% to evade chance (not more than +60%)
-    const chance = (this.dexterity - 1) * 2 / 3;
+    const chance = ((this.dexterity - 1) * 2) / 3;
     return chance > 60 ? 60 : chance;
   }
 
@@ -226,15 +234,21 @@ class StatsManager {
   }
 
   get xpGainMultiplier() {
-    return 1 + (isRapidLevelUp(this.scene.game) ? 100 : 1) * (this.intelligence - 1) * 1.1 / 100;
+    return (
+      1 +
+      ((isRapidLevelUp(this.scene.game) ? 100 : 1) *
+        (this.intelligence - 1) *
+        1.1) /
+        100
+    );
   }
 
   get dropChanceModifier() {
-    return Phaser.Math.Clamp(1 + this.luck * 2 / 100, 1, 4);
+    return Phaser.Math.Clamp(1 + (this.luck * 2) / 100, 1, 4);
   }
 
   get dropAmountModifier() {
-    return Phaser.Math.Clamp(1 + this.luck * 1.1 / 100, 1, 7);
+    return Phaser.Math.Clamp(1 + (this.luck * 1.1) / 100, 1, 7);
   }
 
   get healthRegenPerInterval() {
@@ -251,7 +265,7 @@ class StatsManager {
 
   get criticalChancePercent() {
     // each perception attribute adds +0.6667% to critical chance (not more than +60%)
-    const chance = (this.perception - 1) * 2 / 3;
+    const chance = ((this.perception - 1) * 2) / 3;
     return chance > 60 ? 60 : chance;
   }
 
@@ -281,12 +295,16 @@ class StatsManager {
     }
     const maxReduction = 0.9; // Maximum 90% reduction
     const scalingFactor = 800; // Higher value makes percentage scale slower
-    const reduction = 1 - (scalingFactor / (scalingFactor + this.armorRating));
+    const reduction = 1 - scalingFactor / (scalingFactor + this.armorRating);
     return Math.min(reduction, maxReduction);
   }
 
   getFinalDamageReduction(damageReceived: number): number {
-    const flatReduction = Phaser.Math.Clamp(this.flatDamageReduction, 0, damageReceived - 1);
+    const flatReduction = Phaser.Math.Clamp(
+      this.flatDamageReduction,
+      0,
+      damageReceived - 1,
+    );
     const percentReduction = this.percentReduction;
     const afterFlatReduction = damageReceived - flatReduction;
     return flatReduction + afterFlatReduction * percentReduction;
@@ -316,35 +334,40 @@ class StatsManager {
     return [
       // offensive stats
       //   attack speed
-      {label: "Base Attack Time", prop: Attribute.baseAttackTime},
-      {label: "Attack Speed Bonus", prop: Attribute.attackSpeedBonus},
-      {label: "Attack Rate", prop: Attribute.attackRate},
-      {label: "Attacks Per Second", prop: Attribute.attacksPerSecond},
+      { label: "Base Attack Time", prop: Attribute.baseAttackTime },
+      { label: "Attack Speed Bonus", prop: Attribute.attackSpeedBonus },
+      { label: "Attack Rate", prop: Attribute.attackRate },
+      { label: "Attacks Per Second", prop: Attribute.attacksPerSecond },
       //   damage
-      {label: "Damage multiplier", prop: Attribute.damageMultiplier},
+      { label: "Damage multiplier", prop: Attribute.damageMultiplier },
       //   critical
-      {label: "Critical Chance %", prop: Attribute.criticalChancePercent},
-      {label: "Critical Damage Multiplier", prop: Attribute.criticalExtraDamageMultiplier},
+      { label: "Critical Chance %", prop: Attribute.criticalChancePercent },
+      {
+        label: "Critical Damage Multiplier",
+        prop: Attribute.criticalExtraDamageMultiplier,
+      },
 
       // defensive stats
       //   evade
-      {label: "Evade Chance %", prop: Attribute.evadeChancePercent},
+      { label: "Evade Chance %", prop: Attribute.evadeChancePercent },
       //   health
-      {label: "Max Health Multiplier", prop: Attribute.maxHealthMultiplier},
-      {label: "Health Regen Amount", prop: Attribute.healthRegenPerInterval},
-      {label: "Health Regen Interval", prop: Attribute.healthRegenerationInterval},
+      { label: "Max Health Multiplier", prop: Attribute.maxHealthMultiplier },
+      { label: "Health Regen Amount", prop: Attribute.healthRegenPerInterval },
+      {
+        label: "Health Regen Interval",
+        prop: Attribute.healthRegenerationInterval,
+      },
       //   armor
-      {label: "Armor Rating Bonus", prop: Attribute.armorRatingBonus},
-      {label: "Armor Rating", prop: Attribute.armorRating},
-      {label: "Flat Damage Reduction", prop: Attribute.flatDamageReduction},
-      {label: "Percent Damage Reduction", prop: Attribute.percentReduction},
+      { label: "Armor Rating Bonus", prop: Attribute.armorRatingBonus },
+      { label: "Armor Rating", prop: Attribute.armorRating },
+      { label: "Flat Damage Reduction", prop: Attribute.flatDamageReduction },
+      { label: "Percent Damage Reduction", prop: Attribute.percentReduction },
       // miscellaneous
-      {label: "XP Gain Multiplier", prop: Attribute.xpGainMultiplier},
-      {label: "Drop Chance Multiplier", prop: Attribute.dropChanceModifier},
-      {label: "Drop Amount Modifier", prop: Attribute.dropAmountModifier},
+      { label: "XP Gain Multiplier", prop: Attribute.xpGainMultiplier },
+      { label: "Drop Chance Multiplier", prop: Attribute.dropChanceModifier },
+      { label: "Drop Amount Modifier", prop: Attribute.dropAmountModifier },
     ];
   }
-
 
   static listCoreStats(): ICoreStat[] {
     return [
@@ -353,11 +376,15 @@ class StatsManager {
         prop: CoreStat.finesse,
         hotkey: "F",
         icon: "agility",
-        colors: [HEX_COLOR_GREEN_FINESSE, HEX_COLOR_GREEN_FINESSE_DARK, HEX_COLOR_GREEN_FINESSE_DARKER],
+        colors: [
+          HEX_COLOR_GREEN_FINESSE,
+          HEX_COLOR_GREEN_FINESSE_DARK,
+          HEX_COLOR_GREEN_FINESSE_DARKER,
+        ],
         description: "Affects Attack speed & Evade chance",
         stats: [
-          {label: "Dexterity", prop: ChildStat.dexterity},
-          {label: "Agility", prop: ChildStat.agility}
+          { label: "Dexterity", prop: ChildStat.dexterity },
+          { label: "Agility", prop: ChildStat.agility },
         ],
       },
       {
@@ -365,11 +392,15 @@ class StatsManager {
         prop: CoreStat.awareness,
         hotkey: "A",
         icon: "muscles",
-        colors: [HEX_COLOR_RED_AWARENESS, HEX_COLOR_RED_AWARENESS_DARK, HEX_COLOR_RED_AWARENESS_DARKER],
+        colors: [
+          HEX_COLOR_RED_AWARENESS,
+          HEX_COLOR_RED_AWARENESS_DARK,
+          HEX_COLOR_RED_AWARENESS_DARKER,
+        ],
         description: "Affects Attack damage, Critical Chance & damage",
         stats: [
-          {label: "Perception", prop: ChildStat.perception},
-          {label: "Strength", prop: ChildStat.strength}
+          { label: "Perception", prop: ChildStat.perception },
+          { label: "Strength", prop: ChildStat.strength },
         ],
       },
       {
@@ -377,11 +408,15 @@ class StatsManager {
         prop: CoreStat.resilience,
         hotkey: "R",
         icon: "gear",
-        colors: [HEX_COLOR_RESILIENCE, HEX_COLOR_RESILIENCE_DARK, HEX_COLOR_RESILIENCE_DARKER],
+        colors: [
+          HEX_COLOR_RESILIENCE,
+          HEX_COLOR_RESILIENCE_DARK,
+          HEX_COLOR_RESILIENCE_DARKER,
+        ],
         description: "Affects Armor rating & Max Health / Health Regen",
         stats: [
-          {label: "Fortitude", prop: ChildStat.fortitude},
-          {label: "Endurance", prop: ChildStat.endurance}
+          { label: "Fortitude", prop: ChildStat.fortitude },
+          { label: "Endurance", prop: ChildStat.endurance },
         ],
       },
       {
@@ -389,12 +424,16 @@ class StatsManager {
         prop: CoreStat.thoughtfulness,
         hotkey: "T",
         icon: "brain",
-        colors: [HEX_COLOR_THOUGHTFULNESS, HEX_COLOR_THOUGHTFULNESS_DARK, HEX_COLOR_THOUGHTFULNESS_DARKER],
+        colors: [
+          HEX_COLOR_THOUGHTFULNESS,
+          HEX_COLOR_THOUGHTFULNESS_DARK,
+          HEX_COLOR_THOUGHTFULNESS_DARKER,
+        ],
         description: "Affects XP Gain & Bartering & Coin Gain",
         stats: [
-          {label: "Intelligence", prop: ChildStat.intelligence},
-          {label: "Charisma", prop: ChildStat.charisma},
-          {label: "Luck", prop: ChildStat.luck}
+          { label: "Intelligence", prop: ChildStat.intelligence },
+          { label: "Charisma", prop: ChildStat.charisma },
+          { label: "Luck", prop: ChildStat.luck },
         ],
       },
     ];

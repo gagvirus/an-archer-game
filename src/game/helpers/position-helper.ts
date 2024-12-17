@@ -5,20 +5,25 @@ export const TILE_SIZE = 32;
 const getRandomPosition = (maxX: number, maxY: number): Vector2Like => {
   const x = Phaser.Math.Between(50, maxX - 50);
   const y = Phaser.Math.Between(50, maxY - 50);
-  return {x, y};
+  return { x, y };
 };
 
 const VectorZeroes = (): Vector2Like => {
-  return {x: 0, y: 0};
+  return { x: 0, y: 0 };
 };
 
-const getRandomPositionAwayFromPoint = (maxX: number, maxY: number, awayFrom: Vector2Like, minDistance: number): Vector2Like => {
-  const {x, y} = getRandomPosition(maxX, maxY);
+const getRandomPositionAwayFromPoint = (
+  maxX: number,
+  maxY: number,
+  awayFrom: Vector2Like,
+  minDistance: number,
+): Vector2Like => {
+  const { x, y } = getRandomPosition(maxX, maxY);
   const distance = Phaser.Math.Distance.Between(awayFrom.x, awayFrom.y, x, y);
   if (distance < minDistance) {
     return getRandomPositionAwayFromPoint(maxX, maxY, awayFrom, minDistance);
   }
-  return {x, y};
+  return { x, y };
 };
 
 // takes a real pointer position, divides it by tiles size and returns the center coordinate
@@ -50,5 +55,5 @@ export {
   dampPosition,
   getTileCoordinate,
   tileCoordinateToPosition,
-  VectorZeroes
+  VectorZeroes,
 };
