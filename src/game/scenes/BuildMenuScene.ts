@@ -1,9 +1,14 @@
-import {Scene} from "phaser";
+import { Scene } from "phaser";
 import Tower from "../logic/Tower.ts";
-import {dampPosition, getTileCoordinate, TILE_SIZE, tileCoordinateToPosition} from "../helpers/position-helper.ts";
-import {isDebugMode} from "../helpers/registry-helper.ts";
-import {HEX_COLOR_DANGER, HEX_COLOR_WHITE} from "../helpers/colors.ts";
-import {ISceneLifecycle} from "../ISceneLifecycle.ts";
+import {
+  dampPosition,
+  getTileCoordinate,
+  TILE_SIZE,
+  tileCoordinateToPosition,
+} from "../helpers/position-helper.ts";
+import { isDebugMode } from "../helpers/registry-helper.ts";
+import { HEX_COLOR_DANGER, HEX_COLOR_WHITE } from "../helpers/colors.ts";
+import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -17,9 +22,12 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
   }
 
   init(data: { occupiedTiles: Vector2Like[] }) {
-    const disallowedTiles = [...data.occupiedTiles, ...this.getBorderTilesAsIgnored()];
+    const disallowedTiles = [
+      ...data.occupiedTiles,
+      ...this.getBorderTilesAsIgnored(),
+    ];
     this.disallowedTiles = [];
-    disallowedTiles.forEach(({x, y}) => {
+    disallowedTiles.forEach(({ x, y }) => {
       if (!this.disallowedTiles[x]) {
         this.disallowedTiles[x] = [];
       }
@@ -34,8 +42,10 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
     this.pendingBuildings = [];
     this.disallowedTiles.forEach((value, posX) => {
       value.forEach((_, posY) => {
-        const {x, y} = tileCoordinateToPosition({x: posX, y: posY});
-        this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, HEX_COLOR_DANGER).setAlpha(0.5);
+        const { x, y } = tileCoordinateToPosition({ x: posX, y: posY });
+        this.add
+          .rectangle(x, y, TILE_SIZE, TILE_SIZE, HEX_COLOR_DANGER)
+          .setAlpha(0.5);
       });
     });
     // Listener for pointer (mouse/touch) inputs
@@ -50,14 +60,14 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
         // todo: pass the buildings to the main scene
         delete this.towerPreview;
         this.scene.resume("MainScene");
-        this.events.emit("buildComplete", {buildings: this.pendingBuildings});
+        this.events.emit("buildComplete", { buildings: this.pendingBuildings });
         this.scene.stop();
       }
     });
   }
 
   addOrRemoveTile(position: Vector2Like) {
-    const {x, y} = getTileCoordinate(position);
+    const { x, y } = getTileCoordinate(position);
     if (!this.pendingBuildings[y]) {
       this.pendingBuildings[y] = [];
     }
@@ -79,12 +89,12 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
   }
 
   private showTowerPreview(position: Vector2Like) {
-    const {x, y} = dampPosition(position);
+    const { x, y } = dampPosition(position);
     if (!this.towerPreview) {
       this.towerPreview = this.createTower(position);
       this.towerPreview.alpha = 0.5;
     }
-    const {x: tileX, y: tileY} = getTileCoordinate(position);
+    const { x: tileX, y: tileY } = getTileCoordinate(position);
     if (this.disallowedTiles[tileX] && this.disallowedTiles[tileX][tileY]) {
       this.towerPreview.setVisible(false);
     } else {
@@ -98,17 +108,25 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
   private drawGrid() {
     for (let x = 0; x <= this.scale.width; x += TILE_SIZE) {
       for (let y = 0; y <= this.scale.height; y += TILE_SIZE) {
-        this.add.rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE).setStrokeStyle(1, HEX_COLOR_WHITE);
+        this.add
+          .rectangle(x + TILE_SIZE / 2, y + TILE_SIZE / 2, TILE_SIZE, TILE_SIZE)
+          .setStrokeStyle(1, HEX_COLOR_WHITE);
       }
     }
   }
 
   private drawGridNumbers() {
     for (let x = 0; x <= Math.floor(this.scale.width / TILE_SIZE); x++) {
-      this.add.text(x * TILE_SIZE, TILE_SIZE / 2, x.toString()).setOrigin(0).setDepth(11);
+      this.add
+        .text(x * TILE_SIZE, TILE_SIZE / 2, x.toString())
+        .setOrigin(0)
+        .setDepth(11);
     }
     for (let y = 0; y <= Math.floor(this.scale.height / TILE_SIZE); y++) {
-      this.add.text(0, y * TILE_SIZE, y.toString()).setOrigin(0).setDepth(11);
+      this.add
+        .text(0, y * TILE_SIZE, y.toString())
+        .setOrigin(0)
+        .setDepth(11);
     }
   }
 
@@ -116,12 +134,12 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
   private getBorderTilesAsIgnored() {
     const borderTiles = [];
     for (let x = 0; x <= Math.floor(this.scale.width / TILE_SIZE); x++) {
-      borderTiles.push({x, y: 0});
-      borderTiles.push({x, y: Math.floor(this.scale.height / TILE_SIZE)});
+      borderTiles.push({ x, y: 0 });
+      borderTiles.push({ x, y: Math.floor(this.scale.height / TILE_SIZE) });
     }
     for (let y = 0; y <= Math.floor(this.scale.height / TILE_SIZE); y++) {
-      borderTiles.push({x: 0, y});
-      borderTiles.push({x: Math.floor(this.scale.width / TILE_SIZE), y});
+      borderTiles.push({ x: 0, y });
+      borderTiles.push({ x: Math.floor(this.scale.width / TILE_SIZE), y });
     }
     return borderTiles;
   }

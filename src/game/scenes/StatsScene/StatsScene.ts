@@ -1,10 +1,13 @@
-import {Scene} from "phaser";
-import StatsManager, {IAttribute, ICoreStat} from "../../helpers/stats-manager.ts";
-import {createText} from "../../helpers/text-helpers.ts";
-import {VectorZeroes} from "../../helpers/position-helper.ts";
+import { Scene } from "phaser";
+import StatsManager, {
+  IAttribute,
+  ICoreStat,
+} from "../../helpers/stats-manager.ts";
+import { createText } from "../../helpers/text-helpers.ts";
+import { VectorZeroes } from "../../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import StatsCirclePartial from "./StatsCirclePartial.ts";
-import {ISceneLifecycle} from "../../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
 
 export class StatsScene extends Scene implements ISceneLifecycle {
   coreStats: ICoreStat[];
@@ -66,7 +69,16 @@ export class StatsScene extends Scene implements ISceneLifecycle {
     this.coreStats.forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
         const value = this.statsManager.getChildStat(stat.prop);
-        childStatsWrapper.add(createText(this, `${stat.label}: ${value}`, VectorZeroes(), 16, "left", false));
+        childStatsWrapper.add(
+          createText(
+            this,
+            `${stat.label}: ${value}`,
+            VectorZeroes(),
+            16,
+            "left",
+            false,
+          ),
+        );
       });
     });
 
@@ -81,8 +93,19 @@ export class StatsScene extends Scene implements ISceneLifecycle {
     attributesWrapper.add(createText(this, "Attributes", VectorZeroes()));
 
     this.attributes.forEach((attribute) => {
-      const value = parseFloat(this.statsManager.getAttribute(attribute.prop).toFixed(2));
-      attributesWrapper.add(createText(this, `${attribute.label}: ${value}`, VectorZeroes(), 16, "left", false));
+      const value = parseFloat(
+        this.statsManager.getAttribute(attribute.prop).toFixed(2),
+      );
+      attributesWrapper.add(
+        createText(
+          this,
+          `${attribute.label}: ${value}`,
+          VectorZeroes(),
+          16,
+          "left",
+          false,
+        ),
+      );
     });
 
     return attributesWrapper;

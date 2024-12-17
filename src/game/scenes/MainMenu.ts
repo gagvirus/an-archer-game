@@ -1,8 +1,8 @@
-import {GameObjects, Scene} from "phaser";
+import { GameObjects, Scene } from "phaser";
 
-import {EventBus} from "../EventBus";
-import {createCenteredText} from "../helpers/text-helpers.ts";
-import {ISceneLifecycle} from "../ISceneLifecycle.ts";
+import { EventBus } from "../EventBus";
+import { createCenteredText } from "../helpers/text-helpers.ts";
+import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 
 export class MainMenu extends Scene implements ISceneLifecycle {
   titleText: GameObjects.Text;

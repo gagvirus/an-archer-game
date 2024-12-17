@@ -1,8 +1,8 @@
-import {EventBus} from "../EventBus";
-import {Scene} from "phaser";
-import {createCenteredText} from "../helpers/text-helpers.ts";
-import {HEX_COLOR_DANGER} from "../helpers/colors.ts";
-import {ISceneLifecycle} from "../ISceneLifecycle.ts";
+import { EventBus } from "../EventBus";
+import { Scene } from "phaser";
+import { createCenteredText } from "../helpers/text-helpers.ts";
+import { HEX_COLOR_DANGER } from "../helpers/colors.ts";
+import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 
 export class GameOver extends Scene implements ISceneLifecycle {
   camera: Phaser.Cameras.Scene2D.Camera;
