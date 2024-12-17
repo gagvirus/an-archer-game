@@ -19,7 +19,7 @@ export default class PowerupManager {
     if (stat in MultipliableStat) {
       return this.getMultiplierStat(stat as MultipliableStat) != 1;
     } else {
-      return this.getBooleanStat(stat as BooleanStats)
+      return this.getBooleanStat(stat as BooleanStats);
     }
   }
 

@@ -20,17 +20,17 @@ const getRandomItem = <T extends Item>(listOfItems: T[]): T => {
 
   // Fallback in case of rounding errors
   return listOfItems[0];
-}
+};
 
 const getRandomNumberBetweenRange = (range: [number, number]): number => {
   return getRandomNumberBetween(range[0], range[1]);
-}
+};
 
 const getRandomNumberBetween = (a: number, b: number): number => {
   const min = Math.min(a, b);
   const max = Math.max(a, b);
   return Math.ceil(Math.random() * (max - min) + min);
-}
+};
 
 /**
  * Returns a random boolean value based on the probability of getting a true
@@ -45,6 +45,6 @@ const randomChance = (trueProbability: number, maxProbability: number = 95): boo
   const roll = Phaser.Math.Between(0, 1000);
   // Return true if the roll is less than the trueProbability
   return roll < trueProbability;
-}
+};
 
-export {getRandomItem, getRandomNumberBetween, getRandomNumberBetweenRange, randomChance}
+export {getRandomItem, getRandomNumberBetween, getRandomNumberBetweenRange, randomChance};

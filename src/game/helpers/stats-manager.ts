@@ -221,7 +221,7 @@ class StatsManager {
 
   get maxHealthMultiplier() {
     // each endurance point adds +10% to the level-adjusted max health
-    return 1 + (this.endurance - 1) * 0.1
+    return 1 + (this.endurance - 1) * 0.1;
   }
 
   get xpGainMultiplier() {
@@ -256,7 +256,7 @@ class StatsManager {
 
   get criticalExtraDamageMultiplier() {
     // each perception attribute adds +5% extra damage (on top of base +50% bonus damage) on critical hit
-    return 1 + (50 + (this.perception - 1) * 5) / 100
+    return 1 + (50 + (this.perception - 1) * 5) / 100;
   }
 
   get armorRatingBonus() {
@@ -341,7 +341,7 @@ class StatsManager {
       {label: 'XP Gain Multiplier', prop: Attribute.xpGainMultiplier},
       {label: 'Drop Chance Multiplier', prop: Attribute.dropChanceModifier},
       {label: 'Drop Amount Modifier', prop: Attribute.dropAmountModifier},
-    ]
+    ];
   }
 
 
