@@ -8,25 +8,9 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   create() {
-    const screenPaddingX = this.scale.width / 10; // 10% of the screen
-    const screenPaddingY = 20;
-    const panelSpacing = 20;
-
-    // Calculate screen dimensions
-    const screenWidth = this.scale.width - screenPaddingX * 2;
-    // Panel dimensions
-    const panelHeight = this.scale.height - screenPaddingY * 2;
-    const panelWidths = [
-      screenWidth * 0.3,
-      screenWidth * 0.4,
-      screenWidth * 0.3,
-    ];
-
-    // Create panels using RexUI
-    const panels = ["Text1", "Text2", "Text3"].map((text, i) => {
-      const panelWidth = panelWidths[i];
-      return this.createPanel(text, panelWidth, panelHeight);
-    });
+    const attributesPanel = this.createAttributesPanel();
+    const coreStatsWheelPanel = this.createCoreStatsWheelPanel();
+    const statsPanel = this.createStatsPanel();
 
     // Create a horizontal box layout to arrange panels
     this.rexUI.add
@@ -34,11 +18,11 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
         x: this.scale.width / 2,
         y: this.scale.height / 2,
         orientation: "x", // Horizontal layout
-        space: { item: panelSpacing }, // Space between panels
+        space: { item: 20 }, // Space between panels
       })
-      .add(panels[0], 1, "center", 0, true)
-      .add(panels[1], 1, "center", 0, true)
-      .add(panels[2], 1, "center", 0, true)
+      .add(attributesPanel, 1, "center", 0, true)
+      .add(coreStatsWheelPanel, 1, "center", 0, true)
+      .add(statsPanel, 1, "center", 0, true)
       .layout();
 
     // Debug: Add a back button
@@ -52,7 +36,37 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       .on("pointerdown", () => this.scene.start("MainMenu")); // Replace 'MainMenu' with your menu scene key
   }
 
-  private createPanel(title: string, width: number, height: number) {
+  private createAttributesPanel() {
+    const container = this.createContainer(
+      "Attributes",
+      this.scale.width * 0.9 * 0.3, // 3/10 width of the full screen width minus padding 10%
+      this.scale.height - 40, // full height minus padding
+    );
+    console.log(container);
+    return container;
+  }
+
+  private createCoreStatsWheelPanel() {
+    const container = this.createContainer(
+      "Core Stats",
+      this.scale.width * 0.9 * 0.4, // 4/10 width of the full screen width minus padding 10%
+      this.scale.height - 40, // full height minus padding
+    );
+    console.log(container);
+    return container;
+  }
+
+  private createStatsPanel() {
+    const container = this.createContainer(
+      "Stats",
+      this.scale.width * 0.9 * 0.3, // 3/10 width of the full screen width minus padding 10%
+      this.scale.height - 40, // full height minus padding
+    );
+    console.log(container);
+    return container;
+  }
+
+  private createContainer(title: string, width: number, height: number) {
     // Create a panel container with background and title text
     const container = this.rexUI.add.sizer({ width, height, orientation: "y" });
     container.addBackground(
