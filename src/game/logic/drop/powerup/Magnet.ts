@@ -8,8 +8,8 @@ class Magnet extends Powerup {
   }
 
   constructor(scene: MainScene, x: number, y: number) {
-    super(scene, x, y, 'magnet');
-    this.anims.play('magnet');
+    super(scene, x, y, "magnet");
+    this.anims.play("magnet");
   }
 }
 

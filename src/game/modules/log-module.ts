@@ -5,9 +5,9 @@ import {COLOR_WHITE} from "../helpers/colors.ts";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import {AbstractModule} from "./module-manager.ts";
 import UiHelper from "../helpers/ui-helper.ts";
+import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import TextStyle = Phaser.GameObjects.TextStyle;
 import FixWidthSizer = UIPlugin.FixWidthSizer;
-import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 
 class LogModule extends AbstractModule {
   MAX_ENTRIES = 1000;
@@ -75,7 +75,7 @@ class LogModule extends AbstractModule {
       align: "left"
     });
     let xOffset = 0;
-    messageParts.filter(({message}) => message !== '').forEach((messagePart) => {
+    messageParts.filter(({message}) => message !== "").forEach((messagePart) => {
       const text = createText(
         this.scene,
         messagePart.message,

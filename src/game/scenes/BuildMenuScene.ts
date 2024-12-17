@@ -2,7 +2,7 @@ import {Scene} from "phaser";
 import Tower from "../logic/Tower.ts";
 import {dampPosition, getTileCoordinate, TILE_SIZE, tileCoordinateToPosition} from "../helpers/position-helper.ts";
 import {isDebugMode} from "../helpers/registry-helper.ts";
-import {HEX_COLOR_DANGER, HEX_COLOR_WHITE} from '../helpers/colors.ts';
+import {HEX_COLOR_DANGER, HEX_COLOR_WHITE} from "../helpers/colors.ts";
 import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
@@ -13,7 +13,7 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
   disallowedTiles: true[][];
 
   constructor() {
-    super('BuildMenuScene');
+    super("BuildMenuScene");
   }
 
   init(data: { occupiedTiles: Vector2Like[] }) {
@@ -39,18 +39,18 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
       });
     });
     // Listener for pointer (mouse/touch) inputs
-    this.input.on('pointerdown', (pointer: Pointer) => {
+    this.input.on("pointerdown", (pointer: Pointer) => {
       this.addOrRemoveTile(pointer);
     });
-    this.input.on('pointermove', (pointer: Pointer) => {
+    this.input.on("pointermove", (pointer: Pointer) => {
       this.showTowerPreview(pointer);
     });
-    this.input.keyboard?.on('keydown', (event: KeyboardEvent) => {
-      if (event.key === 'b') {
+    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+      if (event.key === "b") {
         // todo: pass the buildings to the main scene
         delete this.towerPreview;
-        this.scene.resume('MainScene');
-        this.events.emit('buildComplete', {buildings: this.pendingBuildings});
+        this.scene.resume("MainScene");
+        this.events.emit("buildComplete", {buildings: this.pendingBuildings});
         this.scene.stop();
       }
     });

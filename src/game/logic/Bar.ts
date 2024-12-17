@@ -1,7 +1,7 @@
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {HEX_COLOR_DANGER, HEX_COLOR_SUCCESS} from '../helpers/colors.ts';
-import {formatNumber} from '../helpers/text-helpers.ts';
-import {VectorZeroes} from '../helpers/position-helper.ts';
+import {HEX_COLOR_DANGER, HEX_COLOR_SUCCESS} from "../helpers/colors.ts";
+import {formatNumber} from "../helpers/text-helpers.ts";
+import {VectorZeroes} from "../helpers/position-helper.ts";
 
 abstract class Bar {
   scene: Phaser.Scene;
@@ -29,13 +29,13 @@ abstract class Bar {
     this.bar = this.scene.add.graphics();
 
     if (displayText) {
-      this.text = scene.add.text(position.x, position.y, '', {
-        fontFamily: 'Arial Black',
+      this.text = scene.add.text(position.x, position.y, "", {
+        fontFamily: "Arial Black",
         fontSize: 12,
-        color: '#ffffff',
-        stroke: '#000000',
+        color: "#ffffff",
+        stroke: "#000000",
         strokeThickness: 4,
-        align: 'center',
+        align: "center",
       }).setFixedSize(width, height);
     }
 

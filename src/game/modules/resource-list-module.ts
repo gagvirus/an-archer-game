@@ -22,15 +22,20 @@ class ResourceListModule extends AbstractModule {
 
   start() {
     if (!this.container && !this.panel) {
-      this.container = this.scene.rexUI.add.sizer({orientation: "vertical", space: {item: 10}, width: 100, height: 100});
+      this.container = this.scene.rexUI.add.sizer({
+        orientation: "vertical",
+        space: {item: 10},
+        width: 100,
+        height: 100
+      });
 
       this.panel = this.scene.rexUI.add.scrollablePanel(UiHelper.getDefaultScrollablePanelConfigs(
         this.scene, this.container, this.scene.scale.width - 65, 150, 100, 150,
-        {slider: false, align: {panel: 'right'}, /*background: undefined*/},
+        {slider: false, align: {panel: "right"}, /*background: undefined*/},
       ));
 
       Object.entries(ResourceType).forEach(([key, value]) => {
-        const resourceText = createText(this.scene, `${key}s: 0`, VectorZeroes(), 16, 'right', false, COLOR_WHITE, {fixedWidth: 100});
+        const resourceText = createText(this.scene, `${key}s: 0`, VectorZeroes(), 16, "right", false, COLOR_WHITE, {fixedWidth: 100});
         this.resources[value] = resourceText;
         this.container?.add(resourceText);
       });

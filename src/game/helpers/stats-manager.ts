@@ -3,17 +3,18 @@ import {Scene} from "phaser";
 import Hero from "../logic/Hero.ts";
 import {BooleanStats} from "./powerup-manager.ts";
 import {
-  HEX_COLOR_RESILIENCE,
   HEX_COLOR_GREEN_FINESSE,
-  HEX_COLOR_RED_AWARENESS,
-  HEX_COLOR_THOUGHTFULNESS,
   HEX_COLOR_GREEN_FINESSE_DARK,
-  HEX_COLOR_RED_AWARENESS_DARK,
-  HEX_COLOR_RESILIENCE_DARK,
-  HEX_COLOR_THOUGHTFULNESS_DARK,
   HEX_COLOR_GREEN_FINESSE_DARKER,
+  HEX_COLOR_RED_AWARENESS,
+  HEX_COLOR_RED_AWARENESS_DARK,
   HEX_COLOR_RED_AWARENESS_DARKER,
-  HEX_COLOR_RESILIENCE_DARKER, HEX_COLOR_THOUGHTFULNESS_DARKER
+  HEX_COLOR_RESILIENCE,
+  HEX_COLOR_RESILIENCE_DARK,
+  HEX_COLOR_RESILIENCE_DARKER,
+  HEX_COLOR_THOUGHTFULNESS,
+  HEX_COLOR_THOUGHTFULNESS_DARK,
+  HEX_COLOR_THOUGHTFULNESS_DARKER
 } from "./colors.ts";
 
 export interface IStat {
@@ -315,32 +316,32 @@ class StatsManager {
     return [
       // offensive stats
       //   attack speed
-      {label: 'Base Attack Time', prop: Attribute.baseAttackTime},
-      {label: 'Attack Speed Bonus', prop: Attribute.attackSpeedBonus},
-      {label: 'Attack Rate', prop: Attribute.attackRate},
-      {label: 'Attacks Per Second', prop: Attribute.attacksPerSecond},
+      {label: "Base Attack Time", prop: Attribute.baseAttackTime},
+      {label: "Attack Speed Bonus", prop: Attribute.attackSpeedBonus},
+      {label: "Attack Rate", prop: Attribute.attackRate},
+      {label: "Attacks Per Second", prop: Attribute.attacksPerSecond},
       //   damage
-      {label: 'Damage multiplier', prop: Attribute.damageMultiplier},
+      {label: "Damage multiplier", prop: Attribute.damageMultiplier},
       //   critical
-      {label: 'Critical Chance %', prop: Attribute.criticalChancePercent},
-      {label: 'Critical Damage Multiplier', prop: Attribute.criticalExtraDamageMultiplier},
+      {label: "Critical Chance %", prop: Attribute.criticalChancePercent},
+      {label: "Critical Damage Multiplier", prop: Attribute.criticalExtraDamageMultiplier},
 
       // defensive stats
       //   evade
-      {label: 'Evade Chance %', prop: Attribute.evadeChancePercent},
+      {label: "Evade Chance %", prop: Attribute.evadeChancePercent},
       //   health
-      {label: 'Max Health Multiplier', prop: Attribute.maxHealthMultiplier},
-      {label: 'Health Regen Amount', prop: Attribute.healthRegenPerInterval},
-      {label: 'Health Regen Interval', prop: Attribute.healthRegenerationInterval},
+      {label: "Max Health Multiplier", prop: Attribute.maxHealthMultiplier},
+      {label: "Health Regen Amount", prop: Attribute.healthRegenPerInterval},
+      {label: "Health Regen Interval", prop: Attribute.healthRegenerationInterval},
       //   armor
-      {label: 'Armor Rating Bonus', prop: Attribute.armorRatingBonus},
-      {label: 'Armor Rating', prop: Attribute.armorRating},
-      {label: 'Flat Damage Reduction', prop: Attribute.flatDamageReduction},
-      {label: 'Percent Damage Reduction', prop: Attribute.percentReduction},
+      {label: "Armor Rating Bonus", prop: Attribute.armorRatingBonus},
+      {label: "Armor Rating", prop: Attribute.armorRating},
+      {label: "Flat Damage Reduction", prop: Attribute.flatDamageReduction},
+      {label: "Percent Damage Reduction", prop: Attribute.percentReduction},
       // miscellaneous
-      {label: 'XP Gain Multiplier', prop: Attribute.xpGainMultiplier},
-      {label: 'Drop Chance Multiplier', prop: Attribute.dropChanceModifier},
-      {label: 'Drop Amount Modifier', prop: Attribute.dropAmountModifier},
+      {label: "XP Gain Multiplier", prop: Attribute.xpGainMultiplier},
+      {label: "Drop Chance Multiplier", prop: Attribute.dropChanceModifier},
+      {label: "Drop Amount Modifier", prop: Attribute.dropAmountModifier},
     ];
   }
 

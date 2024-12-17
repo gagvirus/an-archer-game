@@ -1,5 +1,5 @@
 import Bar from "./Bar.ts";
-import {HEX_COLOR_DANGER, HEX_COLOR_SUCCESS} from '../helpers/colors.ts';
+import {HEX_COLOR_DANGER, HEX_COLOR_SUCCESS} from "../helpers/colors.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 class HealthBar extends Bar {

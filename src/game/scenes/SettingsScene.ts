@@ -4,14 +4,14 @@ import {
   HEX_COLOR_LIGHT,
   HEX_COLOR_PRIMARY,
   HEX_COLOR_SUCCESS
-} from '../helpers/colors.ts';
-import {VectorZeroes} from '../helpers/position-helper.ts';
+} from "../helpers/colors.ts";
+import {VectorZeroes} from "../helpers/position-helper.ts";
 import {Scene} from "phaser";
 import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
-type SettingKey = 'debugMode' | 'autoAttack' | 'easyMode' | 'rapidLevelUp';
+type SettingKey = "debugMode" | "autoAttack" | "easyMode" | "rapidLevelUp";
 
 class SettingsScene extends Scene implements ISceneLifecycle {
   private debugMode: boolean = false;
@@ -20,7 +20,7 @@ class SettingsScene extends Scene implements ISceneLifecycle {
   private rapidLevelUp: boolean = false;
 
   constructor() {
-    super('SettingsScene');
+    super("SettingsScene");
   }
 
   create() {
@@ -29,7 +29,7 @@ class SettingsScene extends Scene implements ISceneLifecycle {
         x: this.scale.width / 2,
         y: this.scale.height / 2,
         height: this.scale.height - 100,
-        scrollMode: 'y',
+        scrollMode: "y",
         background: this.rexUI.add.roundRectangle({
           strokeColor: HEX_COLOR_LIGHT,
           color: HEX_COLOR_PRIMARY,
@@ -51,15 +51,15 @@ class SettingsScene extends Scene implements ISceneLifecycle {
           space: {left: 5, right: 5, top: 5, bottom: 15},
           background: this.rexUI.add.roundRectangle({color: HEX_COLOR_PRIMARY}),
           text: this.add.text(0, 0, "Settings", {fontSize: 20}),
-          align: 'center',
+          align: "center",
         }),
         footer: this.rexUI.add.label({
           space: {left: 5, right: 5, top: 5, bottom: 5},
           background: this.rexUI.add.roundRectangle({color: HEX_COLOR_PRIMARY}),
-          text: this.add.text(0, 0, 'Go Back', {fontSize: 20})
+          text: this.add.text(0, 0, "Go Back", {fontSize: 20})
             .setInteractive()
-            .on('pointerup', () => {
-              this.scene.start('MainMenu');
+            .on("pointerup", () => {
+              this.scene.start("MainMenu");
             })
         }),
         space: {left: 15, right: 15, top: 15, bottom: 15, panel: 15, header: 15, footer: 15}
@@ -68,12 +68,12 @@ class SettingsScene extends Scene implements ISceneLifecycle {
   }
 
   createContainer() {
-    const container = this.rexUI.add.sizer({orientation: 'vertical', space: {item: 5}});
+    const container = this.rexUI.add.sizer({orientation: "vertical", space: {item: 5}});
 
-    container.add(this.addSettingsRow('debugMode', 'Debug Mode', {x: 40, y: -5}, VectorZeroes()));
-    container.add(this.addSettingsRow('autoAttack', 'Auto Attack', {x: 40, y: -5}, VectorZeroes()));
-    container.add(this.addSettingsRow('easyMode', 'Easy Mode', {x: 40, y: -5}, VectorZeroes()));
-    container.add(this.addSettingsRow('rapidLevelUp', 'Rapid Level Up', {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow("debugMode", "Debug Mode", {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow("autoAttack", "Auto Attack", {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow("easyMode", "Easy Mode", {x: 40, y: -5}, VectorZeroes()));
+    container.add(this.addSettingsRow("rapidLevelUp", "Rapid Level Up", {x: 40, y: -5}, VectorZeroes()));
 
     return container;
   }
@@ -82,8 +82,8 @@ class SettingsScene extends Scene implements ISceneLifecycle {
     const checkbox: Rectangle = this.add.rectangle(checkboxOffset.x, checkboxOffset.y, 20, 20, this[settingKey] ? HEX_COLOR_SUCCESS : HEX_COLOR_DANGER)
       .setInteractive();
 
-    checkbox.on('pointerdown', () => this.updateBoolVal(settingKey, checkbox));
-    const text = this.add.text(textOffset.x, textOffset.y, label).setInteractive().on('pointerup', () => this.updateBoolVal(settingKey, checkbox));
+    checkbox.on("pointerdown", () => this.updateBoolVal(settingKey, checkbox));
+    const text = this.add.text(textOffset.x, textOffset.y, label).setInteractive().on("pointerup", () => this.updateBoolVal(settingKey, checkbox));
     // Toggle debug mode when clicking the checkbox
     const width = this.scale.width - 200;
     const background = this.rexUI.add.roundRectangle({
@@ -114,10 +114,10 @@ class SettingsScene extends Scene implements ISceneLifecycle {
   }
 
   private loadStoredSettingsValues() {
-    this.debugMode = this.game.registry.get('debugMode') == 'true';
-    this.autoAttack = this.game.registry.get('autoAttack') == 'true';
-    this.easyMode = this.game.registry.get('easyMode') == 'true';
-    this.rapidLevelUp = this.game.registry.get('rapidLevelUp') == 'true';
+    this.debugMode = this.game.registry.get("debugMode") == "true";
+    this.autoAttack = this.game.registry.get("autoAttack") == "true";
+    this.easyMode = this.game.registry.get("easyMode") == "true";
+    this.rapidLevelUp = this.game.registry.get("rapidLevelUp") == "true";
   }
 }
 

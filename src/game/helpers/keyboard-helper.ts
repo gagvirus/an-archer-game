@@ -1,4 +1,4 @@
-import {Scene} from 'phaser';
+import {Scene} from "phaser";
 import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
 import CursorKeys = Phaser.Types.Input.Keyboard.CursorKeys;
 

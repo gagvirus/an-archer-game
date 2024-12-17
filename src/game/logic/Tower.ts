@@ -1,7 +1,7 @@
 import Phaser, {Scene} from "phaser";
 import {isDebugMode} from "../helpers/registry-helper.ts";
 import {TILE_SIZE} from "../helpers/position-helper.ts";
-import {HEX_COLOR_WARNING} from '../helpers/colors.ts';
+import {HEX_COLOR_WARNING} from "../helpers/colors.ts";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -9,7 +9,7 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
   outline?: Rectangle;
 
   constructor(scene: Scene, x: number, y: number) {
-    super(scene, x, y, 'towers', 0);
+    super(scene, x, y, "towers", 0);
     scene.add.existing(this);
     this.outline = scene.add.rectangle(this.x, this.y, this.width, this.height, HEX_COLOR_WARNING, 0.3);
     this.outline.setVisible(isDebugMode(scene.game));

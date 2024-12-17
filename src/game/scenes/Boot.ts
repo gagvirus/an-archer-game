@@ -1,9 +1,9 @@
-import {Scene} from 'phaser';
+import {Scene} from "phaser";
 import {ISceneLifecycle} from "../ISceneLifecycle.ts";
 
 export class Boot extends Scene implements ISceneLifecycle {
   constructor() {
-    super('Boot');
+    super("Boot");
   }
 
   preload() {
@@ -12,11 +12,11 @@ export class Boot extends Scene implements ISceneLifecycle {
   }
 
   create() {
-    this.game.registry.set('debugMode', localStorage.getItem('debugMode'));
-    this.game.registry.set('autoAttack', localStorage.getItem('autoAttack'));
-    this.game.registry.set('easyMode', localStorage.getItem('easyMode'));
-    this.game.registry.set('rapidLevelUp', localStorage.getItem('rapidLevelUp'));
+    this.game.registry.set("debugMode", localStorage.getItem("debugMode"));
+    this.game.registry.set("autoAttack", localStorage.getItem("autoAttack"));
+    this.game.registry.set("easyMode", localStorage.getItem("easyMode"));
+    this.game.registry.set("rapidLevelUp", localStorage.getItem("rapidLevelUp"));
 
-    this.scene.start('Preloader');
+    this.scene.start("Preloader");
   }
 }

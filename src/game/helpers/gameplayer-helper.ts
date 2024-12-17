@@ -98,7 +98,7 @@ class Attackable {
       if (this.scene) {
         if (this.health < this.maxHealth) {
           showReplenishedHealth(this.scene, this.owner as Vector2Like, amount);
-          addLogEntry('Replenished :hp HP', {
+          addLogEntry("Replenished :hp HP", {
             hp: [amount, COLOR_SUCCESS],
           }, LogEntryCategory.Combat);
         }
@@ -125,11 +125,11 @@ class Attackable {
   }
 
   onKilledTarget(target: Attackable) {
-    if ('xpManager' in this.owner) {
-      if ('xpAmount' in target.owner) {
+    if ("xpManager" in this.owner) {
+      if ("xpAmount" in target.owner) {
         const xpAmount: number = target.owner.xpAmount as number;
         let xpGainMultiplier = 1;
-        if ('stats' in this.owner) {
+        if ("stats" in this.owner) {
           xpGainMultiplier = (this.owner.stats as StatsManager).xpGainMultiplier;
         }
 
@@ -139,7 +139,7 @@ class Attackable {
   }
 
   registerHealthRegenerationIfNecessary() {
-    if ('stats' in this.owner) {
+    if ("stats" in this.owner) {
       this.stopRegeneration();
       const statsManager = this.owner.stats as StatsManager;
       if (statsManager.healthRegenerationInterval > 0) {

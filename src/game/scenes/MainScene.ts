@@ -237,7 +237,7 @@ class MainScene extends Scene implements ISceneLifecycle {
       targets: drop,
       x: targetX,
       y: targetY,
-      ease: 'Power2',
+      ease: "Power2",
       duration: 500,
       onComplete: () => {
         // Stop the drop after it lands

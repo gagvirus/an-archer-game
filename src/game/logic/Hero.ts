@@ -188,8 +188,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.handleHeroMovement(cursors);
   }
 
-  handleHeroMovement(cursors: CustomCursorKeysDown)
-  {
+  handleHeroMovement(cursors: CustomCursorKeysDown) {
     const speed = this.walkSpeed * this.extra.getMultiplierStat(MultipliableStat.walkSpeed);
     // Handle hero movement
     if (cursors.left) {

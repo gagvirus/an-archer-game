@@ -1,11 +1,11 @@
-import {GameObjects, Scene} from 'phaser';
-import {COLOR_DANGER, COLOR_LIGHT, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from './colors.ts';
+import {GameObjects, Scene} from "phaser";
+import {COLOR_DANGER, COLOR_LIGHT, COLOR_SUCCESS, COLOR_WARNING, COLOR_WHITE} from "./colors.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import TextStyle = Phaser.Types.GameObjects.Text.TextStyle;
 
-const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = 'center', defaultStroke: boolean = true, color: string = COLOR_WHITE, styleOverride: TextStyle = {}): GameObjects.Text => {
+const createText = (scene: Scene, text: string, position: Vector2Like, fontSize: number = 32, align: string = "center", defaultStroke: boolean = true, color: string = COLOR_WHITE, styleOverride: TextStyle = {}): GameObjects.Text => {
   let textConfig: TextStyle = {
-    fontFamily: 'Arial Black',
+    fontFamily: "Arial Black",
     color,
     fontSize,
     align,
@@ -13,7 +13,7 @@ const createText = (scene: Scene, text: string, position: Vector2Like, fontSize:
   if (defaultStroke) {
     textConfig = {
       ...textConfig,
-      stroke: '#000000',
+      stroke: "#000000",
       strokeThickness: Math.floor(fontSize / 4)
     };
   }
@@ -29,7 +29,7 @@ const createCenteredText = (scene: Scene, text: string, verticalOffset: number =
   if (isInteractive) {
     textObject.setInteractive();
     if (onClick) {
-      textObject.on('pointerdown', onClick);
+      textObject.on("pointerdown", onClick);
     }
   }
 
@@ -48,7 +48,7 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
     targets: animatedText,
     y: screenHeight / 2,
     duration: 1000, // 1 second duration to move up
-    ease: 'Power2',
+    ease: "Power2",
   });
 
   // Fade out the text after a delay
@@ -69,13 +69,13 @@ const createAnimatedText = (scene: Scene, text: string, duration: number) => {
 function formatNumber(value: number) {
   value = Math.round(value);
   if (value >= 1_000_000_000_000) {
-    return (value / 1_000_000_000_000).toFixed(1).replace(/\.0$/, '') + 't';
+    return (value / 1_000_000_000_000).toFixed(1).replace(/\.0$/, "") + "t";
   } else if (value >= 1_000_000_000) {
-    return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'b';
+    return (value / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + "b";
   } else if (value >= 1_000_000) {
-    return (value / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'm';
+    return (value / 1_000_000).toFixed(1).replace(/\.0$/, "") + "m";
   } else if (value >= 1_000) {
-    return (value / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return (value / 1_000).toFixed(1).replace(/\.0$/, "") + "k";
   } else {
     return value.toString();
   }
@@ -87,32 +87,32 @@ function formatNumber(value: number) {
  * @param {Vector2Like} position - Position to create the text
  * @param {string} text - Text to display.
  * @param {string} size - Size of the text
- * @param {'md' | 'lg' | 'xl' | 'sm' | 'sx'} color - Color of the text
+ * @param {"md" | "lg" | "xl" | "sm" | "sx"} color - Color of the text
  */
-const showFloatingText = (scene: Scene, position: Vector2Like, text: string, size: 'md' | 'lg' | 'xl' | 'sm' | 'xs' = 'md', color: string = COLOR_WHITE) => {
+const showFloatingText = (scene: Scene, position: Vector2Like, text: string, size: "md" | "lg" | "xl" | "sm" | "xs" = "md", color: string = COLOR_WHITE) => {
   let fontSize = 16;
   switch (size) {
-    case 'xs':
+    case "xs":
       fontSize = 8;
       break;
-    case 'sm':
+    case "sm":
       fontSize = 12;
       break;
-    case 'lg':
+    case "lg":
       fontSize = 18;
       break;
-    case 'xl':
+    case "xl":
       fontSize = 24;
       break;
   }
-  const floatingText = createText(scene, text, position, fontSize, 'center', false, color);
+  const floatingText = createText(scene, text, position, fontSize, "center", false, color);
 
   scene.tweens.add({
     targets: floatingText,
     y: position.y - 50, // Move up by 50 pixels
     alpha: 0, // Fade out
     duration: 1000, // 1 second
-    ease: 'Power1',
+    ease: "Power1",
     onComplete: () => {
       floatingText.destroy(); // Remove the text after the animation completes
     }
@@ -121,32 +121,32 @@ const showFloatingText = (scene: Scene, position: Vector2Like, text: string, siz
 
 const showDamage = (scene: Scene, position: Vector2Like, amount: number, isCritical: boolean = false) => {
   const color = isCritical ? COLOR_WARNING : COLOR_DANGER;
-  const size = isCritical ? 'lg' : 'sm';
+  const size = isCritical ? "lg" : "sm";
   showFloatingText(scene, position, `-${formatNumber(amount)}`, size, color);
 };
 
 const showGainedXp = (scene: Scene, position: Vector2Like, amount: number) => {
-  showFloatingText(scene, position, `+ ${formatNumber(amount)} XP`, 'xs', COLOR_SUCCESS);
+  showFloatingText(scene, position, `+ ${formatNumber(amount)} XP`, "xs", COLOR_SUCCESS);
 };
 
 const showReplenishedHealth = (scene: Scene, position: Vector2Like, amount: number) => {
-  showFloatingText(scene, position, `+ ${formatNumber(amount)} HP`, 'sm', COLOR_LIGHT);
+  showFloatingText(scene, position, `+ ${formatNumber(amount)} HP`, "sm", COLOR_LIGHT);
 };
 
 const showEvaded = (scene: Scene, position: Vector2Like) => {
-  showFloatingText(scene, position, 'Evaded !', 'md', COLOR_SUCCESS);
+  showFloatingText(scene, position, "Evaded !", "md", COLOR_SUCCESS);
 };
 
 const showCollectedLoot = (scene: Scene, position: Vector2Like, name: string, amount: number) => {
-  showFloatingText(scene, position, `+ ${amount} ${pluralize(amount, name)}`, 'sm', COLOR_WARNING);
+  showFloatingText(scene, position, `+ ${amount} ${pluralize(amount, name)}`, "sm", COLOR_WARNING);
 };
 
-const pluralize = (count: number, noun: string, suffix = 's') => {
-  return `${noun}${count !== 1 ? suffix : ''}`;
+const pluralize = (count: number, noun: string, suffix = "s") => {
+  return `${noun}${count !== 1 ? suffix : ""}`;
 };
 
 const createAnimatedSprite = (scene: Scene, animation: string) => {
-  const sprite = scene.add.sprite(0, 0, '');
+  const sprite = scene.add.sprite(0, 0, "");
   sprite.play(animation);
   return sprite;
 };
