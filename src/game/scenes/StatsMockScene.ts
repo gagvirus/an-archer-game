@@ -1,10 +1,30 @@
 import { Scene } from "phaser";
 import { HEX_COLOR_DARK, HEX_COLOR_WHITE } from "../helpers/colors.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { createText } from "../helpers/text-helpers.ts";
+import { VectorZeroes } from "../helpers/position-helper.ts";
+import StatsManager, {
+  IAttribute,
+  ICoreStat,
+} from "../helpers/stats-manager.ts";
+import Hero from "../logic/Hero.ts";
 
 export default class StatsMockScene extends Scene implements ISceneLifecycle {
+  private coreStats: ICoreStat[];
+  private statsManager: StatsManager;
+  private attributes: IAttribute[];
   constructor() {
     super({ key: "StatsScene" });
+    this.coreStats = StatsManager.listCoreStats();
+    this.attributes = StatsManager.listAttributes();
+  }
+
+  init(data: { statsManager: StatsManager }) {
+    if (data.statsManager) {
+      this.statsManager = data.statsManager;
+    } else {
+      this.statsManager = new StatsManager(this, new Hero(this, -100, -100));
+    }
   }
 
   create() {
@@ -42,7 +62,21 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       this.scale.width * 0.9 * 0.3, // 3/10 width of the full screen width minus padding 10%
       this.scale.height - 40, // full height minus padding
     );
-    console.log(container);
+    this.attributes.forEach((attribute) => {
+      const value = parseFloat(
+        this.statsManager.getAttribute(attribute.prop).toFixed(2),
+      );
+      container.add(
+        createText(
+          this,
+          `${attribute.label}: ${value}`,
+          VectorZeroes(),
+          16,
+          "left",
+          false,
+        ),
+      );
+    });
     return container;
   }
 
@@ -62,7 +96,21 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       this.scale.width * 0.9 * 0.3, // 3/10 width of the full screen width minus padding 10%
       this.scale.height - 40, // full height minus padding
     );
-    console.log(container);
+    this.coreStats.forEach((coreStat) => {
+      coreStat.stats.forEach((stat) => {
+        const value = this.statsManager.getChildStat(stat.prop);
+        container.add(
+          createText(
+            this,
+            `${stat.label}: ${value}`,
+            VectorZeroes(),
+            16,
+            "left",
+            false,
+          ),
+        );
+      });
+    });
     return container;
   }
 
