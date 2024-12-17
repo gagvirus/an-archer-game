@@ -2,13 +2,17 @@ import Phaser from "phaser";
 import Hero from "./Hero";
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
-import {Attackable} from "../helpers/gameplayer-helper.ts";
-import {enemies, EnemyDef, EnemyDrops} from "./enemies.ts";
-import {getRandomItem, randomChance} from "../helpers/random-helper.ts";
-import {isDebugMode} from "../helpers/registry-helper.ts";
-import {COLOR_DANGER, COLOR_WARNING, HEX_COLOR_WARNING} from "../helpers/colors.ts";
-import {showDamage, showEvaded} from "../helpers/text-helpers.ts";
-import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
+import { Attackable } from "../helpers/gameplayer-helper.ts";
+import { enemies, EnemyDef, EnemyDrops } from "./enemies.ts";
+import { getRandomItem, randomChance } from "../helpers/random-helper.ts";
+import { isDebugMode } from "../helpers/registry-helper.ts";
+import {
+  COLOR_DANGER,
+  COLOR_WARNING,
+  HEX_COLOR_WARNING,
+} from "../helpers/colors.ts";
+import { showDamage, showEvaded } from "../helpers/text-helpers.ts";
+import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
@@ -33,18 +37,24 @@ class Enemy extends Sprite {
   drops: EnemyDrops;
 
   constructor(scene: MainScene, x: number, y: number, enemyDef?: EnemyDef) {
-    super(scene, x, y, "enemy");  // 'enemy' is the key for the enemy sprite
-    scene.add.existing(this);     // Add to the scene
+    super(scene, x, y, "enemy"); // 'enemy' is the key for the enemy sprite
+    scene.add.existing(this); // Add to the scene
     scene.physics.add.existing(this); // Enable physics
     this.setCollideWorldBounds(true); // Prevent enemy from going offscreen
 
-    this.hero = scene.hero as Hero;  // Reference to the hero object
+    this.hero = scene.hero as Hero; // Reference to the hero object
 
-    this.setBounce(1);  // Add bounce for better collision response
+    this.setBounce(1); // Add bounce for better collision response
 
     this.instantiate(enemyDef);
 
-    this.attackRadiusCircle = scene.add.circle(this.x, this.y, this.attackRange, HEX_COLOR_WARNING, 0.3);
+    this.attackRadiusCircle = scene.add.circle(
+      this.x,
+      this.y,
+      this.attackRange,
+      HEX_COLOR_WARNING,
+      0.3,
+    );
     this.attackRadiusCircle.setVisible(isDebugMode(scene.game));
 
     this.attackCooldown = 0;
@@ -57,7 +67,8 @@ class Enemy extends Sprite {
       this.attacksPerSecond,
       this.attackDamage,
       this.maxHealth,
-      (maxHealth: number) => new HealthBar(scene, this, 40, 5, maxHealth, {x: -20, y: -30}),
+      (maxHealth: number) =>
+        new HealthBar(scene, this, 40, 5, maxHealth, { x: -20, y: -30 }),
       () => {
         this.destroy();
         scene.onEnemyKilled(this);
@@ -65,21 +76,31 @@ class Enemy extends Sprite {
       () => {
         const isEvaded = randomChance(this.hero.stats.evadeChancePercent);
         if (isEvaded) {
-          addLogEntry(":hero evaded attack from :opponent", {
-            hero: [this.hero.name, COLOR_WARNING],
-            opponent: [this.name, COLOR_DANGER],
-          }, LogEntryCategory.Combat);
+          addLogEntry(
+            ":hero evaded attack from :opponent",
+            {
+              hero: [this.hero.name, COLOR_WARNING],
+              opponent: [this.name, COLOR_DANGER],
+            },
+            LogEntryCategory.Combat,
+          );
           showEvaded(this.scene, this.hero as Vector2Like);
         } else {
-          const blockedDamage = this.hero.stats.getFinalDamageReduction(this.attackDamage);
+          const blockedDamage = this.hero.stats.getFinalDamageReduction(
+            this.attackDamage,
+          );
           const damageDealt = this.attackDamage - blockedDamage;
-          addLogEntry(":enemy attacked :opponent for :damage DMG, but :blocker blocked :blocked DMG", {
-            enemy: [this.name, COLOR_DANGER],
-            opponent: [this.hero.name, COLOR_WARNING],
-            damage: [this.attackDamage, COLOR_DANGER],
-            blocker: [this.hero.name, COLOR_WARNING],
-            blocked: [blockedDamage, COLOR_WARNING],
-          }, LogEntryCategory.Combat);
+          addLogEntry(
+            ":enemy attacked :opponent for :damage DMG, but :blocker blocked :blocked DMG",
+            {
+              enemy: [this.name, COLOR_DANGER],
+              opponent: [this.hero.name, COLOR_WARNING],
+              damage: [this.attackDamage, COLOR_DANGER],
+              blocker: [this.hero.name, COLOR_WARNING],
+              blocked: [blockedDamage, COLOR_WARNING],
+            },
+            LogEntryCategory.Combat,
+          );
           this.hero.attackable.takeDamage(damageDealt);
           showDamage(this.scene, this.hero as Vector2Like, damageDealt, false);
         }
@@ -95,9 +116,14 @@ class Enemy extends Sprite {
   // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
   instantiate = (enemyDef?: EnemyDef): void => {
     if (!enemyDef) {
-      const enemiesFilteredByHeroLevel = enemies.filter((enemyDef: EnemyDef) => {
-        return enemyDef.minLevel <= this.hero.xpManager.level && enemyDef.maxLevel >= this.hero.xpManager.level;
-      });
+      const enemiesFilteredByHeroLevel = enemies.filter(
+        (enemyDef: EnemyDef) => {
+          return (
+            enemyDef.minLevel <= this.hero.xpManager.level &&
+            enemyDef.maxLevel >= this.hero.xpManager.level
+          );
+        },
+      );
       enemyDef = getRandomItem<EnemyDef>(enemiesFilteredByHeroLevel);
     }
     this.maxHealth = enemyDef.maxHealth;
@@ -134,15 +160,20 @@ class Enemy extends Sprite {
     this.attackRadiusCircle.setPosition(this.x, this.y);
 
     // Check if the hero is within the attack range
-    const distanceToHero = Phaser.Math.Distance.Between(this.x, this.y, this.hero.x, this.hero.y);
+    const distanceToHero = Phaser.Math.Distance.Between(
+      this.x,
+      this.y,
+      this.hero.x,
+      this.hero.y,
+    );
 
     if (distanceToHero <= this.attackRange) {
       this.isAttacking = true;
-      this.setVelocity(0);  // Stop moving
-      this.attackable.attack();  // Attack the hero
+      this.setVelocity(0); // Stop moving
+      this.attackable.attack(); // Attack the hero
     } else {
       this.isAttacking = false;
-      this.chaseHero();  // Continue chasing the hero
+      this.chaseHero(); // Continue chasing the hero
     }
     this.attackable.healthBar.draw();
   }
@@ -150,7 +181,12 @@ class Enemy extends Sprite {
   // Move the enemy towards the target (the hero)
   chaseHero() {
     // Calculate the angle and direction towards the target
-    const angle = Phaser.Math.Angle.Between(this.x, this.y, this.hero.x, this.hero.y);
+    const angle = Phaser.Math.Angle.Between(
+      this.x,
+      this.y,
+      this.hero.x,
+      this.hero.y,
+    );
     const velocityX = Math.cos(angle) * this.speed;
     const velocityY = Math.sin(angle) * this.speed;
 
@@ -159,7 +195,7 @@ class Enemy extends Sprite {
 
     // Flip the texture based on the direction
     if (velocityX < 0) {
-      this.setFlipX(true);  // Flip the texture to the left
+      this.setFlipX(true); // Flip the texture to the left
     } else {
       this.setFlipX(false); // Keep the texture facing right
     }
@@ -170,14 +206,25 @@ class Enemy extends Sprite {
     enemies.getChildren().forEach((otherEnemy: GameObject) => {
       const enemy = otherEnemy as Enemy;
       if (otherEnemy !== this) {
-        const distance = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
+        const distance = Phaser.Math.Distance.Between(
+          this.x,
+          this.y,
+          enemy.x,
+          enemy.y,
+        );
 
         // Check if the distance is less than the minimum distance
-        if (distance < minDistance) { // Adjust the distance as needed
-          const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
+        if (distance < minDistance) {
+          // Adjust the distance as needed
+          const angle = Phaser.Math.Angle.Between(
+            this.x,
+            this.y,
+            enemy.x,
+            enemy.y,
+          );
           this.setVelocity(
             Math.cos(angle) * -minDistance, // Push away from the other enemy
-            Math.sin(angle) * -minDistance  // Adjust the push strength as needed
+            Math.sin(angle) * -minDistance, // Adjust the push strength as needed
           );
         }
       }

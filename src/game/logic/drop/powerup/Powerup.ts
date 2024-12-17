@@ -1,4 +1,3 @@
-import {Drop} from "../Drop.ts";
+import { Drop } from "../Drop.ts";
 
-export abstract class Powerup extends Drop {
-}
+export abstract class Powerup extends Drop {}

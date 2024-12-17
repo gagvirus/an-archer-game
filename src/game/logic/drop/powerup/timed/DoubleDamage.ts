@@ -1,12 +1,13 @@
 import MainScene from "../../../../scenes/MainScene.ts";
 import TimedPowerup from "./TimedPowerup.ts";
-import {MultipliableStat} from "../../../../helpers/powerup-manager.ts";
-import {PowerupType} from "./powerupType.ts";
+import { MultipliableStat } from "../../../../helpers/powerup-manager.ts";
+import { PowerupType } from "./powerupType.ts";
 
 class DoubleDamage extends TimedPowerup {
   get powerupType(): PowerupType {
-      return PowerupType.DoubleDamage;
+    return PowerupType.DoubleDamage;
   }
+
   applyEffect(scene: MainScene): void {
     scene.hero.extra.setMultiplierStat(MultipliableStat.damage, 2);
   }

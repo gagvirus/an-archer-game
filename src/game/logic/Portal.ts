@@ -24,23 +24,34 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     if (this.state === "disabled") {
       return;
     }
-    const distanceToHero = Phaser.Math.Distance.Between(this.x, this.y, hero.x, hero.y);
+    const distanceToHero = Phaser.Math.Distance.Between(
+      this.x,
+      this.y,
+      hero.x,
+      hero.y,
+    );
     if (distanceToHero <= 50) {
       if (!["activating", "active"].includes(this.state)) {
         this.state = "activating";
         this.anims.play("portal-activate");
-        this.scene.time.delayedCall(this.anims.animationManager.get("portal-activate").duration, () => {
-          this.state = "active";
-        });
+        this.scene.time.delayedCall(
+          this.anims.animationManager.get("portal-activate").duration,
+          () => {
+            this.state = "active";
+          },
+        );
       }
     } else {
       if (!["idle", "activating"].includes(this.state)) {
         this.state = "deactivating";
         this.anims.play("portal-deactivate");
-        this.scene.time.delayedCall(this.anims.animationManager.get("portal-deactivate").duration, () => {
-          this.state = "idle";
-          this.anims.play("portal-idle");
-        });
+        this.scene.time.delayedCall(
+          this.anims.animationManager.get("portal-deactivate").duration,
+          () => {
+            this.state = "idle";
+            this.anims.play("portal-idle");
+          },
+        );
       }
     }
   }

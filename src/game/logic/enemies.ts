@@ -1,5 +1,5 @@
-import {HEX_COLOR_DANGER, HEX_COLOR_WARNING} from "../helpers/colors.ts";
-import {ResourceType} from "./drop/resource/Resource.ts";
+import { HEX_COLOR_DANGER, HEX_COLOR_WARNING } from "../helpers/colors.ts";
+import { ResourceType } from "./drop/resource/Resource.ts"; // min amount, max amount, chance
 
 // min amount, max amount, chance
 export type ResourceDropChance = [number, number, number];
@@ -167,5 +167,5 @@ export const enemies: EnemyDef[] = [
       [ResourceType.coin]: [500, 1000, 100],
       [ResourceType.soul]: [100, 200, 100],
     },
-  }
+  },
 ];

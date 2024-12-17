@@ -1,7 +1,7 @@
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import {HEX_COLOR_DANGER, HEX_COLOR_SUCCESS} from "../helpers/colors.ts";
-import {formatNumber} from "../helpers/text-helpers.ts";
-import {VectorZeroes} from "../helpers/position-helper.ts";
+import { HEX_COLOR_DANGER, HEX_COLOR_SUCCESS } from "../helpers/colors.ts";
+import { formatNumber } from "../helpers/text-helpers.ts";
+import { VectorZeroes } from "../helpers/position-helper.ts";
 
 abstract class Bar {
   scene: Phaser.Scene;
@@ -16,7 +16,18 @@ abstract class Bar {
   filledColor: number;
   emptyColor: number;
 
-  protected constructor(scene: Phaser.Scene, position: Vector2Like, width: number, height: number, maxValue: number, currentValue: number, positionOffset?: Vector2Like, filledColor?: number, emptyColor?: number, displayText: boolean = false) {
+  protected constructor(
+    scene: Phaser.Scene,
+    position: Vector2Like,
+    width: number,
+    height: number,
+    maxValue: number,
+    currentValue: number,
+    positionOffset?: Vector2Like,
+    filledColor?: number,
+    emptyColor?: number,
+    displayText: boolean = false,
+  ) {
     this.scene = scene;
     this.position = position;
     this.width = width;
@@ -29,14 +40,16 @@ abstract class Bar {
     this.bar = this.scene.add.graphics();
 
     if (displayText) {
-      this.text = scene.add.text(position.x, position.y, "", {
-        fontFamily: "Arial Black",
-        fontSize: 12,
-        color: "#ffffff",
-        stroke: "#000000",
-        strokeThickness: 4,
-        align: "center",
-      }).setFixedSize(width, height);
+      this.text = scene.add
+        .text(position.x, position.y, "", {
+          fontFamily: "Arial Black",
+          fontSize: 12,
+          color: "#ffffff",
+          stroke: "#000000",
+          strokeThickness: 4,
+          align: "center",
+        })
+        .setFixedSize(width, height);
     }
 
     this.draw();
@@ -48,7 +61,12 @@ abstract class Bar {
 
     // Draw background (red bar)
     this.bar.fillStyle(this.emptyColor);
-    this.bar.fillRect(this.position.x + this.positionOffset.x, this.position.y + this.positionOffset.y, this.width, this.height);
+    this.bar.fillRect(
+      this.position.x + this.positionOffset.x,
+      this.position.y + this.positionOffset.y,
+      this.width,
+      this.height,
+    );
 
     // Calculate the percentage
     const currentValueWidth = (this.currentValue / this.maxValue) * this.width;
@@ -56,7 +74,12 @@ abstract class Bar {
     // Draw filled (green bar)
     if (currentValueWidth > 0) {
       this.bar.fillStyle(this.filledColor);
-      this.bar.fillRect(this.position.x + this.positionOffset.x, this.position.y + this.positionOffset.y, currentValueWidth, this.height);
+      this.bar.fillRect(
+        this.position.x + this.positionOffset.x,
+        this.position.y + this.positionOffset.y,
+        currentValueWidth,
+        this.height,
+      );
     }
 
     if (this.text) {

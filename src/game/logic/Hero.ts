@@ -3,17 +3,22 @@ import Enemy from "./Enemy.ts";
 import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
 import MainScene from "../scenes/MainScene.ts";
-import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
+import { Attackable, XpManager } from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
-import {isAutoAttackEnabled, isDebugMode} from "../helpers/registry-helper.ts";
+import {
+  isAutoAttackEnabled,
+  isDebugMode,
+} from "../helpers/registry-helper.ts";
 import StatsManager from "../helpers/stats-manager.ts";
-import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
-import {VectorZeroes} from "../helpers/position-helper.ts";
-import {CustomCursorKeysDown} from "../helpers/keyboard-helper.ts";
-import {COLOR_SUCCESS, COLOR_WARNING} from "../helpers/colors.ts";
-import {ResourceType} from "./drop/resource/Resource.ts";
-import {randomChance} from "../helpers/random-helper.ts";
-import PowerupManager, {MultipliableStat} from "../helpers/powerup-manager.ts";
+import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
+import { VectorZeroes } from "../helpers/position-helper.ts";
+import { CustomCursorKeysDown } from "../helpers/keyboard-helper.ts";
+import { COLOR_SUCCESS, COLOR_WARNING } from "../helpers/colors.ts";
+import { ResourceType } from "./drop/resource/Resource.ts";
+import { randomChance } from "../helpers/random-helper.ts";
+import PowerupManager, {
+  MultipliableStat,
+} from "../helpers/powerup-manager.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
@@ -36,14 +41,16 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   walkSpeed: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, "hero");  // 'hero' is the key for the hero sprite
-    scene.add.existing(this);     // Add the hero to the scene
+    super(scene, x, y, "hero"); // 'hero' is the key for the hero sprite
+    scene.add.existing(this); // Add the hero to the scene
     scene.physics.add.existing(this); // Enable physics for the hero
     this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
     this._level = 1;
     this.name = "Hero";
     this.walkSpeed = 160;
-    this.collectLootCircle = scene.physics.add.existing(this.scene.add.circle(this.x, this.y, this.pullDistance, 0x0000ff, 0.2));
+    this.collectLootCircle = scene.physics.add.existing(
+      this.scene.add.circle(this.x, this.y, this.pullDistance, 0x0000ff, 0.2),
+    );
     this.collectLootCircle.setVisible(isDebugMode(scene.game));
 
     // Initialize arrow group
@@ -65,7 +72,16 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       this.attacksPerSecond, // attacks per second
       this.attackDamage, // attack damage
       this.maxHealth, // initial health
-      (maxHealth: number) => new HealthBar(scene, {x: 20, y: 20}, 200, 20, maxHealth, VectorZeroes(), true),
+      (maxHealth: number) =>
+        new HealthBar(
+          scene,
+          { x: 20, y: 20 },
+          200,
+          20,
+          maxHealth,
+          VectorZeroes(),
+          true,
+        ),
       () => {
         this.attackable.stopRegeneration();
         this.scene.scene.start("GameOver");
@@ -76,7 +92,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
           this.arrows.add(this.shootArrow(nearestEnemy));
         }
       },
-      this
+      this,
     );
 
     this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
@@ -93,11 +109,19 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   get attackDamage() {
     const BASE_DAMAGE = 10;
     const levelModifier = BASE_DAMAGE * (this._level - 1) * 0.2;
-    return (BASE_DAMAGE + levelModifier) * this.stats.damageMultiplier * this.stats.extraDamageFromOverflowAttackSpeed * this.extra.getMultiplierStat(MultipliableStat.damage);
+    return (
+      (BASE_DAMAGE + levelModifier) *
+      this.stats.damageMultiplier *
+      this.stats.extraDamageFromOverflowAttackSpeed *
+      this.extra.getMultiplierStat(MultipliableStat.damage)
+    );
   }
 
   get attacksPerSecond() {
-    return this.stats.attacksPerSecond * this.extra.getMultiplierStat(MultipliableStat.attackSpeed);
+    return (
+      this.stats.attacksPerSecond *
+      this.extra.getMultiplierStat(MultipliableStat.attackSpeed)
+    );
   }
 
   get maxHealth() {
@@ -110,26 +134,35 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     const critChance = this.stats.criticalChancePercent;
     const critDamageMultiplier = this.stats.criticalExtraDamageMultiplier;
     const pureDps = this.attacksPerSecond * this.attackDamage;
-    const criticalAttacksNumber = this.attacksPerSecond * critChance / 100;
-    const criticalExtraDamage = (criticalAttacksNumber * this.attackDamage) * (critDamageMultiplier - 1);
+    const criticalAttacksNumber = (this.attacksPerSecond * critChance) / 100;
+    const criticalExtraDamage =
+      criticalAttacksNumber * this.attackDamage * (critDamageMultiplier - 1);
     return pureDps + criticalExtraDamage;
   }
 
   onLevelUp = (newLevel: number) => {
-    addLogEntry(":hero has become LVL :level", {
-      hero: [this.name, COLOR_WARNING],
-      level: [newLevel, COLOR_SUCCESS],
-    }, LogEntryCategory.World);
+    addLogEntry(
+      ":hero has become LVL :level",
+      {
+        hero: [this.name, COLOR_WARNING],
+        level: [newLevel, COLOR_SUCCESS],
+      },
+      LogEntryCategory.World,
+    );
     this._level = newLevel;
     this.attackable.setMaxHealth(this.maxHealth, false);
     this.attackable.attackDamage = this.attackDamage;
     this.attackable.attacksPerSecond = this.attacksPerSecond;
     const statPointsToGrant = this.statPointsToGrant;
     this.stats.unallocatedStats += statPointsToGrant;
-    addLogEntry(":hero has received :stats stat points", {
-      hero: [this.name, COLOR_WARNING],
-      stats: [statPointsToGrant, COLOR_SUCCESS],
-    }, LogEntryCategory.Loot);
+    addLogEntry(
+      ":hero has received :stats stat points",
+      {
+        hero: [this.name, COLOR_WARNING],
+        stats: [statPointsToGrant, COLOR_SUCCESS],
+      },
+      LogEntryCategory.Loot,
+    );
     this.xpManager.xpBar.setUnallocatedStats(this.stats.unallocatedStats);
     this.scene.events.emit("levelUp");
   };
@@ -158,10 +191,19 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     return 1;
   }
 
-  initXpBar = (level: number, currentXp: number, xpToNextLevel: number) => new XpBar(this.scene, {
-    x: 20,
-    y: 50
-  }, 200, 20, level, currentXp, xpToNextLevel);
+  initXpBar = (level: number, currentXp: number, xpToNextLevel: number) =>
+    new XpBar(
+      this.scene,
+      {
+        x: 20,
+        y: 50,
+      },
+      200,
+      20,
+      level,
+      currentXp,
+      xpToNextLevel,
+    );
 
   // Method to update the hero's animation based on movement
   // @ts-expect-error we *must* receive time
@@ -189,13 +231,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   handleHeroMovement(cursors: CustomCursorKeysDown) {
-    const speed = this.walkSpeed * this.extra.getMultiplierStat(MultipliableStat.walkSpeed);
+    const speed =
+      this.walkSpeed * this.extra.getMultiplierStat(MultipliableStat.walkSpeed);
     // Handle hero movement
     if (cursors.left) {
-      this.setFlipX(true);  // Flip the sprite to face left
+      this.setFlipX(true); // Flip the sprite to face left
       this.setVelocityX(-speed);
     } else if (cursors.right) {
-      this.setFlipX(false);  // Flip the sprite to face left
+      this.setFlipX(false); // Flip the sprite to face left
       this.setVelocityX(speed);
     } else {
       this.setVelocityX(0);
@@ -210,7 +253,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-
   shootArrow(target: Enemy) {
     let attackDamage = this.attackable.attackDamage;
 
@@ -219,7 +261,17 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       attackDamage *= this.stats.criticalExtraDamageMultiplier;
     }
     target.soonToBeHealth -= attackDamage;
-    const arrow = new Arrow(this.scene, this.x, this.y, target, target.attackable, 500, this.attackable, attackDamage, isCritical);
+    const arrow = new Arrow(
+      this.scene,
+      this.x,
+      this.y,
+      target,
+      target.attackable,
+      500,
+      this.attackable,
+      attackDamage,
+      isCritical,
+    );
     this.scene.add.existing(arrow);
     return arrow;
   }
@@ -228,11 +280,18 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     let nearestEnemy: Enemy | null = null;
     let minDistance = Number.MAX_VALUE;
 
-    const enemies = (this.scene as MainScene).enemies.getChildren().filter((enemy: GameObject) => !(enemy as Enemy).isToBeKilled);
+    const enemies = (this.scene as MainScene).enemies
+      .getChildren()
+      .filter((enemy: GameObject) => !(enemy as Enemy).isToBeKilled);
 
     enemies.forEach((gameObject: GameObject) => {
       const enemy = gameObject as Enemy;
-      const distance = Phaser.Math.Distance.Between(this.x, this.y, enemy.x, enemy.y);
+      const distance = Phaser.Math.Distance.Between(
+        this.x,
+        this.y,
+        enemy.x,
+        enemy.y,
+      );
       if (distance < minDistance) {
         nearestEnemy = enemy as Enemy;
         minDistance = distance;

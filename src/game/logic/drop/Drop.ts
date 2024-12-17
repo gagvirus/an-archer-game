@@ -1,4 +1,4 @@
-import Phaser, {Scene} from "phaser";
+import Phaser, { Scene } from "phaser";
 
 export abstract class Drop extends Phaser.Physics.Arcade.Sprite {
   name: string;

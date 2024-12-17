@@ -1,5 +1,5 @@
 import MainScene from "../../../scenes/MainScene.ts";
-import {Powerup} from "./Powerup.ts";
+import { Powerup } from "./Powerup.ts";
 
 class Magnet extends Powerup {
   onCollected(): void {
