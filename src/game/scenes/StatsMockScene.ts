@@ -108,7 +108,9 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private renderStatRow(stat: IChildStat, rowWidth: number) {
-    const value = this.statsManager.getChildStat(stat.prop);
+    const value = parseFloat(
+      this.statsManager.getChildStat(stat.prop).toFixed(2),
+    ).toString();
 
     const rowHeight = 50;
     const iconWidth = 50; // Fixed width for the icon column
@@ -139,21 +141,17 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
     rowSizer.add(icon, 0, "left", { right: 10 }, false);
 
     // Label column (80% of remaining space)
-    const label = this.add
-      .text(0, 0, stat.label, {
-        fontSize: "18px",
-        color: "#ffffff",
-      })
-      .setOrigin(0, 0.5); // Align left and vertically center
+    const label = createText(this, stat.label, VectorZeroes(), 18).setOrigin(
+      0,
+      0.5,
+    );
     rowSizer.add(label, labelWidthRatio, "left", { right: 10 }, true);
 
     // Value column (remaining space, right-aligned)
-    const valueText = this.add
-      .text(0, 0, parseFloat(value.toFixed(2)).toString(), {
-        fontSize: "18px",
-        color: "#ffffff",
-      })
-      .setOrigin(1, 0.5); // Align right and vertically center
+    const valueText = createText(this, value, VectorZeroes(), 18).setOrigin(
+      1,
+      0.5,
+    );
     rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
 
     // Layout the row
