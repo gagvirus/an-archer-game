@@ -28,7 +28,7 @@ export default class StatsMockScene extends Phaser.Scene {
 
     // Create a horizontal box layout to arrange panels
     this.rexUI.add.sizer({
-      x: screenPadding + panelWidth / 2,
+      x: this.scale.width / 2,
       y: this.scale.height / 2,
       orientation: 'x', // Horizontal layout
       space: {item: panelSpacing}, // Space between panels
