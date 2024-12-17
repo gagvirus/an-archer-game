@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import {HEX_COLOR_DARK, HEX_COLOR_WHITE} from "../helpers/colors.ts";
 
 export default class StatsMockScene extends Phaser.Scene {
   constructor() {
@@ -10,19 +11,21 @@ export default class StatsMockScene extends Phaser.Scene {
   }
 
   create() {
-    const screenPadding = 20;
-    const panelSpacing = 10;
+    const screenPaddingX = this.scale.width / 10; // 10% of the screen
+    const screenPaddingY = 20;
+    const panelSpacing = 20;
 
     // Calculate screen dimensions
-    const screenWidth = this.scale.width - screenPadding * 2;
-    const screenHeight = this.scale.height - screenPadding * 2;
+    const screenWidth = this.scale.width - screenPaddingX * 2;
+    const screenHeight = this.scale.height - screenPaddingY * 2;
 
     // Panel dimensions
-    const panelWidth = (screenWidth - panelSpacing * 2) / 3;
     const panelHeight = screenHeight;
+    const panelWidths = [screenWidth * 0.3, screenWidth * 0.4, screenWidth * 0.3];
 
     // Create panels using RexUI
-    const panels = ['Text1', 'Text2', 'Text3'].map((text) => {
+    const panels = ['Text1', 'Text2', 'Text3'].map((text, i) => {
+      const panelWidth = panelWidths[i];
       return this.createPanel(text, panelWidth, panelHeight);
     });
 
@@ -52,25 +55,21 @@ export default class StatsMockScene extends Phaser.Scene {
 
   private createPanel(title: string, width: number, height: number) {
     // Create a panel container with background and title text
-    return this.rexUI.add.sizer({
-      width,
-      height,
-      orientation: 'y', // Vertical layout
-    })
-      .addBackground(
-        this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, 0x333333)
-          .setStrokeStyle(2, 0xffffff)
-      )
-      .add(
-        this.add.text(0, 0, title, {
-          fontSize: '20px',
-          color: '#ffffff',
-        }),
-        0, // Fixed size
-        'center', // Align center
-        {top: 10}, // Padding at the top
-        false
-      )
+    const container = this.rexUI.add.sizer({width, height, orientation: 'y'});
+    container.addBackground(this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK).setStrokeStyle(2, HEX_COLOR_WHITE));
+    const titleText = this.add.text(0, 0, title, {
+      fontSize: '20px',
+      color: '#ffffff',
+    });
+    container.add(titleText, {
+      padding: {
+        top: 10,
+      }
+    });
+
+    container
       .layout();
+
+    return container;
   }
 }
