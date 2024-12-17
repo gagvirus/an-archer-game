@@ -5,6 +5,7 @@ import { createText } from "../helpers/text-helpers.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
 import StatsManager, {
   IAttribute,
+  IChildStat,
   ICoreStat,
 } from "../helpers/stats-manager.ts";
 import Hero from "../logic/Hero.ts";
@@ -13,6 +14,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private coreStats: ICoreStat[];
   private statsManager: StatsManager;
   private attributes: IAttribute[];
+
   constructor() {
     super({ key: "StatsScene" });
     this.coreStats = StatsManager.listCoreStats();
@@ -98,25 +100,31 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
     );
     this.coreStats.forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
-        const value = this.statsManager.getChildStat(stat.prop);
-        container.add(
-          createText(
-            this,
-            `${stat.label}: ${value}`,
-            VectorZeroes(),
-            16,
-            "left",
-            false,
-          ),
-        );
+        container.add(this.renderStatRow(stat));
       });
     });
     return container;
   }
 
+  private renderStatRow(stat: IChildStat) {
+    const value = this.statsManager.getChildStat(stat.prop);
+    return createText(
+      this,
+      `${stat.label}: ${value}`,
+      VectorZeroes(),
+      16,
+      "left",
+      false,
+    );
+  }
+
   private createContainer(title: string, width: number, height: number) {
     // Create a panel container with background and title text
-    const container = this.rexUI.add.sizer({ width, height, orientation: "y" });
+    const container = this.rexUI.add.sizer({
+      width,
+      height,
+      orientation: "vertical",
+    });
     container.addBackground(
       this.rexUI.add
         .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
