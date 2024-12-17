@@ -122,13 +122,11 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
         .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
         .setStrokeStyle(2, HEX_COLOR_WHITE),
     );
-    const titleText = this.add.text(0, 0, title, {
-      fontSize: "20px",
-      color: "#ffffff",
-    });
+    const titleText = createText(this, title, VectorZeroes(), 20);
     container.add(titleText, {
       padding: {
         top: 10,
+        bottom: 10,
       },
     });
 
