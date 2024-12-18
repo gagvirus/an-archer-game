@@ -75,10 +75,14 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
     const height = this.scale.height * 0.7;
 
     const container = this.rexUI.add.sizer({
-      // width,
-      // height,
       orientation: "vertical",
       space: { item: 10 },
+    });
+    const titleText = createText(this, "Attributes", VectorZeroes(), 20);
+    container.add(titleText, {
+      padding: {
+        bottom: 10,
+      },
     });
     const scrollableConfig: ScrollablePanel.IConfig = {
       x: 0,
