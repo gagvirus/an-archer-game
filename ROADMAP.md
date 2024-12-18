@@ -15,6 +15,8 @@
   - during 3 seconds if a player collects +10, +12, +13 coins, just display one entry "collected 35 coins"
 - coins / resources "clumping"
   - after some time of being dropped, combine multiple coins in a radius into one big pile
+- resources drop count: currently, based on the luck attribute we may drop up to *5 resource. add a setting in settings
+  scene, which will allow disabling the functionality (for performance perspective)
 
 ### Gameplay Features
 
