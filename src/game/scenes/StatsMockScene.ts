@@ -170,6 +170,8 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private createCoreStatsWheelPanel() {
+    // const statsCircleRenderer = new StatsCirclePartial(this, this.coreStats, this.statsManager);
+    // statsCircleRenderer.create();
     return this.createContainer(
       "Core Stats",
       this.scale.width * 0.7 * 0.4, // 4/10 width of the full screen width minus padding 10%
