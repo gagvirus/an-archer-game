@@ -30,6 +30,7 @@ export interface IChildStat extends IStat {
 
 export interface IAttribute extends IStat {
   prop: Attribute;
+  icon?: string;
 }
 
 enum CoreStat {
