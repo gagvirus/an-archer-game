@@ -11,11 +11,15 @@ import StatsManager, {
 import Hero from "../logic/Hero.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import UiHelper from "../helpers/ui-helper.ts";
+import Tooltip from "../ui/tooltip.ts";
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private coreStats: ICoreStat[];
   private statsManager: StatsManager;
   private attributes: IAttribute[];
+  private tooltip: Tooltip;
+  private mousePosition: Vector2Like;
 
   constructor() {
     super({ key: "StatsScene" });
@@ -32,6 +36,12 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   create() {
+    this.tooltip = new Tooltip(this, 0, 0, "");
+
+    this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
+      this.mousePosition = { x: pointer.x, y: pointer.y };
+    });
+
     const attributesPanel = this.createAttributesPanel();
     const coreStatsWheelPanel = this.createCoreStatsWheelPanel();
     const statsPanel = this.createStatsPanel();
@@ -208,7 +218,17 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
     const icon = this.add
       .sprite(0, 0, "icons", stat.icon ?? "danger")
       .setDisplaySize(iconWidth - 10, iconWidth - 10) // Adjust icon size
-      .setOrigin(0, 0.5); // Align left and vertically center
+      .setOrigin(0, 0.5) // Align left and vertically center
+
+      .setInteractive()
+      .on("pointerover", () => {
+        if (stat.description) {
+          this.tooltip.show(this.mousePosition, stat.description);
+        }
+      })
+      .on("pointerout", () => {
+        this.tooltip.hide();
+      });
     rowSizer.add(icon, 0, "left", { right: 10 }, false);
 
     // Label column (80% of remaining space)
@@ -242,7 +262,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       width,
       height,
       orientation: "vertical",
-      space: { item: rowSpacing },
+      space: { item: rowSpacing, bottom: rowSpacing * 2 },
     });
     container.addBackground(
       this.rexUI.add
