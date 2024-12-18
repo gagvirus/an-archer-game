@@ -72,10 +72,16 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.drops = this.physics.add.group();
     this.dropsFollowing = this.physics.add.group();
 
-    this.drops.add(new Magnet(this, 150, 150));
-    this.drops.add(new DoubleDamage(this, 200, 150));
-    this.drops.add(new DoubleSpeed(this, 150, 200));
-    this.drops.add(new Invulnerability(this, 200, 200));
+    if (isDebugMode(this.game)) {
+      this.drops.add(new Magnet(this, 150, 150));
+      this.drops.add(new DoubleDamage(this, 200, 150));
+      this.drops.add(new DoubleDamage(this, 220, 150));
+      this.drops.add(new DoubleSpeed(this, 150, 200));
+      this.drops.add(new DoubleSpeed(this, 170, 200));
+      this.drops.add(new Invulnerability(this, 200, 200));
+      this.drops.add(new Invulnerability(this, 220, 200));
+      this.drops.add(new Invulnerability(this, 100, 200));
+    }
 
     this.physics.add.overlap(
       this.hero.collectLootCircle,
