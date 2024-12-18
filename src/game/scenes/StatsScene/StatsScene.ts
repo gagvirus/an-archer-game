@@ -13,8 +13,6 @@ export class StatsScene extends Scene implements ISceneLifecycle {
   coreStats: ICoreStat[];
   attributes: IAttribute[];
   statsManager: StatsManager;
-  unallocatedStatsNumberText: Phaser.GameObjects.Text;
-  allocatedStatsNumberText: Phaser.GameObjects.Text[] = [];
   private wrapper: Sizer;
   private statsCircleRenderer: StatsCirclePartial;
 
@@ -39,7 +37,11 @@ export class StatsScene extends Scene implements ISceneLifecycle {
       height: this.scale.height - 40,
       orientation: "horizontal",
     });
-    this.statsCircleRenderer = new StatsCirclePartial(this, this.coreStats);
+    this.statsCircleRenderer = new StatsCirclePartial(
+      this,
+      this.coreStats,
+      this.statsManager,
+    );
     this.statsCircleRenderer.create();
 
     this.wrapper
@@ -47,7 +49,9 @@ export class StatsScene extends Scene implements ISceneLifecycle {
       .add(this.createAttributesColumn())
       .layout();
 
-    this.updateUnallocatedStatsNumber(this.statsManager.unallocatedStats);
+    this.statsCircleRenderer.updateUnallocatedStatsNumber(
+      this.statsManager.unallocatedStats,
+    );
   }
 
   private registerKeyListeners() {
@@ -109,9 +113,5 @@ export class StatsScene extends Scene implements ISceneLifecycle {
     });
 
     return attributesWrapper;
-  }
-
-  updateUnallocatedStatsNumber(newNumber: number) {
-    this.unallocatedStatsNumberText.setText(newNumber + "");
   }
 }

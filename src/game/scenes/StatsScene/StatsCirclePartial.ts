@@ -1,23 +1,31 @@
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import Graphics = Phaser.GameObjects.Graphics;
 import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
-import { ICoreStat } from "../../helpers/stats-manager.ts";
+import StatsManager, { ICoreStat } from "../../helpers/stats-manager.ts";
 import { COLOR_WHITE, HEX_COLOR_DARK } from "../../helpers/colors.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import Tooltip from "../../ui/tooltip.ts";
-import { StatsScene } from "./StatsScene.ts";
+import { Scene } from "phaser";
 
 class StatsCirclePartial {
+  holdingShift: boolean = false;
   private tooltip: Tooltip;
   private radialStatsCenter: Vector2Like = { x: 400, y: 300 };
   private readonly coreStats: ICoreStat[];
-  private readonly scene: StatsScene;
-  holdingShift: boolean = false;
+  private readonly scene: Scene;
+  private unallocatedStatsNumberText: Phaser.GameObjects.Text;
+  private allocatedStatsNumberText: Phaser.GameObjects.Text[] = [];
+  private statsManager: StatsManager;
 
-  constructor(scene: StatsScene, coreStats: ICoreStat[]) {
+  constructor(
+    scene: Scene,
+    coreStats: ICoreStat[],
+    statsManager: StatsManager,
+  ) {
     this.scene = scene;
     this.coreStats = coreStats;
     this.tooltip = new Tooltip(this.scene, 0, 0, "");
+    this.statsManager = statsManager;
   }
 
   create() {
@@ -93,9 +101,9 @@ class StatsCirclePartial {
       25,
       HEX_COLOR_DARK,
     );
-    this.scene.unallocatedStatsNumberText = createText(
+    this.unallocatedStatsNumberText = createText(
       this.scene,
-      this.scene.statsManager.unallocatedStats + "",
+      this.statsManager.unallocatedStats + "",
       this.radialStatsCenter,
       20,
     )
@@ -148,9 +156,9 @@ class StatsCirclePartial {
       .on("pointerout", () => {
         this.tooltip.hide();
       });
-    this.scene.allocatedStatsNumberText[i] = createText(
+    this.allocatedStatsNumberText[i] = createText(
       this.scene,
-      this.scene.statsManager.getCoreStat(coreStat.prop) + "",
+      this.statsManager.getCoreStat(coreStat.prop) + "",
       {
         x: 0,
         y: 10,
@@ -164,7 +172,7 @@ class StatsCirclePartial {
     container.add([
       circleBackground,
       iconSprite,
-      this.scene.allocatedStatsNumberText[i],
+      this.allocatedStatsNumberText[i],
     ]);
   }
 
@@ -244,10 +252,10 @@ class StatsCirclePartial {
 
   private handleStatClick(index: number, unallocating: boolean = false) {
     const selectedCoreStat = this.coreStats[index];
-    const selectedStatCurrentAmount = this.scene.statsManager.getCoreStat(
+    const selectedStatCurrentAmount = this.statsManager.getCoreStat(
       selectedCoreStat.prop,
     );
-    if (!unallocating && this.scene.statsManager.unallocatedStats < 1) {
+    if (!unallocating && this.statsManager.unallocatedStats < 1) {
       return;
     }
     if (unallocating && selectedStatCurrentAmount <= 1) {
@@ -263,22 +271,22 @@ class StatsCirclePartial {
           statsCount = selectedStatCurrentAmount - 1;
         }
       } else {
-        if (statsCount > this.scene.statsManager.unallocatedStats) {
-          statsCount = this.scene.statsManager.unallocatedStats;
+        if (statsCount > this.statsManager.unallocatedStats) {
+          statsCount = this.statsManager.unallocatedStats;
         }
       }
     }
     const isUnallocatingMultiplier = unallocating ? -1 : 1;
-    this.scene.updateUnallocatedStatsNumber(
-      (this.scene.statsManager.unallocatedStats -=
+    this.updateUnallocatedStatsNumber(
+      (this.statsManager.unallocatedStats -=
         statsCount * isUnallocatingMultiplier),
     );
-    this.scene.statsManager.addStat(
+    this.statsManager.addStat(
       selectedCoreStat.prop,
       statsCount * isUnallocatingMultiplier,
     );
-    this.scene.allocatedStatsNumberText[index].setText(
-      this.scene.statsManager.getCoreStat(selectedCoreStat.prop) + "",
+    this.allocatedStatsNumberText[index].setText(
+      this.statsManager.getCoreStat(selectedCoreStat.prop) + "",
     );
     this.scene.events.emit("statsUpdated");
   }
@@ -306,6 +314,10 @@ class StatsCirclePartial {
           this.updateUI();
         }
       });
+  }
+
+  updateUnallocatedStatsNumber(newNumber: number) {
+    this.unallocatedStatsNumberText.setText(newNumber + "");
   }
 
   private updateUI() {
