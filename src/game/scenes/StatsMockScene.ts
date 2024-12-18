@@ -59,27 +59,31 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private createAttributesPanel() {
+    const width = this.scale.width * 0.9 * 0.3;
     const container = this.createContainer(
       "Attributes",
-      this.scale.width * 0.9 * 0.3, // 3/10 width of the full screen width minus padding 10%
+      width, // 3/10 width of the full screen width minus padding 10%
       this.scale.height - 40, // full height minus padding
     );
     this.attributes.forEach((attribute) => {
-      const value = parseFloat(
-        this.statsManager.getAttribute(attribute.prop).toFixed(2),
-      );
-      container.add(
-        createText(
-          this,
-          `${attribute.label}: ${value}`,
-          VectorZeroes(),
-          16,
-          "left",
-          false,
-        ),
-      );
+      container.add(this.renderAttributeRow(attribute, width - 40));
     });
     return container;
+  }
+
+  private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
+    console.log(rowWidth);
+    const value = parseFloat(
+      this.statsManager.getAttribute(attribute.prop).toFixed(2),
+    );
+    return createText(
+      this,
+      `${attribute.label}: ${value}`,
+      VectorZeroes(),
+      16,
+      "left",
+      false,
+    );
   }
 
   private createCoreStatsWheelPanel() {
@@ -120,8 +124,8 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
 
     // Row background with border
     const rowBackground = this.rexUI.add
-      .roundRectangle(0, 0, rowWidth, rowHeight, 10, 0x333333)
-      .setStrokeStyle(2, 0xffffff);
+      .roundRectangle(0, 0, rowWidth, rowHeight, 10, HEX_COLOR_DARK)
+      .setStrokeStyle(2, HEX_COLOR_WHITE);
 
     // Create a horizontal sizer for the row
     const rowSizer = this.rexUI.add
