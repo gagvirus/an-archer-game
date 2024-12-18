@@ -26,6 +26,7 @@ export interface IStat {
 export interface IChildStat extends IStat {
   prop: ChildStat;
   icon?: string;
+  description?: string;
 }
 
 export interface IAttribute extends IStat {
@@ -385,8 +386,18 @@ class StatsManager {
         ],
         description: "Affects Attack speed & Evade chance",
         stats: [
-          { label: "Dexterity", prop: ChildStat.dexterity },
-          { label: "Agility", prop: ChildStat.agility },
+          {
+            label: "Dexterity",
+            prop: ChildStat.dexterity,
+            icon: "movement",
+            description: "Adds chance to evade attacks",
+          },
+          {
+            label: "Agility",
+            prop: ChildStat.agility,
+            icon: "agility",
+            description: "Affects attack speed",
+          },
         ],
       },
       {
@@ -401,8 +412,18 @@ class StatsManager {
         ],
         description: "Affects Attack damage, Critical Chance & damage",
         stats: [
-          { label: "Perception", prop: ChildStat.perception },
-          { label: "Strength", prop: ChildStat.strength },
+          {
+            label: "Perception",
+            prop: ChildStat.perception,
+            icon: "visibility-range",
+            description: "Affects critical chance and critical damage amount",
+          },
+          {
+            label: "Strength",
+            prop: ChildStat.strength,
+            icon: "muscles",
+            description: "Adds extra attack damage",
+          },
         ],
       },
       {
@@ -417,8 +438,18 @@ class StatsManager {
         ],
         description: "Affects Armor rating & Max Health / Health Regen",
         stats: [
-          { label: "Fortitude", prop: ChildStat.fortitude },
-          { label: "Endurance", prop: ChildStat.endurance },
+          {
+            label: "Fortitude",
+            prop: ChildStat.fortitude,
+            icon: "medium-armor",
+            description: "Adds extra armor",
+          },
+          {
+            label: "Endurance",
+            prop: ChildStat.endurance,
+            icon: "lungs",
+            description: "Affects max health & health regeneration",
+          },
         ],
       },
       {
@@ -433,9 +464,25 @@ class StatsManager {
         ],
         description: "Affects XP Gain & Bartering & Coin Gain",
         stats: [
-          { label: "Intelligence", prop: ChildStat.intelligence },
-          { label: "Charisma", prop: ChildStat.charisma },
-          { label: "Luck", prop: ChildStat.luck },
+          {
+            label: "Intelligence",
+            prop: ChildStat.intelligence,
+            icon: "brain",
+            description: "Affects on XP gained",
+          },
+          {
+            label: "Charisma",
+            prop: ChildStat.charisma,
+            icon: "hearts",
+            // todo: update this when barter is implemented
+            description: "Affects nothing at the moment",
+          },
+          {
+            label: "Luck",
+            prop: ChildStat.luck,
+            icon: "coins-and-pouch",
+            description: "Affects item drop rate and resource gain amount",
+          },
         ],
       },
     ];
