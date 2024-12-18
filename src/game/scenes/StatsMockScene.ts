@@ -9,6 +9,8 @@ import StatsManager, {
   ICoreStat,
 } from "../helpers/stats-manager.ts";
 import Hero from "../logic/Hero.ts";
+import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
+import UiHelper from "../helpers/ui-helper.ts";
 
 export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private coreStats: ICoreStat[];
@@ -60,15 +62,43 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
 
   private createAttributesPanel() {
     const width = this.scale.width * 0.9 * 0.3;
-    const container = this.createContainer(
-      "Attributes",
-      width, // 3/10 width of the full screen width minus padding 10%
-      this.scale.height - 40, // full height minus padding
-    );
+    const height = this.scale.height - 40;
+
+    const container = this.rexUI.add.sizer({
+      // width,
+      // height,
+      orientation: "vertical",
+      space: { item: 10 },
+    });
+    const scrollableConfig: ScrollablePanel.IConfig = {
+      x: 0,
+      y: 0,
+      width,
+      height,
+      scrollMode: "vertical",
+      background: this.rexUI.add
+        .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
+        .setStrokeStyle(2, HEX_COLOR_WHITE),
+
+      panel: {
+        child: container,
+
+        mask: {
+          padding: 1,
+        },
+      },
+
+      slider: UiHelper.getDefaultSliderConfig(this),
+      space: { left: 10, right: 10, top: 10, bottom: 10, panel: 10 },
+    };
+    const panel = this.rexUI.add.scrollablePanel(scrollableConfig);
+
+    panel.layout();
+
     this.attributes.forEach((attribute) => {
       container.add(this.renderAttributeRow(attribute, width - 40));
     });
-    return container;
+    return panel;
   }
 
   private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
@@ -126,13 +156,11 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private createCoreStatsWheelPanel() {
-    const container = this.createContainer(
+    return this.createContainer(
       "Core Stats",
       this.scale.width * 0.9 * 0.4, // 4/10 width of the full screen width minus padding 10%
       this.scale.height - 40, // full height minus padding
     );
-    console.log(container);
-    return container;
   }
 
   private createStatsPanel() {

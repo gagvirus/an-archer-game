@@ -25,6 +25,12 @@ class UiHelper {
     height: number,
     configOverride: Partial<IConfig> = {},
   ): IConfig {
+    const slider =
+      configOverride.slider === undefined
+        ? UiHelper.getDefaultSliderConfig(scene)
+        : configOverride.slider;
+
+    console.log({ slider });
     return {
       ...{
         x,
@@ -32,7 +38,7 @@ class UiHelper {
         width,
         height,
 
-        scrollMode: 0, // 0 for vertical scrolling
+        scrollMode: "vertical",
         background: scene.rexUI.add.roundRectangle(
           0,
           0,
@@ -50,10 +56,7 @@ class UiHelper {
           },
         },
 
-        slider:
-          configOverride.slider === undefined
-            ? UiHelper.getDefaultSliderConfig(scene)
-            : configOverride.slider,
+        slider,
         space: { left: 10, right: 10, top: 10, bottom: 10, panel: 10 },
       },
       ...configOverride,
