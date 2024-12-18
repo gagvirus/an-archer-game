@@ -61,8 +61,8 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private createAttributesPanel() {
-    const width = this.scale.width * 0.9 * 0.3;
-    const height = this.scale.height - 40;
+    const width = this.scale.width * 0.7 * 0.3;
+    const height = this.scale.height * 0.7;
 
     const container = this.rexUI.add.sizer({
       // width,
@@ -158,17 +158,17 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private createCoreStatsWheelPanel() {
     return this.createContainer(
       "Core Stats",
-      this.scale.width * 0.9 * 0.4, // 4/10 width of the full screen width minus padding 10%
-      this.scale.height - 40, // full height minus padding
+      this.scale.width * 0.7 * 0.4, // 4/10 width of the full screen width minus padding 10%
+      this.scale.height * 0.7, // full height minus padding
     );
   }
 
   private createStatsPanel() {
-    const width = this.scale.width * 0.9 * 0.3;
+    const width = this.scale.width * 0.7 * 0.3;
     const container = this.createContainer(
       "Stats",
       width, // 3/10 width of the full screen width minus padding 10%
-      this.scale.height - 40, // full height minus padding
+      this.scale.height * 0.7, // full height minus padding
     );
     this.coreStats.forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
