@@ -110,7 +110,6 @@ class StatsCirclePartial implements Renderable {
       .setInteractive()
       .on("pointerover", () => {
         this.tooltip.show(
-          this.center,
           'Number of unallocated stat points.\n\nHold "Shift" button to bulk allocate stat points.',
         );
       })
@@ -148,10 +147,7 @@ class StatsCirclePartial implements Renderable {
       .setScale(0.8)
       .setInteractive()
       .on("pointerover", () => {
-        this.tooltip.show(
-          textPosition,
-          coreStat.label + "\n\n" + coreStat.description,
-        );
+        this.tooltip.show(coreStat.label + "\n\n" + coreStat.description);
       })
       .on("pointerout", () => {
         this.tooltip.hide();

@@ -5,22 +5,18 @@ import { createText } from "../helpers/text-helpers.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
 import StatsManager, {
   IAttribute,
-  IChildStat,
   ICoreStat,
 } from "../helpers/stats-manager.ts";
 import Hero from "../logic/Hero.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import UiHelper from "../helpers/ui-helper.ts";
-import Tooltip from "../ui/tooltip.ts";
-import Vector2Like = Phaser.Types.Math.Vector2Like;
 import StatsCirclePartial from "./StatsScene/StatsCirclePartial.ts";
+import ChildStatsPartial from "./StatsScene/ChildStatsPartial.ts";
 
 export default class StatsMockScene extends Scene implements ISceneLifecycle {
-  private coreStats: ICoreStat[];
+  private readonly coreStats: ICoreStat[];
   private statsManager: StatsManager;
   private attributes: IAttribute[];
-  private tooltip: Tooltip;
-  private mousePosition: Vector2Like;
   private fullWidth: number = 1200;
 
   constructor() {
@@ -47,11 +43,6 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
         }
       }
     }
-    this.tooltip = new Tooltip(this, 0, 0, "");
-
-    this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
-      this.mousePosition = { x: pointer.x, y: pointer.y };
-    });
 
     const attributesPanel = this.createAttributesPanel();
     const coreStatsWheelPanel = this.createCoreStatsWheelPanel();
@@ -192,7 +183,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       this.coreStats,
       this.statsManager,
       {
-        x: this.scale.width / 2 + this.scale.width * 0,
+        x: this.scale.width / 2,
         y: this.scale.height / 2,
       },
     );
@@ -208,75 +199,9 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       width, // 3/10 width of the full screen width minus padding 10%
       this.scale.height * 0.7, // full height minus padding
     );
-    this.coreStats.forEach((coreStat) => {
-      coreStat.stats.forEach((stat) => {
-        container.add(this.renderStatRow(stat, width - 40));
-      });
-    });
+    const renderer = new ChildStatsPartial(this, width, this.statsManager);
+    renderer.render(container);
     return container;
-  }
-
-  private renderStatRow(stat: IChildStat, rowWidth: number) {
-    const value = parseFloat(
-      this.statsManager.getChildStat(stat.prop).toFixed(2),
-    ).toString();
-
-    const rowHeight = 50;
-    const iconWidth = 50; // Fixed width for the icon column
-    const labelWidthRatio = 0.8; // 80% of remaining width
-    const valueWidthRatio = 1 - labelWidthRatio; // Remaining width for value column
-    const rowPadding = 10;
-
-    // Row background with border
-    const rowBackground = this.rexUI.add
-      .roundRectangle(0, 0, rowWidth, rowHeight, 10, HEX_COLOR_DARK)
-      .setStrokeStyle(2, HEX_COLOR_WHITE);
-
-    // Create a horizontal sizer for the row
-    const rowSizer = this.rexUI.add
-      .sizer({
-        orientation: "x", // Horizontal layout
-        width: rowWidth, // Fixed row width
-        height: rowHeight, // Fixed row height
-        space: { left: rowPadding, right: rowPadding }, // Padding inside the row
-      })
-      .addBackground(rowBackground);
-
-    // Icon column (fixed width)
-    const icon = this.add
-      .sprite(0, 0, "icons", stat.icon ?? "danger")
-      .setDisplaySize(iconWidth - 10, iconWidth - 10) // Adjust icon size
-      .setOrigin(0, 0.5) // Align left and vertically center
-
-      .setInteractive()
-      .on("pointerover", () => {
-        if (stat.description) {
-          this.tooltip.show(this.mousePosition, stat.description);
-        }
-      })
-      .on("pointerout", () => {
-        this.tooltip.hide();
-      });
-    rowSizer.add(icon, 0, "left", { right: 10 }, false);
-
-    // Label column (80% of remaining space)
-    const label = createText(this, stat.label, VectorZeroes(), 18).setOrigin(
-      0,
-      0.5,
-    );
-    rowSizer.add(label, labelWidthRatio, "left", { right: 10 }, true);
-
-    // Value column (remaining space, right-aligned)
-    const valueText = createText(this, value, VectorZeroes(), 18).setOrigin(
-      1,
-      0.5,
-    );
-    rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
-
-    // Layout the row
-    rowSizer.layout();
-
-    return rowSizer;
   }
 
   private createContainer(

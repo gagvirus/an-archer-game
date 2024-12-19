@@ -65,7 +65,7 @@ class UiHelper {
 }
 
 export interface Renderable {
-  render: () => void;
+  render: (container: Sizer) => void;
 }
 
 export default UiHelper;

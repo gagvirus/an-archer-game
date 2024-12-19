@@ -10,6 +10,7 @@ class Tooltip extends Phaser.GameObjects.Container {
   private readonly background: Phaser.GameObjects.Rectangle;
   private readonly text: Phaser.GameObjects.Text;
   private readonly padding = 10;
+  private mousePosition: Vector2Like;
 
   constructor(scene: Phaser.Scene, x: number, y: number, message: string) {
     super(scene, x, y);
@@ -43,11 +44,16 @@ class Tooltip extends Phaser.GameObjects.Container {
 
     // Add the tooltip container to the scene
     scene.add.existing(this);
+
+    // track mouse position
+    this.scene.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
+      this.mousePosition = { x: pointer.x, y: pointer.y };
+    });
   }
 
   // Show the tooltip
-  show(position: Vector2Like, text?: string) {
-    let { x, y } = position;
+  show(text?: string) {
+    let { x, y } = this.mousePosition;
     const screenWidth = this.scene.scale.width;
     const screenHeight = this.scene.scale.height;
 
