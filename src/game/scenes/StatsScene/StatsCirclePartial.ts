@@ -10,7 +10,7 @@ import { Scene } from "phaser";
 class StatsCirclePartial {
   holdingShift: boolean = false;
   private tooltip: Tooltip;
-  private radialStatsCenter: Vector2Like = { x: 400, y: 300 };
+  private readonly center: Vector2Like;
   private readonly coreStats: ICoreStat[];
   private readonly scene: Scene;
   private unallocatedStatsNumberText: Phaser.GameObjects.Text;
@@ -21,14 +21,16 @@ class StatsCirclePartial {
     scene: Scene,
     coreStats: ICoreStat[],
     statsManager: StatsManager,
+    center: Vector2Like,
   ) {
     this.scene = scene;
     this.coreStats = coreStats;
-    this.tooltip = new Tooltip(this.scene, 0, 0, "");
+    this.center = center;
     this.statsManager = statsManager;
   }
 
   create() {
+    this.tooltip = new Tooltip(this.scene, 0, 0, "");
     this.coreStats.forEach((coreStat: ICoreStat, i: number) => {
       this.renderAllocateStatQuarter(coreStat, i);
       this.renderStatQuarter(coreStat, i);
@@ -49,10 +51,8 @@ class StatsCirclePartial {
 
     // Calculate button position (closer to center)
     const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
-    const buttonX =
-      this.radialStatsCenter.x + buttonRadius * Math.cos(buttonAngle) * 0.85; // Closer to the center
-    const buttonY =
-      this.radialStatsCenter.y + buttonRadius * Math.sin(buttonAngle) * 0.85;
+    const buttonX = this.center.x + buttonRadius * Math.cos(buttonAngle) * 0.85; // Closer to the center
+    const buttonY = this.center.y + buttonRadius * Math.sin(buttonAngle) * 0.85;
 
     // Create quarter-circle button using Graphics
     const buttonGraphics = this.scene.add.graphics();
@@ -95,22 +95,17 @@ class StatsCirclePartial {
   }
 
   private renderUnallocatedStatsNumber() {
-    this.scene.add.circle(
-      this.radialStatsCenter.x,
-      this.radialStatsCenter.y,
-      25,
-      HEX_COLOR_DARK,
-    );
+    this.scene.add.circle(this.center.x, this.center.y, 25, HEX_COLOR_DARK);
     this.unallocatedStatsNumberText = createText(
       this.scene,
       this.statsManager.unallocatedStats + "",
-      this.radialStatsCenter,
+      this.center,
       20,
     )
       .setInteractive()
       .on("pointerover", () => {
         this.tooltip.show(
-          this.radialStatsCenter,
+          this.center,
           'Number of unallocated stat points.\n\nHold "Shift" button to bulk allocate stat points.',
         );
       })
@@ -137,8 +132,8 @@ class StatsCirclePartial {
 
     // Text position
     const textPosition = {
-      x: this.radialStatsCenter.x + radius * Math.cos(midAngle) * 0.7,
-      y: this.radialStatsCenter.y + radius * Math.sin(midAngle) * 0.7,
+      x: this.center.x + radius * Math.cos(midAngle) * 0.7,
+      y: this.center.y + radius * Math.sin(midAngle) * 0.7,
     };
 
     const container = this.scene.add.container(textPosition.x, textPosition.y);
@@ -187,10 +182,8 @@ class StatsCirclePartial {
 
     // Calculate button position (closer to center)
     const buttonAngle = startAngle + Math.PI / 4; // Center of the quarter
-    const buttonX =
-      this.radialStatsCenter.x + buttonRadius * Math.cos(buttonAngle) * 0.3; // Closer to the center
-    const buttonY =
-      this.radialStatsCenter.y + buttonRadius * Math.sin(buttonAngle) * 0.3;
+    const buttonX = this.center.x + buttonRadius * Math.cos(buttonAngle) * 0.3; // Closer to the center
+    const buttonY = this.center.y + buttonRadius * Math.sin(buttonAngle) * 0.3;
 
     // Create quarter-circle button using Graphics
     const buttonGraphics = this.scene.add.graphics();
@@ -240,7 +233,7 @@ class StatsCirclePartial {
     startAngle: number,
     endAngle: number,
   ) {
-    const { x, y } = this.radialStatsCenter;
+    const { x, y } = this.center;
     graphics.fillStyle(color, 1);
     graphics.moveTo(x, y);
     graphics.beginPath();

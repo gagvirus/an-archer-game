@@ -13,6 +13,7 @@ import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/Sc
 import UiHelper from "../helpers/ui-helper.ts";
 import Tooltip from "../ui/tooltip.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import StatsCirclePartial from "./StatsScene/StatsCirclePartial.ts";
 
 export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private coreStats: ICoreStat[];
@@ -20,6 +21,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private attributes: IAttribute[];
   private tooltip: Tooltip;
   private mousePosition: Vector2Like;
+  private fullWidth: number = 1200;
 
   constructor() {
     super({ key: "StatsScene" });
@@ -36,6 +38,15 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   create() {
+    if (this.scale.width > 1280) {
+      this.fullWidth = this.scale.width * 0.9;
+      if (this.scale.width > 1600) {
+        this.fullWidth = this.scale.width * 0.8;
+        if (this.scale.width > 1900) {
+          this.fullWidth = this.scale.width * 0.7;
+        }
+      }
+    }
     this.tooltip = new Tooltip(this, 0, 0, "");
 
     this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
@@ -71,7 +82,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private createAttributesPanel() {
-    const width = this.scale.width * 0.7 * 0.3;
+    const width = this.fullWidth * 0.3;
     const height = this.scale.height * 0.7;
 
     const container = this.rexUI.add.sizer({
@@ -170,17 +181,28 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   private createCoreStatsWheelPanel() {
-    // const statsCircleRenderer = new StatsCirclePartial(this, this.coreStats, this.statsManager);
-    // statsCircleRenderer.create();
-    return this.createContainer(
+    const container = this.createContainer(
       "Core Stats",
-      this.scale.width * 0.7 * 0.4, // 4/10 width of the full screen width minus padding 10%
+      this.fullWidth * 0.4, // 4/10 width of the full screen width minus padding 10%
       this.scale.height * 0.7, // full height minus padding
     );
+
+    const statsCircleRenderer = new StatsCirclePartial(
+      this,
+      this.coreStats,
+      this.statsManager,
+      {
+        x: this.scale.width / 2 + this.scale.width * 0,
+        y: this.scale.height / 2,
+      },
+    );
+    statsCircleRenderer.create();
+
+    return container;
   }
 
   private createStatsPanel() {
-    const width = this.scale.width * 0.7 * 0.3;
+    const width = this.fullWidth * 0.3;
     const container = this.createContainer(
       "Stats",
       width, // 3/10 width of the full screen width minus padding 10%
