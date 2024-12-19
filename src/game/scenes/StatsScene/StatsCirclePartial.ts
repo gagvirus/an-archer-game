@@ -41,8 +41,10 @@ class StatsCirclePartial implements Renderable {
     this.registerKeyListeners();
   }
 
-  updateUnallocatedStatsNumber(newNumber: number) {
-    this.unallocatedStatsNumberText.setText(newNumber + "");
+  updateUnallocatedStatsNumber() {
+    this.unallocatedStatsNumberText.setText(
+      `${this.statsManager.unallocatedStats}`,
+    );
   }
 
   private renderAllocateStatQuarter(coreStat: ICoreStat, i: number) {
@@ -271,10 +273,8 @@ class StatsCirclePartial implements Renderable {
       }
     }
     const isUnallocatingMultiplier = unallocating ? -1 : 1;
-    this.updateUnallocatedStatsNumber(
-      (this.statsManager.unallocatedStats -=
-        statsCount * isUnallocatingMultiplier),
-    );
+    this.statsManager.unallocatedStats -= statsCount * isUnallocatingMultiplier;
+    this.updateUnallocatedStatsNumber();
     this.statsManager.addStat(
       selectedCoreStat.prop,
       statsCount * isUnallocatingMultiplier,

@@ -30,6 +30,12 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
   }
 
   create() {
+    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+      if (["Escape", "c", "C"].includes(event.key)) {
+        this.scene.resume("MainScene");
+        this.scene.stop();
+      }
+    });
     if (this.scale.width > 1280) {
       this.fullWidth = this.scale.width * 0.9;
       if (this.scale.width > 1600) {
@@ -56,16 +62,6 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       .add(coreStatsWheelPanel, 1, "center", 0, true)
       .add(statsPanel, 1, "center", 0, true)
       .layout();
-
-    // Debug: Add a back button
-    this.add
-      .text(this.scale.width - 20, this.scale.height - 20, "Back", {
-        fontSize: "16px",
-        color: "#ffffff",
-      })
-      .setOrigin(1, 1)
-      .setInteractive()
-      .on("pointerdown", () => this.scene.start("MainMenu")); // Replace 'MainMenu' with your menu scene key
   }
 
   private createAttributesPanel() {
@@ -129,6 +125,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       },
     );
     statsCircleRenderer.render();
+    statsCircleRenderer.updateUnallocatedStatsNumber();
 
     return container;
   }

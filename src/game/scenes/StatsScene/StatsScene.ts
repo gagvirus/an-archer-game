@@ -6,7 +6,6 @@ import StatsManager, {
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
-import StatsCirclePartial from "./StatsCirclePartial.ts";
 import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
 
 export class StatsScene extends Scene implements ISceneLifecycle {
@@ -14,7 +13,6 @@ export class StatsScene extends Scene implements ISceneLifecycle {
   attributes: IAttribute[];
   statsManager: StatsManager;
   private wrapper: Sizer;
-  private statsCircleRenderer: StatsCirclePartial;
 
   constructor() {
     super("StatsScene");
@@ -27,7 +25,6 @@ export class StatsScene extends Scene implements ISceneLifecycle {
   }
 
   create() {
-    this.registerKeyListeners();
     const parentWidth = this.scale.width / 2 - 40;
 
     this.wrapper = this.rexUI.add.sizer({
@@ -37,31 +34,10 @@ export class StatsScene extends Scene implements ISceneLifecycle {
       height: this.scale.height - 40,
       orientation: "horizontal",
     });
-    this.statsCircleRenderer = new StatsCirclePartial(
-      this,
-      this.coreStats,
-      this.statsManager,
-      { x: 400, y: 300 },
-    );
-    this.statsCircleRenderer.render();
-
     this.wrapper
       .add(this.createChildStatsColumn())
       .add(this.createAttributesColumn())
       .layout();
-
-    this.statsCircleRenderer.updateUnallocatedStatsNumber(
-      this.statsManager.unallocatedStats,
-    );
-  }
-
-  private registerKeyListeners() {
-    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      if (["Escape", "c", "C"].includes(event.key)) {
-        this.scene.resume("MainScene");
-        this.scene.stop();
-      }
-    });
   }
 
   createChildStatsColumn() {
