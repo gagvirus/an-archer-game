@@ -29,7 +29,7 @@ class StatsCirclePartial {
     this.statsManager = statsManager;
   }
 
-  create() {
+  render() {
     this.tooltip = new Tooltip(this.scene, 0, 0, "");
     this.coreStats.forEach((coreStat: ICoreStat, i: number) => {
       this.renderAllocateStatQuarter(coreStat, i);

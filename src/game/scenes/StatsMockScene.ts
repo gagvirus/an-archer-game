@@ -196,7 +196,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
         y: this.scale.height / 2,
       },
     );
-    statsCircleRenderer.create();
+    statsCircleRenderer.render();
 
     return container;
   }

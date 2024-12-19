@@ -43,7 +43,7 @@ export class StatsScene extends Scene implements ISceneLifecycle {
       this.statsManager,
       { x: 400, y: 300 },
     );
-    this.statsCircleRenderer.create();
+    this.statsCircleRenderer.render();
 
     this.wrapper
       .add(this.createChildStatsColumn())
