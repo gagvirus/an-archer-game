@@ -5,8 +5,7 @@ import { Scene } from "phaser";
 
 abstract class TimedPowerup extends Powerup {
   collectedAt?: number;
-  // todo: revert this after fixing the bug with powerups
-  durationSeconds: number = 3;
+  durationSeconds: number = 30;
   remainingDurationSeconds?: number;
   private timeout: number;
 
