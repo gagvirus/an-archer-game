@@ -3,11 +3,6 @@
 ### Bugs & Improvements
 
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
-- Crashing bug related to picking up powerups
-  - Uncaught TypeError: Cannot read properties of null (reading 'worldToLocal')
-  - the issue occurs when collected multiple instanced of the same powerup and one of them expires
-  - throwing errors in console when first duplicate expires
-  - game crashes when picking up a new powerup after this
 - stats management - better ui / ux for viewing child stats & attributes
 - automatically update child stats / attributes on core stat change
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)

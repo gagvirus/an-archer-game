@@ -11,6 +11,11 @@
       - For each "child attribute", display the affected attribute
 - implement a generic tooltip
 - display core stat description when hovering, instead of displaying underneath it
+- FIXED - Crashing bug related to picking up powerups
+  - Uncaught TypeError: Cannot read properties of null (reading 'worldToLocal')
+  - the issue occurs when collected multiple instanced of the same powerup and one of them expires
+  - throwing errors in console when first duplicate expires
+  - game crashes when picking up a new powerup after this
 
 ### v0.0.10
 

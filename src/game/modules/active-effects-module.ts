@@ -11,10 +11,17 @@ import { createAnimatedSprite } from "../helpers/text-helpers.ts";
 import Sizer = UIPlugin.Sizer;
 import Sprite = Phaser.GameObjects.Sprite;
 
+interface Icon {
+  sprite: Sprite;
+  isEnabled: boolean;
+}
+
 class ActiveEffectsModule extends AbstractModule {
   private container?: Sizer;
   private panel?: ScrollablePanel;
-  private icons: Partial<{ [key: string]: Sprite }> = {};
+  private icons: Partial<{
+    [key: string]: Icon;
+  }> = {};
 
   start(): void {
     if (!this.container && !this.panel) {
@@ -46,7 +53,7 @@ class ActiveEffectsModule extends AbstractModule {
     }
     Object.values(PowerupType).forEach((type) => {
       const icon = createAnimatedSprite(this.scene, PowerupIconMap[type]);
-      this.icons[type] = icon;
+      this.icons[type] = { sprite: icon, isEnabled: false };
       icon.setVisible(false);
     });
   }
@@ -61,7 +68,7 @@ class ActiveEffectsModule extends AbstractModule {
       this.panel = undefined;
     }
     Object.keys(this.icons).forEach((key) => {
-      this.icons[key]?.destroy();
+      this.icons[key]?.sprite.destroy();
       this.icons[key] = undefined;
     });
     this.scene.events.off("powerupCollected").off("powerupEnded");
@@ -69,11 +76,17 @@ class ActiveEffectsModule extends AbstractModule {
 
   update(): void {}
 
-  private updateUI(type: PowerupType, enabled: boolean) {
+  private updateUI(type: PowerupType, enable: boolean) {
     if (this.panel && this.container) {
-      const icon = this.icons[type] as Sprite;
-      icon.setVisible(enabled);
-      enabled ? this.container.add(icon) : this.container.remove(icon);
+      const { sprite, isEnabled } = this.icons[type] as Icon;
+      sprite.setVisible(enable);
+      if (!isEnabled && enable) {
+        this.container.add(sprite);
+      }
+      if (isEnabled && !enable) {
+        this.container.remove(sprite);
+      }
+      (this.icons[type] as Icon).isEnabled = enable;
       this.panel.layout();
     }
   }
