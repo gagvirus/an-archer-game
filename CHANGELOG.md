@@ -1,21 +1,15 @@
 ## Changelog
 
-### WIP
+### v0.0.11
 
-- Display active boosts / powerups
-- emit event "paused" - when setting timeout - calculate time remaining on paused, remove timeout,then on resume set new
-  timeout with remaining time
+- Improvements on boosts
+  - Displaying active boosts
+  - Fixed crushing bug on powerups
+  - Now can drop all powerups except for default ones
+  - When game is paused, the timed powerups would be paused as well
 - Stats Screen Improvements
-  - Display list of affected stats
-    - For each stat, display their respective "child attribute"
-      - For each "child attribute", display the affected attribute
-- implement a generic tooltip
-- display core stat description when hovering, instead of displaying underneath it
-- FIXED - Crashing bug related to picking up powerups
-  - Uncaught TypeError: Cannot read properties of null (reading 'worldToLocal')
-  - the issue occurs when collected multiple instanced of the same powerup and one of them expires
-  - throwing errors in console when first duplicate expires
-  - game crashes when picking up a new powerup after this
+  - Displaying Pick-able stats in a better UI
+  - Displaying all affected attributes
 
 ### v0.0.10
 
