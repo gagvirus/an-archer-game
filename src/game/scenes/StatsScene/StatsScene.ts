@@ -1,94 +1,175 @@
 import { Scene } from "phaser";
-import StatsManager, {
-  IAttribute,
-  ICoreStat,
-} from "../../helpers/stats-manager.ts";
+import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
+import StatsManager, { ICoreStat } from "../../helpers/stats-manager.ts";
+import Hero from "../../logic/Hero.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
-import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
-import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
+import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
+import { HEX_COLOR_DARK, HEX_COLOR_WHITE } from "../../helpers/colors.ts";
+import UiHelper from "../../helpers/ui-helper.ts";
+import AttributesPartial from "./AttributesPartial.ts";
+import StatsCirclePartial from "./StatsCirclePartial.ts";
+import ChildStatsPartial from "./ChildStatsPartial.ts";
 
-export class StatsScene extends Scene implements ISceneLifecycle {
-  coreStats: ICoreStat[];
-  attributes: IAttribute[];
-  statsManager: StatsManager;
-  private wrapper: Sizer;
+export default class StatsScene extends Scene implements ISceneLifecycle {
+  private readonly coreStats: ICoreStat[];
+  private statsManager: StatsManager;
+  private fullWidth: number = 1200;
 
   constructor() {
-    super("StatsScene");
+    super({ key: "StatsScene" });
     this.coreStats = StatsManager.listCoreStats();
-    this.attributes = StatsManager.listAttributes();
   }
 
   init(data: { statsManager: StatsManager }) {
-    this.statsManager = data.statsManager;
+    if (data.statsManager) {
+      this.statsManager = data.statsManager;
+    } else {
+      this.statsManager = new StatsManager(this, new Hero(this, -100, -100));
+    }
   }
 
   create() {
-    const parentWidth = this.scale.width / 2 - 40;
-
-    this.wrapper = this.rexUI.add.sizer({
-      x: this.scale.width / 2,
-      y: this.scale.height / 2,
-      width: parentWidth,
-      height: this.scale.height - 40,
-      orientation: "horizontal",
+    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+      if (["Escape", "c", "C"].includes(event.key)) {
+        this.scene.resume("MainScene");
+        this.scene.stop();
+      }
     });
-    this.wrapper
-      .add(this.createChildStatsColumn())
-      .add(this.createAttributesColumn())
+    if (this.scale.width > 1280) {
+      this.fullWidth = this.scale.width * 0.9;
+      if (this.scale.width > 1600) {
+        this.fullWidth = this.scale.width * 0.8;
+        if (this.scale.width > 1900) {
+          this.fullWidth = this.scale.width * 0.7;
+        }
+      }
+    }
+
+    const attributesPanel = this.createAttributesPanel();
+    const coreStatsWheelPanel = this.createCoreStatsWheelPanel();
+    const statsPanel = this.createStatsPanel();
+
+    // Create a horizontal box layout to arrange panels
+    this.rexUI.add
+      .sizer({
+        x: this.scale.width / 2,
+        y: this.scale.height / 2,
+        orientation: "x", // Horizontal layout
+        space: { item: 20 }, // Space between panels
+      })
+      .add(attributesPanel, 1, "center", 0, true)
+      .add(coreStatsWheelPanel, 1, "center", 0, true)
+      .add(statsPanel, 1, "center", 0, true)
       .layout();
   }
 
-  createChildStatsColumn() {
-    const childStatsWrapper = this.rexUI.add.sizer({
+  private createAttributesPanel() {
+    const width = this.fullWidth * 0.3;
+
+    const container = this.rexUI.add.sizer({
       orientation: "vertical",
+      space: { item: 10 },
     });
-
-    childStatsWrapper.add(createText(this, "Child Stats", VectorZeroes()));
-
-    this.coreStats.forEach((coreStat) => {
-      coreStat.stats.forEach((stat) => {
-        const value = this.statsManager.getChildStat(stat.prop);
-        childStatsWrapper.add(
-          createText(
-            this,
-            `${stat.label}: ${value}`,
-            VectorZeroes(),
-            16,
-            "left",
-            false,
-          ),
-        );
-      });
+    const titleText = createText(this, "Attributes", VectorZeroes(), 20);
+    container.add(titleText, {
+      padding: {
+        bottom: 10,
+      },
     });
+    const scrollableConfig: ScrollablePanel.IConfig = {
+      x: 0,
+      y: 0,
+      width,
+      height: this.scale.height * 0.7,
+      scrollMode: "vertical",
+      background: this.rexUI.add
+        .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
+        .setStrokeStyle(2, HEX_COLOR_WHITE),
 
-    return childStatsWrapper;
+      panel: {
+        child: container,
+
+        mask: {
+          padding: 1,
+        },
+      },
+
+      slider: UiHelper.getDefaultSliderConfig(this),
+      space: { left: 10, right: 10, top: 10, bottom: 10, panel: 10 },
+    };
+    const panel = this.rexUI.add.scrollablePanel(scrollableConfig);
+
+    panel.layout();
+
+    const renderer = new AttributesPartial(this, width, this.statsManager);
+    renderer.render(container);
+
+    return panel;
   }
 
-  createAttributesColumn() {
-    const attributesWrapper = this.rexUI.add.sizer({
+  private createCoreStatsWheelPanel() {
+    const container = this.createContainer(
+      "Core Stats",
+      this.fullWidth * 0.4, // 4/10 width of the full screen width minus padding 10%
+      this.scale.height * 0.7, // full height minus padding
+    );
+
+    const statsCircleRenderer = new StatsCirclePartial(
+      this,
+      this.coreStats,
+      this.statsManager,
+      {
+        x: this.scale.width / 2,
+        y: this.scale.height / 2,
+      },
+    );
+    statsCircleRenderer.render();
+    statsCircleRenderer.updateUnallocatedStatsNumber();
+
+    return container;
+  }
+
+  private createStatsPanel() {
+    const width = this.fullWidth * 0.3;
+    const container = this.createContainer(
+      "Stats",
+      width, // 3/10 width of the full screen width minus padding 10%
+      this.scale.height * 0.7, // full height minus padding
+    );
+    const renderer = new ChildStatsPartial(this, width, this.statsManager);
+    renderer.render(container);
+    return container;
+  }
+
+  private createContainer(
+    title: string,
+    width: number,
+    height: number,
+    rowSpacing: number = 10,
+  ) {
+    // Create a panel container with background and title text
+    const container = this.rexUI.add.sizer({
+      width,
+      height,
       orientation: "vertical",
+      space: { item: rowSpacing, bottom: rowSpacing * 2 },
+    });
+    container.addBackground(
+      this.rexUI.add
+        .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
+        .setStrokeStyle(2, HEX_COLOR_WHITE),
+    );
+    const titleText = createText(this, title, VectorZeroes(), 20);
+    container.add(titleText, {
+      padding: {
+        top: 10,
+        bottom: 10,
+      },
     });
 
-    attributesWrapper.add(createText(this, "Attributes", VectorZeroes()));
+    container.layout();
 
-    this.attributes.forEach((attribute) => {
-      const value = parseFloat(
-        this.statsManager.getAttribute(attribute.prop).toFixed(2),
-      );
-      attributesWrapper.add(
-        createText(
-          this,
-          `${attribute.label}: ${value}`,
-          VectorZeroes(),
-          16,
-          "left",
-          false,
-        ),
-      );
-    });
-
-    return attributesWrapper;
+    return container;
   }
 }
