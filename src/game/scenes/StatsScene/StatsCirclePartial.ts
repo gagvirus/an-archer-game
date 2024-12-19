@@ -6,8 +6,9 @@ import { COLOR_WHITE, HEX_COLOR_DARK } from "../../helpers/colors.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import Tooltip from "../../ui/tooltip.ts";
 import { Scene } from "phaser";
+import { Renderable } from "../../helpers/ui-helper.ts";
 
-class StatsCirclePartial {
+class StatsCirclePartial implements Renderable {
   holdingShift: boolean = false;
   private tooltip: Tooltip;
   private readonly center: Vector2Like;
@@ -38,6 +39,10 @@ class StatsCirclePartial {
     });
     this.renderUnallocatedStatsNumber();
     this.registerKeyListeners();
+  }
+
+  updateUnallocatedStatsNumber(newNumber: number) {
+    this.unallocatedStatsNumberText.setText(newNumber + "");
   }
 
   private renderAllocateStatQuarter(coreStat: ICoreStat, i: number) {
@@ -307,10 +312,6 @@ class StatsCirclePartial {
           this.updateUI();
         }
       });
-  }
-
-  updateUnallocatedStatsNumber(newNumber: number) {
-    this.unallocatedStatsNumberText.setText(newNumber + "");
   }
 
   private updateUI() {

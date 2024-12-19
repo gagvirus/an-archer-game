@@ -64,4 +64,8 @@ class UiHelper {
   }
 }
 
+export interface Renderable {
+  render: () => void;
+}
+
 export default UiHelper;
