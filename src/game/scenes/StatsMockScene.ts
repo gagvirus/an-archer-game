@@ -3,26 +3,22 @@ import { HEX_COLOR_DARK, HEX_COLOR_WHITE } from "../helpers/colors.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import { createText } from "../helpers/text-helpers.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
-import StatsManager, {
-  IAttribute,
-  ICoreStat,
-} from "../helpers/stats-manager.ts";
+import StatsManager, { ICoreStat } from "../helpers/stats-manager.ts";
 import Hero from "../logic/Hero.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import UiHelper from "../helpers/ui-helper.ts";
 import StatsCirclePartial from "./StatsScene/StatsCirclePartial.ts";
 import ChildStatsPartial from "./StatsScene/ChildStatsPartial.ts";
+import AttributesPartial from "./StatsScene/AttributesPartial.ts";
 
 export default class StatsMockScene extends Scene implements ISceneLifecycle {
   private readonly coreStats: ICoreStat[];
   private statsManager: StatsManager;
-  private attributes: IAttribute[];
   private fullWidth: number = 1200;
 
   constructor() {
     super({ key: "StatsScene" });
     this.coreStats = StatsManager.listCoreStats();
-    this.attributes = StatsManager.listAttributes();
   }
 
   init(data: { statsManager: StatsManager }) {
@@ -74,7 +70,6 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
 
   private createAttributesPanel() {
     const width = this.fullWidth * 0.3;
-    const height = this.scale.height * 0.7;
 
     const container = this.rexUI.add.sizer({
       orientation: "vertical",
@@ -90,7 +85,7 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
       x: 0,
       y: 0,
       width,
-      height,
+      height: this.scale.height * 0.7,
       scrollMode: "vertical",
       background: this.rexUI.add
         .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
@@ -111,64 +106,10 @@ export default class StatsMockScene extends Scene implements ISceneLifecycle {
 
     panel.layout();
 
-    this.attributes.forEach((attribute) => {
-      container.add(this.renderAttributeRow(attribute, width - 40));
-    });
+    const renderer = new AttributesPartial(this, width, this.statsManager);
+    renderer.render(container);
+
     return panel;
-  }
-
-  private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
-    const value = parseFloat(
-      this.statsManager.getAttribute(attribute.prop).toFixed(2),
-    ).toString();
-    const rowHeight = 30;
-    const iconWidth = 50; // Fixed width for the icon column
-    const labelWidthRatio = 0.8; // 80% of remaining width
-    const valueWidthRatio = 1 - labelWidthRatio; // Remaining width for value column
-    const rowPadding = 5;
-
-    // Row background with border
-    const rowBackground = this.rexUI.add
-      .roundRectangle(0, 0, rowWidth, rowHeight, 10, HEX_COLOR_DARK)
-      .setStrokeStyle(2, HEX_COLOR_WHITE);
-
-    // Create a horizontal sizer for the row
-    const rowSizer = this.rexUI.add
-      .sizer({
-        orientation: "x", // Horizontal layout
-        width: rowWidth, // Fixed row width
-        height: rowHeight, // Fixed row height
-        space: { left: rowPadding, right: rowPadding }, // Padding inside the row
-      })
-      .addBackground(rowBackground);
-
-    // Icon column (fixed width)
-    const icon = this.add
-      .sprite(0, 0, "icons", attribute.icon ?? "danger")
-      .setDisplaySize(iconWidth - 10, iconWidth - 10) // Adjust icon size
-      .setOrigin(0, 0.5); // Align left and vertically center
-    rowSizer.add(icon, 0, "left", { right: 10 }, false);
-
-    // Label column (80% of remaining space)
-    const label = createText(
-      this,
-      attribute.label,
-      VectorZeroes(),
-      14,
-    ).setOrigin(0, 0.5);
-    rowSizer.add(label, labelWidthRatio, "left", { right: 10 }, true);
-
-    // Value column (remaining space, right-aligned)
-    const valueText = createText(this, value, VectorZeroes(), 14).setOrigin(
-      1,
-      0.5,
-    );
-    rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
-
-    // Layout the row
-    rowSizer.layout();
-
-    return rowSizer;
   }
 
   private createCoreStatsWheelPanel() {
