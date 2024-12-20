@@ -277,7 +277,7 @@ class StatsCirclePartial implements Renderable {
     this.allocatedStatsNumberText[index].setText(
       this.statsManager.getCoreStat(selectedCoreStat.prop) + "",
     );
-    this.scene.events.emit("statsUpdated");
+    this.scene.events.emit("statsUpdated", { coreStat: selectedCoreStat });
   }
 
   private registerKeyListeners() {

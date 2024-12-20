@@ -1,17 +1,21 @@
 import { Renderable } from "../../helpers/ui-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
-import StatsManager, { IAttribute } from "../../helpers/stats-manager.ts";
+import StatsManager, {
+  IAttribute,
+  ICoreStat,
+} from "../../helpers/stats-manager.ts";
 import { HEX_COLOR_DARK, HEX_COLOR_WHITE } from "../../helpers/colors.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
-import { Scene } from "phaser";
-import { StatType } from "../../helpers/stats.ts";
+import { GameObjects, Scene } from "phaser";
+import { Attribute, StatType } from "../../helpers/stats.ts";
 
 class AttributesPartial implements Renderable {
   private readonly scene: Phaser.Scene;
   private readonly width: number;
   private statsManager: StatsManager;
   private attributes: Record<StatType, IAttribute[]>;
+  private attributeValues: Partial<Record<Attribute, Sizer>> = {};
   constructor(scene: Scene, width: number, statsManager: StatsManager) {
     this.scene = scene;
     this.width = width;
@@ -20,6 +24,23 @@ class AttributesPartial implements Renderable {
   }
 
   render(container: Sizer) {
+    this.scene.events.on(
+      "statsUpdated",
+      ({ coreStat }: { coreStat: ICoreStat }) => {
+        coreStat.stats.forEach((stat) => {
+          stat.attributes.forEach((attribute) => {
+            const value = parseFloat(
+              this.statsManager.getAttribute(attribute.prop).toFixed(2),
+            ).toString();
+            if (this.attributeValues[attribute.prop]) {
+              const sizer = this.attributeValues[attribute.prop] as Sizer;
+              (sizer.getChildren()[3] as GameObjects.Text).setText(value);
+              sizer.layout();
+            }
+          });
+        });
+      },
+    );
     Object.keys(this.attributes).forEach((statType) => {
       container.add(createText(this.scene, statType, VectorZeroes(), 16));
       this.attributes[statType as StatType].forEach((attribute) => {
@@ -80,6 +101,7 @@ class AttributesPartial implements Renderable {
 
     // Layout the row
     rowSizer.layout();
+    this.attributeValues[attribute.prop] = rowSizer;
 
     return rowSizer;
   }
