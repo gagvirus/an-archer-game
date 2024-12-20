@@ -287,12 +287,16 @@ class StatsManager {
     return 1;
   }
 
-  static listAttributes(): IAttribute[] {
-    const allAttributes: IAttribute[] = [];
+  static listAttributes(): Record<StatType, IAttribute[]> {
+    const allAttributes: Record<StatType, IAttribute[]> = {
+      [StatType.offensive]: [],
+      [StatType.defensive]: [],
+      [StatType.miscellaneous]: [],
+    };
     StatsManager.listCoreStats().forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
         stat.attributes.forEach((attribute) => {
-          allAttributes.push(attribute);
+          allAttributes[attribute.type].push(attribute);
         });
       });
     });

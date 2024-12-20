@@ -5,12 +5,13 @@ import { HEX_COLOR_DARK, HEX_COLOR_WHITE } from "../../helpers/colors.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import { Scene } from "phaser";
+import { StatType } from "../../helpers/stats.ts";
 
 class AttributesPartial implements Renderable {
-  private attributes: IAttribute[];
   private scene: Phaser.Scene;
   private readonly width: number;
   private statsManager: StatsManager;
+  private attributes: Record<StatType, IAttribute[]>;
   constructor(scene: Scene, width: number, statsManager: StatsManager) {
     this.scene = scene;
     this.width = width;
@@ -19,8 +20,10 @@ class AttributesPartial implements Renderable {
   }
 
   render(container: Sizer) {
-    this.attributes.forEach((attribute) => {
-      container.add(this.renderAttributeRow(attribute, this.width - 40));
+    Object.keys(this.attributes).forEach((statType) => {
+      this.attributes[statType as StatType].forEach((attribute) => {
+        container.add(this.renderAttributeRow(attribute, this.width - 40));
+      });
     });
   }
 
