@@ -2,7 +2,7 @@ import { isEasyMode, isRapidLevelUp } from "./registry-helper.ts";
 import { Scene } from "phaser";
 import Hero from "../logic/Hero.ts";
 import { BooleanStats } from "./powerup-manager.ts";
-import stats from "./stats.ts";
+import stats, { Attribute, ChildStat, CoreStat } from "./stats.ts";
 
 export interface IStat {
   label: string;
@@ -19,46 +19,6 @@ export interface IChildStat extends IStat {
 export interface IAttribute extends IStat {
   prop: Attribute;
   icon?: string;
-}
-
-export enum CoreStat {
-  finesse = "finesse",
-  awareness = "awareness",
-  resilience = "resilience",
-  thoughtfulness = "thoughtfulness",
-}
-
-export enum ChildStat {
-  dexterity = "dexterity",
-  agility = "agility",
-  perception = "perception",
-  strength = "strength",
-  fortitude = "fortitude",
-  endurance = "endurance",
-  intelligence = "intelligence",
-  charisma = "charisma",
-  luck = "luck",
-}
-
-enum Attribute {
-  baseAttackTime = "baseAttackTime",
-  attackSpeedBonus = "attackSpeedBonus",
-  attackRate = "attackRate",
-  attacksPerSecond = "attacksPerSecond",
-  damageMultiplier = "damageMultiplier",
-  criticalChancePercent = "criticalChancePercent",
-  criticalExtraDamageMultiplier = "criticalExtraDamageMultiplier",
-  evadeChancePercent = "evadeChancePercent",
-  maxHealthMultiplier = "maxHealthMultiplier",
-  healthRegenPerInterval = "healthRegenPerInterval",
-  healthRegenerationInterval = "healthRegenerationInterval",
-  armorRatingBonus = "armorRatingBonus",
-  armorRating = "armorRating",
-  flatDamageReduction = "flatDamageReduction",
-  percentReduction = "percentReduction",
-  xpGainMultiplier = "xpGainMultiplier",
-  dropChanceModifier = "dropChanceModifier",
-  dropAmountModifier = "dropAmountModifier",
 }
 
 export interface ICoreStat extends IStat {

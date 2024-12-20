@@ -12,7 +12,26 @@ import {
   HEX_COLOR_THOUGHTFULNESS_DARK,
   HEX_COLOR_THOUGHTFULNESS_DARKER,
 } from "./colors.ts";
-import { ChildStat, CoreStat, ICoreStat } from "./stats-manager.ts";
+import { ICoreStat } from "./stats-manager.ts";
+
+export enum CoreStat {
+  finesse = "finesse",
+  awareness = "awareness",
+  resilience = "resilience",
+  thoughtfulness = "thoughtfulness",
+}
+
+export enum ChildStat {
+  dexterity = "dexterity",
+  agility = "agility",
+  perception = "perception",
+  strength = "strength",
+  fortitude = "fortitude",
+  endurance = "endurance",
+  intelligence = "intelligence",
+  charisma = "charisma",
+  luck = "luck",
+}
 
 const stats: ICoreStat[] = [
   {
@@ -129,3 +148,24 @@ const stats: ICoreStat[] = [
 ];
 
 export default stats;
+
+export enum Attribute {
+  baseAttackTime = "baseAttackTime",
+  attackSpeedBonus = "attackSpeedBonus",
+  attackRate = "attackRate",
+  attacksPerSecond = "attacksPerSecond",
+  damageMultiplier = "damageMultiplier",
+  criticalChancePercent = "criticalChancePercent",
+  criticalExtraDamageMultiplier = "criticalExtraDamageMultiplier",
+  evadeChancePercent = "evadeChancePercent",
+  maxHealthMultiplier = "maxHealthMultiplier",
+  healthRegenPerInterval = "healthRegenPerInterval",
+  healthRegenerationInterval = "healthRegenerationInterval",
+  armorRatingBonus = "armorRatingBonus",
+  armorRating = "armorRating",
+  flatDamageReduction = "flatDamageReduction",
+  percentReduction = "percentReduction",
+  xpGainMultiplier = "xpGainMultiplier",
+  dropChanceModifier = "dropChanceModifier",
+  dropAmountModifier = "dropAmountModifier",
+}
