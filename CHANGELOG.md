@@ -1,5 +1,9 @@
 ## Changelog
 
+### WIP
+
+- Fix portal logic - can somehow use portal multiple times by spamming enter key
+
 ### v0.0.11
 
 - Improvements on boosts
