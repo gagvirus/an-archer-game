@@ -18,14 +18,9 @@ class StatsCirclePartial implements Renderable {
   private allocatedStatsNumberText: Phaser.GameObjects.Text[] = [];
   private statsManager: StatsManager;
 
-  constructor(
-    scene: Scene,
-    coreStats: ICoreStat[],
-    statsManager: StatsManager,
-    center: Vector2Like,
-  ) {
+  constructor(scene: Scene, statsManager: StatsManager, center: Vector2Like) {
     this.scene = scene;
-    this.coreStats = coreStats;
+    this.coreStats = StatsManager.listCoreStats();
     this.center = center;
     this.statsManager = statsManager;
   }

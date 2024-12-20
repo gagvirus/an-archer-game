@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
-import StatsManager, { ICoreStat } from "../../helpers/stats-manager.ts";
+import StatsManager from "../../helpers/stats-manager.ts";
 import Hero from "../../logic/Hero.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
@@ -12,13 +12,11 @@ import StatsCirclePartial from "./StatsCirclePartial.ts";
 import ChildStatsPartial from "./ChildStatsPartial.ts";
 
 export default class StatsScene extends Scene implements ISceneLifecycle {
-  private readonly coreStats: ICoreStat[];
   private statsManager: StatsManager;
   private fullWidth: number = 1200;
 
   constructor() {
     super({ key: "StatsScene" });
-    this.coreStats = StatsManager.listCoreStats();
   }
 
   init(data: { statsManager: StatsManager }) {
@@ -117,7 +115,6 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
 
     const statsCircleRenderer = new StatsCirclePartial(
       this,
-      this.coreStats,
       this.statsManager,
       {
         x: this.scale.width / 2,
