@@ -2,7 +2,12 @@ import { isEasyMode, isRapidLevelUp } from "./registry-helper.ts";
 import { Scene } from "phaser";
 import Hero from "../logic/Hero.ts";
 import { BooleanStats } from "./powerup-manager.ts";
-import stats, { Attribute, ChildStat, CoreStat } from "./stats.ts";
+import coreStats, {
+  Attribute,
+  ChildStat,
+  CoreStat,
+  StatType,
+} from "./stats.ts";
 
 export interface IStat {
   label: string;
@@ -14,10 +19,12 @@ export interface IChildStat extends IStat {
   prop: ChildStat;
   icon?: string;
   description?: string;
+  attributes: IAttribute[];
 }
 
 export interface IAttribute extends IStat {
   prop: Attribute;
+  type: StatType;
   icon?: string;
 }
 
@@ -281,46 +288,19 @@ class StatsManager {
   }
 
   static listAttributes(): IAttribute[] {
-    return [
-      // offensive stats
-      //   attack speed
-      { label: "Base Attack Time", prop: Attribute.baseAttackTime },
-      { label: "Attack Speed Bonus", prop: Attribute.attackSpeedBonus },
-      { label: "Attack Rate", prop: Attribute.attackRate },
-      { label: "Attacks Per Second", prop: Attribute.attacksPerSecond },
-      //   damage
-      { label: "Damage multiplier", prop: Attribute.damageMultiplier },
-      //   critical
-      { label: "Critical Chance %", prop: Attribute.criticalChancePercent },
-      {
-        label: "Critical Damage Multiplier",
-        prop: Attribute.criticalExtraDamageMultiplier,
-      },
-
-      // defensive stats
-      //   evade
-      { label: "Evade Chance %", prop: Attribute.evadeChancePercent },
-      //   health
-      { label: "Max Health Multiplier", prop: Attribute.maxHealthMultiplier },
-      { label: "Health Regen Amount", prop: Attribute.healthRegenPerInterval },
-      {
-        label: "Health Regen Interval",
-        prop: Attribute.healthRegenerationInterval,
-      },
-      //   armor
-      { label: "Armor Rating Bonus", prop: Attribute.armorRatingBonus },
-      { label: "Armor Rating", prop: Attribute.armorRating },
-      { label: "Flat Damage Reduction", prop: Attribute.flatDamageReduction },
-      { label: "Percent Damage Reduction", prop: Attribute.percentReduction },
-      // miscellaneous
-      { label: "XP Gain Multiplier", prop: Attribute.xpGainMultiplier },
-      { label: "Drop Chance Multiplier", prop: Attribute.dropChanceModifier },
-      { label: "Drop Amount Modifier", prop: Attribute.dropAmountModifier },
-    ];
+    const allAttributes: IAttribute[] = [];
+    StatsManager.listCoreStats().forEach((coreStat) => {
+      coreStat.stats.forEach((stat) => {
+        stat.attributes.forEach((attribute) => {
+          allAttributes.push(attribute);
+        });
+      });
+    });
+    return allAttributes;
   }
 
   static listCoreStats(): ICoreStat[] {
-    return stats;
+    return coreStats;
   }
 }
 
