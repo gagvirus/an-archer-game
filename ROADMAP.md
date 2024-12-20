@@ -2,7 +2,6 @@
 
 ### Bugs & Improvements
 
-- stats management - better ui / ux for viewing child stats & attributes
 - automatically update child stats / attributes on core stat change
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
 - display a help icon "Enter" when portal is ready
