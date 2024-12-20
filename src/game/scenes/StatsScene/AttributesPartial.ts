@@ -8,7 +8,7 @@ import { Scene } from "phaser";
 import { StatType } from "../../helpers/stats.ts";
 
 class AttributesPartial implements Renderable {
-  private scene: Phaser.Scene;
+  private readonly scene: Phaser.Scene;
   private readonly width: number;
   private statsManager: StatsManager;
   private attributes: Record<StatType, IAttribute[]>;
@@ -21,6 +21,7 @@ class AttributesPartial implements Renderable {
 
   render(container: Sizer) {
     Object.keys(this.attributes).forEach((statType) => {
+      container.add(createText(this.scene, statType, VectorZeroes(), 16));
       this.attributes[statType as StatType].forEach((attribute) => {
         container.add(this.renderAttributeRow(attribute, this.width - 40));
       });
