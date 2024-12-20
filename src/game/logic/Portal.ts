@@ -12,6 +12,10 @@ enum PortalState {
 
 export class Portal extends Phaser.Physics.Arcade.Sprite {
   state: PortalState;
+  private readonly DISTANCE_TO_ACTIVATE = 50;
+  private activatingTimeout?: number;
+  private deactivatingTimeout?: number;
+  private heroInPortal: boolean = false;
 
   constructor(scene: MainScene, x: number, y: number) {
     super(scene, x, y, "portal");
@@ -28,6 +32,35 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     });
   }
 
+  onHeroEnterPortal() {
+    if (![PortalState.activating, PortalState.active].includes(this.state)) {
+      this.state = PortalState.activating;
+      this.anims.play("portal-activate");
+      if (this.deactivatingTimeout) {
+        clearTimeout(this.deactivatingTimeout);
+        this.deactivatingTimeout = undefined;
+      }
+      this.activatingTimeout = setTimeout(() => {
+        this.state = PortalState.active;
+      }, this.anims.animationManager.get("portal-activate").duration);
+    }
+  }
+
+  onHeroLeavePortal() {
+    if (![PortalState.idle, PortalState.activating].includes(this.state)) {
+      this.state = PortalState.deactivating;
+      this.anims.play("portal-deactivate");
+      if (this.activatingTimeout) {
+        clearTimeout(this.activatingTimeout);
+        this.activatingTimeout = undefined;
+      }
+      this.deactivatingTimeout = setTimeout(() => {
+        this.state = PortalState.idle;
+        this.anims.play("portal-idle");
+      }, this.anims.animationManager.get("portal-deactivate").duration);
+    }
+  }
+
   checkHeroIsWithinBounds(hero: Hero) {
     if (this.state === PortalState.disabled) {
       return;
@@ -38,29 +71,16 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       hero.x,
       hero.y,
     );
-    if (distanceToHero <= 50) {
-      if (![PortalState.activating, PortalState.active].includes(this.state)) {
-        this.state = PortalState.activating;
-        this.anims.play("portal-activate");
-        this.scene.time.delayedCall(
-          this.anims.animationManager.get("portal-activate").duration,
-          () => {
-            this.state = PortalState.active;
-          },
-        );
-      }
-    } else {
-      if (![PortalState.idle, PortalState.activating].includes(this.state)) {
-        this.state = PortalState.deactivating;
-        this.anims.play("portal-deactivate");
-        this.scene.time.delayedCall(
-          this.anims.animationManager.get("portal-deactivate").duration,
-          () => {
-            this.state = PortalState.idle;
-            this.anims.play("portal-idle");
-          },
-        );
-      }
+    const withinBounds = distanceToHero <= this.DISTANCE_TO_ACTIVATE;
+    const enteredThePortal = withinBounds;
+    const leftThePortal = this.heroInPortal && !withinBounds;
+    if (enteredThePortal) {
+      this.heroInPortal = true;
+      this.onHeroEnterPortal();
+    }
+    if (leftThePortal) {
+      this.heroInPortal = false;
+      this.onHeroLeavePortal();
     }
   }
 
