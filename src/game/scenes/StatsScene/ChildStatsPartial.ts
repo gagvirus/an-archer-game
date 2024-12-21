@@ -1,5 +1,5 @@
 import { Renderable } from "../../helpers/ui-helper.ts";
-import { Scene } from "phaser";
+import { GameObjects, Scene } from "phaser";
 import StatsManager, {
   IChildStat,
   ICoreStat,
@@ -9,6 +9,7 @@ import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import Tooltip from "../../ui/tooltip.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
+import { ChildStat } from "../../helpers/stats.ts";
 
 class StatsCirclePartial implements Renderable {
   private coreStats: ICoreStat[];
@@ -16,6 +17,7 @@ class StatsCirclePartial implements Renderable {
   private statsManager: StatsManager;
   private tooltip: Tooltip;
   private readonly width: number;
+  private statValues: Partial<Record<ChildStat, Sizer>> = {};
 
   constructor(scene: Scene, width: number, statsManager: StatsManager) {
     this.scene = scene;
@@ -26,12 +28,31 @@ class StatsCirclePartial implements Renderable {
   }
 
   render(container: Sizer) {
+    this.scene.events.on("statsUpdated", this.onStatsUpdated, this);
     this.coreStats.forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
         container.add(this.renderStatRow(stat, this.width - 40));
       });
     });
   }
+
+  destroy() {
+    this.scene.events.off("statsUpdated", this.onStatsUpdated, this);
+  }
+
+  private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
+    coreStat.stats.forEach((stat) => {
+      const value = parseFloat(
+        this.statsManager.getChildStat(stat.prop).toFixed(2),
+      ).toString();
+      if (this.statValues[stat.prop]) {
+        const sizer = this.statValues[stat.prop] as Sizer;
+
+        (sizer.getChildren()[3] as GameObjects.Text).setText(value);
+        sizer.layout();
+      }
+    });
+  };
 
   private renderStatRow(stat: IChildStat, rowWidth: number) {
     const value = parseFloat(
@@ -96,7 +117,7 @@ class StatsCirclePartial implements Renderable {
 
     // Layout the row
     rowSizer.layout();
-
+    this.statValues[stat.prop] = rowSizer;
     return rowSizer;
   }
 }
