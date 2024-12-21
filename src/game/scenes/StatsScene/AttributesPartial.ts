@@ -105,7 +105,6 @@ class AttributesPartial implements Renderable {
     // Layout the row
     rowSizer.layout();
     this.attributeValues[attribute.prop] = rowSizer;
-
     return rowSizer;
   }
 }

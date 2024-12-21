@@ -47,7 +47,6 @@ class StatsCirclePartial implements Renderable {
       ).toString();
       if (this.statValues[stat.prop]) {
         const sizer = this.statValues[stat.prop] as Sizer;
-
         (sizer.getChildren()[3] as GameObjects.Text).setText(value);
         sizer.layout();
       }
