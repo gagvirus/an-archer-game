@@ -24,23 +24,7 @@ class AttributesPartial implements Renderable {
   }
 
   render(container: Sizer) {
-    this.scene.events.on(
-      "statsUpdated",
-      ({ coreStat }: { coreStat: ICoreStat }) => {
-        coreStat.stats.forEach((stat) => {
-          stat.attributes.forEach((attribute) => {
-            const value = parseFloat(
-              this.statsManager.getAttribute(attribute.prop).toFixed(2),
-            ).toString();
-            if (this.attributeValues[attribute.prop]) {
-              const sizer = this.attributeValues[attribute.prop] as Sizer;
-              (sizer.getChildren()[3] as GameObjects.Text).setText(value);
-              sizer.layout();
-            }
-          });
-        });
-      },
-    );
+    this.scene.events.on("statsUpdated", this.onStatsUpdated, this);
     Object.keys(this.attributes).forEach((statType) => {
       container.add(createText(this.scene, statType, VectorZeroes(), 16));
       this.attributes[statType as StatType].forEach((attribute) => {
@@ -48,6 +32,25 @@ class AttributesPartial implements Renderable {
       });
     });
   }
+
+  destroy() {
+    this.scene.events.off("statsUpdated", this.onStatsUpdated, this);
+  }
+
+  private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
+    coreStat.stats.forEach((stat) => {
+      stat.attributes.forEach((attribute) => {
+        const value = parseFloat(
+          this.statsManager.getAttribute(attribute.prop).toFixed(2),
+        ).toString();
+        if (this.attributeValues[attribute.prop]) {
+          const sizer = this.attributeValues[attribute.prop] as Sizer;
+          (sizer.getChildren()[3] as GameObjects.Text).setText(value);
+          sizer.layout();
+        }
+      });
+    });
+  };
 
   private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
     const value = parseFloat(

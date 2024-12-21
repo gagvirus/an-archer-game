@@ -14,6 +14,7 @@ import ChildStatsPartial from "./ChildStatsPartial.ts";
 export default class StatsScene extends Scene implements ISceneLifecycle {
   private statsManager: StatsManager;
   private fullWidth: number = 1200;
+  private attributesPartial: AttributesPartial;
 
   constructor() {
     super({ key: "StatsScene" });
@@ -60,6 +61,13 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
       .add(coreStatsWheelPanel, 1, "center", 0, true)
       .add(statsPanel, 1, "center", 0, true)
       .layout();
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.cleanup, this);
+  }
+
+  cleanup() {
+    console.log("cleaning up statsScene");
+    this.attributesPartial.destroy();
   }
 
   private createAttributesPanel() {
@@ -100,8 +108,12 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
 
     panel.layout();
 
-    const renderer = new AttributesPartial(this, width, this.statsManager);
-    renderer.render(container);
+    this.attributesPartial = new AttributesPartial(
+      this,
+      width,
+      this.statsManager,
+    );
+    this.attributesPartial.render(container);
 
     return panel;
   }
