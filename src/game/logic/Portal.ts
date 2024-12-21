@@ -16,6 +16,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
   private activatingTimeout?: number;
   private deactivatingTimeout?: number;
   private heroInPortal: boolean = false;
+  private enterPrompt: Phaser.GameObjects.Sprite;
 
   constructor(scene: MainScene, x: number, y: number) {
     super(scene, x, y, "portal");
@@ -30,6 +31,14 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
         }
       }
     });
+
+    this.enterPrompt = this.scene.add.sprite(
+      x,
+      y - 50,
+      "input_prompts_big",
+      "enter-white",
+    );
+    this.enterPrompt.setVisible(false);
   }
 
   onHeroEnterPortal() {
@@ -42,6 +51,8 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       }
       this.activatingTimeout = setTimeout(() => {
         this.state = PortalState.active;
+        this.enterPrompt.setVisible(true);
+        this.scene.children.bringToTop(this.enterPrompt);
       }, this.anims.animationManager.get("portal-activate").duration);
     }
   }
@@ -57,6 +68,8 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       this.deactivatingTimeout = setTimeout(() => {
         this.state = PortalState.idle;
         this.anims.play("portal-idle");
+        this.enterPrompt.setVisible(true);
+        this.scene.children.bringToTop(this.enterPrompt);
       }, this.anims.animationManager.get("portal-deactivate").duration);
     }
   }
@@ -88,6 +101,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     if (disabled) {
       this.state = PortalState.disabled;
       this.anims.play("portal-disabled");
+      this.enterPrompt.setVisible(false);
     } else {
       this.state = PortalState.idle;
       this.anims.play("portal-idle");
