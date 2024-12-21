@@ -60,10 +60,10 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
         clearTimeout(this.activatingTimeout);
         this.activatingTimeout = undefined;
       }
+      this.enterPrompt.setVisible(false);
       this.deactivatingTimeout = setTimeout(() => {
         this.state = PortalState.idle;
         this.anims.play("portal-idle");
-        this.enterPrompt.setVisible(true);
         this.scene.children.bringToTop(this.enterPrompt);
       }, this.anims.animationManager.get("portal-deactivate").duration);
     }
