@@ -65,10 +65,10 @@ class MainScene extends Scene implements ISceneLifecycle {
   create() {
     // Initialize the module manager
     this.moduleManager = ModuleManager.getInstance(this);
-    // initialize the portal
-    this.portal = new Portal(this, 400, 400);
     // Initialize the hero in the center of the canvas
     this.hero = new Hero(this, this.scale.width / 2, this.scale.height / 2);
+    // initialize the portal
+    this.portal = new Portal(this, 400, 400, this.hero);
 
     this.drops = this.physics.add.group();
     this.dropsFollowing = this.physics.add.group();
@@ -191,6 +191,8 @@ class MainScene extends Scene implements ISceneLifecycle {
     new UiIcon(this, 50, this.scale.height - 50, "hand-sparkle")
       .setInteractive()
       .on("pointerdown", () => this.openStatsScreen());
+
+    this.children.bringToTop(this.hero);
   }
 
   onResourcePull(
@@ -431,7 +433,7 @@ class MainScene extends Scene implements ISceneLifecycle {
     // Update hero based on input
     this.hero.update(cursors, time, delta);
 
-    this.portal.checkHeroIsWithinBounds(this.hero);
+    this.portal.update();
     this.dropsFollowHero();
   }
 

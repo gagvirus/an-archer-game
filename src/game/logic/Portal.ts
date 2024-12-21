@@ -17,12 +17,14 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
   private deactivatingTimeout?: number;
   private heroInPortal: boolean = false;
   private enterPrompt: Phaser.GameObjects.Sprite;
+  private hero: Hero;
 
-  constructor(scene: MainScene, x: number, y: number) {
+  constructor(scene: MainScene, x: number, y: number, hero: Hero) {
     super(scene, x, y, "portal");
     scene.add.existing(this);
     this.state = PortalState.disabled;
     this.anims.play("portal-disabled");
+    this.hero = hero;
 
     scene.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
       if (event.key === "Enter") {
@@ -32,11 +34,12 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       }
     });
 
-    this.enterPrompt = this.scene.add.sprite(x, y - 50, "input", "enter-white");
-    this.enterPrompt.setVisible(false);
+    this.enterPrompt = this.scene.add
+      .sprite(x, y - 50, "input", "enter-white")
+      .setVisible(false);
   }
 
-  onHeroEnterPortal(hero: Hero) {
+  onHeroEnterPortal() {
     if (![PortalState.activating, PortalState.active].includes(this.state)) {
       this.state = PortalState.activating;
       this.anims.play("portal-activate");
@@ -46,16 +49,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       }
       this.activatingTimeout = setTimeout(() => {
         this.state = PortalState.active;
-        this.enterPrompt
-          .setVisible(true)
-          .setAlpha(0)
-          .setPosition(hero.x, hero.y - 50);
-        this.scene.tweens.add({
-          targets: this.enterPrompt,
-          alpha: 1,
-          duration: 200,
-          ease: "Power2",
-        });
+        this.showEnterPrompt();
 
         this.scene.children.bringToTop(this.enterPrompt);
       }, this.anims.animationManager.get("portal-activate").duration);
@@ -70,7 +64,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
         clearTimeout(this.activatingTimeout);
         this.activatingTimeout = undefined;
       }
-      this.enterPrompt.setVisible(false);
+      this.hideEnterPrompt();
       this.deactivatingTimeout = setTimeout(() => {
         this.state = PortalState.idle;
         this.anims.play("portal-idle");
@@ -79,22 +73,38 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  checkHeroIsWithinBounds(hero: Hero) {
+  public update() {
+    this.checkHeroIsWithinBounds();
+    this.updateEnterPromptPosition();
+  }
+
+  setDisabled(disabled: boolean) {
+    if (disabled) {
+      this.state = PortalState.disabled;
+      this.anims.play("portal-disabled");
+      this.hideEnterPrompt();
+    } else {
+      this.state = PortalState.idle;
+      this.anims.play("portal-idle");
+    }
+  }
+
+  private checkHeroIsWithinBounds() {
     if (this.state === PortalState.disabled) {
       return;
     }
     const distanceToHero = Phaser.Math.Distance.Between(
       this.x,
       this.y,
-      hero.x,
-      hero.y,
+      this.hero.x,
+      this.hero.y,
     );
     const withinBounds = distanceToHero <= this.DISTANCE_TO_ACTIVATE;
     const enteredThePortal = withinBounds;
     const leftThePortal = this.heroInPortal && !withinBounds;
     if (enteredThePortal) {
       this.heroInPortal = true;
-      this.onHeroEnterPortal(hero);
+      this.onHeroEnterPortal();
     }
     if (leftThePortal) {
       this.heroInPortal = false;
@@ -102,15 +112,30 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  setDisabled(disabled: boolean) {
-    if (disabled) {
-      this.state = PortalState.disabled;
-      this.anims.play("portal-disabled");
-      this.enterPrompt.setVisible(false);
-    } else {
-      this.state = PortalState.idle;
-      this.anims.play("portal-idle");
-    }
+  private showEnterPrompt() {
+    this.enterPrompt.setVisible(true).setAlpha(0);
+    this.scene.tweens.add({
+      targets: this.enterPrompt,
+      alpha: 1,
+      duration: 200,
+      ease: "Power2",
+    });
+  }
+
+  private hideEnterPrompt() {
+    this.scene.tweens.add({
+      targets: this.enterPrompt,
+      alpha: 0,
+      duration: 200,
+      ease: "Power2",
+      onComplete: () => {
+        this.enterPrompt.setVisible(false).setAlpha(1);
+      },
+    });
+  }
+
+  private updateEnterPromptPosition() {
+    this.enterPrompt.setPosition(this.hero.x, this.hero.y - 50);
   }
 }
 

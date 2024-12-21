@@ -7,6 +7,7 @@
 - automatically update child stats / attributes on core stat change
 - display a help icon "Enter" when portal is ready
 - display an icon that shall open stats screen on click (hand-sparkle)
+- "enter" input help must appear & disappear with a transition
 
 ### v0.0.11
 

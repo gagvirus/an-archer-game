@@ -4,7 +4,6 @@
 
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
 - auto-proceed to next level
-- "enter" input help must appear & disappear with a transition
 - optimization on logs - display log entries in bulk when collecting resources
   - during 3 seconds if a player collects +10, +12, +13 coins, just display one entry "collected 35 coins"
 - coins / resources "clumping"
