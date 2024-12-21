@@ -6,6 +6,7 @@
 - stats management - better ui / ux for viewing child stats & attributes
 - automatically update child stats / attributes on core stat change
 - display a help icon "Enter" when portal is ready
+- display an icon that shall open stats screen on click (hand-sparkle)
 
 ### v0.0.11
 

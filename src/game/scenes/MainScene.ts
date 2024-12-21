@@ -43,6 +43,7 @@ import DoubleSpeed from "../logic/drop/powerup/timed/DoubleSpeed.ts";
 import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
 import ActiveEffectsModule from "../modules/active-effects-module.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import UiIcon from "../ui/icon.ts";
 
 class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
@@ -160,8 +161,7 @@ class MainScene extends Scene implements ISceneLifecycle {
       }
 
       if (event.key === "c") {
-        this.onPause();
-        this.scene.launch("StatsScene", { statsManager: this.hero.stats });
+        this.openStatsScreen();
       }
 
       if (isDebugMode(this.game)) {
@@ -187,6 +187,10 @@ class MainScene extends Scene implements ISceneLifecycle {
       }
     });
     this.startStage();
+
+    new UiIcon(this, 50, this.scale.height - 50, "hand-sparkle")
+      .setInteractive()
+      .on("pointerdown", () => this.openStatsScreen());
   }
 
   onResourcePull(
@@ -474,6 +478,11 @@ class MainScene extends Scene implements ISceneLifecycle {
     );
     // update the health bar ui
     // update the health regen tick
+  }
+
+  private openStatsScreen() {
+    this.onPause();
+    this.scene.launch("StatsScene", { statsManager: this.hero.stats });
   }
 }
 
