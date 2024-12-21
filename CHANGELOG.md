@@ -4,6 +4,7 @@
 
 - Fix portal logic - can somehow use portal multiple times by spamming enter key
 - stats management - better ui / ux for viewing child stats & attributes
+- automatically update child stats / attributes on core stat change
 
 ### v0.0.11
 

@@ -2,7 +2,6 @@
 
 ### Bugs & Improvements
 
-- automatically update child stats / attributes on core stat change
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
 - display a help icon "Enter" when portal is ready
 - auto-proceed to next level
