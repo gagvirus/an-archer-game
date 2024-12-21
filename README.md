@@ -40,6 +40,8 @@ This project utilizes the following resources:
   - [Coin](https://merlym.itch.io/coin)
   - [Free Effect and Bullet 16x16](https://bdragon1727.itch.io/free-effect-and-bullet-16x16)
   - [Shikashi's Fantasy Icons Pack](https://shikashipx.itch.io/shikashis-fantasy-icons-pack)
+  - [Input Prompts Pixel 16×](https://kenney.nl/assets/input-prompts-pixel-16)
+  - [UI Pack - Pixel Adventure](https://kenney.nl/assets/ui-pack-pixel-adventure)
 
 - Free assets that might be useful
   - [Kyrise's Free 16x16 RPG Icon Pack](https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack)
