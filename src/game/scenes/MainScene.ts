@@ -285,7 +285,7 @@ class MainScene extends Scene implements ISceneLifecycle {
     (drop as GameObjectWithBody).body.velocity.set(velocityX, velocityY);
 
     // Optional: Add a tween for a smooth "throw" animation
-    this.scene.scene.tweens.add({
+    this.tweens.add({
       targets: drop,
       x: targetX,
       y: targetY,
