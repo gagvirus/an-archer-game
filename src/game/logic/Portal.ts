@@ -32,12 +32,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       }
     });
 
-    this.enterPrompt = this.scene.add.sprite(
-      x,
-      y - 50,
-      "input_prompts_big",
-      "enter-white",
-    );
+    this.enterPrompt = this.scene.add.sprite(x, y - 50, "input", "enter-white");
     this.enterPrompt.setVisible(false);
   }
 
