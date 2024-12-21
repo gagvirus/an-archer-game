@@ -36,7 +36,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     this.enterPrompt.setVisible(false);
   }
 
-  onHeroEnterPortal() {
+  onHeroEnterPortal(hero: Hero) {
     if (![PortalState.activating, PortalState.active].includes(this.state)) {
       this.state = PortalState.activating;
       this.anims.play("portal-activate");
@@ -46,7 +46,17 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       }
       this.activatingTimeout = setTimeout(() => {
         this.state = PortalState.active;
-        this.enterPrompt.setVisible(true);
+        this.enterPrompt
+          .setVisible(true)
+          .setAlpha(0)
+          .setPosition(hero.x, hero.y - 50);
+        this.scene.tweens.add({
+          targets: this.enterPrompt,
+          alpha: 1,
+          duration: 200,
+          ease: "Power2",
+        });
+
         this.scene.children.bringToTop(this.enterPrompt);
       }, this.anims.animationManager.get("portal-activate").duration);
     }
@@ -84,7 +94,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     const leftThePortal = this.heroInPortal && !withinBounds;
     if (enteredThePortal) {
       this.heroInPortal = true;
-      this.onHeroEnterPortal();
+      this.onHeroEnterPortal(hero);
     }
     if (leftThePortal) {
       this.heroInPortal = false;
