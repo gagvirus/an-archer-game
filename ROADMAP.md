@@ -3,7 +3,6 @@
 ### Bugs & Improvements
 
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
-- display a help icon "Enter" when portal is ready
 - auto-proceed to next level
 - display an icon that shall open stats screen on click (hand-sparkle)
 - optimization on logs - display log entries in bulk when collecting resources
