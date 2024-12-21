@@ -30,7 +30,6 @@ class UiHelper {
         ? UiHelper.getDefaultSliderConfig(scene)
         : configOverride.slider;
 
-    console.log({ slider });
     return {
       ...{
         x,

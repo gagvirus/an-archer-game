@@ -15,6 +15,7 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
   private statsManager: StatsManager;
   private fullWidth: number = 1200;
   private attributesPartial: AttributesPartial;
+  private childStatsPartial: ChildStatsPartial;
 
   constructor() {
     super({ key: "StatsScene" });
@@ -66,8 +67,8 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
   }
 
   cleanup() {
-    console.log("cleaning up statsScene");
     this.attributesPartial.destroy();
+    this.childStatsPartial.destroy();
   }
 
   private createAttributesPanel() {
@@ -146,8 +147,12 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
       width, // 3/10 width of the full screen width minus padding 10%
       this.scale.height * 0.7, // full height minus padding
     );
-    const renderer = new ChildStatsPartial(this, width, this.statsManager);
-    renderer.render(container);
+    this.childStatsPartial = new ChildStatsPartial(
+      this,
+      width,
+      this.statsManager,
+    );
+    this.childStatsPartial.render(container);
     return container;
   }
 
