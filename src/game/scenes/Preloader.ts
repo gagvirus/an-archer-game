@@ -38,6 +38,7 @@ export class Preloader extends Scene implements ISceneLifecycle {
     this.load.atlas("icons", "icons.png", "icons.json");
     this.load.atlas("input", "input.png", "input.json");
     this.load.atlas("ui", "ui.png", "ui.json");
+    this.load.atlas("ui-icons", "ui-icons.png", "ui-icons.json");
 
     this.load.spritesheet("hero", "hero/running.png", {
       frameWidth: 64,

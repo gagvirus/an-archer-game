@@ -67,10 +67,10 @@ class StatsCirclePartial implements Renderable {
     );
 
     // Add a small icon in the quarter-circle button
-    const offsetX = [1, 2].includes(i) ? -10 : 10;
+    const offsetX = [1, 2].includes(i) ? -8 : 8;
     const offsetY = i > 1 ? -10 : 10;
     const buttonIcon = this.scene.add
-      .sprite(buttonX + offsetX, buttonY + offsetY, "icons", "up")
+      .sprite(buttonX + offsetX, buttonY + offsetY, "ui-icons", "plus-black")
       .setInteractive()
       .on("pointerdown", () => {
         this.handleStatClick(i);
@@ -93,7 +93,7 @@ class StatsCirclePartial implements Renderable {
           endAngle,
         );
       });
-    buttonIcon.setOrigin(0.5).setScale(0.8);
+    buttonIcon.setOrigin(0.5).setScale(0.6);
   }
 
   private renderUnallocatedStatsNumber() {
@@ -194,10 +194,10 @@ class StatsCirclePartial implements Renderable {
     );
 
     // Add a small icon in the quarter-circle button
-    const offsetX = [1, 2].includes(i) ? -15 : 15;
+    const offsetX = [1, 2].includes(i) ? -18 : 18;
     const offsetY = i > 1 ? -15 : 15;
     const buttonIcon = this.scene.add
-      .sprite(buttonX + offsetX, buttonY + offsetY, "icons", "down")
+      .sprite(buttonX + offsetX, buttonY + offsetY, "ui-icons", "minus-black")
       .setInteractive()
       .on("pointerdown", () => {
         this.handleStatClick(i, true);
@@ -221,7 +221,7 @@ class StatsCirclePartial implements Renderable {
           endAngle,
         );
       });
-    buttonIcon.setOrigin(0.5).setScale(1);
+    buttonIcon.setOrigin(0.5).setScale(0.6);
   }
 
   private renderQuarterCircle(
