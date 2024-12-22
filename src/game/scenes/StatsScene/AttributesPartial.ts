@@ -14,6 +14,7 @@ import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import { GameObjects, Scene } from "phaser";
 import { Attribute, StatType } from "../../helpers/stats.ts";
+import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 
 class AttributesPartial implements Renderable {
   private readonly scene: Phaser.Scene;
@@ -22,10 +23,18 @@ class AttributesPartial implements Renderable {
   private attributes: Record<StatType, IAttribute[]>;
   private attributeRows: Partial<Record<Attribute, Sizer>> = {};
   private holdingShift: boolean = false;
-  constructor(scene: Scene, width: number, statsManager: StatsManager) {
+  private panel: ScrollablePanel;
+
+  constructor(
+    scene: Scene,
+    width: number,
+    panel: ScrollablePanel,
+    statsManager: StatsManager,
+  ) {
     this.scene = scene;
     this.width = width;
     this.statsManager = statsManager;
+    this.panel = panel;
     this.attributes = StatsManager.listAttributes();
   }
 
@@ -118,9 +127,15 @@ class AttributesPartial implements Renderable {
     const row = this.attributeRows[attribute.prop] as Sizer;
     const diffText = row.getChildren()[4] as Phaser.GameObjects.Text;
     const color = value.startsWith("-") ? COLOR_DANGER : COLOR_SUCCESS;
+
+    const isVisible = Phaser.Geom.Rectangle.Overlaps(
+      this.panel.getBounds(),
+      row.getBounds(),
+    );
+
     diffText.setText(value);
     diffText.setColor(color);
-    diffText.setVisible(true);
+    diffText.setVisible(isVisible);
     row.layout();
   }
 

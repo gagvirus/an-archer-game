@@ -73,6 +73,7 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
 
   private createAttributesPanel() {
     const width = this.fullWidth * 0.3;
+    const height = this.scale.height * 0.7;
 
     const container = this.rexUI.add.sizer({
       orientation: "vertical",
@@ -88,7 +89,7 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
       x: 0,
       y: 0,
       width,
-      height: this.scale.height * 0.7,
+      height,
       scrollMode: "vertical",
       background: this.rexUI.add
         .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
@@ -112,6 +113,7 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
     this.attributesPartial = new AttributesPartial(
       this,
       width,
+      panel,
       this.statsManager,
     );
     this.attributesPartial.render(container);
