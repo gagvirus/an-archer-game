@@ -4,7 +4,12 @@ import StatsManager, {
   IAttribute,
   ICoreStat,
 } from "../../helpers/stats-manager.ts";
-import { HEX_COLOR_DARK, HEX_COLOR_WHITE } from "../../helpers/colors.ts";
+import {
+  COLOR_DANGER,
+  COLOR_SUCCESS,
+  HEX_COLOR_DARK,
+  HEX_COLOR_WHITE,
+} from "../../helpers/colors.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import { GameObjects, Scene } from "phaser";
@@ -15,7 +20,7 @@ class AttributesPartial implements Renderable {
   private readonly width: number;
   private statsManager: StatsManager;
   private attributes: Record<StatType, IAttribute[]>;
-  private attributeValues: Partial<Record<Attribute, Sizer>> = {};
+  private attributeRows: Partial<Record<Attribute, Sizer>> = {};
   constructor(scene: Scene, width: number, statsManager: StatsManager) {
     this.scene = scene;
     this.width = width;
@@ -24,7 +29,11 @@ class AttributesPartial implements Renderable {
   }
 
   render(container: Sizer) {
-    this.scene.events.on("statsUpdated", this.onStatsUpdated, this);
+    this.scene.events
+      .on("statsUpdated", this.onStatsUpdated, this)
+      .on("statPointerOver", this.statPointerOver, this)
+      .on("statPointerOut", this.statPointerOut, this)
+      .on("holdingShiftChange", this.onHoldingShiftChange, this);
     Object.keys(this.attributes).forEach((statType) => {
       container.add(createText(this.scene, statType, VectorZeroes(), 16));
       this.attributes[statType as StatType].forEach((attribute) => {
@@ -34,8 +43,21 @@ class AttributesPartial implements Renderable {
   }
 
   destroy() {
-    this.scene.events.off("statsUpdated", this.onStatsUpdated, this);
+    this.scene.events
+      .off("statsUpdated", this.onStatsUpdated, this)
+      .off("statPointerOver", this.statPointerOver, this)
+      .off("statPointerOut", this.statPointerOut, this)
+      .off("holdingShiftChange", this.onHoldingShiftChange, this);
   }
+
+  private statPointerOver(data: {
+    coreStat: ICoreStat;
+    unallocating: boolean;
+  }) {}
+
+  private statPointerOut() {}
+
+  private onHoldingShiftChange(holdingShift: boolean) {}
 
   private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
     coreStat.stats.forEach((stat) => {
@@ -43,14 +65,29 @@ class AttributesPartial implements Renderable {
         const value = parseFloat(
           this.statsManager.getAttribute(attribute.prop).toFixed(2),
         ).toString();
-        if (this.attributeValues[attribute.prop]) {
-          const sizer = this.attributeValues[attribute.prop] as Sizer;
+        if (this.attributeRows[attribute.prop]) {
+          const sizer = this.attributeRows[attribute.prop] as Sizer;
           (sizer.getChildren()[3] as GameObjects.Text).setText(value);
           sizer.layout();
         }
       });
     });
   };
+
+  private showDiffText(attribute: IAttribute, value: string) {
+    const row = this.attributeRows[attribute.prop] as Sizer;
+    const diffText = row.getChildren()[4] as Phaser.GameObjects.Text;
+    const color = value.startsWith("-") ? COLOR_DANGER : COLOR_SUCCESS;
+    diffText.setText(value);
+    diffText.setColor(color);
+    diffText.setVisible(true);
+  }
+
+  private hideDiffText(attribute: IAttribute) {
+    const row = this.attributeRows[attribute.prop] as Sizer;
+    const diffText = row.getChildren()[4] as Phaser.GameObjects.Text;
+    diffText.setText("+0000").setVisible(false);
+  }
 
   private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
     const value = parseFloat(
@@ -101,10 +138,21 @@ class AttributesPartial implements Renderable {
       14,
     ).setOrigin(1, 0.5);
     rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
+    const diffText = createText(
+      this.scene,
+      "+0000",
+      VectorZeroes(),
+      14,
+      "center",
+      false,
+      COLOR_SUCCESS,
+    ).setVisible(false);
+
+    rowSizer.add(diffText);
 
     // Layout the row
     rowSizer.layout();
-    this.attributeValues[attribute.prop] = rowSizer;
+    this.attributeRows[attribute.prop] = rowSizer;
     return rowSizer;
   }
 }
