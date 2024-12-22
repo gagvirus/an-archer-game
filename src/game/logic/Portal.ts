@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Hero from "./Hero.ts";
 import MainScene from "../scenes/MainScene.ts";
+import { isAutoEnterPortal } from "../helpers/registry-helper.ts";
 
 enum PortalState {
   active,
@@ -16,14 +17,17 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
   private activatingTimeout?: number;
   private deactivatingTimeout?: number;
   private heroInPortal: boolean = false;
-  private enterPrompt: Phaser.GameObjects.Sprite;
+  private readonly enterPrompt: Phaser.GameObjects.Sprite;
   private hero: Hero;
+  private readonly autoEnterPortal: boolean;
+  private autoEnterTimeout: number;
 
   constructor(scene: MainScene, x: number, y: number, hero: Hero) {
     super(scene, x, y, "portal");
     scene.add.existing(this);
     this.state = PortalState.disabled;
     this.anims.play("portal-disabled");
+    this.autoEnterPortal = isAutoEnterPortal(scene.game);
     this.hero = hero;
 
     scene.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
@@ -50,6 +54,12 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       this.activatingTimeout = setTimeout(() => {
         this.state = PortalState.active;
         this.showEnterPrompt();
+
+        if (this.autoEnterPortal) {
+          this.autoEnterTimeout = setTimeout(() => {
+            (this.scene as MainScene).nextStage();
+          }, 5000);
+        }
 
         this.scene.children.bringToTop(this.enterPrompt);
       }, this.anims.animationManager.get("portal-activate").duration);
@@ -130,6 +140,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
       ease: "Power2",
       onComplete: () => {
         this.enterPrompt.setVisible(false).setAlpha(1);
+        clearTimeout(this.autoEnterTimeout);
       },
     });
   }
