@@ -21,6 +21,7 @@ class AttributesPartial implements Renderable {
   private statsManager: StatsManager;
   private attributes: Record<StatType, IAttribute[]>;
   private attributeRows: Partial<Record<Attribute, Sizer>> = {};
+  private holdingShift: boolean = false;
   constructor(scene: Scene, width: number, statsManager: StatsManager) {
     this.scene = scene;
     this.width = width;
@@ -58,7 +59,14 @@ class AttributesPartial implements Renderable {
     coreStat.stats.forEach((childStat) => {
       childStat.attributes.forEach((attribute) => {
         // todo: to be updated here to show actual diff stats
-        this.showDiffText(attribute, unallocating ? "-" : "+");
+        const newText = this.holdingShift
+          ? unallocating
+            ? "--"
+            : "++"
+          : unallocating
+            ? "-"
+            : "+";
+        this.showDiffText(attribute, newText);
       });
     });
   }
@@ -71,7 +79,25 @@ class AttributesPartial implements Renderable {
     });
   }
 
-  private onHoldingShiftChange(holdingShift: boolean) {}
+  private onHoldingShiftChange(holdingShift: boolean) {
+    if (holdingShift !== this.holdingShift) {
+      this.holdingShift = holdingShift;
+      Object.values(this.attributeRows).forEach((attributeRow) => {
+        const textObject =
+          attributeRow.getChildren()[4] as Phaser.GameObjects.Text;
+        let newText;
+        if (holdingShift) {
+          newText = textObject.text.startsWith("+") ? "++" : "--";
+        } else {
+          newText = textObject.text.startsWith("+") ? "+" : "-";
+        }
+        (attributeRow.getChildren()[4] as Phaser.GameObjects.Text).setText(
+          newText,
+        );
+        attributeRow.layout();
+      });
+    }
+  }
 
   private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
     coreStat.stats.forEach((stat) => {
