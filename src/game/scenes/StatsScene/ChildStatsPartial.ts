@@ -10,7 +10,7 @@ import { VectorZeroes } from "../../helpers/position-helper.ts";
 import Tooltip from "../../ui/tooltip.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import { ChildStat } from "../../helpers/stats.ts";
-import Sprite = Phaser.GameObjects.Sprite;
+import PlusMinusIcon from "../../ui/plus-minus-icon.ts";
 
 class StatsCirclePartial implements Renderable {
   private coreStats: ICoreStat[];
@@ -19,7 +19,7 @@ class StatsCirclePartial implements Renderable {
   private tooltip: Tooltip;
   private readonly width: number;
   private statRows: Partial<Record<ChildStat, Sizer>> = {};
-  private holdingShift: boolean;
+  private holdingShift: boolean = false;
 
   constructor(scene: Scene, width: number, statsManager: StatsManager) {
     this.scene = scene;
@@ -69,14 +69,18 @@ class StatsCirclePartial implements Renderable {
   }) => {
     const { coreStat, unallocating } = data;
     coreStat.stats.forEach((childStat) => {
-      ((this.statRows[childStat.prop] as Sizer).getChildren()[4] as Sprite)
-        .setFrame(unallocating ? "minus-white" : "plus-white")
+      (
+        (
+          this.statRows[childStat.prop] as Sizer
+        ).getChildren()[4] as PlusMinusIcon
+      )
+        .setMinus(unallocating)
         .setVisible(true);
     });
   };
   private statPointerOut = () => {
     Object.values(this.statRows).forEach((statRow) => {
-      (statRow.getChildren()[4] as Sprite).setVisible(false);
+      (statRow.getChildren()[4] as PlusMinusIcon).setVisible(false);
     });
   };
 
@@ -141,10 +145,9 @@ class StatsCirclePartial implements Renderable {
     ).setOrigin(1, 0.5);
     rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
 
-    const plusMinusIcon = this.scene.add
-      .sprite(0, 0, "ui-icons", "plus-white")
-      .setScale(0.5)
-      .setVisible(false);
+    const plusMinusIcon = new PlusMinusIcon(this.scene, 0, 0, true).setVisible(
+      false,
+    );
 
     rowSizer.add(plusMinusIcon);
 
@@ -155,7 +158,13 @@ class StatsCirclePartial implements Renderable {
   }
 
   private onHoldingShiftChange(holdingShift: boolean) {
-    this.holdingShift = holdingShift;
+    if (holdingShift !== this.holdingShift) {
+      this.holdingShift = holdingShift;
+      Object.values(this.statRows).forEach((statRow) => {
+        (statRow.getChildren()[4] as PlusMinusIcon).setBulk(this.holdingShift);
+        statRow.layout();
+      });
+    }
   }
 }
 

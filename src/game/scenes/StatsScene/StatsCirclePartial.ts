@@ -104,9 +104,7 @@ class StatsCirclePartial implements Renderable {
           endAngle,
         );
         this.scene.events.emit("statPointerOut");
-      })
-      .setOrigin(0.5)
-      .setScale(0.6);
+      });
   }
 
   private renderUnallocatedStatsNumber() {
@@ -242,9 +240,7 @@ class StatsCirclePartial implements Renderable {
           endAngle,
         );
         this.scene.events.emit("statPointerOut");
-      })
-      .setOrigin(0.5)
-      .setScale(0.6);
+      });
   }
 
   private renderQuarterCircle(
@@ -337,7 +333,6 @@ class StatsCirclePartial implements Renderable {
     Object.values(this.minusIcons).forEach((minusIcon) => {
       minusIcon.setBulk(this.holdingShift);
     });
-    // todo: up button becomes double up ?
   }
 }
 

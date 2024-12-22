@@ -1,12 +1,14 @@
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import { Scene } from "phaser";
+import Container = Phaser.GameObjects.Container;
+import Phaser, { Scene } from "phaser";
 
-class PlusMinusIcon extends Sprite {
+class PlusMinusIcon extends Container {
   private minus: boolean;
   private bulk: boolean;
-  private white: boolean;
-  private bulkIcon: Sprite;
+  private readonly white: boolean;
+  private readonly mainIcon: Sprite;
+  private readonly secondIcon: Sprite;
   private readonly bulkIconScale: number = 0.85;
   private readonly bulkIconOffset: Vector2Like = { x: 5, y: -5 };
 
@@ -18,14 +20,18 @@ class PlusMinusIcon extends Sprite {
     minus: boolean = false,
     bulk: boolean = false,
   ) {
-    super(scene, x, y, "ui-icons");
+    super(scene, x, y);
     this.scene.add.existing(this);
     this.minus = minus;
     this.bulk = bulk;
     this.white = white;
-    this.bulkIcon = this.scene.add
-      .sprite(x + this.bulkIconOffset.x, y + this.bulkIconOffset.y, "ui-icons")
+    this.mainIcon = this.scene.add.sprite(0, 0, "ui-icons");
+    this.secondIcon = this.scene.add
+      .sprite(this.bulkIconOffset.x, this.bulkIconOffset.y, "ui-icons")
       .setVisible(false);
+    this.add(this.mainIcon).add(this.secondIcon);
+    this.setSize(32, 32);
+    this.setScale(0.8);
     this.render();
   }
 
@@ -43,7 +49,8 @@ class PlusMinusIcon extends Sprite {
 
   public setScale(x?: number, y?: number) {
     super.setScale(x, y);
-    this.bulkIcon.setScale(
+    this.mainIcon.setScale(this.scaleX, this.scaleY);
+    this.secondIcon.setScale(
       this.scaleX * this.bulkIconScale,
       this.scaleY * this.bulkIconScale,
     );
@@ -53,9 +60,9 @@ class PlusMinusIcon extends Sprite {
   private render() {
     const colorSuffix = this.white ? "-white" : "-black";
     const frame = (this.minus ? "minus" : "plus") + colorSuffix;
-    this.setFrame(frame);
-    this.bulkIcon.setFrame(frame);
-    this.bulkIcon.setVisible(this.bulk);
+    this.mainIcon.setFrame(frame);
+    this.secondIcon.setFrame(frame);
+    this.secondIcon.setVisible(this.bulk);
   }
 }
 
