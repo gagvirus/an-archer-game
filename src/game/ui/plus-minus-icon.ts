@@ -1,4 +1,5 @@
 import Sprite = Phaser.GameObjects.Sprite;
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 import { Scene } from "phaser";
 
 class PlusMinusIcon extends Sprite {
@@ -6,6 +7,8 @@ class PlusMinusIcon extends Sprite {
   private bulk: boolean;
   private white: boolean;
   private bulkIcon: Sprite;
+  private readonly bulkIconScale: number = 0.85;
+  private readonly bulkIconOffset: Vector2Like = { x: 5, y: -5 };
 
   constructor(
     scene: Scene,
@@ -21,7 +24,7 @@ class PlusMinusIcon extends Sprite {
     this.bulk = bulk;
     this.white = white;
     this.bulkIcon = this.scene.add
-      .sprite(x + 5, y - 5, "ui-icons")
+      .sprite(x + this.bulkIconOffset.x, y + this.bulkIconOffset.y, "ui-icons")
       .setVisible(false);
     this.render();
   }
@@ -40,7 +43,10 @@ class PlusMinusIcon extends Sprite {
 
   public setScale(x?: number, y?: number) {
     super.setScale(x, y);
-    this.bulkIcon.setScale(x, y);
+    this.bulkIcon.setScale(
+      this.scaleX * this.bulkIconScale,
+      this.scaleY * this.bulkIconScale,
+    );
     return this;
   }
 
