@@ -1,7 +1,7 @@
+import Phaser, { Scene } from "phaser";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import Container = Phaser.GameObjects.Container;
-import Phaser, { Scene } from "phaser";
 
 class PlusMinusIcon extends Container {
   private minus: boolean;
