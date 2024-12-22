@@ -53,9 +53,23 @@ class AttributesPartial implements Renderable {
   private statPointerOver(data: {
     coreStat: ICoreStat;
     unallocating: boolean;
-  }) {}
+  }) {
+    const { coreStat, unallocating } = data;
+    coreStat.stats.forEach((childStat) => {
+      childStat.attributes.forEach((attribute) => {
+        // todo: to be updated here to show actual diff stats
+        this.showDiffText(attribute, unallocating ? "-" : "+");
+      });
+    });
+  }
 
-  private statPointerOut() {}
+  private statPointerOut() {
+    Object.values(this.attributeRows).forEach((attributeRow) => {
+      (attributeRow.getChildren()[4] as Phaser.GameObjects.Text)
+        .setText("")
+        .setVisible(false);
+    });
+  }
 
   private onHoldingShiftChange(holdingShift: boolean) {}
 
@@ -81,12 +95,7 @@ class AttributesPartial implements Renderable {
     diffText.setText(value);
     diffText.setColor(color);
     diffText.setVisible(true);
-  }
-
-  private hideDiffText(attribute: IAttribute) {
-    const row = this.attributeRows[attribute.prop] as Sizer;
-    const diffText = row.getChildren()[4] as Phaser.GameObjects.Text;
-    diffText.setText("+0000").setVisible(false);
+    row.layout();
   }
 
   private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
@@ -140,7 +149,7 @@ class AttributesPartial implements Renderable {
     rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
     const diffText = createText(
       this.scene,
-      "+0000",
+      "+",
       VectorZeroes(),
       14,
       "center",
