@@ -10,6 +10,7 @@ import { VectorZeroes } from "../../helpers/position-helper.ts";
 import Tooltip from "../../ui/tooltip.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import { ChildStat } from "../../helpers/stats.ts";
+import Sprite = Phaser.GameObjects.Sprite;
 
 class StatsCirclePartial implements Renderable {
   private coreStats: ICoreStat[];
@@ -17,7 +18,8 @@ class StatsCirclePartial implements Renderable {
   private statsManager: StatsManager;
   private tooltip: Tooltip;
   private readonly width: number;
-  private statValues: Partial<Record<ChildStat, Sizer>> = {};
+  private statRows: Partial<Record<ChildStat, Sizer>> = {};
+  private holdingShift: boolean;
 
   constructor(scene: Scene, width: number, statsManager: StatsManager) {
     this.scene = scene;
@@ -28,7 +30,11 @@ class StatsCirclePartial implements Renderable {
   }
 
   render(container: Sizer) {
-    this.scene.events.on("statsUpdated", this.onStatsUpdated, this);
+    this.scene.events
+      .on("statsUpdated", this.onStatsUpdated, this)
+      .on("statPointerOver", this.statPointerOver, this)
+      .on("statPointerOut", this.statPointerOut, this)
+      .on("holdingShiftChange", this.onHoldingShiftChange, this);
     this.coreStats.forEach((coreStat) => {
       coreStat.stats.forEach((stat) => {
         container.add(this.renderStatRow(stat, this.width - 40));
@@ -37,7 +43,11 @@ class StatsCirclePartial implements Renderable {
   }
 
   destroy() {
-    this.scene.events.off("statsUpdated", this.onStatsUpdated, this);
+    this.scene.events
+      .off("statsUpdated", this.onStatsUpdated, this)
+      .off("statPointerOver", this.statPointerOver, this)
+      .off("statPointerOut", this.statPointerOut, this)
+      .off("holdingShiftChange", this.onHoldingShiftChange, this);
   }
 
   private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
@@ -45,11 +55,28 @@ class StatsCirclePartial implements Renderable {
       const value = parseFloat(
         this.statsManager.getChildStat(stat.prop).toFixed(2),
       ).toString();
-      if (this.statValues[stat.prop]) {
-        const sizer = this.statValues[stat.prop] as Sizer;
+      if (this.statRows[stat.prop]) {
+        const sizer = this.statRows[stat.prop] as Sizer;
         (sizer.getChildren()[3] as GameObjects.Text).setText(value);
         sizer.layout();
       }
+    });
+  };
+
+  private statPointerOver = (data: {
+    coreStat: ICoreStat;
+    unallocating: boolean;
+  }) => {
+    const { coreStat, unallocating } = data;
+    coreStat.stats.forEach((childStat) => {
+      ((this.statRows[childStat.prop] as Sizer).getChildren()[4] as Sprite)
+        .setFrame(unallocating ? "minus-white" : "plus-white")
+        .setVisible(true);
+    });
+  };
+  private statPointerOut = () => {
+    Object.values(this.statRows).forEach((statRow) => {
+      (statRow.getChildren()[4] as Sprite).setVisible(false);
     });
   };
 
@@ -114,10 +141,21 @@ class StatsCirclePartial implements Renderable {
     ).setOrigin(1, 0.5);
     rowSizer.add(valueText, valueWidthRatio, "right", 0, false);
 
+    const plusMinusIcon = this.scene.add
+      .sprite(0, 0, "ui-icons", "plus-white")
+      .setScale(0.5)
+      .setVisible(false);
+
+    rowSizer.add(plusMinusIcon);
+
     // Layout the row
     rowSizer.layout();
-    this.statValues[stat.prop] = rowSizer;
+    this.statRows[stat.prop] = rowSizer;
     return rowSizer;
+  }
+
+  private onHoldingShiftChange(holdingShift: boolean) {
+    this.holdingShift = holdingShift;
   }
 }
 

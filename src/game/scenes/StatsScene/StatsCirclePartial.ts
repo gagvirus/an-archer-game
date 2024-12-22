@@ -83,6 +83,10 @@ class StatsCirclePartial implements Renderable {
           startAngle,
           endAngle,
         );
+        this.scene.events.emit("statPointerOver", {
+          coreStat,
+          unallocating: false,
+        });
       })
       .on("pointerout", () => {
         this.renderQuarterCircle(
@@ -92,6 +96,7 @@ class StatsCirclePartial implements Renderable {
           startAngle,
           endAngle,
         );
+        this.scene.events.emit("statPointerOut");
       });
     buttonIcon.setOrigin(0.5).setScale(0.6);
   }
@@ -210,7 +215,10 @@ class StatsCirclePartial implements Renderable {
           startAngle,
           endAngle,
         );
-        // buttonGraphics.color
+        this.scene.events.emit("statPointerOver", {
+          coreStat,
+          unallocating: true,
+        });
       })
       .on("pointerout", () => {
         this.renderQuarterCircle(
@@ -220,6 +228,7 @@ class StatsCirclePartial implements Renderable {
           startAngle,
           endAngle,
         );
+        this.scene.events.emit("statPointerOut");
       });
     buttonIcon.setOrigin(0.5).setScale(0.6);
   }
@@ -295,12 +304,14 @@ class StatsCirclePartial implements Renderable {
         if (["Shift"].includes(event.key)) {
           this.holdingShift = true;
           this.updateUI();
+          this.scene.events.emit("holdingShiftChange", true);
         }
       })
       .on("keyup", (event: KeyboardEvent) => {
         if (["Shift"].includes(event.key)) {
           this.holdingShift = false;
           this.updateUI();
+          this.scene.events.emit("holdingShiftChange", false);
         }
       });
   }
