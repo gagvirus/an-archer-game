@@ -11,13 +11,19 @@ import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
-type SettingKey = "debugMode" | "autoAttack" | "easyMode" | "rapidLevelUp";
+type SettingKey =
+  | "debugMode"
+  | "autoAttack"
+  | "easyMode"
+  | "rapidLevelUp"
+  | "autoEnterPortal";
 
 class SettingsScene extends Scene implements ISceneLifecycle {
   private debugMode: boolean = false;
   private autoAttack: boolean = false;
   private easyMode: boolean = false;
   private rapidLevelUp: boolean = false;
+  private autoEnterPortal: boolean = false;
 
   constructor() {
     super("SettingsScene");
@@ -127,6 +133,14 @@ class SettingsScene extends Scene implements ISceneLifecycle {
         VectorZeroes(),
       ),
     );
+    container.add(
+      this.addSettingsRow(
+        "autoEnterPortal",
+        "Auto-Enter Portal",
+        { x: 40, y: -5 },
+        VectorZeroes(),
+      ),
+    );
 
     return container;
   }
@@ -183,6 +197,7 @@ class SettingsScene extends Scene implements ISceneLifecycle {
     this.autoAttack = this.game.registry.get("autoAttack") == "true";
     this.easyMode = this.game.registry.get("easyMode") == "true";
     this.rapidLevelUp = this.game.registry.get("rapidLevelUp") == "true";
+    this.autoEnterPortal = this.game.registry.get("autoEnterPortal") == "true";
   }
 }
 

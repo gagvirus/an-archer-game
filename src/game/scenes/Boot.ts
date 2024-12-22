@@ -19,6 +19,10 @@ export class Boot extends Scene implements ISceneLifecycle {
       "rapidLevelUp",
       localStorage.getItem("rapidLevelUp"),
     );
+    this.game.registry.set(
+      "autoEnterPortal",
+      localStorage.getItem("autoEnterPortal"),
+    );
 
     this.scene.start("Preloader");
   }
