@@ -1,14 +1,13 @@
 ## Changelog
 
-### WIP
+### v0.0.12
 
-- Fix portal logic - can somehow use portal multiple times by spamming enter key
-- stats management - better ui / ux for viewing child stats & attributes
-- automatically update child stats / attributes on core stat change
+- Bugfix on portal
+- Stats management - better ui / ux for viewing child stats & attributes
+- Improvements on stats screen
 - display a help icon "Enter" when portal is ready
-- display an icon that shall open stats screen on click (hand-sparkle)
-- "enter" input help must appear & disappear with a transition
-- auto-proceed to next level
+- displaying an icon that shall open stats screen on click (hand-sparkle)
+- option to auto-proceed to next level
 
 ### v0.0.11
 
