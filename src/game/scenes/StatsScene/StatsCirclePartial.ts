@@ -7,6 +7,8 @@ import { createText } from "../../helpers/text-helpers.ts";
 import Tooltip from "../../ui/tooltip.ts";
 import { Scene } from "phaser";
 import { Renderable } from "../../helpers/ui-helper.ts";
+import PlusMinusIcon from "../../ui/plus-minus-icon.ts";
+import { CoreStat } from "../../helpers/stats.ts";
 
 class StatsCirclePartial implements Renderable {
   holdingShift: boolean = false;
@@ -17,6 +19,8 @@ class StatsCirclePartial implements Renderable {
   private unallocatedStatsNumberText: Phaser.GameObjects.Text;
   private allocatedStatsNumberText: Phaser.GameObjects.Text[] = [];
   private statsManager: StatsManager;
+  private plusIcons: Partial<Record<CoreStat, PlusMinusIcon>> = {};
+  private minusIcons: Partial<Record<CoreStat, PlusMinusIcon>> = {};
 
   constructor(scene: Scene, statsManager: StatsManager, center: Vector2Like) {
     this.scene = scene;
@@ -69,8 +73,11 @@ class StatsCirclePartial implements Renderable {
     // Add a small icon in the quarter-circle button
     const offsetX = [1, 2].includes(i) ? -8 : 8;
     const offsetY = i > 1 ? -10 : 10;
-    const buttonIcon = this.scene.add
-      .sprite(buttonX + offsetX, buttonY + offsetY, "ui-icons", "plus-black")
+    this.plusIcons[coreStat.prop] = new PlusMinusIcon(
+      this.scene,
+      buttonX + offsetX,
+      buttonY + offsetY,
+    )
       .setInteractive()
       .on("pointerdown", () => {
         this.handleStatClick(i);
@@ -97,8 +104,9 @@ class StatsCirclePartial implements Renderable {
           endAngle,
         );
         this.scene.events.emit("statPointerOut");
-      });
-    buttonIcon.setOrigin(0.5).setScale(0.6);
+      })
+      .setOrigin(0.5)
+      .setScale(0.6);
   }
 
   private renderUnallocatedStatsNumber() {
@@ -201,8 +209,13 @@ class StatsCirclePartial implements Renderable {
     // Add a small icon in the quarter-circle button
     const offsetX = [1, 2].includes(i) ? -18 : 18;
     const offsetY = i > 1 ? -15 : 15;
-    const buttonIcon = this.scene.add
-      .sprite(buttonX + offsetX, buttonY + offsetY, "ui-icons", "minus-black")
+    this.minusIcons[coreStat.prop] = new PlusMinusIcon(
+      this.scene,
+      buttonX + offsetX,
+      buttonY + offsetY,
+      false,
+      true,
+    )
       .setInteractive()
       .on("pointerdown", () => {
         this.handleStatClick(i, true);
@@ -229,8 +242,9 @@ class StatsCirclePartial implements Renderable {
           endAngle,
         );
         this.scene.events.emit("statPointerOut");
-      });
-    buttonIcon.setOrigin(0.5).setScale(0.6);
+      })
+      .setOrigin(0.5)
+      .setScale(0.6);
   }
 
   private renderQuarterCircle(
@@ -317,6 +331,12 @@ class StatsCirclePartial implements Renderable {
   }
 
   private updateUI() {
+    Object.values(this.plusIcons).forEach((plusIcon) => {
+      plusIcon.setBulk(this.holdingShift);
+    });
+    Object.values(this.minusIcons).forEach((minusIcon) => {
+      minusIcon.setBulk(this.holdingShift);
+    });
     // todo: up button becomes double up ?
   }
 }

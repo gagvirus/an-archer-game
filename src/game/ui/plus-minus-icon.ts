@@ -38,6 +38,12 @@ class PlusMinusIcon extends Sprite {
     return this;
   }
 
+  public setScale(x?: number, y?: number) {
+    super.setScale(x, y);
+    this.bulkIcon.setScale(x, y);
+    return this;
+  }
+
   private render() {
     const colorSuffix = this.white ? "-white" : "-black";
     const frame = (this.minus ? "minus" : "plus") + colorSuffix;
