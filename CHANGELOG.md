@@ -1,5 +1,9 @@
 ## Changelog
 
+### WIP
+
+- fix bug - player enters portal's radius, timeout starts, player moves away from portal, gets activated anyway
+
 ### v0.0.12
 
 - Bugfix on portal

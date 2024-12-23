@@ -52,13 +52,18 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
         this.deactivatingTimeout = undefined;
       }
       this.activatingTimeout = setTimeout(() => {
-        this.state = PortalState.active;
-        this.showEnterPrompt();
+        if (this.isHeroWithinBounds()) {
+          this.state = PortalState.active;
+          this.showEnterPrompt();
 
-        if (this.autoEnterPortal) {
-          this.autoEnterTimeout = setTimeout(() => {
-            (this.scene as MainScene).nextStage();
-          }, 5000);
+          if (this.autoEnterPortal) {
+            this.autoEnterTimeout = setTimeout(() => {
+              (this.scene as MainScene).nextStage();
+            }, 5000);
+          }
+        } else {
+          this.state = PortalState.deactivating;
+          this.anims.play("portal-deactivate");
         }
 
         this.scene.children.bringToTop(this.enterPrompt);
@@ -99,17 +104,21 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  private checkHeroIsWithinBounds() {
-    if (this.state === PortalState.disabled) {
-      return;
-    }
+  private isHeroWithinBounds(): boolean {
     const distanceToHero = Phaser.Math.Distance.Between(
       this.x,
       this.y,
       this.hero.x,
       this.hero.y,
     );
-    const withinBounds = distanceToHero <= this.DISTANCE_TO_ACTIVATE;
+    return distanceToHero <= this.DISTANCE_TO_ACTIVATE;
+  }
+
+  private checkHeroIsWithinBounds() {
+    if (this.state === PortalState.disabled) {
+      return;
+    }
+    const withinBounds = this.isHeroWithinBounds();
     const enteredThePortal = withinBounds;
     const leftThePortal = this.heroInPortal && !withinBounds;
     if (enteredThePortal) {
