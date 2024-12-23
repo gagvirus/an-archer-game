@@ -97,6 +97,7 @@
   - change the logic to not depend on window size in any places
   - create some logic, that will allow to switch game resolution, on which we shall depend
   - have the game "upscale" / "downscale" on pre-defined set of resolution (hd / full hd etc)
+- save progress / continue game
 
 ### Aesthetics
 
