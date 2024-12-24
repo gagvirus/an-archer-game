@@ -44,6 +44,7 @@ import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
 import ActiveEffectsModule from "../modules/active-effects-module.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
+import { Attribute } from "../stats/attributes.ts";
 
 class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
@@ -357,11 +358,12 @@ class MainScene extends Scene implements ISceneLifecycle {
   }
 
   dropLoot(enemy: Enemy) {
-    const { dropChanceModifier, dropAmountModifier } = this.hero.stats;
+    const dropRate = this.hero.attributes.getAttribute(Attribute.dropRate);
+    const dropAmount = this.hero.attributes.getAttribute(Attribute.dropAmount);
     // there is a constant chance to drop a powerup
     const BASE_POWERUP_DROP_CHANCE = 1;
     const powerupChance = Phaser.Math.Clamp(
-      BASE_POWERUP_DROP_CHANCE * dropChanceModifier,
+      BASE_POWERUP_DROP_CHANCE * dropRate,
       BASE_POWERUP_DROP_CHANCE,
       BASE_POWERUP_DROP_CHANCE * 10,
     );
@@ -373,7 +375,7 @@ class MainScene extends Scene implements ISceneLifecycle {
         resourceType as ResourceType
       ] as ResourceDropChance;
       const chance = Phaser.Math.Clamp(
-        baseChance * dropChanceModifier,
+        baseChance * dropRate,
         1,
         baseChance <= 10 ? 50 : 90,
       );
@@ -382,8 +384,8 @@ class MainScene extends Scene implements ISceneLifecycle {
           baseMinAmount,
           baseMaxAmount,
         ]);
-        if (dropAmountModifier >= 2) {
-          const dropsCount = dropAmountModifier < 6 ? dropAmountModifier : 5;
+        if (dropAmount >= 2) {
+          const dropsCount = dropAmount < 6 ? dropAmount : 5;
           const amount = Math.round(baseAmount / dropsCount);
           for (let i = 0; i < dropsCount; i++) {
             this.dropResource(
@@ -398,7 +400,7 @@ class MainScene extends Scene implements ISceneLifecycle {
             enemy.x,
             enemy.y,
             resourceType as ResourceType,
-            Math.round(baseAmount * dropAmountModifier),
+            Math.round(baseAmount * dropAmount),
           );
         }
       }
@@ -476,7 +478,7 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.hero.attackable.attackDamage = this.hero.attackDamage;
     this.hero.attackable.attacksPerSecond = this.hero.attacksPerSecond;
     this.hero.xpManager.xpBar.setUnallocatedStats(
-      this.hero.stats.unallocatedStats,
+      this.hero.attributes.unallocatedStats,
     );
     // update the health bar ui
     // update the health regen tick
@@ -484,7 +486,7 @@ class MainScene extends Scene implements ISceneLifecycle {
 
   private openStatsScreen() {
     this.onPause();
-    this.scene.launch("StatsScene", { statsManager: this.hero.stats });
+    this.scene.launch("StatsScene", { statsManager: this.hero.attributes });
   }
 }
 

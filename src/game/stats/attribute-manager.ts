@@ -18,7 +18,6 @@ export class AttributeManager {
   private readonly baseAttributes: Attributes;
   private layers: Record<LayerType, AttributeLayer>;
   private _attributes: Attributes;
-
   constructor() {
     this.baseAttributes = {
       [Attribute.attacksPerSecond]: 0,
@@ -59,6 +58,18 @@ export class AttributeManager {
       [LayerType.stats]: new StatsLayer(),
       [LayerType.powerups]: new PowerupsLayer(),
     };
+
+    this._unallocatedStats = 0;
+  }
+
+  private _unallocatedStats: number;
+
+  get unallocatedStats() {
+    return this._unallocatedStats;
+  }
+
+  set unallocatedStats(value: number) {
+    this._unallocatedStats = value;
   }
 
   get heroClassLayer() {
@@ -91,6 +102,10 @@ export class AttributeManager {
 
   getAttributes(): Attributes {
     return this._attributes;
+  }
+
+  getAttribute(attribute: Attribute) {
+    return this.getAttributes()[attribute];
   }
 
   getFinalAttributes(): Attributes {

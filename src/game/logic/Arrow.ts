@@ -3,13 +3,14 @@ import { Attackable } from "../helpers/gameplayer-helper.ts";
 import { showDamage, showGainedXp } from "../helpers/text-helpers.ts";
 import Enemy from "./Enemy.ts";
 import Hero from "./Hero.ts";
-import StatsManager from "../helpers/stats-manager.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
 import {
   COLOR_DANGER,
   COLOR_SUCCESS,
   COLOR_WARNING,
 } from "../helpers/colors.ts";
+import { AttributeManager } from "../stats/attribute-manager.ts";
+import { Attribute } from "../stats/attributes.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
@@ -91,7 +92,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     // todo: check if this is hero
     // todo:  perhaps there is a better way to do this ?
     const hero: Hero = this.owner.owner as Hero;
-    const stats: StatsManager = hero.stats;
+    const attributes: AttributeManager = hero.attributes;
 
     if (this.isCritical) {
       addLogEntry(
@@ -117,7 +118,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     this.target.takeDamage(this.attackDamage, (target: Attackable) => {
       this.owner.onKilledTarget(target);
       const baseXp = (target.owner as Enemy).xpAmount;
-      const xpGainModifier = stats.xpGainMultiplier;
+      const xpGainModifier = attributes.getAttribute(Attribute.xpRate);
       addLogEntry(
         ":attacker killed :opponent",
         {

@@ -1,10 +1,11 @@
 import HealthBar from "../logic/HealthBar.ts";
 import XpBar from "../logic/XpBar.ts";
-import StatsManager from "./stats-manager.ts";
 import { Scene } from "phaser";
 import { showReplenishedHealth } from "./text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "./log-utils.ts";
 import { COLOR_SUCCESS } from "./colors.ts";
+import { AttributeManager } from "../stats/attribute-manager.ts";
+import { Attribute } from "../stats/attributes.ts";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -149,9 +150,10 @@ class Attackable {
       if ("xpAmount" in target.owner) {
         const xpAmount: number = target.owner.xpAmount as number;
         let xpGainMultiplier = 1;
-        if ("stats" in this.owner) {
-          xpGainMultiplier = (this.owner.stats as StatsManager)
-            .xpGainMultiplier;
+        if ("attributes" in this.owner) {
+          xpGainMultiplier = (
+            this.owner.attributes as AttributeManager
+          ).getAttribute(Attribute.xpRate);
         }
 
         (this.owner.xpManager as XpManager).gainXp(xpAmount * xpGainMultiplier);
@@ -160,13 +162,15 @@ class Attackable {
   }
 
   registerHealthRegenerationIfNecessary() {
-    if ("stats" in this.owner) {
+    if ("attributes" in this.owner) {
       this.stopRegeneration();
-      const statsManager = this.owner.stats as StatsManager;
-      if (statsManager.healthRegenerationInterval > 0) {
+      const statsManager = this.owner.attributes as AttributeManager;
+      if (statsManager.getAttribute(Attribute.healthRegenInterval) > 0) {
         this.regenerationInterval = setInterval(() => {
-          this.replenishHealth(statsManager.healthRegenPerInterval);
-        }, statsManager.healthRegenerationInterval);
+          this.replenishHealth(
+            statsManager.getAttribute(Attribute.healthRegen),
+          );
+        }, statsManager.getAttribute(Attribute.healthRegenInterval));
       }
     }
   }

@@ -13,9 +13,11 @@ import {
 } from "../helpers/colors.ts";
 import { showDamage, showEvaded } from "../helpers/text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
+import { Attribute } from "../stats/attributes.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
+
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 class Enemy extends Sprite {
@@ -74,7 +76,9 @@ class Enemy extends Sprite {
         scene.onEnemyKilled(this);
       },
       () => {
-        const isEvaded = randomChance(this.hero.stats.evadeChancePercent);
+        const isEvaded = randomChance(
+          this.hero.attributes.getAttribute(Attribute.evadeChance),
+        );
         if (isEvaded) {
           addLogEntry(
             ":hero evaded attack from :opponent",
@@ -86,7 +90,7 @@ class Enemy extends Sprite {
           );
           showEvaded(this.scene, this.hero as Vector2Like);
         } else {
-          const blockedDamage = this.hero.stats.getFinalDamageReduction(
+          const blockedDamage = this.hero.attributes.getFinalDamageReduction(
             this.attackDamage,
           );
           const damageDealt = this.attackDamage - blockedDamage;
