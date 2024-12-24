@@ -1,7 +1,6 @@
 import { Scene } from "phaser";
 import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
 import StatsManager from "../../helpers/stats-manager.ts";
-import Hero from "../../logic/Hero.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
@@ -24,8 +23,6 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
   init(data: { statsManager: StatsManager }) {
     if (data.statsManager) {
       this.statsManager = data.statsManager;
-    } else {
-      this.statsManager = new StatsManager(this, new Hero(this, -100, -100));
     }
   }
 
