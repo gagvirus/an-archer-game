@@ -73,17 +73,6 @@ const coreStats: ICoreStat[] = [
         icon: "agility",
         description: "Affects attack speed",
         attributes: [
-          //   attack speed
-          {
-            label: "Base Attack Time",
-            prop: Attribute.baseAttackTime,
-            type: StatType.offensive,
-          },
-          {
-            label: "Attack Rate",
-            prop: Attribute.attackRate,
-            type: StatType.offensive,
-          },
           {
             label: "Attacks Per Second",
             prop: Attribute.attacksPerSecond,
@@ -184,7 +173,7 @@ const coreStats: ICoreStat[] = [
         attributes: [
           //   health
           {
-            label: "Max Health Multiplier",
+            label: "Max Health",
             prop: Attribute.health,
             type: StatType.defensive,
           },
@@ -233,7 +222,13 @@ const coreStats: ICoreStat[] = [
         icon: "hearts",
         // todo: update this when barter is implemented
         description: "Affects nothing at the moment",
-        attributes: [],
+        attributes: [
+          {
+            label: "Better selling & Buying",
+            prop: Attribute.barter,
+            type: StatType.miscellaneous,
+          },
+        ],
       },
       {
         label: "Luck",
