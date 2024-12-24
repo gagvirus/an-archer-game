@@ -7,8 +7,18 @@ export default class FinalLayer implements AttributeLayer {
       ...baseAttributes,
       [Attribute.percentDamageReduction]:
         this.getPercentDamageReduction(baseAttributes),
-      [Attribute.evadeChance]: baseAttributes.evadeChance, // todo: add logic
-      [Attribute.attacksPerSecond]: baseAttributes.attacksPerSecond, // todo: add logic
+      [Attribute.evadeChance]: Phaser.Math.Clamp(
+        baseAttributes.evadeRating / 3,
+        0,
+        90,
+      ),
+      [Attribute.attacksPerSecond]:
+        baseAttributes.attackRate / 100 / baseAttributes.baseAttackTime,
+      [Attribute.criticalChance]: Phaser.Math.Clamp(
+        baseAttributes.criticalRating / 3,
+        0,
+        90,
+      ),
     };
   }
 

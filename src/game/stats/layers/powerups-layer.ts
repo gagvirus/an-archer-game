@@ -13,7 +13,7 @@ export class PowerupsLayer implements AttributeLayer {
       movementSpeed:
         baseAttributes.movementSpeed * (this.doubleSpeedActive ? 1.5 : 1),
       attacksPerSecond:
-        baseAttributes.attacksPerSecond * (this.doubleSpeedActive ? 1.5 : 1),
+        baseAttributes.attackRate * (this.doubleSpeedActive ? 2 : 1),
       damage: baseAttributes.damage * (this.doubleDamageActive ? 2 : 1),
       percentDamageReduction: this.invincibilityActive
         ? 1

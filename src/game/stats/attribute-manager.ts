@@ -32,11 +32,12 @@ export class AttributeManager {
       [Attribute.barter]: 0,
       [Attribute.baseAttackTime]: 0,
       [Attribute.charisma]: 0,
-      [Attribute.criticalAmount]: 0,
+      [Attribute.criticalAmount]: 1,
       [Attribute.criticalRate]: 0,
+      [Attribute.criticalChance]: 0,
       [Attribute.damage]: 0,
       [Attribute.dexterity]: 0,
-      [Attribute.dropAmount]: 0,
+      [Attribute.dropAmount]: 1,
       [Attribute.dropRate]: 0,
       [Attribute.endurance]: 0,
       [Attribute.evadeRating]: 0,
@@ -108,5 +109,15 @@ export class AttributeManager {
       this.getAttributes();
     const afterFlatReduction = incomingDamage - flatDamageReduction;
     return flatDamageReduction + afterFlatReduction * percentDamageReduction;
+  }
+
+  getDps() {
+    const { criticalChance, criticalAmount, damage, attacksPerSecond } =
+      this.getAttributes();
+    const pureDps = attacksPerSecond * damage;
+    const criticalAttacksNumber = (attacksPerSecond * criticalChance) / 100;
+    const criticalExtraDamage =
+      criticalAttacksNumber * damage * (criticalAmount - 1);
+    return pureDps + criticalExtraDamage;
   }
 }

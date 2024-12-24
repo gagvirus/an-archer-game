@@ -16,7 +16,7 @@ export enum Attribute {
   baseAttackTime = "baseAttackTime",
   healthRegenInterval = "healthRegenInterval",
   evadeRating = "evadeRating",
-  criticalRate = "criticalRate",
+  criticalRate = "criticalRating",
   criticalAmount = "criticalAmount",
   armorRating = "armorRating",
   xpRate = "xpRate",
@@ -30,6 +30,7 @@ export enum Attribute {
   flatDamageReduction = "flatDamageReduction",
   evadeChance = "evadeChance",
   attacksPerSecond = "attacksPerSecond",
+  criticalChance = "criticalChance",
 }
 
 export type Attributes = {
