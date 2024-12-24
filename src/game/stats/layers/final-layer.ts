@@ -1,0 +1,25 @@
+import { AttributeLayer } from "../attribute-layer.ts";
+import { Attribute, Attributes } from "../attributes.ts";
+
+export default class FinalLayer implements AttributeLayer {
+  modify(baseAttributes: Attributes): Attributes {
+    return {
+      ...baseAttributes,
+      [Attribute.percentDamageReduction]:
+        this.getPercentDamageReduction(baseAttributes),
+      [Attribute.evadeChance]: baseAttributes.evadeChance, // todo: add logic
+      [Attribute.attacksPerSecond]: baseAttributes.attacksPerSecond, // todo: add logic
+    };
+  }
+
+  private getPercentDamageReduction(baseAttributes: Attributes) {
+    if (baseAttributes.percentDamageReduction >= 1) {
+      return 1;
+    }
+    const maxReduction = 0.9; // Maximum 90% reduction
+    const scalingFactor = 800; // Higher value makes percentage scale slower
+    const reduction =
+      1 - scalingFactor / (scalingFactor + baseAttributes.armorRating);
+    return Math.min(reduction, maxReduction);
+  }
+}

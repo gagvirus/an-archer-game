@@ -17,6 +17,7 @@ enum LayerType {
 export class AttributeManager {
   private readonly baseAttributes: Attributes;
   private layers: Record<LayerType, AttributeLayer>;
+  private _attributes: Attributes;
 
   constructor() {
     this.baseAttributes = {
@@ -79,6 +80,18 @@ export class AttributeManager {
     return this.getLayer(LayerType.powerups);
   }
 
+  recalculate() {
+    this._attributes = Object.values(this.layers).reduce(
+      (currentAttributes, layer) => layer.modify(currentAttributes),
+      { ...this.baseAttributes },
+    );
+    return this;
+  }
+
+  getAttributes(): Attributes {
+    return this._attributes;
+  }
+
   getFinalAttributes(): Attributes {
     return Object.values(this.layers).reduce(
       (currentAttributes, layer) => layer.modify(currentAttributes),
@@ -88,5 +101,12 @@ export class AttributeManager {
 
   getLayer(layerType: LayerType) {
     return this.layers[layerType];
+  }
+
+  getFinalDamageReduction(incomingDamage: number) {
+    const { flatDamageReduction, percentDamageReduction } =
+      this.getAttributes();
+    const afterFlatReduction = incomingDamage - flatDamageReduction;
+    return flatDamageReduction + afterFlatReduction * percentDamageReduction;
   }
 }
