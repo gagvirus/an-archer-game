@@ -4,7 +4,7 @@ import { Attributes } from "../attributes.ts";
 export class HeroLevelLayer implements AttributeLayer {
   private level: number;
 
-  constructor(level: number) {
+  constructor(level: number = 1) {
     this.level = level;
   }
 
