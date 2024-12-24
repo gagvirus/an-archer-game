@@ -3,9 +3,6 @@ import { Attribute, Attributes } from "../attributes.ts";
 
 export default class FinalLayer implements AttributeLayer {
   modify(baseAttributes: Attributes): Attributes {
-    console.log(
-      baseAttributes.attackRate / 100 / baseAttributes.baseAttackTime,
-    );
     return {
       ...baseAttributes,
       [Attribute.percentDamageReduction]:
