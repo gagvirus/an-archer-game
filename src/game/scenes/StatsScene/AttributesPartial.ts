@@ -1,9 +1,6 @@
 import { Renderable } from "../../helpers/ui-helper.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
-import StatsManager, {
-  IAttribute,
-  ICoreStat,
-} from "../../helpers/stats-manager.ts";
+import { IAttribute, ICoreStat } from "../../helpers/stats-manager.ts";
 import {
   COLOR_DANGER,
   COLOR_SUCCESS,
@@ -13,14 +10,19 @@ import {
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import { GameObjects, Scene } from "phaser";
-import { Attribute, StatType } from "../../helpers/stats.ts";
+import { StatType } from "../../helpers/stats.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
+import {
+  AttributeManager,
+  listAttributes,
+} from "../../stats/attribute-manager.ts";
+import { Attribute } from "../../stats/attributes.ts";
 
 class AttributesPartial implements Renderable {
   private readonly scene: Phaser.Scene;
   private readonly width: number;
-  private statsManager: StatsManager;
-  private attributes: Record<StatType, IAttribute[]>;
+  private attributes: AttributeManager;
+  private allAttributes: Record<StatType, IAttribute[]>;
   private attributeRows: Partial<Record<Attribute, Sizer>> = {};
   private holdingShift: boolean = false;
   private panel: ScrollablePanel;
@@ -29,13 +31,13 @@ class AttributesPartial implements Renderable {
     scene: Scene,
     width: number,
     panel: ScrollablePanel,
-    statsManager: StatsManager,
+    attributes: AttributeManager,
   ) {
     this.scene = scene;
     this.width = width;
-    this.statsManager = statsManager;
+    this.attributes = attributes;
     this.panel = panel;
-    this.attributes = StatsManager.listAttributes();
+    this.allAttributes = listAttributes();
   }
 
   render(container: Sizer) {
@@ -46,7 +48,7 @@ class AttributesPartial implements Renderable {
       .on("holdingShiftChange", this.onHoldingShiftChange, this);
     Object.keys(this.attributes).forEach((statType) => {
       container.add(createText(this.scene, statType, VectorZeroes(), 16));
-      this.attributes[statType as StatType].forEach((attribute) => {
+      this.allAttributes[statType as StatType].forEach((attribute) => {
         container.add(this.renderAttributeRow(attribute, this.width - 40));
       });
     });
@@ -112,7 +114,7 @@ class AttributesPartial implements Renderable {
     coreStat.stats.forEach((stat) => {
       stat.attributes.forEach((attribute) => {
         const value = parseFloat(
-          this.statsManager.getAttribute(attribute.prop).toFixed(2),
+          this.attributes.getAttribute(attribute.prop).toFixed(2),
         ).toString();
         if (this.attributeRows[attribute.prop]) {
           const sizer = this.attributeRows[attribute.prop] as Sizer;
@@ -141,7 +143,7 @@ class AttributesPartial implements Renderable {
 
   private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
     const value = parseFloat(
-      this.statsManager.getAttribute(attribute.prop).toFixed(2),
+      this.attributes.getAttribute(attribute.prop).toFixed(2),
     ).toString();
     const rowHeight = 30;
     const iconWidth = 50; // Fixed width for the icon column

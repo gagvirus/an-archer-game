@@ -1,4 +1,5 @@
-import { Attribute, ChildStat, CoreStat, StatType } from "./stats.ts";
+import { ChildStat, CoreStat, StatType } from "./stats.ts";
+import { Attribute } from "../stats/attributes.ts";
 
 export interface IStat {
   label: string;

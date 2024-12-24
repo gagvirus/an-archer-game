@@ -1,6 +1,5 @@
 import { Scene } from "phaser";
 import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
-import StatsManager from "../../helpers/stats-manager.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
@@ -9,9 +8,10 @@ import UiHelper from "../../helpers/ui-helper.ts";
 import AttributesPartial from "./AttributesPartial.ts";
 import StatsCirclePartial from "./StatsCirclePartial.ts";
 import ChildStatsPartial from "./ChildStatsPartial.ts";
+import { AttributeManager } from "../../stats/attribute-manager.ts";
 
 export default class StatsScene extends Scene implements ISceneLifecycle {
-  private statsManager: StatsManager;
+  private attributes: AttributeManager;
   private fullWidth: number = 1200;
   private attributesPartial: AttributesPartial;
   private childStatsPartial: ChildStatsPartial;
@@ -20,9 +20,9 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
     super({ key: "StatsScene" });
   }
 
-  init(data: { statsManager: StatsManager }) {
-    if (data.statsManager) {
-      this.statsManager = data.statsManager;
+  init(data: { attributes: AttributeManager }) {
+    if (data.attributes) {
+      this.attributes = data.attributes;
     }
   }
 
@@ -111,7 +111,7 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
       this,
       width,
       panel,
-      this.statsManager,
+      this.attributes,
     );
     this.attributesPartial.render(container);
 
@@ -125,14 +125,10 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
       this.scale.height * 0.7, // full height minus padding
     );
 
-    const statsCircleRenderer = new StatsCirclePartial(
-      this,
-      this.statsManager,
-      {
-        x: this.scale.width / 2,
-        y: this.scale.height / 2,
-      },
-    );
+    const statsCircleRenderer = new StatsCirclePartial(this, this.attributes, {
+      x: this.scale.width / 2,
+      y: this.scale.height / 2,
+    });
     statsCircleRenderer.render();
     statsCircleRenderer.updateUnallocatedStatsNumber();
 
@@ -149,7 +145,7 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
     this.childStatsPartial = new ChildStatsPartial(
       this,
       width,
-      this.statsManager,
+      this.attributes,
     );
     this.childStatsPartial.render(container);
     return container;

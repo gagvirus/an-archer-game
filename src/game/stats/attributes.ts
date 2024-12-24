@@ -1,4 +1,9 @@
 export enum Attribute {
+  // core stats
+  finesse = "finesse",
+  awareness = "awareness",
+  resilience = "resilience",
+  thoughtfulness = "thoughtfulness",
   // stats
   dexterity = "dexterity",
   agility = "agility",

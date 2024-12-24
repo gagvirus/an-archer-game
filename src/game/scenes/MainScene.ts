@@ -486,7 +486,7 @@ class MainScene extends Scene implements ISceneLifecycle {
 
   private openStatsScreen() {
     this.onPause();
-    this.scene.launch("StatsScene", { statsManager: this.hero.attributes });
+    this.scene.launch("StatsScene", { attributes: this.hero.attributes });
   }
 }
 

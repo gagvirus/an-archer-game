@@ -1,9 +1,6 @@
 import { Renderable } from "../../helpers/ui-helper.ts";
 import { GameObjects, Scene } from "phaser";
-import StatsManager, {
-  IChildStat,
-  ICoreStat,
-} from "../../helpers/stats-manager.ts";
+import { IChildStat, ICoreStat } from "../../helpers/stats-manager.ts";
 import { HEX_COLOR_DARK, HEX_COLOR_WHITE } from "../../helpers/colors.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
@@ -11,21 +8,26 @@ import Tooltip from "../../ui/tooltip.ts";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import { ChildStat } from "../../helpers/stats.ts";
 import PlusMinusIcon from "../../ui/plus-minus-icon.ts";
+import {
+  AttributeManager,
+  listCoreStats,
+} from "../../stats/attribute-manager.ts";
+import { Attribute } from "../../stats/attributes.ts";
 
 class StatsCirclePartial implements Renderable {
   private coreStats: ICoreStat[];
   private readonly scene: Phaser.Scene;
-  private statsManager: StatsManager;
+  private attributes: AttributeManager;
   private tooltip: Tooltip;
   private readonly width: number;
   private statRows: Partial<Record<ChildStat, Sizer>> = {};
   private holdingShift: boolean = false;
 
-  constructor(scene: Scene, width: number, statsManager: StatsManager) {
+  constructor(scene: Scene, width: number, statsManager: AttributeManager) {
     this.scene = scene;
     this.width = width;
-    this.statsManager = statsManager;
-    this.coreStats = StatsManager.listCoreStats();
+    this.attributes = statsManager;
+    this.coreStats = listCoreStats();
     this.tooltip = new Tooltip(this.scene, 0, 0, "");
   }
 
@@ -53,7 +55,9 @@ class StatsCirclePartial implements Renderable {
   private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
     coreStat.stats.forEach((stat) => {
       const value = parseFloat(
-        this.statsManager.getChildStat(stat.prop).toFixed(2),
+        this.attributes
+          .getAttribute(stat.prop as unknown as Attribute)
+          .toFixed(2),
       ).toString();
       if (this.statRows[stat.prop]) {
         const sizer = this.statRows[stat.prop] as Sizer;
@@ -86,7 +90,9 @@ class StatsCirclePartial implements Renderable {
 
   private renderStatRow(stat: IChildStat, rowWidth: number) {
     const value = parseFloat(
-      this.statsManager.getChildStat(stat.prop).toFixed(2),
+      this.attributes
+        .getAttribute(stat.prop as unknown as Attribute)
+        .toFixed(2),
     ).toString();
 
     const rowHeight = 50;

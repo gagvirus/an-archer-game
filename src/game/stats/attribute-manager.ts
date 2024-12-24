@@ -5,6 +5,8 @@ import { HeroLevelLayer } from "./layers/hero-level-layer.ts";
 import { CoreStatsLayer } from "./layers/core-stats-layer.ts";
 import { StatsLayer } from "./layers/stats-layer.ts";
 import { PowerupsLayer } from "./layers/powerups-layer.ts";
+import { IAttribute, ICoreStat } from "../helpers/stats-manager.ts";
+import coreStats, { CoreStat, StatType } from "../helpers/stats.ts";
 
 enum LayerType {
   heroClass = "HeroClass",
@@ -14,12 +16,36 @@ enum LayerType {
   powerups = "Powerups",
 }
 
+export const listAttributes = () => {
+  const allAttributes: Record<StatType, IAttribute[]> = {
+    [StatType.offensive]: [],
+    [StatType.defensive]: [],
+    [StatType.miscellaneous]: [],
+  };
+  listCoreStats().forEach((coreStat) => {
+    coreStat.stats.forEach((stat) => {
+      stat.attributes.forEach((attribute) => {
+        allAttributes[attribute.type].push(attribute);
+      });
+    });
+  });
+  return allAttributes;
+};
+
+export const listCoreStats = (): ICoreStat[] => {
+  return coreStats;
+};
+
 export class AttributeManager {
   private readonly baseAttributes: Attributes;
   private layers: Record<LayerType, AttributeLayer>;
   private _attributes: Attributes;
   constructor() {
     this.baseAttributes = {
+      [Attribute.finesse]: 1,
+      [Attribute.awareness]: 1,
+      [Attribute.resilience]: 1,
+      [Attribute.thoughtfulness]: 1,
       [Attribute.attacksPerSecond]: 0,
       [Attribute.evadeChance]: 0,
       [Attribute.flatDamageReduction]: 0,
@@ -80,8 +106,8 @@ export class AttributeManager {
     return this.getLayer(LayerType.heroLevel);
   }
 
-  get coreStatsLayer() {
-    return this.getLayer(LayerType.coreStats);
+  get coreStatsLayer(): CoreStatsLayer {
+    return this.getLayer(LayerType.coreStats) as CoreStatsLayer;
   }
 
   get statsLayer() {
@@ -98,6 +124,10 @@ export class AttributeManager {
       { ...this.baseAttributes },
     );
     return this;
+  }
+
+  addStat(stat: CoreStat, amount: number) {
+    this.coreStatsLayer.setCoreStat(stat, amount);
   }
 
   getAttributes(): Attributes {

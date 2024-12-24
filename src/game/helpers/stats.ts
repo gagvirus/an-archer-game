@@ -13,6 +13,7 @@ import {
   HEX_COLOR_THOUGHTFULNESS_DARKER,
 } from "./colors.ts";
 import { ICoreStat } from "./stats-manager.ts";
+import { Attribute } from "../stats/attributes.ts";
 
 export enum StatType {
   offensive = "offensive",
@@ -39,27 +40,6 @@ export enum ChildStat {
   luck = "luck",
 }
 
-export enum Attribute {
-  baseAttackTime = "baseAttackTime",
-  attackSpeedBonus = "attackSpeedBonus",
-  attackRate = "attackRate",
-  attacksPerSecond = "attacksPerSecond",
-  damageMultiplier = "damageMultiplier",
-  criticalChancePercent = "criticalChancePercent",
-  criticalExtraDamageMultiplier = "criticalExtraDamageMultiplier",
-  evadeChancePercent = "evadeChancePercent",
-  maxHealthMultiplier = "maxHealthMultiplier",
-  healthRegenPerInterval = "healthRegenPerInterval",
-  healthRegenerationInterval = "healthRegenerationInterval",
-  armorRatingBonus = "armorRatingBonus",
-  armorRating = "armorRating",
-  flatDamageReduction = "flatDamageReduction",
-  percentReduction = "percentReduction",
-  xpGainMultiplier = "xpGainMultiplier",
-  dropChanceModifier = "dropChanceModifier",
-  dropAmountModifier = "dropAmountModifier",
-}
-
 const coreStats: ICoreStat[] = [
   {
     label: "Finesse",
@@ -82,7 +62,7 @@ const coreStats: ICoreStat[] = [
           //   evade
           {
             label: "Evade Chance %",
-            prop: Attribute.evadeChancePercent,
+            prop: Attribute.evadeChance,
             type: StatType.defensive,
           },
         ],
@@ -97,11 +77,6 @@ const coreStats: ICoreStat[] = [
           {
             label: "Base Attack Time",
             prop: Attribute.baseAttackTime,
-            type: StatType.offensive,
-          },
-          {
-            label: "Attack Speed Bonus",
-            prop: Attribute.attackSpeedBonus,
             type: StatType.offensive,
           },
           {
@@ -139,12 +114,12 @@ const coreStats: ICoreStat[] = [
           //   critical
           {
             label: "Critical Chance %",
-            prop: Attribute.criticalChancePercent,
+            prop: Attribute.criticalChance,
             type: StatType.offensive,
           },
           {
             label: "Critical Damage Multiplier",
-            prop: Attribute.criticalExtraDamageMultiplier,
+            prop: Attribute.criticalAmount,
             type: StatType.offensive,
           },
         ],
@@ -157,8 +132,8 @@ const coreStats: ICoreStat[] = [
         attributes: [
           //   damage
           {
-            label: "Damage multiplier",
-            prop: Attribute.damageMultiplier,
+            label: "Damage",
+            prop: Attribute.damage,
             type: StatType.offensive,
           },
         ],
@@ -185,11 +160,6 @@ const coreStats: ICoreStat[] = [
         attributes: [
           //   armor
           {
-            label: "Armor Rating Bonus",
-            prop: Attribute.armorRatingBonus,
-            type: StatType.defensive,
-          },
-          {
             label: "Armor Rating",
             prop: Attribute.armorRating,
             type: StatType.defensive,
@@ -201,7 +171,7 @@ const coreStats: ICoreStat[] = [
           },
           {
             label: "Percent Damage Reduction",
-            prop: Attribute.percentReduction,
+            prop: Attribute.percentDamageReduction,
             type: StatType.defensive,
           },
         ],
@@ -215,17 +185,17 @@ const coreStats: ICoreStat[] = [
           //   health
           {
             label: "Max Health Multiplier",
-            prop: Attribute.maxHealthMultiplier,
+            prop: Attribute.health,
             type: StatType.defensive,
           },
           {
             label: "Health Regen Amount",
-            prop: Attribute.healthRegenPerInterval,
+            prop: Attribute.healthRegen,
             type: StatType.defensive,
           },
           {
             label: "Health Regen Interval",
-            prop: Attribute.healthRegenerationInterval,
+            prop: Attribute.healthRegenInterval,
             type: StatType.defensive,
           },
         ],
@@ -252,7 +222,7 @@ const coreStats: ICoreStat[] = [
         attributes: [
           {
             label: "XP Gain Multiplier",
-            prop: Attribute.xpGainMultiplier,
+            prop: Attribute.xpRate,
             type: StatType.miscellaneous,
           },
         ],
@@ -273,12 +243,12 @@ const coreStats: ICoreStat[] = [
         attributes: [
           {
             label: "Drop Chance Multiplier",
-            prop: Attribute.dropChanceModifier,
+            prop: Attribute.dropRate,
             type: StatType.miscellaneous,
           },
           {
             label: "Drop Amount Modifier",
-            prop: Attribute.dropAmountModifier,
+            prop: Attribute.dropAmount,
             type: StatType.miscellaneous,
           },
         ],

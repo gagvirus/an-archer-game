@@ -1,7 +1,7 @@
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import Graphics = Phaser.GameObjects.Graphics;
 import KeyboardPlugin = Phaser.Input.Keyboard.KeyboardPlugin;
-import StatsManager, { ICoreStat } from "../../helpers/stats-manager.ts";
+import { ICoreStat } from "../../helpers/stats-manager.ts";
 import { COLOR_WHITE, HEX_COLOR_DARK } from "../../helpers/colors.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import Tooltip from "../../ui/tooltip.ts";
@@ -9,6 +9,11 @@ import { Scene } from "phaser";
 import { Renderable } from "../../helpers/ui-helper.ts";
 import PlusMinusIcon from "../../ui/plus-minus-icon.ts";
 import { CoreStat } from "../../helpers/stats.ts";
+import {
+  AttributeManager,
+  listCoreStats,
+} from "../../stats/attribute-manager.ts";
+import { Attribute } from "../../stats/attributes.ts";
 
 class StatsCirclePartial implements Renderable {
   holdingShift: boolean = false;
@@ -18,15 +23,15 @@ class StatsCirclePartial implements Renderable {
   private readonly scene: Scene;
   private unallocatedStatsNumberText: Phaser.GameObjects.Text;
   private allocatedStatsNumberText: Phaser.GameObjects.Text[] = [];
-  private statsManager: StatsManager;
+  private attributes: AttributeManager;
   private plusIcons: Partial<Record<CoreStat, PlusMinusIcon>> = {};
   private minusIcons: Partial<Record<CoreStat, PlusMinusIcon>> = {};
 
-  constructor(scene: Scene, statsManager: StatsManager, center: Vector2Like) {
+  constructor(scene: Scene, attributes: AttributeManager, center: Vector2Like) {
     this.scene = scene;
-    this.coreStats = StatsManager.listCoreStats();
+    this.coreStats = listCoreStats();
     this.center = center;
-    this.statsManager = statsManager;
+    this.attributes = attributes;
   }
 
   render() {
@@ -42,7 +47,7 @@ class StatsCirclePartial implements Renderable {
 
   updateUnallocatedStatsNumber() {
     this.unallocatedStatsNumberText.setText(
-      `${this.statsManager.unallocatedStats}`,
+      `${this.attributes.unallocatedStats}`,
     );
   }
 
@@ -111,7 +116,7 @@ class StatsCirclePartial implements Renderable {
     this.scene.add.circle(this.center.x, this.center.y, 25, HEX_COLOR_DARK);
     this.unallocatedStatsNumberText = createText(
       this.scene,
-      this.statsManager.unallocatedStats + "",
+      this.attributes.unallocatedStats + "",
       this.center,
       20,
     )
@@ -162,7 +167,7 @@ class StatsCirclePartial implements Renderable {
       });
     this.allocatedStatsNumberText[i] = createText(
       this.scene,
-      this.statsManager.getCoreStat(coreStat.prop) + "",
+      this.attributes.getAttribute(coreStat.prop as unknown as Attribute) + "",
       {
         x: 0,
         y: 10,
@@ -262,10 +267,10 @@ class StatsCirclePartial implements Renderable {
 
   private handleStatClick(index: number, unallocating: boolean = false) {
     const selectedCoreStat = this.coreStats[index];
-    const selectedStatCurrentAmount = this.statsManager.getCoreStat(
-      selectedCoreStat.prop,
+    const selectedStatCurrentAmount = this.attributes.getAttribute(
+      selectedCoreStat.prop as unknown as Attribute,
     );
-    if (!unallocating && this.statsManager.unallocatedStats < 1) {
+    if (!unallocating && this.attributes.unallocatedStats < 1) {
       return;
     }
     if (unallocating && selectedStatCurrentAmount <= 1) {
@@ -281,20 +286,22 @@ class StatsCirclePartial implements Renderable {
           statsCount = selectedStatCurrentAmount - 1;
         }
       } else {
-        if (statsCount > this.statsManager.unallocatedStats) {
-          statsCount = this.statsManager.unallocatedStats;
+        if (statsCount > this.attributes.unallocatedStats) {
+          statsCount = this.attributes.unallocatedStats;
         }
       }
     }
     const isUnallocatingMultiplier = unallocating ? -1 : 1;
-    this.statsManager.unallocatedStats -= statsCount * isUnallocatingMultiplier;
+    this.attributes.unallocatedStats -= statsCount * isUnallocatingMultiplier;
     this.updateUnallocatedStatsNumber();
-    this.statsManager.addStat(
+    this.attributes.addStat(
       selectedCoreStat.prop,
       statsCount * isUnallocatingMultiplier,
     );
     this.allocatedStatsNumberText[index].setText(
-      this.statsManager.getCoreStat(selectedCoreStat.prop) + "",
+      this.attributes.getAttribute(
+        selectedCoreStat.prop as unknown as Attribute,
+      ) + "",
     );
     this.scene.events.emit("statsUpdated", { coreStat: selectedCoreStat });
   }
