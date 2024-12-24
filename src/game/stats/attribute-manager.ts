@@ -59,10 +59,34 @@ export class AttributeManager {
     };
   }
 
+  get heroClassLayer() {
+    return this.getLayer(LayerType.heroClass);
+  }
+
+  get heroLevelLayer() {
+    return this.getLayer(LayerType.heroLevel);
+  }
+
+  get coreStatsLayer() {
+    return this.getLayer(LayerType.coreStats);
+  }
+
+  get statsLayer() {
+    return this.getLayer(LayerType.stats);
+  }
+
+  get powerupsLayer() {
+    return this.getLayer(LayerType.powerups);
+  }
+
   getFinalAttributes(): Attributes {
     return Object.values(this.layers).reduce(
       (currentAttributes, layer) => layer.modify(currentAttributes),
       { ...this.baseAttributes },
     );
+  }
+
+  getLayer(layerType: LayerType) {
+    return this.layers[layerType];
   }
 }
