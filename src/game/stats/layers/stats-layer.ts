@@ -30,7 +30,7 @@ export class StatsLayer implements AttributeLayer {
       [Attribute.xpRate]: attr.xpRate * (1 + ((intelligence - 1) * 1.1) / 100),
       [Attribute.barter]: attr.barter + charisma * 2,
       [Attribute.dropRate]:
-        attr.dropRate * Phaser.Math.Clamp(1 + (luck * 2) / 100, 1, 4),
+        attr.dropRate + Phaser.Math.Clamp(1 + (luck * 2) / 100, 1, 4),
       [Attribute.dropAmount]:
         attr.dropAmount * Phaser.Math.Clamp(1 + (luck * 1.1) / 100, 1, 7),
     };
