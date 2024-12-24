@@ -22,7 +22,7 @@ export enum Attribute {
   dropRate = "dropRate",
   dropAmount = "dropAmount",
   healthRegen = "healthRegen",
-  armor = "armor",
+  movementSpeed = "movementSpeed",
 }
 
 export type Attributes = {

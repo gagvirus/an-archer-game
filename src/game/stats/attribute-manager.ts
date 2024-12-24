@@ -4,12 +4,14 @@ import { HeroClassLayer } from "./layers/hero-class-layer.ts";
 import { HeroLevelLayer } from "./layers/hero-level-layer.ts";
 import { CoreStatsLayer } from "./layers/core-stats-layer.ts";
 import { StatsLayer } from "./layers/stats-layer.ts";
+import { PowerupsLayer } from "./layers/powerups-layer.ts";
 
 enum LayerType {
   heroClass = "HeroClass",
   heroLevel = "HeroLevel",
   coreStats = "CoreStats",
   stats = "Stats",
+  powerups = "Powerups",
 }
 
 export class AttributeManager {
@@ -19,7 +21,7 @@ export class AttributeManager {
   constructor() {
     this.baseAttributes = {
       [Attribute.agility]: 0,
-      [Attribute.armor]: 0,
+      [Attribute.movementSpeed]: 0,
       [Attribute.armorRating]: 0,
       [Attribute.attackRate]: 0,
       [Attribute.barter]: 0,
@@ -49,6 +51,7 @@ export class AttributeManager {
       [LayerType.heroLevel]: new HeroLevelLayer(),
       [LayerType.coreStats]: new CoreStatsLayer(),
       [LayerType.stats]: new StatsLayer(),
+      [LayerType.powerups]: new PowerupsLayer(),
     };
   }
 
