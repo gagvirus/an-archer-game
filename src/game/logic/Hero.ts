@@ -15,9 +15,7 @@ import { CustomCursorKeysDown } from "../helpers/keyboard-helper.ts";
 import { COLOR_SUCCESS, COLOR_WARNING } from "../helpers/colors.ts";
 import { ResourceType } from "./drop/resource/Resource.ts";
 import { randomChance } from "../helpers/random-helper.ts";
-import PowerupManager, {
-  MultipliableStat,
-} from "../helpers/powerup-manager.ts";
+import PowerupManager from "../helpers/powerup-manager.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
 import { Attribute } from "../stats/attributes.ts";
 import GameObject = Phaser.GameObjects.GameObject;
@@ -220,8 +218,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   handleHeroMovement(cursors: CustomCursorKeysDown) {
-    const speed =
-      this.walkSpeed * this.extra.getMultiplierStat(MultipliableStat.walkSpeed);
+    const speed = this.attributes.getAttribute(Attribute.movementSpeed);
     // Handle hero movement
     if (cursors.left) {
       this.setFlipX(true); // Flip the sprite to face left
