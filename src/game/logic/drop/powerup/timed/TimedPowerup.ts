@@ -19,9 +19,13 @@ abstract class TimedPowerup extends Powerup {
     this.timeout = this.setPowerupTimeout(scene, this.durationSeconds * 1000);
   }
 
-  abstract applyEffect(scene: MainScene): void;
+  applyEffect(scene: MainScene): void {
+    scene.hero.attributes.setPowerupActive(this.powerupType, true);
+  }
 
-  abstract removeEffect(scene: MainScene): void;
+  removeEffect(scene: MainScene): void {
+    scene.hero.attributes.setPowerupActive(this.powerupType, false);
+  }
 
   private setPowerupTimeout(scene: MainScene, seconds: number) {
     return setTimeout(() => {

@@ -10,6 +10,7 @@ import coreStats, { CoreStat, StatType } from "../helpers/stats.ts";
 import FinalLayer from "./layers/final-layer.ts";
 import { DifficultyLayer } from "./layers/difficulty-layer.ts";
 import { Scene } from "phaser";
+import { PowerupType } from "../logic/drop/powerup/timed/powerupType.ts";
 
 enum LayerType {
   heroClass = "HeroClass",
@@ -143,6 +144,11 @@ export class AttributeManager {
 
   setHeroLevel(newLevel: number) {
     this.heroLevelLayer.setLevel(newLevel);
+    this.recalculate();
+  }
+
+  setPowerupActive(powerupType: PowerupType, active: boolean) {
+    this.powerupsLayer.setActive(powerupType, active);
     this.recalculate();
   }
 

@@ -34,7 +34,7 @@ export class PowerupsLayer implements AttributeLayer {
     }
   }
 
-  public setPowerupActive(powerupType: PowerupType, active: boolean) {
+  public setActive(powerupType: PowerupType, active: boolean) {
     const field = this.getPowerupFieldFromType(powerupType);
     this[field] = active;
   }
