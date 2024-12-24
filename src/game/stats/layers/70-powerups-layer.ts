@@ -8,12 +8,13 @@ export class PowerupsLayer implements AttributeLayer {
   doubleDamageActive: boolean = false;
 
   modify(baseAttributes: Attributes): Attributes {
+    console.log(baseAttributes);
     return {
       ...baseAttributes,
       movementSpeed:
         baseAttributes.movementSpeed * (this.doubleSpeedActive ? 1.5 : 1),
       attacksPerSecond:
-        baseAttributes.attackRate * (this.doubleSpeedActive ? 2 : 1),
+        baseAttributes.attacksPerSecond * (this.doubleSpeedActive ? 2 : 1),
       damage: baseAttributes.damage * (this.doubleDamageActive ? 2 : 1),
       percentDamageReduction: this.invincibilityActive
         ? 1
