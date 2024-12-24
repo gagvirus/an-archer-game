@@ -76,7 +76,7 @@ export class AttributeManager {
       [Attribute.luck]: 0,
       [Attribute.perception]: 0,
       [Attribute.strength]: 0,
-      [Attribute.xpRate]: 0,
+      [Attribute.xpRate]: 1,
     };
 
     this.layers = {

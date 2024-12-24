@@ -46,7 +46,7 @@ class AttributesPartial implements Renderable {
       .on("statPointerOver", this.statPointerOver, this)
       .on("statPointerOut", this.statPointerOut, this)
       .on("holdingShiftChange", this.onHoldingShiftChange, this);
-    Object.keys(this.attributes).forEach((statType) => {
+    Object.keys(this.allAttributes).forEach((statType) => {
       container.add(createText(this.scene, statType, VectorZeroes(), 16));
       this.allAttributes[statType as StatType].forEach((attribute) => {
         container.add(this.renderAttributeRow(attribute, this.width - 40));
