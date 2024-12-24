@@ -1,18 +1,14 @@
 export type Attributes = {
   // easyModeModifier: number;
-  // finesse: number;
-  // awareness: number;
-  // resilience: number;
-  // thoughtfulness: number;
-  // dexterity: number;
-  // agility: number;
-  // perception: number;
-  // strength: number;
-  // fortitude: number;
-  // endurance: number;
-  // intelligence: number;
-  // charisma: number;
-  // luck: number;
+  dexterity: number;
+  agility: number;
+  perception: number;
+  strength: number;
+  fortitude: number;
+  endurance: number;
+  intelligence: number;
+  charisma: number;
+  luck: number;
   baseAttackTime: number;
   damageMultiplier: number;
   attackSpeedBonus: number;
