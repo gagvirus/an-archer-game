@@ -3,46 +3,22 @@ import { Powerup } from "../Powerup.ts";
 import { PowerupType } from "./powerupType.ts";
 import { Scene } from "phaser";
 
+const DURATION_SECONDS = 30;
+
 abstract class TimedPowerup extends Powerup {
-  collectedAt?: number;
-  durationSeconds: number = 30;
+  startedAt?: number;
   remainingDurationSeconds?: number;
   private timeout: number;
 
   abstract get powerupType(): PowerupType;
 
-  onCollected(): void {
-    const scene = this.scene as MainScene;
-    this.collectedAt = Date.now();
-    this.applyEffect(scene);
-    scene.events.emit("powerupCollected", { type: this.powerupType });
-    this.timeout = this.setPowerupTimeout(scene, this.durationSeconds * 1000);
-  }
-
-  applyEffect(scene: MainScene): void {
-    scene.hero.attributes.setPowerupActive(this.powerupType, true);
-  }
-
-  removeEffect(scene: MainScene): void {
-    scene.hero.attributes.setPowerupActive(this.powerupType, false);
-  }
-
-  private setPowerupTimeout(scene: MainScene, seconds: number) {
-    return setTimeout(() => {
-      this.removeEffect(scene);
-      this.collectedAt = undefined;
-      this.remainingDurationSeconds = undefined;
-      scene.events.emit("powerupEnded", { type: this.powerupType });
-    }, seconds);
-  }
-
   protected constructor(scene: Scene, x: number, y: number, name: string) {
     super(scene, x, y, name);
     (this.scene as MainScene).events
       .on("GamePaused", () => {
-        if (this.collectedAt) {
-          this.remainingDurationSeconds =
-            (Date.now() - this.collectedAt) / 1000;
+        if (this.startedAt) {
+          const timeElapsed = (Date.now() - this.startedAt) / 1000;
+          this.remainingDurationSeconds = DURATION_SECONDS - timeElapsed;
           clearTimeout(this.timeout);
         }
       })
@@ -54,6 +30,31 @@ abstract class TimedPowerup extends Powerup {
           );
         }
       });
+  }
+
+  applyEffect(scene: MainScene): void {
+    scene.hero.attributes.setPowerupActive(this.powerupType, true);
+  }
+
+  removeEffect(scene: MainScene): void {
+    scene.hero.attributes.setPowerupActive(this.powerupType, false);
+  }
+
+  onCollected(): void {
+    const scene = this.scene as MainScene;
+    this.applyEffect(scene);
+    scene.events.emit("powerupCollected", { type: this.powerupType });
+    this.timeout = this.setPowerupTimeout(scene, DURATION_SECONDS * 1000);
+  }
+
+  private setPowerupTimeout(scene: MainScene, milliseconds: number) {
+    this.startedAt = Date.now() - (DURATION_SECONDS * 1000 - milliseconds);
+    return setTimeout(() => {
+      this.removeEffect(scene);
+      this.startedAt = undefined;
+      this.remainingDurationSeconds = undefined;
+      scene.events.emit("powerupEnded", { type: this.powerupType });
+    }, milliseconds);
   }
 }
 
