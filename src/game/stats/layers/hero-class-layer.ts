@@ -1,5 +1,5 @@
 import { AttributeLayer } from "../attribute-layer.ts";
-import { Attributes } from "../attributes.ts";
+import { Attribute, Attributes } from "../attributes.ts";
 
 enum HeroClass {
   default = "default",
@@ -32,11 +32,11 @@ export class HeroClassLayer implements AttributeLayer {
   modify(baseAttributes: Attributes): Attributes {
     return {
       ...baseAttributes,
-      damage: this.heroDefinition.damage,
-      health: this.heroDefinition.health,
-      attackRate: this.heroDefinition.attackRate,
-      baseAttackTime: this.heroDefinition.baseAttackTime,
-      healthRegenInterval: this.heroDefinition.healthRegenInterval,
+      [Attribute.damage]: this.heroDefinition.damage,
+      [Attribute.health]: this.heroDefinition.health,
+      [Attribute.attackRate]: this.heroDefinition.attackRate,
+      [Attribute.baseAttackTime]: this.heroDefinition.baseAttackTime,
+      [Attribute.healthRegenInterval]: this.heroDefinition.healthRegenInterval,
     };
   }
 }

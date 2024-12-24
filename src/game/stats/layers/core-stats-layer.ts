@@ -1,5 +1,5 @@
 import { AttributeLayer } from "../attribute-layer.ts";
-import { Attributes } from "../attributes.ts";
+import { Attribute, Attributes } from "../attributes.ts";
 
 export class CoreStatsLayer implements AttributeLayer {
   private readonly finesse: number;
@@ -22,15 +22,16 @@ export class CoreStatsLayer implements AttributeLayer {
   modify(baseAttributes: Attributes): Attributes {
     return {
       ...baseAttributes,
-      dexterity: baseAttributes.dexterity + this.finesse,
-      agility: baseAttributes.agility + this.finesse,
-      perception: baseAttributes.perception + this.awareness,
-      strength: baseAttributes.strength + this.awareness,
-      fortitude: baseAttributes.fortitude + this.resilience,
-      endurance: baseAttributes.endurance + this.resilience,
-      intelligence: baseAttributes.intelligence + this.thoughtfulness,
-      charisma: baseAttributes.charisma + this.thoughtfulness,
-      luck: baseAttributes.luck + this.thoughtfulness,
+      [Attribute.dexterity]: baseAttributes.dexterity + this.finesse,
+      [Attribute.agility]: baseAttributes.agility + this.finesse,
+      [Attribute.perception]: baseAttributes.perception + this.awareness,
+      [Attribute.strength]: baseAttributes.strength + this.awareness,
+      [Attribute.fortitude]: baseAttributes.fortitude + this.resilience,
+      [Attribute.endurance]: baseAttributes.endurance + this.resilience,
+      [Attribute.intelligence]:
+        baseAttributes.intelligence + this.thoughtfulness,
+      [Attribute.charisma]: baseAttributes.charisma + this.thoughtfulness,
+      [Attribute.luck]: baseAttributes.luck + this.thoughtfulness,
     };
   }
 }

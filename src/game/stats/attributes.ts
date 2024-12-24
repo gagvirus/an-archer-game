@@ -1,30 +1,30 @@
-export type Attributes = {
-  // child stats
-  dexterity: number;
-  agility: number;
-  perception: number;
-  strength: number;
-  fortitude: number;
-  endurance: number;
-  intelligence: number;
-  charisma: number;
-  luck: number;
-  // hero base
-  damage: number;
-  health: number;
-  attackRate: number;
-  baseAttackTime: number;
-  healthRegenInterval: number;
-  // altered by stats
-  evadeRating: number;
-  criticalRate: number;
-  criticalAmount: number;
-  armorRating: number;
-  xpRate: number;
-  barter: number;
-  dropRate: number;
-  dropAmount: number;
-  healthRegen: number;
+export enum Attribute {
+  dexterity = "dexterity",
+  agility = "agility",
+  perception = "perception",
+  strength = "strength",
+  fortitude = "fortitude",
+  endurance = "endurance",
+  intelligence = "intelligence",
+  charisma = "charisma",
+  luck = "luck",
+  damage = "damage",
+  health = "health",
+  attackRate = "attackRate",
+  baseAttackTime = "baseAttackTime",
+  healthRegenInterval = "healthRegenInterval",
+  evadeRating = "evadeRating",
+  criticalRate = "criticalRate",
+  criticalAmount = "criticalAmount",
+  armorRating = "armorRating",
+  xpRate = "xpRate",
+  barter = "barter",
+  dropRate = "dropRate",
+  dropAmount = "dropAmount",
+  healthRegen = "healthRegen",
+  armor = "armor",
+}
 
-  armor: number;
+export type Attributes = {
+  [key in Attribute]: number;
 };
