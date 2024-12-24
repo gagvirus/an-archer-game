@@ -11,6 +11,7 @@ interface HeroDefinition {
   attackRate: number;
   baseAttackTime: number;
   healthRegenInterval: number;
+  movementSpeed: number;
 }
 
 const heroClasses: Record<HeroClass, HeroDefinition> = {
@@ -20,6 +21,7 @@ const heroClasses: Record<HeroClass, HeroDefinition> = {
     attackRate: 100,
     baseAttackTime: 1.5,
     healthRegenInterval: 2000,
+    movementSpeed: 160,
   },
 };
 
@@ -37,6 +39,7 @@ export class HeroClassLayer implements AttributeLayer {
       [Attribute.attackRate]: this.heroDefinition.attackRate,
       [Attribute.baseAttackTime]: this.heroDefinition.baseAttackTime,
       [Attribute.healthRegenInterval]: this.heroDefinition.healthRegenInterval,
+      [Attribute.movementSpeed]: this.heroDefinition.movementSpeed,
     };
   }
 }
