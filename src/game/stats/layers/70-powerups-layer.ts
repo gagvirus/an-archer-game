@@ -8,7 +8,6 @@ export class PowerupsLayer implements AttributeLayer {
   doubleDamageActive: boolean = false;
 
   modify(baseAttributes: Attributes): Attributes {
-    console.log(baseAttributes);
     return {
       ...baseAttributes,
       movementSpeed:
