@@ -1,14 +1,14 @@
 import { Attribute, Attributes } from "./attributes.ts";
 import { AttributeLayer } from "./attribute-layer.ts";
-import { HeroClassLayer } from "./layers/hero-class-layer.ts";
-import { HeroLevelLayer } from "./layers/hero-level-layer.ts";
-import { CoreStatsLayer } from "./layers/core-stats-layer.ts";
-import { StatsLayer } from "./layers/stats-layer.ts";
-import { PowerupsLayer } from "./layers/powerups-layer.ts";
+import { HeroClassLayer } from "./layers/10-hero-class-layer.ts";
+import { HeroLevelLayer } from "./layers/20-hero-level-layer.ts";
+import { CoreStatsLayer } from "./layers/30-core-stats-layer.ts";
+import { StatsLayer } from "./layers/40-stats-layer.ts";
+import { PowerupsLayer } from "./layers/50-powerups-layer.ts";
 import { IAttribute, ICoreStat } from "../helpers/stats-manager.ts";
 import coreStats, { CoreStat, StatType } from "../helpers/stats.ts";
-import FinalLayer from "./layers/final-layer.ts";
-import { DifficultyLayer } from "./layers/difficulty-layer.ts";
+import FinalLayer from "./layers/70-final-layer.ts";
+import { DifficultyLayer } from "./layers/60-difficulty-layer.ts";
 import { Scene } from "phaser";
 import { PowerupType } from "../logic/drop/powerup/timed/powerupType.ts";
 

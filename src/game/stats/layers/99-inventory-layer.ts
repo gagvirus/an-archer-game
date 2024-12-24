@@ -4,8 +4,7 @@ import { Attributes } from "../attributes.ts";
 export class InventoryLayer implements AttributeLayer {
   // private inventoryBonuses: Partial<Attributes>;
 
-  constructor() // inventoryBonuses: Partial<Attributes>
-  {
+  constructor() { // inventoryBonuses: Partial<Attributes>
     // this.inventoryBonuses = inventoryBonuses;
   }
 
