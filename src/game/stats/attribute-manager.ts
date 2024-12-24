@@ -7,6 +7,7 @@ import { StatsLayer } from "./layers/stats-layer.ts";
 import { PowerupsLayer } from "./layers/powerups-layer.ts";
 import { IAttribute, ICoreStat } from "../helpers/stats-manager.ts";
 import coreStats, { CoreStat, StatType } from "../helpers/stats.ts";
+import FinalLayer from "./layers/final-layer.ts";
 
 enum LayerType {
   heroClass = "HeroClass",
@@ -14,6 +15,7 @@ enum LayerType {
   coreStats = "CoreStats",
   stats = "Stats",
   powerups = "Powerups",
+  final = "Final",
 }
 
 export const listAttributes = () => {
@@ -83,6 +85,7 @@ export class AttributeManager {
       [LayerType.coreStats]: new CoreStatsLayer(),
       [LayerType.stats]: new StatsLayer(),
       [LayerType.powerups]: new PowerupsLayer(),
+      [LayerType.final]: new FinalLayer(),
     };
 
     this._unallocatedStats = 0;

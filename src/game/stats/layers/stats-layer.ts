@@ -21,7 +21,7 @@ export class StatsLayer implements AttributeLayer {
       [Attribute.criticalRate]: attr.criticalRating + perception * 5,
       [Attribute.criticalAmount]:
         attr.criticalAmount + (50 + (perception - 1) * 5) / 100,
-      [Attribute.damage]: attr.damage * ((strength - 1) * 0.05),
+      [Attribute.damage]: attr.damage * (1 + (strength - 1) * 0.05),
       [Attribute.armorRating]: attr.armorRating + fortitude * 5,
       [Attribute.flatDamageReduction]:
         attr.flatDamageReduction + fortitude * 1.25,
