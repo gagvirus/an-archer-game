@@ -38,7 +38,7 @@ export const listCoreStats = (): ICoreStat[] => {
 
 export class AttributeManager {
   private readonly baseAttributes: Attributes;
-  private layers: Record<LayerType, AttributeLayer>;
+  private readonly layers: Record<LayerType, AttributeLayer>;
   private _attributes: Attributes;
   constructor() {
     this.baseAttributes = {
@@ -98,24 +98,24 @@ export class AttributeManager {
     this._unallocatedStats = value;
   }
 
-  get heroClassLayer() {
-    return this.getLayer(LayerType.heroClass);
+  get heroClassLayer(): HeroClassLayer {
+    return this.getLayer(LayerType.heroClass) as HeroClassLayer;
   }
 
-  get heroLevelLayer() {
-    return this.getLayer(LayerType.heroLevel);
+  get heroLevelLayer(): HeroLevelLayer {
+    return this.getLayer(LayerType.heroLevel) as HeroLevelLayer;
   }
 
   get coreStatsLayer(): CoreStatsLayer {
     return this.getLayer(LayerType.coreStats) as CoreStatsLayer;
   }
 
-  get statsLayer() {
-    return this.getLayer(LayerType.stats);
+  get statsLayer(): StatsLayer {
+    return this.getLayer(LayerType.stats) as StatsLayer;
   }
 
-  get powerupsLayer() {
-    return this.getLayer(LayerType.powerups);
+  get powerupsLayer(): PowerupsLayer {
+    return this.getLayer(LayerType.powerups) as PowerupsLayer;
   }
 
   recalculate() {
@@ -131,6 +131,9 @@ export class AttributeManager {
   }
 
   getAttributes(): Attributes {
+    if (!this._attributes) {
+      this.recalculate();
+    }
     return this._attributes;
   }
 

@@ -46,6 +46,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this); // Add the hero to the scene
     scene.physics.add.existing(this); // Enable physics for the hero
     this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
+    this.attributes = new AttributeManager();
+
     this._level = 1;
     this.name = "Hero";
     this.walkSpeed = 160;
@@ -66,7 +68,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.attackable.attack();
       });
     }
-    this.attributes = new AttributeManager();
     this.extra = new PowerupManager();
     this.attackable = new Attackable(
       this.scene,
