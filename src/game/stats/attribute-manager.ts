@@ -138,6 +138,12 @@ export class AttributeManager {
 
   addStat(stat: CoreStat, amount: number) {
     this.coreStatsLayer.setCoreStat(stat, amount);
+    this.recalculate();
+  }
+
+  setHeroLevel(newLevel: number) {
+    this.heroLevelLayer.setLevel(newLevel);
+    this.recalculate();
   }
 
   getAttributes(): Attributes {

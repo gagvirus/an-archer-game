@@ -2,7 +2,7 @@ import { AttributeLayer } from "../attribute-layer.ts";
 import { Attribute, Attributes } from "../attributes.ts";
 
 export class HeroLevelLayer implements AttributeLayer {
-  private readonly level: number;
+  private level: number;
   constructor(level: number = 1) {
     this.level = level;
   }
@@ -13,5 +13,9 @@ export class HeroLevelLayer implements AttributeLayer {
       [Attribute.health]: baseAttributes.health + this.level * 10,
       [Attribute.damage]: baseAttributes.damage + this.level * 2,
     };
+  }
+
+  setLevel(newLevel: number) {
+    this.level = newLevel;
   }
 }

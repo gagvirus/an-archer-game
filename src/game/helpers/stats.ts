@@ -182,11 +182,6 @@ const coreStats: ICoreStat[] = [
             prop: Attribute.healthRegen,
             type: StatType.defensive,
           },
-          {
-            label: "Health Regen Interval",
-            prop: Attribute.healthRegenInterval,
-            type: StatType.defensive,
-          },
         ],
       },
     ],
@@ -221,10 +216,10 @@ const coreStats: ICoreStat[] = [
         prop: ChildStat.charisma,
         icon: "hearts",
         // todo: update this when barter is implemented
-        description: "Affects nothing at the moment",
+        description: "Better selling & Buying",
         attributes: [
           {
-            label: "Better selling & Buying",
+            label: "Barter",
             prop: Attribute.barter,
             type: StatType.miscellaneous,
           },
