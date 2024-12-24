@@ -20,6 +20,10 @@ export class AttributeManager {
 
   constructor() {
     this.baseAttributes = {
+      [Attribute.attacksPerSecond]: 0,
+      [Attribute.evadeChance]: 0,
+      [Attribute.flatDamageReduction]: 0,
+      [Attribute.percentDamageReduction]: 0,
       [Attribute.agility]: 0,
       [Attribute.movementSpeed]: 0,
       [Attribute.armorRating]: 0,

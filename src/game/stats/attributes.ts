@@ -28,7 +28,7 @@ export enum Attribute {
   // final
   percentDamageReduction = "percentDamageReduction",
   flatDamageReduction = "flatDamageReduction",
-  evadeChange = "evadeChance",
+  evadeChance = "evadeChance",
   attacksPerSecond = "attacksPerSecond",
 }
 
