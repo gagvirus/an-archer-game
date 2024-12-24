@@ -8,14 +8,18 @@ enum HeroClass {
 interface HeroDefinition {
   damage: number;
   health: number;
+  attackRate: number;
   baseAttackTime: number;
+  healthRegenInterval: number;
 }
 
 const heroClasses: Record<HeroClass, HeroDefinition> = {
   [HeroClass.default]: {
     damage: 10,
     health: 100,
+    attackRate: 100,
     baseAttackTime: 1.5,
+    healthRegenInterval: 2000,
   },
 };
 
@@ -30,7 +34,9 @@ export class HeroClassLayer implements AttributeLayer {
       ...baseAttributes,
       damage: this.heroDefinition.damage,
       health: this.heroDefinition.health,
+      attackRate: this.heroDefinition.attackRate,
       baseAttackTime: this.heroDefinition.baseAttackTime,
+      healthRegenInterval: this.heroDefinition.healthRegenInterval,
     };
   }
 }
