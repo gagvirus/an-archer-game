@@ -8,6 +8,8 @@ import { PowerupsLayer } from "./layers/powerups-layer.ts";
 import { IAttribute, ICoreStat } from "../helpers/stats-manager.ts";
 import coreStats, { CoreStat, StatType } from "../helpers/stats.ts";
 import FinalLayer from "./layers/final-layer.ts";
+import { DifficultyLayer } from "./layers/difficulty-layer.ts";
+import { Scene } from "phaser";
 
 enum LayerType {
   heroClass = "HeroClass",
@@ -15,6 +17,7 @@ enum LayerType {
   coreStats = "CoreStats",
   stats = "Stats",
   powerups = "Powerups",
+  difficulty = "difficulty",
   final = "Final",
 }
 
@@ -42,7 +45,10 @@ export class AttributeManager {
   private readonly baseAttributes: Attributes;
   private readonly layers: Record<LayerType, AttributeLayer>;
   private _attributes: Attributes;
-  constructor() {
+  private scene: Phaser.Scene;
+
+  constructor(scene: Scene) {
+    this.scene = scene;
     this.baseAttributes = {
       [Attribute.finesse]: 0,
       [Attribute.awareness]: 0,
@@ -85,6 +91,7 @@ export class AttributeManager {
       [LayerType.coreStats]: new CoreStatsLayer(),
       [LayerType.stats]: new StatsLayer(),
       [LayerType.powerups]: new PowerupsLayer(),
+      [LayerType.difficulty]: new DifficultyLayer(this.scene),
       [LayerType.final]: new FinalLayer(),
     };
 

@@ -46,7 +46,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this); // Add the hero to the scene
     scene.physics.add.existing(this); // Enable physics for the hero
     this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
-    this.attributes = new AttributeManager();
+    this.attributes = new AttributeManager(this.scene);
 
     this._level = 1;
     this.name = "Hero";
