@@ -42,10 +42,10 @@ export class AttributeManager {
   private _attributes: Attributes;
   constructor() {
     this.baseAttributes = {
-      [Attribute.finesse]: 1,
-      [Attribute.awareness]: 1,
-      [Attribute.resilience]: 1,
-      [Attribute.thoughtfulness]: 1,
+      [Attribute.finesse]: 0,
+      [Attribute.awareness]: 0,
+      [Attribute.resilience]: 0,
+      [Attribute.thoughtfulness]: 0,
       [Attribute.attacksPerSecond]: 0,
       [Attribute.evadeChance]: 0,
       [Attribute.flatDamageReduction]: 0,
