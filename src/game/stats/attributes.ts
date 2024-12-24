@@ -1,4 +1,5 @@
 export enum Attribute {
+  // stats
   dexterity = "dexterity",
   agility = "agility",
   perception = "perception",
@@ -8,6 +9,7 @@ export enum Attribute {
   intelligence = "intelligence",
   charisma = "charisma",
   luck = "luck",
+  // base
   damage = "damage",
   health = "health",
   attackRate = "attackRate",
@@ -23,6 +25,11 @@ export enum Attribute {
   dropAmount = "dropAmount",
   healthRegen = "healthRegen",
   movementSpeed = "movementSpeed",
+  // final
+  percentDamageReduction = "percentDamageReduction",
+  flatDamageReduction = "flatDamageReduction",
+  evadeChange = "evadeChance",
+  attacksPerSecond = "attacksPerSecond",
 }
 
 export type Attributes = {
