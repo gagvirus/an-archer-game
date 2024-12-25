@@ -10,7 +10,7 @@ import {
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import { GameObjects, Scene } from "phaser";
-import { StatType } from "../../helpers/stats.ts";
+import { CoreStat, StatType } from "../../helpers/stats.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import {
   AttributeManager,
@@ -25,6 +25,7 @@ class AttributesPartial implements Renderable {
   private allAttributes: Record<StatType, IAttribute[]>;
   private attributeRows: Partial<Record<Attribute, Sizer>> = {};
   private holdingShift: boolean = false;
+  private hoveringCoreStat?: { coreStat: CoreStat; unallocating: boolean };
   private panel: ScrollablePanel;
 
   constructor(
@@ -66,21 +67,31 @@ class AttributesPartial implements Renderable {
     coreStat: ICoreStat;
     unallocating: boolean;
   }) {
-    const { coreStat } = data;
+    const { coreStat, unallocating } = data;
+    this.hoveringCoreStat = { coreStat: coreStat.prop, unallocating };
+    this.updateDiffText();
+  }
+
+  private updateDiffText() {
+    if (!this.hoveringCoreStat || !this.hoveringCoreStat.coreStat) {
+      return;
+    }
+    const { coreStat, unallocating } = this.hoveringCoreStat;
     const allocatingAmount = this.holdingShift
       ? this.attributes.unallocatedStats >= 10
         ? 10
-        : this.attributes.unallocatedStats
+        : this.attributes.unallocatedStats > 0
+          ? this.attributes.unallocatedStats
+          : 1
       : 1;
     const diff = this.attributes.getPreviewWithChangedStat(
-      coreStat.prop,
-      allocatingAmount,
+      coreStat,
+      allocatingAmount * (unallocating ? -1 : 1),
     );
     Object.keys(diff).forEach((attribute) => {
       const currentValue = this.attributes.getAttribute(attribute as Attribute);
       const newValue = diff[attribute as Attribute] as number;
       const valueDiff = parseFloat((newValue - currentValue).toFixed(2));
-      console.log({ newValue, currentValue, attribute });
       const plusMinus = valueDiff > 0 ? "+" : "";
       this.showDiffText(attribute as Attribute, `${plusMinus}${valueDiff}`);
     });
@@ -95,28 +106,13 @@ class AttributesPartial implements Renderable {
   }
 
   private onHoldingShiftChange(holdingShift: boolean) {
-    // todo: update this for proper diff displaying
     if (holdingShift !== this.holdingShift) {
       this.holdingShift = holdingShift;
-      Object.values(this.attributeRows).forEach((attributeRow) => {
-        const textObject =
-          attributeRow.getChildren()[4] as Phaser.GameObjects.Text;
-        let newText;
-        if (holdingShift) {
-          newText = textObject.text.startsWith("+") ? "++" : "--";
-        } else {
-          newText = textObject.text.startsWith("+") ? "+" : "-";
-        }
-        (attributeRow.getChildren()[4] as Phaser.GameObjects.Text).setText(
-          newText,
-        );
-        attributeRow.layout();
-      });
+      this.updateDiffText();
     }
   }
 
   private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
-    // todo: update diff display when unallocated stat points change
     coreStat.stats.forEach((stat) => {
       stat.attributes.forEach((attribute) => {
         const value = parseFloat(
@@ -129,6 +125,7 @@ class AttributesPartial implements Renderable {
         }
       });
     });
+    this.updateDiffText();
   };
 
   private showDiffText(attribute: Attribute, value: string) {
