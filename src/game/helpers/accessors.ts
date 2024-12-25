@@ -1,5 +1,6 @@
 // Utility functions to access game and active scene
 import { StatisticsManager } from "../statistics/statistics-manager.ts";
+import MainScene from "../scenes/MainScene.ts";
 
 let gameInstance: Phaser.Game | null = null;
 
@@ -22,6 +23,14 @@ export function activeScene(): Phaser.Scene {
     throw new Error("No active scene found.");
   }
   return currentScene;
+}
+
+export function mainScene(): MainScene {
+  const currentScene = activeScene();
+  if (currentScene.scene.key !== "MainScene") {
+    throw new Error("Current Scene is not MainScene");
+  }
+  return currentScene as MainScene;
 }
 
 export function addScore(amount: number) {
