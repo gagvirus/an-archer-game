@@ -16,6 +16,7 @@ import { COLOR_SUCCESS, COLOR_WARNING } from "../helpers/colors.ts";
 import { ResourceType } from "./drop/resource/Resource.ts";
 import { randomChance } from "../helpers/random-helper.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
+import { addStatistic } from "../helpers/accessors.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
@@ -131,6 +132,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       },
       LogEntryCategory.World,
     );
+    addStatistic("leveledUp", 1);
     this._level = newLevel;
     this.attackable.setMaxHealth(this.maxHealth, false);
     this.attackable.attackDamage = this.attackDamage;

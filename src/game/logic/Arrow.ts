@@ -3,6 +3,7 @@ import { Attackable } from "../helpers/gameplayer-helper.ts";
 import { showDamage } from "../helpers/text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
 import { COLOR_DANGER, COLOR_WARNING } from "../helpers/colors.ts";
+import { addStatistic } from "../helpers/accessors.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
@@ -82,8 +83,9 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
   // Handle what happens when the arrow hits the target
   private handleHit() {
     if (this.isCritical) {
+      addStatistic("criticalHits", 1);
       addLogEntry(
-        ":attacker inflicted :damage WRIT on :opponent",
+        ":attacker inflicted :damage CRIT on :opponent",
         {
           attacker: [this.owner.name, COLOR_WARNING],
           damage: [this.attackDamage, COLOR_DANGER],
@@ -91,7 +93,9 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
         },
         LogEntryCategory.Combat,
       );
+      addStatistic("damageInflicted", this.attackDamage);
     } else {
+      addStatistic("regularHits", 1);
       addLogEntry(
         `:attacker attacked :opponent for :damage DMG`,
         {
@@ -101,9 +105,11 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
         },
         LogEntryCategory.Combat,
       );
+      addStatistic("damageInflicted", this.attackDamage);
     }
     this.target.takeDamage(this.attackDamage, (target: Attackable) => {
       this.owner.onKilledTarget(target);
+      addStatistic("enemiesKilled", 1);
       addLogEntry(
         ":attacker killed :opponent",
         {

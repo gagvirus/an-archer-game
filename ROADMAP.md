@@ -3,12 +3,16 @@
 - Per-Game Statistics
   - Collect information regarding the current run / game
     - how long have played
-    - how much damage inflicted
-    - how many enemies killed
-    - how much damage received
-    - how many levels gained
-    - how many stages passed
-    - how many resources collected
+    - ~~how much damage inflicted~~
+    - ~~how many times hit critical~~
+    - ~~how many times hit regular attacks~~
+    - ~~how many enemies killed~~
+    - ~~how many times evaded~~
+    - ~~how much damaged received~~
+    - ~~how much damaged blocked~~
+    - ~~how many levels gained~~
+    - ~~how many stages passed~~
+    - ~~how many resources collected~~
 
 ### Gameplay Features
 

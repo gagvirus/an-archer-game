@@ -8,6 +8,7 @@ import {
 } from "../../../helpers/text-helpers.ts";
 import { COLOR_WARNING } from "../../../helpers/colors.ts";
 import MainScene from "../../../scenes/MainScene.ts";
+import { addStatistic } from "../../../helpers/accessors.ts";
 
 export enum ResourceType {
   coin = "coin",
@@ -41,6 +42,7 @@ export abstract class Resource extends Drop {
       },
       LogEntryCategory.Loot,
     );
+    addStatistic("resourceCollected." + name, amount);
     showCollectedLoot(scene, scene.hero, name, amount);
   }
 }

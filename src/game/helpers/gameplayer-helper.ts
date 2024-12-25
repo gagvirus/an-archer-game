@@ -5,10 +5,10 @@ import { showGainedXp, showReplenishedHealth } from "./text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "./log-utils.ts";
 import { COLOR_SUCCESS, COLOR_WARNING } from "./colors.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
+import Enemy from "../logic/Enemy.ts";
+import { addScore, addStatistic } from "./accessors.ts";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import Enemy from "../logic/Enemy.ts";
-import { addScore } from "./accessors.ts";
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -163,6 +163,7 @@ class Attackable {
           this.owner as unknown as Vector2Like,
           gainedXP,
         );
+        addStatistic("xpGained", gainedXP);
         addLogEntry(
           ":owner gained :xp XP",
           {
