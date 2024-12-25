@@ -10,6 +10,7 @@ import BuildMenuScene from "./scenes/BuildMenuScene.ts";
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin.js";
 
 import StatsScene from "./scenes/StatsScene/StatsScene.ts";
+import { setGame } from "./helpers/accessors.ts";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -52,7 +53,9 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 const StartGame = (parent: string) => {
-  return new Game({ ...config, parent });
+  const gameInstance = new Game({ ...config, parent });
+  setGame(gameInstance);
+  return gameInstance;
 };
 
 export default StartGame;
