@@ -60,6 +60,7 @@ class MainScene extends Scene implements ISceneLifecycle {
   buildings: Group;
   drops: Group;
   dropsFollowing: Group;
+  playingSince: number;
 
   constructor() {
     // Call the Phaser.Scene constructor and pass the scene key
@@ -200,6 +201,7 @@ class MainScene extends Scene implements ISceneLifecycle {
       .on("pointerdown", () => this.openStatsScreen());
 
     this.children.bringToTop(this.hero);
+    this.playingSince = Date.now();
   }
 
   onResourcePull(
@@ -311,11 +313,16 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.scene.pause();
     this.hero.attackable.stopRegeneration();
     this.events.emit("GamePaused");
+    addStatistic(
+      "secondsPlayed",
+      Math.round((Date.now() - this.playingSince) / 1000),
+    );
   }
 
   onResume() {
     this.hero.attackable.registerHealthRegenerationIfNecessary();
     this.events.emit("GameResumed");
+    this.playingSince = Date.now();
   }
 
   onShutdown() {
@@ -326,6 +333,10 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.moduleManager.disable(Module.activeEffects);
     this.moduleManager.disable(Module.logs);
     this.hero.attackable.stopRegeneration();
+    addStatistic(
+      "secondsPlayed",
+      Math.round((Date.now() - this.playingSince) / 1000),
+    );
   }
 
   getOccupiedTiles() {
