@@ -99,12 +99,7 @@ export class AttributeManager {
     this.layers = {
       [LayerType.heroClass]: new HeroClassLayer(heroClass),
       [LayerType.heroLevel]: new HeroLevelLayer(heroLevel),
-      [LayerType.coreStats]: new CoreStatsLayer(
-        coreStats.finesse,
-        coreStats.awareness,
-        coreStats.resilience,
-        coreStats.thoughtfulness,
-      ),
+      [LayerType.coreStats]: new CoreStatsLayer(coreStats),
       [LayerType.stats]: new StatsLayer(),
       [LayerType.difficulty]: new DifficultyLayer(this.scene),
       [LayerType.final]: new FinalLayer(),
@@ -204,5 +199,32 @@ export class AttributeManager {
     const criticalExtraDamage =
       criticalAttacksNumber * damage * (criticalAmount - 1);
     return pureDps + criticalExtraDamage;
+  }
+
+  getPreviewWithChangedStat(
+    coreStat: CoreStat,
+    amount: number,
+  ): Partial<Attributes> {
+    const clone = new AttributeManager(
+      this.scene,
+      this.heroClassLayer.heroClass,
+      this.heroLevelLayer.level,
+      this.coreStatsLayer.coreStats,
+    );
+    clone.coreStatsLayer.setCoreStat(coreStat, amount);
+    return this.getObjectDifference<Attributes>(
+      this.getFinalAttributes(),
+      clone.getFinalAttributes(),
+    );
+  }
+  getObjectDifference<T>(obj1: T, obj2: T): Partial<T> {
+    const result: Partial<T> = {};
+    for (const key in obj2) {
+      if (obj2[key] !== obj1[key]) {
+        result[key] = obj2[key];
+      }
+    }
+
+    return result;
   }
 }

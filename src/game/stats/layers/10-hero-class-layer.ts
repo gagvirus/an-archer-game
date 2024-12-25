@@ -26,20 +26,25 @@ const heroClasses: Record<HeroClass, HeroDefinition> = {
 };
 
 export class HeroClassLayer implements AttributeLayer {
-  private heroDefinition: HeroDefinition;
+  private _heroClass: HeroClass;
   constructor(heroClass: HeroClass = HeroClass.default) {
-    this.heroDefinition = heroClasses[heroClass];
+    this._heroClass = heroClass;
+  }
+
+  get heroClass() {
+    return this._heroClass;
   }
 
   modify(baseAttributes: Attributes): Attributes {
     return {
       ...baseAttributes,
-      [Attribute.damage]: this.heroDefinition.damage,
-      [Attribute.health]: this.heroDefinition.health,
-      [Attribute.attackRate]: this.heroDefinition.attackRate,
-      [Attribute.baseAttackTime]: this.heroDefinition.baseAttackTime,
-      [Attribute.healthRegenInterval]: this.heroDefinition.healthRegenInterval,
-      [Attribute.movementSpeed]: this.heroDefinition.movementSpeed,
+      [Attribute.damage]: heroClasses[this.heroClass].damage,
+      [Attribute.health]: heroClasses[this.heroClass].health,
+      [Attribute.attackRate]: heroClasses[this.heroClass].attackRate,
+      [Attribute.baseAttackTime]: heroClasses[this.heroClass].baseAttackTime,
+      [Attribute.healthRegenInterval]:
+        heroClasses[this.heroClass].healthRegenInterval,
+      [Attribute.movementSpeed]: heroClasses[this.heroClass].movementSpeed,
     };
   }
 }

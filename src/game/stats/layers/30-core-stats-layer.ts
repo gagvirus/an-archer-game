@@ -9,15 +9,27 @@ export class CoreStatsLayer implements AttributeLayer {
   private thoughtfulness: number;
 
   constructor(
-    finesse: number = 1,
-    awareness: number = 1,
-    resilience: number = 1,
-    thoughtfulness: number = 1,
+    coreStats: Record<CoreStat, number> = {
+      [CoreStat.awareness]: 1,
+      [CoreStat.finesse]: 1,
+      [CoreStat.resilience]: 1,
+      [CoreStat.thoughtfulness]: 1,
+    },
   ) {
+    this.coreStats = coreStats;
+  }
+
+  set coreStats(coreStats: Record<CoreStat, number>) {
+    const { finesse, awareness, resilience, thoughtfulness } = coreStats;
     this.finesse = finesse;
     this.awareness = awareness;
     this.resilience = resilience;
     this.thoughtfulness = thoughtfulness;
+  }
+
+  get coreStats() {
+    const { finesse, awareness, resilience, thoughtfulness } = this;
+    return { finesse, awareness, resilience, thoughtfulness };
   }
 
   modify(baseAttributes: Attributes): Attributes {
