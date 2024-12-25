@@ -1,6 +1,6 @@
 import { createText, formatNumber } from "../helpers/text-helpers.ts";
 import { AbstractModule } from "./module-manager.ts";
-import { StatisticsManager } from "../statistics/statistics-manager.ts";
+import { getScore } from "../helpers/accessors.ts";
 
 class ScoreModule extends AbstractModule {
   private scoreText?: Phaser.GameObjects.Text;
@@ -28,7 +28,7 @@ class ScoreModule extends AbstractModule {
 
   update() {
     if (this.scoreText) {
-      const score = StatisticsManager.getInstance().getScore();
+      const score = getScore();
       if (score) {
         this.scoreText.setText(`Score: ${formatNumber(score)}`);
       }

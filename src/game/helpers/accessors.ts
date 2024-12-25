@@ -27,3 +27,19 @@ export function activeScene(): Phaser.Scene {
 export function addScore(amount: number) {
   StatisticsManager.getInstance().addScore(amount);
 }
+
+export function getScore() {
+  return StatisticsManager.getInstance().getScore();
+}
+
+export function addStatistic(entryName: string, value: number) {
+  StatisticsManager.getInstance().add(entryName, value);
+}
+
+export function getStatistic(entryName: string) {
+  return StatisticsManager.getInstance().retrieve(entryName);
+}
+
+export function resetStatistics() {
+  return StatisticsManager.getInstance().resetLocalStatistics();
+}

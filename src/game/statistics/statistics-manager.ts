@@ -18,7 +18,7 @@ export class StatisticsManager {
   }
 
   retrieve(entryName: string) {
-    return this.entries[entryName];
+    return this.entries[entryName] ?? 0;
   }
 
   addScore(amount: number) {
@@ -27,5 +27,13 @@ export class StatisticsManager {
 
   getScore() {
     return this.retrieve("score");
+  }
+
+  resetLocalStatistics() {
+    Object.keys(this.entries).forEach((entryKey) => {
+      if (!entryKey.startsWith("global")) {
+        delete this.entries[entryKey];
+      }
+    });
   }
 }

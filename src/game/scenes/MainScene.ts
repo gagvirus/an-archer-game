@@ -48,6 +48,7 @@ import ActiveEffectsModule from "../modules/active-effects-module.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
 import ScoreModule from "../modules/score-module.ts";
+import { addStatistic } from "../helpers/accessors.ts";
 
 class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
@@ -359,6 +360,8 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.dropLoot(enemy);
     if (this.enemies.countActive() < 1) {
       this.portal.setDisabled(false);
+      // stage passed
+      addStatistic("levelsPassed", 1);
     }
   }
 
