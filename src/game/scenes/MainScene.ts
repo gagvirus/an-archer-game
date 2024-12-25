@@ -47,6 +47,7 @@ import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
 import ActiveEffectsModule from "../modules/active-effects-module.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
+import ScoreModule from "../modules/score-module.ts";
 
 class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
@@ -101,6 +102,7 @@ class MainScene extends Scene implements ISceneLifecycle {
       Module.dpsIndicator,
       new DpsIndicatorModule(this, this.hero),
     );
+    this.moduleManager.register(Module.score, new ScoreModule(this));
     this.moduleManager.register(Module.stageInfo, new StageInfoModule(this));
     this.moduleManager.register(
       Module.resourceList,
@@ -120,6 +122,7 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.moduleManager.enable(Module.resourceList);
     this.moduleManager.enable(Module.activeEffects);
     this.moduleManager.enable(Module.logs);
+    this.moduleManager.enable(Module.score);
 
     this.stage = 1;
     this.scene
