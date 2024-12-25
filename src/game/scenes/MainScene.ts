@@ -22,7 +22,10 @@ import FpsCounterModule from "../modules/fps-counter-module.ts";
 import DpsIndicatorModule from "../modules/dps-indicator-module.ts";
 import LogModule from "../modules/log-module.ts";
 import { COLOR_WARNING } from "../helpers/colors.ts";
-import { isDebugMode } from "../helpers/registry-helper.ts";
+import {
+  isDebugMode,
+  isMultipleResourceDropsEnabled,
+} from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
 import { Coin } from "../logic/drop/resource/Coin.ts";
 import { Soul } from "../logic/drop/resource/Soul.ts";
@@ -385,7 +388,11 @@ class MainScene extends Scene implements ISceneLifecycle {
           baseMaxAmount,
         ]);
         if (dropAmount >= 2) {
-          const dropsCount = dropAmount < 6 ? dropAmount : 5;
+          const dropsCount = isMultipleResourceDropsEnabled(this.game)
+            ? dropAmount < 6
+              ? dropAmount
+              : 5
+            : 1;
           const amount = Math.round(baseAmount / dropsCount);
           for (let i = 0; i < dropsCount; i++) {
             this.dropResource(

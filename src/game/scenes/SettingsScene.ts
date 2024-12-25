@@ -16,7 +16,8 @@ type SettingKey =
   | "autoAttack"
   | "easyMode"
   | "rapidLevelUp"
-  | "autoEnterPortal";
+  | "autoEnterPortal"
+  | "multipleResourceDrops";
 
 class SettingsScene extends Scene implements ISceneLifecycle {
   private debugMode: boolean = false;
@@ -24,6 +25,7 @@ class SettingsScene extends Scene implements ISceneLifecycle {
   private easyMode: boolean = false;
   private rapidLevelUp: boolean = false;
   private autoEnterPortal: boolean = false;
+  private multipleResourceDrops: boolean = false;
 
   constructor() {
     super("SettingsScene");
@@ -141,6 +143,14 @@ class SettingsScene extends Scene implements ISceneLifecycle {
         VectorZeroes(),
       ),
     );
+    container.add(
+      this.addSettingsRow(
+        "multipleResourceDrops",
+        "Multiple Resource Drops",
+        { x: 40, y: -5 },
+        VectorZeroes(),
+      ),
+    );
 
     return container;
   }
@@ -198,6 +208,8 @@ class SettingsScene extends Scene implements ISceneLifecycle {
     this.easyMode = this.game.registry.get("easyMode") == "true";
     this.rapidLevelUp = this.game.registry.get("rapidLevelUp") == "true";
     this.autoEnterPortal = this.game.registry.get("autoEnterPortal") == "true";
+    this.multipleResourceDrops =
+      this.game.registry.get("multipleResourceDrops") == "true";
   }
 }
 

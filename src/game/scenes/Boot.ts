@@ -23,6 +23,10 @@ export class Boot extends Scene implements ISceneLifecycle {
       "autoEnterPortal",
       localStorage.getItem("autoEnterPortal"),
     );
+    this.game.registry.set(
+      "multipleResourceDrops",
+      localStorage.getItem("multipleResourceDrops"),
+    );
 
     this.scene.start("Preloader");
   }

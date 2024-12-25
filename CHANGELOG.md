@@ -6,6 +6,8 @@
 - stats revamp - refactored and added multi-layer attribute systen
 - display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
 - container pattern
+- resources drop count: currently, based on the luck attribute we may drop up to *5 resource. add a setting in settings
+  scene, which will allow disabling the functionality (for performance perspective)
 
 ### v0.0.12
 
