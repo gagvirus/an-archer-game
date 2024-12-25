@@ -1,13 +1,11 @@
 ## Changelog
 
-### WIP
+### v0.0.13
 
-- fix bug - player enters portal's radius, timeout starts, player moves away from portal, gets activated anyway
-- stats revamp - refactored and added multi-layer attribute systen
-- display a preview of altered attributes & stats on hover of core stat (e.g. green +5 damage when hovering core stat)
-- container pattern
-- resources drop count: currently, based on the luck attribute we may drop up to *5 resource. add a setting in settings
-  scene, which will allow disabling the functionality (for performance perspective)
+- Fixed bug on entering portal
+- Stats Revamp - more robust and flexible attribute calculation system
+- Displaying a preview of altered attributes & stats on hover of stats
+- Resource Drops - ability for disabling the batch dropping for better performance
 
 ### v0.0.12
 
