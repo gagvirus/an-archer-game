@@ -1,5 +1,11 @@
 ## Changelog
 
+### WIP
+
+- Added Scoring / Statistics system
+  - Showing how much score gained on main scene and game over scene
+  - Showing how many stages passed on game over scene
+
 ### v0.0.13
 
 - Fixed bug on entering portal
