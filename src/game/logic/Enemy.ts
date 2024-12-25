@@ -114,6 +114,10 @@ class Enemy extends Sprite {
     return this.soonToBeHealth <= 0;
   }
 
+  get score() {
+    return Math.round((this.maxHealth * this.attackDamage) / 10);
+  }
+
   // in this method the derives classes shall extend the enemy stats (attack damage & range, movement speed & health)
   instantiate = (enemyDef?: EnemyDef): void => {
     if (!enemyDef) {

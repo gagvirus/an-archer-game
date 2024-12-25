@@ -7,6 +7,8 @@ import { COLOR_SUCCESS, COLOR_WARNING } from "./colors.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
+import Enemy from "../logic/Enemy.ts";
+import { addScore } from "./accessors.ts";
 
 export const COOLDOWN_THRESHOLD = 10;
 
@@ -147,12 +149,13 @@ class Attackable {
   onKilledTarget(target: Attackable) {
     if ("xpManager" in this.owner) {
       if ("xpAmount" in target.owner) {
-        const xpAmount: number = target.owner.xpAmount as number;
+        const enemy = target.owner as Enemy;
+        addScore(enemy.score);
         let xpGainMultiplier = 1;
         if ("attributes" in this.owner) {
           xpGainMultiplier = (this.owner.attributes as AttributeManager).xpRate;
         }
-        const gainedXP = xpAmount * xpGainMultiplier;
+        const gainedXP = enemy.xpAmount * xpGainMultiplier;
         (this.owner.xpManager as XpManager).gainXp(gainedXP);
 
         showGainedXp(

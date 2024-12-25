@@ -1,4 +1,6 @@
 // Utility functions to access game and active scene
+import { StatisticsManager } from "../statistics/statistics-manager.ts";
+
 let gameInstance: Phaser.Game | null = null;
 
 export function setGame(instance: Phaser.Game): void {
@@ -20,4 +22,8 @@ export function activeScene(): Phaser.Scene {
     throw new Error("No active scene found.");
   }
   return currentScene;
+}
+
+export function addScore(amount: number) {
+  StatisticsManager.getInstance().addScore(amount);
 }
