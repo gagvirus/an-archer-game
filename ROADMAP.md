@@ -2,10 +2,6 @@
 
 ### Bugs & Improvements
 
-- optimization on logs - display log entries in bulk when collecting resources
-  - during 3 seconds if a player collects +10, +12, +13 coins, just display one entry "collected 35 coins"
-- coins / resources "clumping"
-  - after some time of being dropped, combine multiple coins in a radius into one big pile
 - make all public attributes public
   - currently we are getting all the final calculated attributes (e.g. damage, speed etc) directly with getAttribute
   - make the getAttribute and relevant "internal" functions protected/private, and make sure that all attribute-related
@@ -111,6 +107,10 @@
   - create some logic, that will allow to switch game resolution, on which we shall depend
   - have the game "upscale" / "downscale" on pre-defined set of resolution (hd / full hd etc)
 - save progress / continue game
+- optimization on logs - display log entries in bulk when collecting resources
+  - during 3 seconds if a player collects +10, +12, +13 coins, just display one entry "collected 35 coins"
+- coins / resources "clumping"
+  - after some time of being dropped, combine multiple coins in a radius into one big pile
 
 ### Aesthetics
 
