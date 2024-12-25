@@ -2,7 +2,7 @@
 
 - Scoring
   - ~~On enemy kill add some score~~
-  - Display the score on top-right corner
+  - ~~Display the score on top-right corner~~
   - On game over, show some details
     - show how many stages passed
     - how much score have gained
