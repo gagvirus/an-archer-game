@@ -1,5 +1,12 @@
 ## Roadmap
 
+- Scoring
+  - On enemy kill add some score
+  - Display the score on top-right corner
+  - On game over, show some details
+    - show how many stages passed
+    - how much score have gained
+
 ### Gameplay Features
 
 - Active skills
@@ -28,12 +35,6 @@
 
 ### Menus / Settings/ Meta
 
-- Scoring
-  - On enemy kill add some score
-  - Display the score on top-right corner
-  - On game over, show some details
-    - show how many stages passed
-    - how much score have gained
 - Per-Game Statistics
   - Collect information regarding the current run / game
     - how long have played
