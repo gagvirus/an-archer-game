@@ -53,7 +53,7 @@ export class CoreStatsLayer implements AttributeLayer {
     };
   }
 
-  setCoreStat(coreStat: CoreStat, amount: number) {
+  addCoreStat(coreStat: CoreStat, amount: number) {
     this[coreStat] += amount;
   }
 }

@@ -66,10 +66,7 @@ class AttributesPartial implements Renderable {
     coreStat: ICoreStat;
     unallocating: boolean;
   }) {
-    const { coreStat, unallocating } = data;
-    const currentStatAmount = this.attributes.getAttribute(
-      coreStat.prop as unknown as Attribute,
-    );
+    const { coreStat } = data;
     const allocatingAmount = this.holdingShift
       ? this.attributes.unallocatedStats >= 10
         ? 10
@@ -77,14 +74,15 @@ class AttributesPartial implements Renderable {
       : 1;
     const diff = this.attributes.getPreviewWithChangedStat(
       coreStat.prop,
-      currentStatAmount + allocatingAmount,
+      allocatingAmount,
     );
     Object.keys(diff).forEach((attribute) => {
-      const plusMinus = unallocating ? "-" : "+";
-      this.showDiffText(
-        attribute as Attribute,
-        `${plusMinus}${diff[attribute as Attribute]}`,
-      );
+      const currentValue = this.attributes.getAttribute(attribute as Attribute);
+      const newValue = diff[attribute as Attribute] as number;
+      const valueDiff = parseFloat((newValue - currentValue).toFixed(2));
+      console.log({ newValue, currentValue, attribute });
+      const plusMinus = valueDiff > 0 ? "+" : "";
+      this.showDiffText(attribute as Attribute, `${plusMinus}${valueDiff}`);
     });
   }
 

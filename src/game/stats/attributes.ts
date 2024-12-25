@@ -21,7 +21,7 @@ export enum Attribute {
   baseAttackTime = "baseAttackTime",
   healthRegenInterval = "healthRegenInterval",
   evadeRating = "evadeRating",
-  criticalRate = "criticalRating",
+  criticalRating = "criticalRating",
   criticalAmount = "criticalAmount",
   armorRating = "armorRating",
   xpRate = "xpRate",

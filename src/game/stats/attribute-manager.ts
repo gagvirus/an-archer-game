@@ -77,7 +77,7 @@ export class AttributeManager {
       [Attribute.baseAttackTime]: 0,
       [Attribute.charisma]: 0,
       [Attribute.criticalAmount]: 1,
-      [Attribute.criticalRate]: 0,
+      [Attribute.criticalRating]: 0,
       [Attribute.criticalChance]: 0,
       [Attribute.damage]: 0,
       [Attribute.dexterity]: 0,
@@ -148,7 +148,7 @@ export class AttributeManager {
   }
 
   addStat(stat: CoreStat, amount: number) {
-    this.coreStatsLayer.setCoreStat(stat, amount);
+    this.coreStatsLayer.addCoreStat(stat, amount);
     this.recalculate();
   }
 
@@ -211,7 +211,7 @@ export class AttributeManager {
       this.heroLevelLayer.level,
       this.coreStatsLayer.coreStats,
     );
-    clone.coreStatsLayer.setCoreStat(coreStat, amount);
+    clone.coreStatsLayer.addCoreStat(coreStat, amount);
     return this.getObjectDifference<Attributes>(
       this.getFinalAttributes(),
       clone.getFinalAttributes(),
