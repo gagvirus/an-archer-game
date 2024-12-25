@@ -67,20 +67,24 @@ class AttributesPartial implements Renderable {
     unallocating: boolean;
   }) {
     const { coreStat, unallocating } = data;
-    const diff = this.attributes.getPreviewWithChangedStat(coreStat.prop, 11);
-    console.log(diff);
-    coreStat.stats.forEach((childStat) => {
-      childStat.attributes.forEach((attribute) => {
-        // todo: to be updated here to show actual diff stats
-        const newText = this.holdingShift
-          ? unallocating
-            ? "--"
-            : "++"
-          : unallocating
-            ? "-"
-            : "+";
-        this.showDiffText(attribute, newText);
-      });
+    const currentStatAmount = this.attributes.getAttribute(
+      coreStat.prop as unknown as Attribute,
+    );
+    const allocatingAmount = this.holdingShift
+      ? this.attributes.unallocatedStats >= 10
+        ? 10
+        : this.attributes.unallocatedStats
+      : 1;
+    const diff = this.attributes.getPreviewWithChangedStat(
+      coreStat.prop,
+      currentStatAmount + allocatingAmount,
+    );
+    Object.keys(diff).forEach((attribute) => {
+      const plusMinus = unallocating ? "-" : "+";
+      this.showDiffText(
+        attribute as Attribute,
+        `${plusMinus}${diff[attribute as Attribute]}`,
+      );
     });
   }
 
@@ -127,20 +131,22 @@ class AttributesPartial implements Renderable {
     });
   };
 
-  private showDiffText(attribute: IAttribute, value: string) {
-    const row = this.attributeRows[attribute.prop] as Sizer;
-    const diffText = row.getChildren()[4] as Phaser.GameObjects.Text;
-    const color = value.startsWith("-") ? COLOR_DANGER : COLOR_SUCCESS;
+  private showDiffText(attribute: Attribute, value: string) {
+    if (this.attributeRows[attribute]) {
+      const row = this.attributeRows[attribute] as Sizer;
+      const diffText = row.getChildren()[4] as Phaser.GameObjects.Text;
+      const color = value.startsWith("-") ? COLOR_DANGER : COLOR_SUCCESS;
 
-    const isVisible = Phaser.Geom.Rectangle.Overlaps(
-      this.panel.getBounds(),
-      row.getBounds(),
-    );
+      const isVisible = Phaser.Geom.Rectangle.Overlaps(
+        this.panel.getBounds(),
+        row.getBounds(),
+      );
 
-    diffText.setText(value);
-    diffText.setColor(color);
-    diffText.setVisible(isVisible);
-    row.layout();
+      diffText.setText(value);
+      diffText.setColor(color);
+      diffText.setVisible(isVisible);
+      row.layout();
+    }
   }
 
   private renderAttributeRow(attribute: IAttribute, rowWidth: number) {
