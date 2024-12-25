@@ -158,7 +158,7 @@ export class AttributeManager {
     this.recalculate();
   }
 
-  getAttributes(): Attributes {
+  private getAttributes(): Attributes {
     if (!this._attributes) {
       this.recalculate();
     }
