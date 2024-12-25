@@ -95,6 +95,7 @@ class AttributesPartial implements Renderable {
   }
 
   private onHoldingShiftChange(holdingShift: boolean) {
+    // todo: update this for proper diff displaying
     if (holdingShift !== this.holdingShift) {
       this.holdingShift = holdingShift;
       Object.values(this.attributeRows).forEach((attributeRow) => {
@@ -115,6 +116,7 @@ class AttributesPartial implements Renderable {
   }
 
   private onStatsUpdated = ({ coreStat }: { coreStat: ICoreStat }) => {
+    // todo: update diff display when unallocated stat points change
     coreStat.stats.forEach((stat) => {
       stat.attributes.forEach((attribute) => {
         const value = parseFloat(
