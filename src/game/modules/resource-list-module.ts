@@ -34,7 +34,7 @@ class ResourceListModule extends AbstractModule {
           this.scene,
           this.container,
           this.scene.scale.width - 65,
-          150,
+          200,
           100,
           150,
           {
