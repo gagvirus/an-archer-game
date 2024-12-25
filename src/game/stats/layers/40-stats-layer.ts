@@ -27,7 +27,7 @@ export class StatsLayer implements AttributeLayer {
         attr.flatDamageReduction + fortitude * 1.25,
       [Attribute.health]: attr.health * (1 + (endurance - 1) * 0.1),
       [Attribute.healthRegen]: attr.healthRegen + endurance * 2,
-      [Attribute.xpRate]: attr.xpRate * (1 + (intelligence - 1) * 1.1),
+      [Attribute.xpRate]: attr.xpRate * (1 + (intelligence - 1) * 0.11),
       [Attribute.barter]: attr.barter + charisma * 2,
       [Attribute.dropRate]:
         attr.dropRate + Phaser.Math.Clamp(1 + (luck * 2) / 100, 1, 4),
