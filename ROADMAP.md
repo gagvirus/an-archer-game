@@ -6,6 +6,25 @@
   - during 3 seconds if a player collects +10, +12, +13 coins, just display one entry "collected 35 coins"
 - coins / resources "clumping"
   - after some time of being dropped, combine multiple coins in a radius into one big pile
+- make all public attributes public
+  - currently we are getting all the final calculated attributes (e.g. damage, speed etc) directly with getAttribute
+  - make the getAttribute and relevant "internal" functions protected/private, and make sure that all attribute-related
+    functions which are used outside of attributes manager have their respective accessor methods
+  - double check each and every such publicly-accessible attributes:
+    - health regen
+    - health regen interval
+    - (max) health
+    - xp rate
+    - evade chance
+    - damage
+    - attacks per second
+    - movement speed
+    - critical chance
+    - critical amount
+    - drop rate
+    - drop amount
+    - armor / final reduction
+    -
 
 ### Gameplay Features
 
