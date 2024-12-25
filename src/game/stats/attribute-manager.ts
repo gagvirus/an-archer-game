@@ -1,6 +1,6 @@
 import { Attribute, Attributes } from "./attributes.ts";
 import { AttributeLayer } from "./attribute-layer.ts";
-import { HeroClassLayer } from "./layers/10-hero-class-layer.ts";
+import { HeroClass, HeroClassLayer } from "./layers/10-hero-class-layer.ts";
 import { HeroLevelLayer } from "./layers/20-hero-level-layer.ts";
 import { CoreStatsLayer } from "./layers/30-core-stats-layer.ts";
 import { StatsLayer } from "./layers/40-stats-layer.ts";
@@ -48,7 +48,17 @@ export class AttributeManager {
   private _attributes: Attributes;
   private scene: Phaser.Scene;
 
-  constructor(scene: Scene) {
+  constructor(
+    scene: Scene,
+    heroClass: HeroClass = HeroClass.default,
+    heroLevel: number = 1,
+    coreStats: Record<CoreStat, number> = {
+      [CoreStat.awareness]: 1,
+      [CoreStat.finesse]: 1,
+      [CoreStat.resilience]: 1,
+      [CoreStat.thoughtfulness]: 1,
+    },
+  ) {
     this.scene = scene;
     this.baseAttributes = {
       [Attribute.finesse]: 0,
@@ -87,9 +97,14 @@ export class AttributeManager {
     };
 
     this.layers = {
-      [LayerType.heroClass]: new HeroClassLayer(),
-      [LayerType.heroLevel]: new HeroLevelLayer(),
-      [LayerType.coreStats]: new CoreStatsLayer(),
+      [LayerType.heroClass]: new HeroClassLayer(heroClass),
+      [LayerType.heroLevel]: new HeroLevelLayer(heroLevel),
+      [LayerType.coreStats]: new CoreStatsLayer(
+        coreStats.finesse,
+        coreStats.awareness,
+        coreStats.resilience,
+        coreStats.thoughtfulness,
+      ),
       [LayerType.stats]: new StatsLayer(),
       [LayerType.difficulty]: new DifficultyLayer(this.scene),
       [LayerType.final]: new FinalLayer(),

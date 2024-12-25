@@ -1,7 +1,7 @@
 import { AttributeLayer } from "../attribute-layer.ts";
 import { Attribute, Attributes } from "../attributes.ts";
 
-enum HeroClass {
+export enum HeroClass {
   default = "default",
 }
 
