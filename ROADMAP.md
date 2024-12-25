@@ -1,26 +1,5 @@
 ## Roadmap
 
-### Bugs & Improvements
-
-- make all public attributes public
-  - currently we are getting all the final calculated attributes (e.g. damage, speed etc) directly with getAttribute
-  - make the getAttribute and relevant "internal" functions protected/private, and make sure that all attribute-related
-    functions which are used outside of attributes manager have their respective accessor methods
-  - double check each and every such publicly-accessible attributes:
-    - health regen
-    - health regen interval
-    - (max) health
-    - xp rate
-    - evade chance
-    - damage
-    - attacks per second
-    - movement speed
-    - critical chance
-    - critical amount
-    - drop rate
-    - drop amount
-    - armor / final reduction
-
 ### Gameplay Features
 
 - Active skills
