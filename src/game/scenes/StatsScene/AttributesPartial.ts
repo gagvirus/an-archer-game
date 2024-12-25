@@ -67,6 +67,8 @@ class AttributesPartial implements Renderable {
     unallocating: boolean;
   }) {
     const { coreStat, unallocating } = data;
+    const diff = this.attributes.getPreviewWithChangedStat(coreStat.prop, 11);
+    console.log(diff);
     coreStat.stats.forEach((childStat) => {
       childStat.attributes.forEach((attribute) => {
         // todo: to be updated here to show actual diff stats
