@@ -1,11 +1,10 @@
 import HealthBar from "../logic/HealthBar.ts";
 import XpBar from "../logic/XpBar.ts";
 import { Scene } from "phaser";
-import { showReplenishedHealth } from "./text-helpers.ts";
+import { showGainedXp, showReplenishedHealth } from "./text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "./log-utils.ts";
-import { COLOR_SUCCESS } from "./colors.ts";
+import { COLOR_SUCCESS, COLOR_WARNING } from "./colors.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
-import { Attribute } from "../stats/attributes.ts";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -151,12 +150,24 @@ class Attackable {
         const xpAmount: number = target.owner.xpAmount as number;
         let xpGainMultiplier = 1;
         if ("attributes" in this.owner) {
-          xpGainMultiplier = (
-            this.owner.attributes as AttributeManager
-          ).getAttribute(Attribute.xpRate);
+          xpGainMultiplier = (this.owner.attributes as AttributeManager).xpRate;
         }
+        const gainedXP = xpAmount * xpGainMultiplier;
+        (this.owner.xpManager as XpManager).gainXp(gainedXP);
 
-        (this.owner.xpManager as XpManager).gainXp(xpAmount * xpGainMultiplier);
+        showGainedXp(
+          this.scene,
+          this.owner as unknown as Vector2Like,
+          gainedXP,
+        );
+        addLogEntry(
+          ":owner gained :xp XP",
+          {
+            owner: [this.owner.name, COLOR_WARNING],
+            xp: [gainedXP, COLOR_SUCCESS],
+          },
+          LogEntryCategory.Loot,
+        );
       }
     }
   }
@@ -165,12 +176,10 @@ class Attackable {
     if ("attributes" in this.owner) {
       this.stopRegeneration();
       const statsManager = this.owner.attributes as AttributeManager;
-      if (statsManager.getAttribute(Attribute.healthRegenInterval) > 0) {
+      if (statsManager.healthRegenInterval > 0) {
         this.regenerationInterval = setInterval(() => {
-          this.replenishHealth(
-            statsManager.getAttribute(Attribute.healthRegen),
-          );
-        }, statsManager.getAttribute(Attribute.healthRegenInterval));
+          this.replenishHealth(statsManager.healthRegen);
+        }, statsManager.healthRegenInterval);
       }
     }
   }

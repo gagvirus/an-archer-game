@@ -20,7 +20,6 @@
     - drop rate
     - drop amount
     - armor / final reduction
-    -
 
 ### Gameplay Features
 

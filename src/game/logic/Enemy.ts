@@ -13,7 +13,6 @@ import {
 } from "../helpers/colors.ts";
 import { showDamage, showEvaded } from "../helpers/text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
-import { Attribute } from "../stats/attributes.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
@@ -76,9 +75,7 @@ class Enemy extends Sprite {
         scene.onEnemyKilled(this);
       },
       () => {
-        const isEvaded = randomChance(
-          this.hero.attributes.getAttribute(Attribute.evadeChance),
-        );
+        const isEvaded = randomChance(this.hero.attributes.evadeChance);
         if (isEvaded) {
           addLogEntry(
             ":hero evaded attack from :opponent",

@@ -16,7 +16,6 @@ import { COLOR_SUCCESS, COLOR_WARNING } from "../helpers/colors.ts";
 import { ResourceType } from "./drop/resource/Resource.ts";
 import { randomChance } from "../helpers/random-helper.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
-import { Attribute } from "../stats/attributes.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
@@ -105,17 +104,17 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
   get attackDamage() {
     // todo: remove this perhaps
-    return this.attributes.getAttribute(Attribute.damage);
+    return this.attributes.damage;
   }
 
   get attacksPerSecond() {
     // todo: remove this perhaps
-    return this.attributes.getAttribute(Attribute.attacksPerSecond);
+    return this.attributes.attacksPerSecond;
   }
 
   get maxHealth() {
     // todo: remove this perhaps
-    return this.attributes.getAttribute(Attribute.health);
+    return this.attributes.health;
   }
 
   get damagePerSecond() {
@@ -215,7 +214,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   handleHeroMovement(cursors: CustomCursorKeysDown) {
-    const speed = this.attributes.getAttribute(Attribute.movementSpeed);
+    const speed = this.attributes.movementSpeed;
     // Handle hero movement
     if (cursors.left) {
       this.setFlipX(true); // Flip the sprite to face left
@@ -239,11 +238,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   shootArrow(target: Enemy) {
     let attackDamage = this.attackable.attackDamage;
 
-    const isCritical = randomChance(
-      this.attributes.getAttribute(Attribute.criticalChance),
-    );
+    const isCritical = randomChance(this.attributes.criticalChance);
     if (isCritical) {
-      attackDamage *= this.attributes.getAttribute(Attribute.criticalAmount);
+      attackDamage *= this.attributes.criticalAmount;
     }
     target.soonToBeHealth -= attackDamage;
     const arrow = new Arrow(

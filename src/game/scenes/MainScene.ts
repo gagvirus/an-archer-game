@@ -47,7 +47,6 @@ import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
 import ActiveEffectsModule from "../modules/active-effects-module.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
-import { Attribute } from "../stats/attributes.ts";
 
 class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
@@ -361,8 +360,8 @@ class MainScene extends Scene implements ISceneLifecycle {
   }
 
   dropLoot(enemy: Enemy) {
-    const dropRate = this.hero.attributes.getAttribute(Attribute.dropRate);
-    const dropAmount = this.hero.attributes.getAttribute(Attribute.dropAmount);
+    const dropRate = this.hero.attributes.dropRate;
+    const dropAmount = this.hero.attributes.dropAmount;
     // there is a constant chance to drop a powerup
     const BASE_POWERUP_DROP_CHANCE = 1;
     const powerupChance = Phaser.Math.Clamp(

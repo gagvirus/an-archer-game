@@ -1,16 +1,8 @@
 import Phaser from "phaser";
 import { Attackable } from "../helpers/gameplayer-helper.ts";
-import { showDamage, showGainedXp } from "../helpers/text-helpers.ts";
-import Enemy from "./Enemy.ts";
-import Hero from "./Hero.ts";
+import { showDamage } from "../helpers/text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
-import {
-  COLOR_DANGER,
-  COLOR_SUCCESS,
-  COLOR_WARNING,
-} from "../helpers/colors.ts";
-import { AttributeManager } from "../stats/attribute-manager.ts";
-import { Attribute } from "../stats/attributes.ts";
+import { COLOR_DANGER, COLOR_WARNING } from "../helpers/colors.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 export class Arrow extends Phaser.Physics.Arcade.Sprite {
@@ -47,6 +39,21 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     // this.moveTowardsTarget();
   }
 
+  // Check if the arrow reached the target
+  update() {
+    this.moveTowardsTarget();
+    if (
+      Phaser.Math.Distance.Between(
+        this.x,
+        this.y,
+        this.targetPosition.x,
+        this.targetPosition.y,
+      ) < 10
+    ) {
+      this.handleHit();
+    }
+  }
+
   // Rotate the arrow to face the target
   private setRotationTowardsTarget() {
     const angle = Phaser.Math.Angle.Between(
@@ -72,28 +79,8 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(velocityX, velocityY);
   }
 
-  // Check if the arrow reached the target
-  update() {
-    this.moveTowardsTarget();
-    if (
-      Phaser.Math.Distance.Between(
-        this.x,
-        this.y,
-        this.targetPosition.x,
-        this.targetPosition.y,
-      ) < 10
-    ) {
-      this.handleHit();
-    }
-  }
-
   // Handle what happens when the arrow hits the target
   private handleHit() {
-    // todo: check if this is hero
-    // todo:  perhaps there is a better way to do this ?
-    const hero: Hero = this.owner.owner as Hero;
-    const attributes: AttributeManager = hero.attributes;
-
     if (this.isCritical) {
       addLogEntry(
         ":attacker inflicted :damage WRIT on :opponent",
@@ -117,8 +104,6 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     }
     this.target.takeDamage(this.attackDamage, (target: Attackable) => {
       this.owner.onKilledTarget(target);
-      const baseXp = (target.owner as Enemy).xpAmount;
-      const xpGainModifier = attributes.getAttribute(Attribute.xpRate);
       addLogEntry(
         ":attacker killed :opponent",
         {
@@ -126,20 +111,6 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
           opponent: [this.target.name, COLOR_DANGER],
         },
         LogEntryCategory.Combat,
-      );
-      const gainedXP = baseXp * xpGainModifier;
-      showGainedXp(
-        this.scene,
-        this.owner.owner as unknown as Vector2Like,
-        gainedXP,
-      );
-      addLogEntry(
-        ":owner gained :xp XP",
-        {
-          owner: [this.owner.name, COLOR_WARNING],
-          xp: [gainedXP, COLOR_SUCCESS],
-        },
-        LogEntryCategory.Loot,
       );
     });
     showDamage(

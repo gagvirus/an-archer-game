@@ -46,7 +46,7 @@ export class AttributeManager {
   private readonly baseAttributes: Attributes;
   private readonly layers: Record<LayerType, AttributeLayer>;
   private _attributes: Attributes;
-  private scene: Phaser.Scene;
+  private readonly scene: Phaser.Scene;
 
   constructor(
     scene: Scene,
@@ -131,10 +131,6 @@ export class AttributeManager {
     return this.getLayer(LayerType.coreStats) as CoreStatsLayer;
   }
 
-  get statsLayer(): StatsLayer {
-    return this.getLayer(LayerType.stats) as StatsLayer;
-  }
-
   get powerupsLayer(): PowerupsLayer {
     return this.getLayer(LayerType.powerups) as PowerupsLayer;
   }
@@ -171,6 +167,54 @@ export class AttributeManager {
 
   getAttribute(attribute: Attribute) {
     return this.getAttributes()[attribute];
+  }
+
+  get xpRate() {
+    return this.getAttribute(Attribute.xpRate);
+  }
+
+  get healthRegenInterval() {
+    return this.getAttribute(Attribute.healthRegenInterval);
+  }
+
+  get healthRegen() {
+    return this.getAttribute(Attribute.healthRegen);
+  }
+
+  get evadeChance() {
+    return this.getAttribute(Attribute.evadeChance);
+  }
+
+  get damage() {
+    return this.getAttribute(Attribute.damage);
+  }
+
+  get attacksPerSecond() {
+    return this.getAttribute(Attribute.attacksPerSecond);
+  }
+
+  get health() {
+    return this.getAttribute(Attribute.health);
+  }
+
+  get movementSpeed() {
+    return this.getAttribute(Attribute.movementSpeed);
+  }
+
+  get criticalChance() {
+    return this.getAttribute(Attribute.criticalChance);
+  }
+
+  get criticalAmount() {
+    return this.getAttribute(Attribute.criticalAmount);
+  }
+
+  get dropRate() {
+    return this.getAttribute(Attribute.dropRate);
+  }
+
+  get dropAmount() {
+    return this.getAttribute(Attribute.dropAmount);
   }
 
   getFinalAttributes(): Attributes {
