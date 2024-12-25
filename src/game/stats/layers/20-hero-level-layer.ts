@@ -12,10 +12,11 @@ export class HeroLevelLayer implements AttributeLayer {
   }
 
   modify(baseAttributes: Attributes): Attributes {
+    const level = this._level - 1;
     return {
       ...baseAttributes,
-      [Attribute.health]: baseAttributes.health + this._level * 10,
-      [Attribute.damage]: baseAttributes.damage + this._level * 2,
+      [Attribute.health]: baseAttributes.health + level * 10,
+      [Attribute.damage]: baseAttributes.damage + level * 2,
     };
   }
 
