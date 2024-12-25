@@ -1,5 +1,14 @@
 ## Roadmap
 
+- Per-Game Statistics
+  - Collect information regarding the current run / game
+    - how long have played
+    - how much damage inflicted
+    - how many enemies killed
+    - how much damage received
+    - how many levels gained
+    - how many stages passed
+    - how many resources collected
 
 ### Gameplay Features
 
@@ -29,20 +38,11 @@
 
 ### Menus / Settings/ Meta
 
-- Per-Game Statistics
-  - Collect information regarding the current run / game
-    - how long have played
-    - how much damage inflicted
-    - how many enemies killed
-    - how much damage received
-    - how many levels gained
-    - how many stages passed
-    - how many resources collected
-  - Total Statistics
-    - combine all the collected data and calculate sum
-    - have a page "stats" that shall just display all this info
-  - Achievements
-    - To be detailed
+- Total Statistics
+  - combine all the collected data and calculate sum
+  - have a page "stats" that shall just display all this info
+- Achievements
+  - To be detailed
 - Leaderboards
   - 1st Step - Local - Table containing the following columns:
     - name (just "Hero" for now)
