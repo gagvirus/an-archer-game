@@ -3,6 +3,7 @@
 ### WIP
 
 - fix bug - player enters portal's radius, timeout starts, player moves away from portal, gets activated anyway
+- stats revamp - refactored and added multi-layer attribute systen
 
 ### v0.0.12
 

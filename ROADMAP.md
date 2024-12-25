@@ -10,7 +10,6 @@
 - resources drop count: currently, based on the luck attribute we may drop up to *5 resource. add a setting in settings
   scene, which will allow disabling the functionality (for performance perspective)
 - container pattern
-- stats revamp
 
 ### Gameplay Features
 
