@@ -6,7 +6,7 @@ import {
   HEX_COLOR_LIGHT_GREY,
 } from "../../helpers/colors.ts";
 import { Scene } from "phaser";
-import { createText } from "../../helpers/text-helpers.ts";
+import { createText, formatNumber } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import { ResourceType } from "../../logic/drop/resource/Resource.ts";
 import { getStatistic } from "../../helpers/accessors.ts";
@@ -104,7 +104,7 @@ class GameStatisticsPartial implements Renderable {
       ).setOrigin(1, 0.5);
       const valueText = createText(
         this.scene,
-        getStatistic(statistic) + "",
+        formatNumber(getStatistic(statistic)),
         VectorZeroes(),
         22,
       ).setOrigin(0, 0.5);
