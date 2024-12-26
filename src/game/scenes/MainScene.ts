@@ -48,7 +48,7 @@ import ActiveEffectsModule from "../modules/active-effects-module.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
 import ScoreModule from "../modules/score-module.ts";
-import { addStatistic } from "../helpers/accessors.ts";
+import { addStatistic, resetStatistics } from "../helpers/accessors.ts";
 
 class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
@@ -337,6 +337,8 @@ class MainScene extends Scene implements ISceneLifecycle {
       "secondsPlayed",
       Math.round((Date.now() - this.playingSince) / 1000),
     );
+    // this shall happen when player moves to main menu, or dies
+    resetStatistics();
   }
 
   getOccupiedTiles() {

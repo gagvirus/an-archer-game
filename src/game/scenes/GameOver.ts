@@ -3,11 +3,7 @@ import { Scene } from "phaser";
 import { createCenteredText } from "../helpers/text-helpers.ts";
 import { HEX_COLOR_DANGER } from "../helpers/colors.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
-import {
-  getScore,
-  getStatistic,
-  resetStatistics,
-} from "../helpers/accessors.ts";
+import { getScore, getStatistic } from "../helpers/accessors.ts";
 
 export class GameOver extends Scene implements ISceneLifecycle {
   camera: Phaser.Cameras.Scene2D.Camera;
@@ -31,7 +27,5 @@ export class GameOver extends Scene implements ISceneLifecycle {
     createCenteredText(this, `Levels Passed: ${levelsPassed}`, 150, 28);
 
     EventBus.emit("current-scene-ready", this);
-
-    resetStatistics();
   }
 }
