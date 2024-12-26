@@ -5,6 +5,10 @@
 - Added Scoring / Statistics system
   - Showing how much score gained on main scene and game over scene
   - Showing how many stages passed on game over scene
+- Displaying Per-Game Statistics on pause screen
+  - Gameplay - how long have played, how many levels gained, how many stages passed, how many resources collected
+  - Combat - damage inflicted, times hit critical, times hit regular attacks, enemies killed, times evaded, damaged
+    received, damaged blocked
 
 ### v0.0.13
 

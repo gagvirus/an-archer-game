@@ -1,19 +1,5 @@
 ## Roadmap
 
-- Per-Game Statistics
-  - ~~Collect information regarding the current run / game~~
-    - ~~how long have played~~
-    - ~~how much damage inflicted~~
-    - ~~how many times hit critical~~
-    - ~~how many times hit regular attacks~~
-    - ~~how many enemies killed~~
-    - ~~how many times evaded~~
-    - ~~how much damaged received~~
-    - ~~how much damaged blocked~~
-    - ~~how many levels gained~~
-    - ~~how many stages passed~~
-    - ~~how many resources collected~~
-  - ~~display detailed game statistics in the pause screen~~
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 
 ### Gameplay Features
