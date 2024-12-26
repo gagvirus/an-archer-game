@@ -92,10 +92,26 @@ class GameStatisticsPartial implements Renderable {
       ...allResources.map((r) => `resourceCollected.${r}`),
     ];
     allStatistics.forEach((statistic) => {
-      const value = getStatistic(statistic);
-      container.add(
-        createText(this.scene, `${statistic}: ${value}`, VectorZeroes(), 16),
-      );
+      const row = this.scene.rexUI.add.sizer({
+        orientation: "horizontal",
+        width: this.width,
+      });
+      const fieldText = createText(
+        this.scene,
+        statistic,
+        VectorZeroes(),
+        22,
+      ).setOrigin(1, 0.5);
+      const valueText = createText(
+        this.scene,
+        getStatistic(statistic) + "",
+        VectorZeroes(),
+        22,
+      ).setOrigin(0, 0.5);
+      row.add(fieldText, { proportion: 1 });
+      row.add(valueText, { proportion: 1 });
+      row.layout();
+      container.add(row);
     });
     return container.layout();
   }
