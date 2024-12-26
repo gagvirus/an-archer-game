@@ -38,60 +38,8 @@ export class PauseMenu extends Scene implements ISceneLifecycle {
     rootSizer.add(statisticsMenu);
 
     rootSizer.layout();
-
-    // debug
-    const graphics = this.add.graphics();
-    graphics.lineStyle(4, 0xff0000, 0.5);
-    const statisticsMenuBounds = statisticsMenu.getBounds();
-    graphics.strokeRect(
-      statisticsMenuBounds.x,
-      statisticsMenuBounds.y,
-      statisticsMenuBounds.width,
-      statisticsMenuBounds.height,
-    );
-    // end debug
-
-    rootSizer.layout();
   }
 
-  // create2() {
-  //   this.title = createCenteredText(this, "Pause Menu", -150, 38, false);
-  //   this.resume = createCenteredText(this, "Resume", -75, 32, true);
-  //   this.backToMainMenu = createCenteredText(
-  //     this,
-  //     "Back to Main Menu",
-  //     0,
-  //     32,
-  //     true,
-  //   );
-  //
-  //   this.resume.setInteractive();
-  //
-  //   this.resume.on("pointerdown", () => {
-  //     this.scene.resume("MainScene");
-  //     this.scene.stop();
-  //   });
-  //
-  //   this.backToMainMenu.on("pointerdown", () => {
-  //     this.scene.stop("MainScene");
-  //     this.scene.stop();
-  //     this.scene.start("MainMenu");
-  //   });
-  //
-  //   this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-  //     if (event.key === "Escape") {
-  //       this.scene.resume("MainScene");
-  //       this.scene.stop();
-  //     }
-  //   });
-  //
-  //   EventBus.emit("current-scene-ready", this);
-  //
-  //   const container = this.rexUI.add.sizer();
-  //
-  //   const renderer = new GameStatisticsPartial(this);
-  //   renderer.render(container);
-  // }
   private renderPauseMenu() {
     const { width, height } = this.scale;
     const pauseMenu = this.rexUI.add.sizer({

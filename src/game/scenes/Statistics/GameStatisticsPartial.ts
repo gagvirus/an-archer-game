@@ -8,6 +8,8 @@ import {
 import { Scene } from "phaser";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
+import { ResourceType } from "../../logic/drop/resource/Resource.ts";
+import { getStatistic } from "../../helpers/accessors.ts";
 
 class GameStatisticsPartial implements Renderable {
   private readonly scene: Phaser.Scene;
@@ -66,8 +68,32 @@ class GameStatisticsPartial implements Renderable {
   }
 
   private createContainer() {
-    const container = this.scene.rexUI.add.sizer();
-    container.add(createText(this.scene, "hello", VectorZeroes()));
+    const container = this.scene.rexUI.add.sizer({
+      orientation: "vertical",
+    });
+    const allResources = Object.values(ResourceType);
+    const allStatistics = [
+      "levelsPassed",
+      "secondsPlayed",
+      "leveledUp",
+      "damageBlocked",
+      "damageReceived",
+      "timesHit",
+      "timesEvaded",
+      "enemiesKilled",
+      "damageInflicted",
+      "regularHits",
+      "criticalHits",
+      "xpGained",
+      "score",
+      ...allResources.map((r) => `resourceCollected.${r}`),
+    ];
+    allStatistics.forEach((statistic) => {
+      const value = getStatistic(statistic);
+      container.add(
+        createText(this.scene, `${statistic}: ${value}`, VectorZeroes(), 16),
+      );
+    });
     return container.layout();
   }
 }
