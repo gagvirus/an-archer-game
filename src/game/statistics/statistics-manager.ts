@@ -1,6 +1,6 @@
 export class StatisticsManager {
-  private readonly entries: Record<string, number> = {};
   private static instance: StatisticsManager;
+  private readonly entries: Record<string, number> = {};
 
   static getInstance() {
     if (!StatisticsManager.instance) {
@@ -32,6 +32,7 @@ export class StatisticsManager {
   resetLocalStatistics() {
     Object.keys(this.entries).forEach((entryKey) => {
       if (!entryKey.startsWith("global")) {
+        this.add(`global.${entryKey}`, this.entries[entryKey]);
         delete this.entries[entryKey];
       }
     });
