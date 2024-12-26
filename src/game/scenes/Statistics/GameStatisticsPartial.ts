@@ -3,16 +3,16 @@ import { Renderable } from "../../helpers/ui-helper.ts";
 import {
   HEX_COLOR_DARK,
   HEX_COLOR_LIGHT,
-  HEX_COLOR_PRIMARY,
+  HEX_COLOR_LIGHT_GREY,
 } from "../../helpers/colors.ts";
 import { Scene } from "phaser";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 
 class GameStatisticsPartial implements Renderable {
-  private scene: Phaser.Scene;
-  private width: number;
-  private height: number;
+  private readonly scene: Phaser.Scene;
+  private readonly width: number;
+  private readonly height: number;
   constructor(scene: Scene, width: number, height: number) {
     this.width = width;
     this.height = height;
@@ -20,14 +20,11 @@ class GameStatisticsPartial implements Renderable {
   }
   render(container: Sizer) {
     const panel = this.scene.rexUI.add.scrollablePanel({
-      // x: this.scene.scale.width / 2,
-      // y: this.scene.scale.height / 2,
       width: this.width,
       height: this.height,
       scrollMode: "y",
       background: this.scene.rexUI.add.roundRectangle({
-        strokeColor: HEX_COLOR_LIGHT,
-        color: HEX_COLOR_PRIMARY,
+        color: HEX_COLOR_LIGHT_GREY,
         radius: 10,
       }),
       panel: {
@@ -52,23 +49,8 @@ class GameStatisticsPartial implements Renderable {
       },
       header: this.scene.rexUI.add.label({
         space: { left: 5, right: 5, top: 5, bottom: 15 },
-        background: this.scene.rexUI.add.roundRectangle({
-          color: HEX_COLOR_PRIMARY,
-        }),
-        text: this.scene.add.text(0, 0, "Settings", { fontSize: 20 }),
+        text: createText(this.scene, "Game Statistics", VectorZeroes(), 32),
         align: "center",
-      }),
-      footer: this.scene.rexUI.add.label({
-        space: { left: 5, right: 5, top: 5, bottom: 5 },
-        background: this.scene.rexUI.add.roundRectangle({
-          color: HEX_COLOR_PRIMARY,
-        }),
-        text: this.scene.add
-          .text(0, 0, "Go Back", { fontSize: 20 })
-          .setInteractive()
-          .on("pointerup", () => {
-            this.scene.scene.start("MainMenu");
-          }),
       }),
       space: {
         left: 15,

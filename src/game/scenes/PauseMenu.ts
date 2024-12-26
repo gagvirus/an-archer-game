@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { createText } from "../helpers/text-helpers.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
+import GameStatisticsPartial from "./Statistics/GameStatisticsPartial.ts";
 
 export class PauseMenu extends Scene implements ISceneLifecycle {
   constructor() {
@@ -49,9 +50,6 @@ export class PauseMenu extends Scene implements ISceneLifecycle {
       statisticsMenuBounds.height,
     );
     // end debug
-
-    // const renderer = new GameStatisticsPartial(this, (width - 40) / 2, height);
-    // renderer.render(statisticsMenu);
 
     rootSizer.layout();
   }
@@ -143,6 +141,12 @@ export class PauseMenu extends Scene implements ISceneLifecycle {
       width: (width - 40) / 2,
       height: height - 40,
     });
+    const renderer = new GameStatisticsPartial(
+      this,
+      (width - 40) / 2,
+      height - 40,
+    );
+    renderer.render(statisticsMenu);
     return statisticsMenu;
   }
 }
