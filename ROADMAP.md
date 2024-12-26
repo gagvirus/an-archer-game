@@ -13,7 +13,8 @@
     - ~~how many levels gained~~
     - ~~how many stages passed~~
     - ~~how many resources collected~~
-  - display detailed game statistics in the pause screen
+  - ~~display detailed game statistics in the pause screen~~
+- Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 
 ### Gameplay Features
 
