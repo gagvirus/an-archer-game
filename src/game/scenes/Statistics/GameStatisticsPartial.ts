@@ -27,6 +27,7 @@ class GameStatisticsPartial implements Renderable {
       scrollMode: "y",
       background: this.scene.rexUI.add.roundRectangle({
         color: HEX_COLOR_LIGHT_GREY,
+        alpha: 0.7,
         radius: 10,
       }),
       panel: {
@@ -37,12 +38,14 @@ class GameStatisticsPartial implements Renderable {
         track: this.scene.rexUI.add.roundRectangle({
           radius: 5,
           color: HEX_COLOR_DARK,
+          alpha: 0.7,
         }),
         thumb: this.scene.rexUI.add.roundRectangle({
           width: 20,
           height: 40,
           radius: 10,
           color: HEX_COLOR_LIGHT,
+          alpha: 0.7,
         }),
       },
       mouseWheelScroller: {
