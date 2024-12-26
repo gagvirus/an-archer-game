@@ -70,7 +70,7 @@ class GameStatisticsPartial implements Renderable {
     container.add(panel).layout();
   }
 
-  private createContainer() {
+  private createContainer(global: boolean = false) {
     const container = this.scene.rexUI.add.sizer({
       orientation: "vertical",
     });
@@ -104,7 +104,7 @@ class GameStatisticsPartial implements Renderable {
       ).setOrigin(1, 0.5);
       const valueText = createText(
         this.scene,
-        formatNumber(getStatistic(statistic)),
+        formatNumber(getStatistic(statistic, global)),
         VectorZeroes(),
         22,
       ).setOrigin(0, 0.5);

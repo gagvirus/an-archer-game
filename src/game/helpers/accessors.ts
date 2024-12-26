@@ -45,7 +45,8 @@ export function addStatistic(entryName: string, value: number) {
   StatisticsManager.getInstance().add(entryName, value);
 }
 
-export function getStatistic(entryName: string) {
+export function getStatistic(entryName: string, global: boolean = false) {
+  entryName = global ? `global.${entryName}` : entryName;
   return StatisticsManager.getInstance().retrieve(entryName);
 }
 
