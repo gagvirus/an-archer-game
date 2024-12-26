@@ -92,6 +92,11 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
         .roundRectangle(0, 0, 0, 0, 10, HEX_COLOR_DARK)
         .setStrokeStyle(2, HEX_COLOR_WHITE),
 
+      mouseWheelScroller: {
+        focus: false,
+        speed: 0.1,
+      },
+
       panel: {
         child: container,
 
