@@ -1,6 +1,12 @@
+const key = "STATISTICS";
+
 export class StatisticsManager {
   private static instance: StatisticsManager;
   private readonly entries: Record<string, number> = {};
+
+  private constructor() {
+    this.entries = this.readGlobalStatistics();
+  }
 
   static getInstance() {
     if (!StatisticsManager.instance) {
@@ -36,5 +42,29 @@ export class StatisticsManager {
         delete this.entries[entryKey];
       }
     });
+    this.writeGlobalStatistics();
+  }
+
+  writeGlobalStatistics() {
+    const filteredData: Record<string, number> = {};
+    Object.keys(this.entries).forEach((statKey) => {
+      if (statKey.startsWith("global")) {
+        filteredData[statKey] = this.entries[statKey];
+      }
+    });
+    localStorage.setItem(key, JSON.stringify(filteredData));
+  }
+
+  readGlobalStatistics() {
+    const rawData = localStorage.getItem(key);
+    let data = {};
+    if (rawData) {
+      try {
+        data = JSON.parse(rawData);
+      } catch (SyntaxError) {
+        console.warn("couldn't parse statistics data from localStorage");
+      }
+    }
+    return data;
   }
 }
