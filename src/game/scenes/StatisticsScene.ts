@@ -1,6 +1,7 @@
 import { Scene } from "phaser";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import GameStatisticsPartial from "./Statistics/GameStatisticsPartial.ts";
+import { createText } from "../helpers/text-helpers.ts";
 
 class StatisticsScene extends Scene implements ISceneLifecycle {
   constructor() {
@@ -9,6 +10,21 @@ class StatisticsScene extends Scene implements ISceneLifecycle {
 
   create() {
     const { width, height } = this.scale;
+
+    createText(
+      this,
+      "Go Back",
+      {
+        x: 100,
+        y: height - 100,
+      },
+      20,
+    )
+      .setInteractive()
+      .on("pointerup", () => {
+        this.scene.start("MainMenu");
+      });
+
     const statisticsMenu = this.rexUI.add.sizer({
       orientation: "vertical",
       x: width / 2,
