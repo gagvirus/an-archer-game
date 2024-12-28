@@ -24,6 +24,13 @@ export class MainMenu extends Scene implements ISceneLifecycle {
       },
     );
 
+    createCenteredText(this, "Statistics", 200, 32, true).on(
+      "pointerdown",
+      () => {
+        this.scene.start("StatisticsScene");
+      },
+    );
+
     EventBus.emit("current-scene-ready", this);
   }
 }

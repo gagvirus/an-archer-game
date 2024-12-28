@@ -15,10 +15,18 @@ class GameStatisticsPartial implements Renderable {
   private readonly scene: Phaser.Scene;
   private readonly width: number;
   private readonly height: number;
-  constructor(scene: Scene, width: number, height: number) {
+  private global: boolean;
+
+  constructor(
+    scene: Scene,
+    width: number,
+    height: number,
+    global: boolean = false,
+  ) {
     this.width = width;
     this.height = height;
     this.scene = scene;
+    this.global = global;
   }
   render(container: Sizer) {
     const panel = this.scene.rexUI.add.scrollablePanel({
@@ -31,7 +39,7 @@ class GameStatisticsPartial implements Renderable {
         radius: 10,
       }),
       panel: {
-        child: this.createContainer(),
+        child: this.createContainer(this.global),
         mask: { padding: 1 },
       },
       slider: {

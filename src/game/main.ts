@@ -1,16 +1,17 @@
-import { Boot } from "./scenes/Boot";
-import { GameOver } from "./scenes/GameOver";
-import { MainMenu } from "./scenes/MainMenu";
-import { AUTO, Game } from "phaser";
-import { Preloader } from "./scenes/Preloader";
+import {Boot} from "./scenes/Boot";
+import {GameOver} from "./scenes/GameOver";
+import {MainMenu} from "./scenes/MainMenu";
+import {AUTO, Game} from "phaser";
+import {Preloader} from "./scenes/Preloader";
 import MainScene from "./scenes/MainScene.ts";
-import { PauseMenu } from "./scenes/PauseMenu.ts";
+import {PauseMenu} from "./scenes/PauseMenu.ts";
 import SettingsScene from "./scenes/SettingsScene.ts";
 import BuildMenuScene from "./scenes/BuildMenuScene.ts";
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin.js";
 
 import StatsScene from "./scenes/StatsScene/StatsScene.ts";
-import { setGame } from "./helpers/accessors.ts";
+import {setGame} from "./helpers/accessors.ts";
+import StatisticsScene from "./scenes/StatisticsScene.ts";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -43,6 +44,7 @@ const config: Phaser.Types.Core.GameConfig = {
     BuildMenuScene,
     PauseMenu,
     StatsScene,
+    StatisticsScene,
   ],
   physics: {
     default: "arcade",
