@@ -9,6 +9,9 @@
   - Gameplay - how long have played, how many levels gained, how many stages passed, how many resources collected
   - Combat - damage inflicted, times hit critical, times hit regular attacks, enemies killed, times evaded, damaged
     received, damaged blocked
+- Total Statistics
+  - combine all the collected data and calculate sum
+  - have a page "stats" that shall just display all this info
 
 ### v0.0.13
 

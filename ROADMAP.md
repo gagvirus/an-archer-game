@@ -30,9 +30,6 @@
 
 ### Menus / Settings/ Meta
 
-- Total Statistics
-  - combine all the collected data and calculate sum
-  - have a page "stats" that shall just display all this info
 - Achievements
   - To be detailed
 - Leaderboards
