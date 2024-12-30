@@ -2,9 +2,6 @@
 
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 - Improve UI / UX on statistics screen (both global & per-game)
-
-### Gameplay Features
-
 - Active skills
   - when the player reaches certain level (e.g. 5, 15, 25, 50), allow the player to select one of the skills
   - can be enabled by clicking on correct buttons, displayed on the screen (e.g. icons on bottom-left)
@@ -18,6 +15,9 @@
     - nuke
     - buff to self
     - debuff to enemies
+
+### Gameplay Features
+
 - Enemy walk logic
   - shall follow a target
   - implement pathfinding
