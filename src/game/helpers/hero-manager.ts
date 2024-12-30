@@ -79,10 +79,10 @@ class HeroManager {
 export default HeroManager;
 
 export enum HeroClass {
+  default = "default",
   speedster = "speedster",
   nuker = "nuker",
   tank = "tank",
-  default = "default",
 }
 
 export interface HeroDefinition {

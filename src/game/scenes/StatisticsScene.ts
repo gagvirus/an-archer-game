@@ -21,7 +21,7 @@ class StatisticsScene extends Scene implements ISceneLifecycle {
       20,
     )
       .setInteractive()
-      .on("pointerup", () => {
+      .on("pointerdown", () => {
         this.scene.start("MainMenu");
       });
 

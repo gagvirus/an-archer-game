@@ -30,6 +30,11 @@ export const getSelectedHeroClass = (): HeroClass => {
   return game().registry.get("selectedHero");
 };
 
+export const setSelectedHeroClass = (heroClass: HeroClass): void => {
+  game().registry.set("selectedHero", heroClass);
+  localStorage.setItem("selectedHero", heroClass);
+};
+
 export const initRegistry = (): void => {
   const booleanSettings = [
     "debugMode",

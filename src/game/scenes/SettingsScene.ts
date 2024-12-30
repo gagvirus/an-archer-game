@@ -88,7 +88,7 @@ class SettingsScene extends Scene implements ISceneLifecycle {
           text: this.add
             .text(0, 0, "Go Back", { fontSize: 20 })
             .setInteractive()
-            .on("pointerup", () => {
+            .on("pointerdown", () => {
               this.scene.start("MainMenu");
             }),
         }),
@@ -183,7 +183,7 @@ class SettingsScene extends Scene implements ISceneLifecycle {
     const text = this.add
       .text(textOffset.x, textOffset.y, label)
       .setInteractive()
-      .on("pointerup", () => this.updateBoolVal(settingKey, checkbox));
+      .on("pointerdown", () => this.updateBoolVal(settingKey, checkbox));
     // Toggle debug mode when clicking the checkbox
     const width = this.scale.width - 200;
     const background = this.rexUI.add.roundRectangle({

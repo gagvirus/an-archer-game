@@ -3,7 +3,10 @@ import { EventBus } from "../EventBus.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import { HEX_COLOR_LIGHT, HEX_COLOR_PRIMARY } from "../helpers/colors.ts";
 import { HeroClass, heroClasses } from "../helpers/hero-manager.ts";
-import { getSelectedHeroClass } from "../helpers/registry-helper.ts";
+import {
+  getSelectedHeroClass,
+  setSelectedHeroClass,
+} from "../helpers/registry-helper.ts";
 
 class HeroSelectScene extends Scene implements ISceneLifecycle {
   private selectedHeroClass: HeroClass;
@@ -115,7 +118,13 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
     card.add(title, { proportion: 0, align: "center" });
     card.add(description, { proportion: 0, align: "center" });
 
-    card.layout();
+    card
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.selectedHeroClass = heroClass;
+        setSelectedHeroClass(heroClass);
+      })
+      .layout();
 
     return card;
   }
