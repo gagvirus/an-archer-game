@@ -266,6 +266,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   getNearestEnemy(): Enemy | null {
+    if (this.scene.scene.key !== "MainScene") {
+      return null;
+    }
     let nearestEnemy: Enemy | null = null;
     let minDistance = Number.MAX_VALUE;
 
