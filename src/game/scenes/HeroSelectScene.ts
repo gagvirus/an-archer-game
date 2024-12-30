@@ -85,7 +85,10 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
       })
       .addBackground(
         this.rexUI.add.roundRectangle({
-          strokeColor: HEX_COLOR_LIGHT,
+          strokeColor:
+            this.selectedHeroClass === heroClass
+              ? HEX_COLOR_PRIMARY
+              : HEX_COLOR_LIGHT,
           color:
             this.selectedHeroClass === heroClass
               ? HEX_COLOR_LIGHT
