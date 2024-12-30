@@ -24,6 +24,20 @@ export const isMultipleResourceDropsEnabled = (): boolean => {
   return getBooleanValueFromRegistry("multipleResourceDrops");
 };
 
+export const initRegistry = (): void => {
+  const booleanSettings = [
+    "debugMode",
+    "autoAttack",
+    "easyMode",
+    "rapidLevelUp",
+    "autoEnterPortal",
+    "multipleResourceDrops",
+  ];
+  booleanSettings.forEach((key) => {
+    game().registry.set(key, localStorage.getItem(key));
+  });
+};
+
 const getBooleanValueFromRegistry = (field: string): boolean => {
   return game().registry.get(field) == "true";
 };

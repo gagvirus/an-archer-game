@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { initRegistry } from "../helpers/registry-helper.ts";
 
 export class Boot extends Scene implements ISceneLifecycle {
   constructor() {
@@ -12,22 +13,7 @@ export class Boot extends Scene implements ISceneLifecycle {
   }
 
   create() {
-    this.game.registry.set("debugMode", localStorage.getItem("debugMode"));
-    this.game.registry.set("autoAttack", localStorage.getItem("autoAttack"));
-    this.game.registry.set("easyMode", localStorage.getItem("easyMode"));
-    this.game.registry.set(
-      "rapidLevelUp",
-      localStorage.getItem("rapidLevelUp"),
-    );
-    this.game.registry.set(
-      "autoEnterPortal",
-      localStorage.getItem("autoEnterPortal"),
-    );
-    this.game.registry.set(
-      "multipleResourceDrops",
-      localStorage.getItem("multipleResourceDrops"),
-    );
-
+    initRegistry();
     this.scene.start("Preloader");
   }
 }
