@@ -3,6 +3,8 @@ import { Attribute, Attributes } from "../attributes.ts";
 
 export enum HeroClass {
   default = "default",
+  speedster = "speedster",
+  tank = "tank",
 }
 
 interface HeroDefinition {
@@ -22,6 +24,22 @@ const heroClasses: Record<HeroClass, HeroDefinition> = {
     baseAttackTime: 1.5,
     healthRegenInterval: 2000,
     movementSpeed: 160,
+  },
+  [HeroClass.speedster]: {
+    damage: 5,
+    health: 20,
+    attackRate: 300,
+    baseAttackTime: 1,
+    healthRegenInterval: 2000,
+    movementSpeed: 240,
+  },
+  [HeroClass.tank]: {
+    damage: 10,
+    health: 500,
+    attackRate: 50,
+    baseAttackTime: 2,
+    healthRegenInterval: 1000,
+    movementSpeed: 100,
   },
 };
 
