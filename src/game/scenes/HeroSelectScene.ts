@@ -2,22 +2,13 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import { HEX_COLOR_LIGHT, HEX_COLOR_PRIMARY } from "../helpers/colors.ts";
-
-type Hero = {
-  name: string;
-  description: string;
-  icon: string; // Key for the icon texture
-};
+import {
+  HeroClass,
+  heroClasses,
+  HeroDefinition,
+} from "../helpers/hero-manager.ts";
 
 class HeroSelectScene extends Scene implements ISceneLifecycle {
-  private heroes: Hero[] = [
-    { name: "Hero 1", description: "The first hero", icon: "hero1Icon" },
-    { name: "Hero 2", description: "The second hero", icon: "hero2Icon" },
-    { name: "Hero 3", description: "The third hero", icon: "hero2Icon" },
-    { name: "Hero 4", description: "The fourth hero", icon: "hero2Icon" },
-    // Add more heroes here
-  ];
-
   constructor() {
     super("HeroSelectScene");
   }
@@ -58,8 +49,8 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
   }
 
   private createHeroGrid() {
+    const heroes = Object.values(HeroClass);
     const padding = 10; // Padding between cards
-    const heroes = this.heroes;
     const gridSizer = this.rexUI.add.gridSizer({
       column: 4, // 4 items per row
       row: Math.ceil(heroes.length / 4),
@@ -71,15 +62,15 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
       },
     });
 
-    heroes.forEach((hero) => {
-      const card = this.createHeroCard(hero);
+    heroes.forEach((heroClass) => {
+      const card = this.createHeroCard(heroClasses[heroClass]);
       gridSizer.add(card, { expand: false });
     });
 
     return gridSizer;
   }
 
-  private createHeroCard(hero: Hero) {
+  private createHeroCard(hero: HeroDefinition) {
     const width = (this.scale.width - 200) / 4;
     console.log(width);
     const height = 250;
