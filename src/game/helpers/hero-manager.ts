@@ -1,5 +1,6 @@
 import { Scene } from "phaser";
 import { getSelectedHeroClass } from "./registry-helper.ts";
+import { Attributes } from "../stats/attributes.ts";
 
 class HeroManager {
   private static instance: HeroManager;
@@ -85,50 +86,53 @@ export enum HeroClass {
 }
 
 export interface HeroDefinition {
-  damage: number;
-  health: number;
-  attackRate: number;
-  baseAttackTime: number;
-  healthRegenInterval: number;
-  movementSpeed: number;
+  attributes: Partial<Attributes>;
   color: "green" | "blue" | "red" | "yellow";
 }
 
 export const heroClasses: Record<HeroClass, HeroDefinition> = {
   [HeroClass.speedster]: {
-    damage: 3,
-    health: 10,
-    attackRate: 200,
-    baseAttackTime: 1,
-    healthRegenInterval: 4000,
-    movementSpeed: 240,
+    attributes: {
+      damage: 3,
+      health: 10,
+      attackRate: 200,
+      baseAttackTime: 1,
+      healthRegenInterval: 4000,
+      movementSpeed: 240,
+    },
     color: "green",
   },
   [HeroClass.nuker]: {
-    damage: 50,
-    health: 20,
-    attackRate: 150,
-    baseAttackTime: 1.5,
-    healthRegenInterval: 2000,
-    movementSpeed: 160,
+    attributes: {
+      damage: 50,
+      health: 20,
+      attackRate: 150,
+      baseAttackTime: 1.5,
+      healthRegenInterval: 2000,
+      movementSpeed: 160,
+    },
     color: "red",
   },
   [HeroClass.tank]: {
-    damage: 10,
-    health: 500,
-    attackRate: 50,
-    baseAttackTime: 2,
-    healthRegenInterval: 1000,
-    movementSpeed: 100,
+    attributes: {
+      damage: 10,
+      health: 500,
+      attackRate: 50,
+      baseAttackTime: 2,
+      healthRegenInterval: 1000,
+      movementSpeed: 100,
+    },
     color: "blue",
   },
   [HeroClass.default]: {
-    damage: 10,
-    health: 100,
-    attackRate: 100,
-    baseAttackTime: 1.5,
-    healthRegenInterval: 2000,
-    movementSpeed: 160,
+    attributes: {
+      damage: 10,
+      health: 100,
+      attackRate: 100,
+      baseAttackTime: 1.5,
+      healthRegenInterval: 2000,
+      movementSpeed: 160,
+    },
     color: "yellow",
   },
 };

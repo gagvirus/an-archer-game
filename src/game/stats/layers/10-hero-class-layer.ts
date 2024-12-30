@@ -13,15 +13,19 @@ export class HeroClassLayer implements AttributeLayer {
   }
 
   modify(baseAttributes: Attributes): Attributes {
+    const attributes = heroClasses[this.heroClass].attributes;
     return {
       ...baseAttributes,
-      [Attribute.damage]: heroClasses[this.heroClass].damage,
-      [Attribute.health]: heroClasses[this.heroClass].health,
-      [Attribute.attackRate]: heroClasses[this.heroClass].attackRate,
-      [Attribute.baseAttackTime]: heroClasses[this.heroClass].baseAttackTime,
+      [Attribute.damage]: attributes.damage ?? baseAttributes.damage,
+      [Attribute.health]: attributes.health ?? baseAttributes.health,
+      [Attribute.attackRate]:
+        attributes.attackRate ?? baseAttributes.attackRate,
+      [Attribute.baseAttackTime]:
+        attributes.baseAttackTime ?? baseAttributes.baseAttackTime,
       [Attribute.healthRegenInterval]:
-        heroClasses[this.heroClass].healthRegenInterval,
-      [Attribute.movementSpeed]: heroClasses[this.heroClass].movementSpeed,
+        attributes.healthRegenInterval ?? baseAttributes.healthRegenInterval,
+      [Attribute.movementSpeed]:
+        attributes.movementSpeed ?? baseAttributes.movementSpeed,
     };
   }
 }
