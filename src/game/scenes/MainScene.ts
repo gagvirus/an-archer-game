@@ -81,7 +81,7 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.drops = this.physics.add.group();
     this.dropsFollowing = this.physics.add.group();
 
-    if (isDebugMode(this.game)) {
+    if (isDebugMode()) {
       this.drops.add(new Magnet(this, 150, 150));
       this.drops.add(new DoubleDamage(this, 200, 150));
       this.drops.add(new DoubleDamage(this, 220, 150));
@@ -174,7 +174,7 @@ class MainScene extends Scene implements ISceneLifecycle {
         this.openStatsScreen();
       }
 
-      if (isDebugMode(this.game)) {
+      if (isDebugMode()) {
         if (event.key === "m") {
           this.magnetEffect();
         }
@@ -408,7 +408,7 @@ class MainScene extends Scene implements ISceneLifecycle {
           baseMaxAmount,
         ]);
         if (dropAmount >= 2) {
-          const dropsCount = isMultipleResourceDropsEnabled(this.game)
+          const dropsCount = isMultipleResourceDropsEnabled()
             ? dropAmount < 6
               ? dropAmount
               : 5

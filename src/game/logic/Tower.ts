@@ -19,7 +19,7 @@ export class Tower extends Phaser.Physics.Arcade.Sprite {
       HEX_COLOR_WARNING,
       0.3,
     );
-    this.outline.setVisible(isDebugMode(scene.game));
+    this.outline.setVisible(isDebugMode());
   }
 
   update() {

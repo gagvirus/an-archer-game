@@ -57,7 +57,7 @@ class Enemy extends Sprite {
       HEX_COLOR_WARNING,
       0.3,
     );
-    this.attackRadiusCircle.setVisible(isDebugMode(scene.game));
+    this.attackRadiusCircle.setVisible(isDebugMode());
 
     this.attackCooldown = 0;
     // Create a health bar for the enemy

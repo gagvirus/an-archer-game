@@ -1,29 +1,29 @@
-import { Game } from "phaser";
+import { game } from "./accessors.ts";
 
-export const isDebugMode = (game: Game): boolean => {
-  return getBooleanValueFromRegistry(game, "debugMode");
+export const isDebugMode = (): boolean => {
+  return getBooleanValueFromRegistry("debugMode");
 };
 
-export const isAutoAttackEnabled = (game: Game): boolean => {
-  return getBooleanValueFromRegistry(game, "autoAttack");
+export const isAutoAttackEnabled = (): boolean => {
+  return getBooleanValueFromRegistry("autoAttack");
 };
 
-export const isEasyMode = (game: Game): boolean => {
-  return getBooleanValueFromRegistry(game, "easyMode");
+export const isEasyMode = (): boolean => {
+  return getBooleanValueFromRegistry("easyMode");
 };
 
-export const isRapidLevelUp = (game: Game): boolean => {
-  return getBooleanValueFromRegistry(game, "rapidLevelUp");
+export const isRapidLevelUp = (): boolean => {
+  return getBooleanValueFromRegistry("rapidLevelUp");
 };
 
-export const isAutoEnterPortal = (game: Game): boolean => {
-  return getBooleanValueFromRegistry(game, "autoEnterPortal");
+export const isAutoEnterPortal = (): boolean => {
+  return getBooleanValueFromRegistry("autoEnterPortal");
 };
 
-export const isMultipleResourceDropsEnabled = (game: Game): boolean => {
-  return getBooleanValueFromRegistry(game, "multipleResourceDrops");
+export const isMultipleResourceDropsEnabled = (): boolean => {
+  return getBooleanValueFromRegistry("multipleResourceDrops");
 };
 
-const getBooleanValueFromRegistry = (game: Game, field: string): boolean => {
-  return game.registry.get(field) == "true";
+const getBooleanValueFromRegistry = (field: string): boolean => {
+  return game().registry.get(field) == "true";
 };

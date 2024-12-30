@@ -101,7 +101,7 @@ export class AttributeManager {
       [LayerType.heroLevel]: new HeroLevelLayer(heroLevel),
       [LayerType.coreStats]: new CoreStatsLayer(coreStats),
       [LayerType.stats]: new StatsLayer(),
-      [LayerType.difficulty]: new DifficultyLayer(this.scene),
+      [LayerType.difficulty]: new DifficultyLayer(),
       [LayerType.final]: new FinalLayer(),
       [LayerType.powerups]: new PowerupsLayer(),
     };

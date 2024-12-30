@@ -36,8 +36,8 @@ class BuildMenuScene extends Scene implements ISceneLifecycle {
   }
 
   create() {
-    isDebugMode(this.game) && this.drawGrid();
-    isDebugMode(this.game) && this.drawGridNumbers();
+    isDebugMode() && this.drawGrid();
+    isDebugMode() && this.drawGridNumbers();
 
     this.pendingBuildings = [];
     this.disallowedTiles.forEach((value, posX) => {

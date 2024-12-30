@@ -27,7 +27,7 @@ export class Portal extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     this.state = PortalState.disabled;
     this.anims.play("portal-disabled");
-    this.autoEnterPortal = isAutoEnterPortal(scene.game);
+    this.autoEnterPortal = isAutoEnterPortal();
     this.hero = hero;
 
     scene.input.keyboard?.on("keydown", (event: KeyboardEvent) => {

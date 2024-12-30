@@ -50,7 +50,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.collectLootCircle = scene.physics.add.existing(
       this.scene.add.circle(this.x, this.y, this.pullDistance, 0x0000ff, 0.2),
     );
-    this.collectLootCircle.setVisible(isDebugMode(scene.game));
+    this.collectLootCircle.setVisible(isDebugMode());
 
     // Initialize arrow group
     this.arrows = scene.add.group(); // Group to hold all arrows
@@ -59,7 +59,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.state = "idle";
     this.anims.play("idle");
 
-    if (!isAutoAttackEnabled(scene.game)) {
+    if (!isAutoAttackEnabled()) {
       scene.input.keyboard?.on("keydown-SPACE", () => {
         this.attackable.attack();
       });
@@ -204,7 +204,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.anims.play("idle", true);
       }
     }
-    isAutoAttackEnabled(this.scene.game) && this.attackable.attack();
+    isAutoAttackEnabled() && this.attackable.attack();
     this.arrows.getChildren().forEach((gameObject: GameObject) => {
       (gameObject as Arrow).update();
     });
