@@ -3,15 +3,18 @@ import { EventBus } from "../EventBus.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import { HEX_COLOR_LIGHT, HEX_COLOR_PRIMARY } from "../helpers/colors.ts";
 import { HeroClass, heroClasses } from "../helpers/hero-manager.ts";
+import { getSelectedHeroClass } from "../helpers/registry-helper.ts";
 
 class HeroSelectScene extends Scene implements ISceneLifecycle {
+  private selectedHeroClass: HeroClass;
   constructor() {
     super("HeroSelectScene");
   }
 
   create() {
-    EventBus.emit("current-scene-ready", this);
+    this.selectedHeroClass = getSelectedHeroClass();
     this.renderHeroSelectionCards();
+    EventBus.emit("current-scene-ready", this);
   }
 
   renderHeroSelectionCards() {
@@ -83,7 +86,10 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
       .addBackground(
         this.rexUI.add.roundRectangle({
           strokeColor: HEX_COLOR_LIGHT,
-          color: HEX_COLOR_PRIMARY,
+          color:
+            this.selectedHeroClass === heroClass
+              ? HEX_COLOR_LIGHT
+              : HEX_COLOR_PRIMARY,
           radius: 10,
         }),
       );
