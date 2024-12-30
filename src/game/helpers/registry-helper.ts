@@ -57,3 +57,11 @@ export const initRegistry = (): void => {
 const getBooleanValueFromRegistry = (field: string): boolean => {
   return game().registry.get(field) == "true";
 };
+
+export const setBooleanValueToRegistry = (
+  settingKey: string,
+  value: boolean,
+): void => {
+  localStorage.setItem(settingKey, value.toString());
+  game().registry.set(settingKey, value.toString());
+};

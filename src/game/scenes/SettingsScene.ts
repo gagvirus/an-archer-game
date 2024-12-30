@@ -15,6 +15,7 @@ import {
   isEasyMode,
   isMultipleResourceDropsEnabled,
   isRapidLevelUp,
+  setBooleanValueToRegistry,
 } from "../helpers/registry-helper.ts";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
@@ -204,10 +205,7 @@ class SettingsScene extends Scene implements ISceneLifecycle {
   updateBoolVal(settingKey: SettingKey, cb: Rectangle) {
     this[settingKey] = !this[settingKey];
     cb.setFillStyle(this[settingKey] ? HEX_COLOR_SUCCESS : HEX_COLOR_DANGER);
-    // Persist the setting to localStorage
-    localStorage.setItem(settingKey, this[settingKey].toString());
-    // You can also update global game variables if necessary, for example:
-    this.game.registry.set(settingKey, this[settingKey].toString());
+    setBooleanValueToRegistry(settingKey, this[settingKey]);
   }
 
   private loadStoredSettingsValues() {

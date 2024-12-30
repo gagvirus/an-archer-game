@@ -2,6 +2,7 @@
 
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 - Improve UI / UX on statistics screen (both global & per-game)
+- stats not being shown correctly on game over screen
 
 ### Gameplay Features
 
