@@ -2,6 +2,12 @@
 
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 - Improve UI / UX on statistics screen (both global & per-game)
+- Add multiple heroes
+  - can be the same sprite / animations, just with different color / tint
+  - hero types (examples):
+    - Speedster (bonus to movement & attack speed)
+    - Tank (higher HP / armor rating / HP regen)
+    - Glass Cannon (smaller HP pool / immensely high DPS)
 
 ### Gameplay Features
 
@@ -44,12 +50,6 @@
     - Separate service which will store all the necessary data
     - Return the top 100
     - Return when on the leaderboard the current player is
-- Add multiple heroes
-  - can be the same sprite / animations, just with different color / tint
-  - hero types (examples):
-    - Speedster (bonus to movement & attack speed)
-    - Tank (higher HP / armor rating / HP regen)
-    - Glass Cannon (smaller HP pool / immensely high DPS)
 - Game Difficulty
 - Add UI for changing key bindings inside settings
 - settings
