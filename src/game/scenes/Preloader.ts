@@ -268,6 +268,16 @@ export class Preloader extends Scene implements ISceneLifecycle {
   }
 
   private preloadHeroSpriteSheets() {
+    const colors = ["green", "red", "blue", "yellow"];
+    const sheets = [
+      "dash",
+      "death",
+      "jumping",
+      "running",
+      "attack-low",
+      "attack-normal",
+      "attack-high",
+    ];
     this.load.spritesheet("hero", "hero/running.png", {
       frameWidth: 64,
       frameHeight: 64,
