@@ -105,8 +105,12 @@ export class Preloader extends Scene implements ISceneLifecycle {
     //  For example, you can define global animations here, so we can use them in other scenes.
     this.registerAnimations();
 
+    const queryParamsObj = Object.fromEntries(
+      new URLSearchParams(window.location.search),
+    );
+
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-    this.scene.start("MainMenu");
+    this.scene.start(queryParamsObj.forceScene ?? "MainMenu");
   }
 
   private registerAnimations() {
