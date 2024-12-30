@@ -2,16 +2,10 @@
 
 ### WIP
 
-- Added Scoring / Statistics system
-  - Showing how much score gained on main scene and game over scene
-  - Showing how many stages passed on game over scene
-- Displaying Per-Game Statistics on pause screen
-  - Gameplay - how long have played, how many levels gained, how many stages passed, how many resources collected
-  - Combat - damage inflicted, times hit critical, times hit regular attacks, enemies killed, times evaded, damaged
-    received, damaged blocked
-- Total Statistics
-  - combine all the collected data and calculate sum
-  - have a page "stats" that shall just display all this info
+- Showing game score on top-right corner
+- Added Per-Game Statistics on pause menu
+- Added Global Statistics page on Main Menu
+- Ability to switch heroes - added 4 different hero types
 
 ### v0.0.13
 
