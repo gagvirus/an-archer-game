@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 
 import { EventBus } from "../EventBus";
 import { createCenteredText } from "../helpers/text-helpers.ts";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 
 export class MainMenu extends Scene implements ISceneLifecycle {
   constructor() {

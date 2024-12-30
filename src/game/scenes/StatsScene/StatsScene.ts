@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ISceneLifecycle } from "../../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "../contracts/ISceneLifecycle.ts";
 import { createText } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";

@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 import { EventBus } from "../EventBus.ts";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import { HEX_COLOR_LIGHT, HEX_COLOR_PRIMARY } from "../helpers/colors.ts";
 import HeroManager, {
   HeroClass,

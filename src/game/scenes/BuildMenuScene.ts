@@ -8,7 +8,7 @@ import {
 } from "../helpers/position-helper.ts";
 import { isDebugMode } from "../helpers/registry-helper.ts";
 import { HEX_COLOR_DANGER, HEX_COLOR_WHITE } from "../helpers/colors.ts";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import Pointer = Phaser.Input.Pointer;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 

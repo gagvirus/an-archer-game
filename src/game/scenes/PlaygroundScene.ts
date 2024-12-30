@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import { createCursorKeys } from "../helpers/keyboard-helper.ts";
 import Hero from "../logic/Hero.ts";
 

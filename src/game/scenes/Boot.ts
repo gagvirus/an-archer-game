@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import { initRegistry } from "../helpers/registry-helper.ts";
 
 export class Boot extends Scene implements ISceneLifecycle {

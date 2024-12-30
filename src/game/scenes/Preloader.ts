@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { getPingPongAnimationFrames } from "../helpers/anims-helper.ts";
 import { HEX_COLOR_WHITE } from "../helpers/colors.ts";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import HeroManager from "../helpers/hero-manager.ts";
 
 export class Preloader extends Scene implements ISceneLifecycle {

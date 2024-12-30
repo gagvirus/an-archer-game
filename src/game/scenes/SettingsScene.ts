@@ -7,7 +7,7 @@ import {
 } from "../helpers/colors.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
 import { Scene } from "phaser";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import {
   isAutoAttackEnabled,
   isAutoEnterPortal,

@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import GameStatisticsPartial from "./Statistics/GameStatisticsPartial.ts";
 import { createText } from "../helpers/text-helpers.ts";
 

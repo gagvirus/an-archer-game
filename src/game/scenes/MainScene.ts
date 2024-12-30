@@ -45,7 +45,7 @@ import DoubleDamage from "../logic/drop/powerup/timed/DoubleDamage.ts";
 import DoubleSpeed from "../logic/drop/powerup/timed/DoubleSpeed.ts";
 import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
 import ActiveEffectsModule from "../modules/active-effects-module.ts";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
 import ScoreModule from "../modules/score-module.ts";
 import { addStatistic, resetStatistics } from "../helpers/accessors.ts";

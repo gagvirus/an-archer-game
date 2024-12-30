@@ -2,7 +2,7 @@ import { EventBus } from "../EventBus";
 import { Scene } from "phaser";
 import { createCenteredText, formatNumber } from "../helpers/text-helpers.ts";
 import { HEX_COLOR_DANGER } from "../helpers/colors.ts";
-import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 
 interface GameOverData {
   statistics: GameOverDataStatistics;
