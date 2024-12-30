@@ -2,8 +2,8 @@
 
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 - Improve UI / UX on statistics screen (both global & per-game)
-- Add multiple heroes
-  - UI for hero selection
+- ~~Add multiple heroes~~
+  - ~~UI for hero selection~~
   - ~~can be the same sprite / animations, just with different color / tint~~
   - ~~hero types (examples):~~
     - ~~Speedster (bonus to movement & attack speed)~~
