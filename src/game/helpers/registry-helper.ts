@@ -1,5 +1,7 @@
 import { game } from "./accessors.ts";
 
+import { HeroClass } from "./hero-manager.ts";
+
 export const isDebugMode = (): boolean => {
   return getBooleanValueFromRegistry("debugMode");
 };
@@ -24,6 +26,10 @@ export const isMultipleResourceDropsEnabled = (): boolean => {
   return getBooleanValueFromRegistry("multipleResourceDrops");
 };
 
+export const getSelectedHeroClass = (): HeroClass => {
+  return game().registry.get("selectedHero");
+};
+
 export const initRegistry = (): void => {
   const booleanSettings = [
     "debugMode",
@@ -36,6 +42,11 @@ export const initRegistry = (): void => {
   booleanSettings.forEach((key) => {
     game().registry.set(key, localStorage.getItem(key));
   });
+  // get selected hero from localStorage, fallback to default if nothing is selected
+  game().registry.set(
+    "selectedHero",
+    localStorage.getItem("selectedHero") ?? HeroClass.default,
+  );
 };
 
 const getBooleanValueFromRegistry = (field: string): boolean => {
