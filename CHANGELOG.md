@@ -1,6 +1,6 @@
 ## Changelog
 
-### WIP
+### v0.0.14
 
 - Showing game score on top-right corner
 - Added Per-Game Statistics on pause menu
