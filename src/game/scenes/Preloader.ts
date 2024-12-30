@@ -2,6 +2,7 @@ import { Scene } from "phaser";
 import { getPingPongAnimationFrames } from "../helpers/anims-helper.ts";
 import { HEX_COLOR_WHITE } from "../helpers/colors.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import HeroManager from "../helpers/hero-manager.ts";
 
 export class Preloader extends Scene implements ISceneLifecycle {
   constructor() {
@@ -109,7 +110,7 @@ export class Preloader extends Scene implements ISceneLifecycle {
   }
 
   private registerAnimations() {
-    this.registerHeroAnimations();
+    HeroManager.getInstance(this).registerHeroAnimations();
 
     // Define the portal animation
     this.anims.create({
@@ -289,46 +290,6 @@ export class Preloader extends Scene implements ISceneLifecycle {
           },
         );
       });
-    });
-  }
-
-  private registerHeroAnimations() {
-    // Define the idle animation
-    const activeColor = "green";
-
-    this.anims.create({
-      key: "idle",
-      frames: this.anims.generateFrameNumbers(`archer-${activeColor}-running`, {
-        start: 0,
-        end: 1,
-      }), // Adjust start and end based on your spritesheet
-      frameRate: 5, // Animation speed
-      repeat: -1, // Repeat indefinitely
-    });
-
-    // Define the running animation
-    this.anims.create({
-      key: "run",
-      frames: this.anims.generateFrameNumbers(`archer-${activeColor}-running`, {
-        start: 8,
-        end: 15,
-      }), // Adjust start and end based on your spritesheet
-      frameRate: 5, // Animation speed
-      repeat: -1, // Repeat indefinitely
-    });
-
-    // Define the running animation
-    this.anims.create({
-      key: "hero_attack",
-      frames: this.anims.generateFrameNumbers(
-        `archer-${activeColor}-attack-normal`,
-        {
-          start: 24,
-          end: 29,
-        },
-      ), // Adjust start and end based on your spritesheet
-      frameRate: 5, // Animation speed
-      repeat: -1, // Repeat indefinitely
     });
   }
 }
