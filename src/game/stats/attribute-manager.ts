@@ -12,6 +12,7 @@ import { DifficultyLayer } from "./layers/50-difficulty-layer.ts";
 import { Scene } from "phaser";
 import { PowerupType } from "../logic/drop/powerup/timed/powerupType.ts";
 import { HeroClass } from "../helpers/hero-manager.ts";
+import { getSelectedHeroClass } from "../helpers/registry-helper.ts";
 
 enum LayerType {
   heroClass = "HeroClass",
@@ -51,7 +52,7 @@ export class AttributeManager {
 
   constructor(
     scene: Scene,
-    heroClass: HeroClass = HeroClass.default,
+    heroClass: HeroClass = getSelectedHeroClass(),
     heroLevel: number = 1,
     coreStats: Record<CoreStat, number> = {
       [CoreStat.awareness]: 1,

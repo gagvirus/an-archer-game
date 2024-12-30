@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { getSelectedHeroClass } from "./registry-helper.ts";
 
 class HeroManager {
   private static instance: HeroManager;
@@ -18,13 +19,19 @@ class HeroManager {
     this.scene = scene;
   }
 
+  getSelectedHero() {
+    const heroClass = getSelectedHeroClass();
+    return heroClasses[heroClass];
+  }
+
   registerHeroAnimations() {
-    // Define the idle animation
-    const activeColor = "green";
+    // cleanup hero animations just in case
     ["idle", "run", "hero_attack"].forEach((animationKey) => {
       this.scene.anims.remove(animationKey);
     });
+    const activeColor = this.getSelectedHero().color;
 
+    // Define the idle animation
     this.scene.anims.create({
       key: "idle",
       frames: this.scene.anims.generateFrameNumbers(
