@@ -12,6 +12,7 @@ import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin.js";
 import StatsScene from "./scenes/StatsScene/StatsScene.ts";
 import {setGame} from "./helpers/accessors.ts";
 import StatisticsScene from "./scenes/StatisticsScene.ts";
+import HeroSelectScene from "./scenes/HeroSelectScene.ts";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -45,6 +46,7 @@ const config: Phaser.Types.Core.GameConfig = {
     PauseMenu,
     StatsScene,
     StatisticsScene,
+    HeroSelectScene,
   ],
   physics: {
     default: "arcade",
