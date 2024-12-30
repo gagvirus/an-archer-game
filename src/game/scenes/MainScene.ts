@@ -49,7 +49,6 @@ import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
 import ScoreModule from "../modules/score-module.ts";
 import { addStatistic, resetStatistics } from "../helpers/accessors.ts";
-import { StatisticsManager } from "../statistics/statistics-manager.ts";
 
 class MainScene extends Scene implements ISceneLifecycle {
   private moduleManager!: ModuleManager;
@@ -70,7 +69,6 @@ class MainScene extends Scene implements ISceneLifecycle {
 
   // Create game objects
   create() {
-    console.log(StatisticsManager.getInstance());
     // Initialize the module manager
     this.moduleManager = ModuleManager.getInstance(this);
     // Initialize the hero in the center of the canvas
