@@ -7,9 +7,16 @@ import {
   getSelectedHeroClass,
   setSelectedHeroClass,
 } from "../helpers/registry-helper.ts";
+import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
+import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
+import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import RoundRectangle = UIPlugin.RoundRectangle;
 
 class HeroSelectScene extends Scene implements ISceneLifecycle {
   private selectedHeroClass: HeroClass;
+  private cards: Partial<Record<HeroClass, Sizer>> = {};
+  private scrollablePanel: ScrollablePanel;
+
   constructor() {
     super("HeroSelectScene");
   }
@@ -21,7 +28,7 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
   }
 
   renderHeroSelectionCards() {
-    this.rexUI.add
+    this.scrollablePanel = this.rexUI.add
       .scrollablePanel({
         x: this.scale.width / 2,
         y: this.scale.height / 2,
@@ -78,6 +85,7 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
     const heroPreviewIcon = `archer-${hero.color}-running`;
     const width = (this.scale.width - 200) / 4;
     const height = 250;
+    const active = this.selectedHeroClass === heroClass;
 
     const card = this.rexUI.add
       .sizer({
@@ -88,14 +96,9 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
       })
       .addBackground(
         this.rexUI.add.roundRectangle({
-          strokeColor:
-            this.selectedHeroClass === heroClass
-              ? HEX_COLOR_PRIMARY
-              : HEX_COLOR_LIGHT,
-          color:
-            this.selectedHeroClass === heroClass
-              ? HEX_COLOR_LIGHT
-              : HEX_COLOR_PRIMARY,
+          strokeWidth: 2,
+          strokeColor: active ? HEX_COLOR_PRIMARY : HEX_COLOR_LIGHT,
+          color: active ? HEX_COLOR_LIGHT : HEX_COLOR_PRIMARY,
           radius: 10,
         }),
       );
@@ -117,12 +120,22 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
     card.add(icon, { proportion: 0, align: "center" });
     card.add(title, { proportion: 0, align: "center" });
     card.add(description, { proportion: 0, align: "center" });
+    card.layout();
+    this.cards[heroClass] = card;
 
     card
       .setInteractive()
       .on("pointerdown", () => {
         this.selectedHeroClass = heroClass;
         setSelectedHeroClass(heroClass);
+        Object.keys(this.cards).forEach((hc) => {
+          const c = this.cards[hc as HeroClass] as Sizer;
+          const bg = c.getChildren()[0] as RoundRectangle;
+          const active = hc === this.selectedHeroClass;
+          bg.setFillStyle(active ? HEX_COLOR_LIGHT : HEX_COLOR_PRIMARY);
+          bg.setStrokeStyle(2, active ? HEX_COLOR_PRIMARY : HEX_COLOR_LIGHT);
+        });
+        this.scrollablePanel.layout();
       })
       .layout();
 
