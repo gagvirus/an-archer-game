@@ -40,14 +40,7 @@ export class Preloader extends Scene implements ISceneLifecycle {
     this.load.atlas("ui", "ui.png", "ui.json");
     this.load.atlas("ui-icons", "ui-icons.png", "ui-icons.json");
 
-    this.load.spritesheet("hero", "hero/running.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-    this.load.spritesheet("hero_attack", "hero/attack.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
+    this.preloadHeroSpriteSheets();
     this.load.spritesheet("portal", "portal.png", {
       frameWidth: 190,
       frameHeight: 190,
@@ -116,13 +109,7 @@ export class Preloader extends Scene implements ISceneLifecycle {
   }
 
   private registerAnimations() {
-    // Define the idle animation
-    this.anims.create({
-      key: "idle",
-      frames: this.anims.generateFrameNumbers("hero", { start: 0, end: 1 }), // Adjust start and end based on your spritesheet
-      frameRate: 5, // Animation speed
-      repeat: -1, // Repeat indefinitely
-    });
+    this.registerHeroAnimations();
 
     // Define the portal animation
     this.anims.create({
@@ -213,25 +200,6 @@ export class Preloader extends Scene implements ISceneLifecycle {
       frameRate: 10, // Animation speed
     });
 
-    // Define the running animation
-    this.anims.create({
-      key: "run",
-      frames: this.anims.generateFrameNumbers("hero", { start: 8, end: 15 }), // Adjust start and end based on your spritesheet
-      frameRate: 5, // Animation speed
-      repeat: -1, // Repeat indefinitely
-    });
-
-    // Define the running animation
-    this.anims.create({
-      key: "hero_attack",
-      frames: this.anims.generateFrameNumbers("hero_attack", {
-        start: 24,
-        end: 29,
-      }), // Adjust start and end based on your spritesheet
-      frameRate: 5, // Animation speed
-      repeat: -1, // Repeat indefinitely
-    });
-
     // Create an animation using the custom texture
     this.anims.create({
       key: "skeleton_walk",
@@ -296,6 +264,47 @@ export class Preloader extends Scene implements ISceneLifecycle {
       })),
       frameRate: 10,
       repeat: -1,
+    });
+  }
+
+  private preloadHeroSpriteSheets() {
+    this.load.spritesheet("hero", "hero/running.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+
+    this.load.spritesheet("hero_attack", "hero/attack.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+  }
+
+  private registerHeroAnimations() {
+    // Define the idle animation
+    this.anims.create({
+      key: "idle",
+      frames: this.anims.generateFrameNumbers("hero", { start: 0, end: 1 }), // Adjust start and end based on your spritesheet
+      frameRate: 5, // Animation speed
+      repeat: -1, // Repeat indefinitely
+    });
+
+    // Define the running animation
+    this.anims.create({
+      key: "run",
+      frames: this.anims.generateFrameNumbers("hero", { start: 8, end: 15 }), // Adjust start and end based on your spritesheet
+      frameRate: 5, // Animation speed
+      repeat: -1, // Repeat indefinitely
+    });
+
+    // Define the running animation
+    this.anims.create({
+      key: "hero_attack",
+      frames: this.anims.generateFrameNumbers("hero_attack", {
+        start: 24,
+        end: 29,
+      }), // Adjust start and end based on your spritesheet
+      frameRate: 5, // Animation speed
+      repeat: -1, // Repeat indefinitely
     });
   }
 }
