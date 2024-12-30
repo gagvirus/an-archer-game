@@ -2,7 +2,10 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import { HEX_COLOR_LIGHT, HEX_COLOR_PRIMARY } from "../helpers/colors.ts";
-import { HeroClass, heroClasses } from "../helpers/hero-manager.ts";
+import HeroManager, {
+  HeroClass,
+  heroClasses,
+} from "../helpers/hero-manager.ts";
 import {
   getSelectedHeroClass,
   setSelectedHeroClass,
@@ -144,6 +147,7 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
       .on("pointerdown", () => {
         this.selectedHeroClass = heroClass;
         setSelectedHeroClass(heroClass);
+        HeroManager.getInstance(this).registerHeroAnimations();
         Object.keys(this.cards).forEach((hc) => {
           const c = this.cards[hc as HeroClass] as Sizer;
           const bg = c.getChildren()[0] as RoundRectangle;
