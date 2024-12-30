@@ -278,22 +278,30 @@ export class Preloader extends Scene implements ISceneLifecycle {
       "attack-normal",
       "attack-high",
     ];
-    this.load.spritesheet("hero", "hero/running.png", {
-      frameWidth: 64,
-      frameHeight: 64,
-    });
-
-    this.load.spritesheet("hero_attack", "hero/attack.png", {
-      frameWidth: 64,
-      frameHeight: 64,
+    colors.forEach((color) => {
+      sheets.forEach((sheet) => {
+        this.load.spritesheet(
+          `archer-${color}-${sheet}`,
+          `hero/archer-${color}/${sheet}.png`,
+          {
+            frameWidth: 64,
+            frameHeight: 64,
+          },
+        );
+      });
     });
   }
 
   private registerHeroAnimations() {
     // Define the idle animation
+    const activeColor = "green";
+
     this.anims.create({
       key: "idle",
-      frames: this.anims.generateFrameNumbers("hero", { start: 0, end: 1 }), // Adjust start and end based on your spritesheet
+      frames: this.anims.generateFrameNumbers(`archer-${activeColor}-running`, {
+        start: 0,
+        end: 1,
+      }), // Adjust start and end based on your spritesheet
       frameRate: 5, // Animation speed
       repeat: -1, // Repeat indefinitely
     });
@@ -301,7 +309,10 @@ export class Preloader extends Scene implements ISceneLifecycle {
     // Define the running animation
     this.anims.create({
       key: "run",
-      frames: this.anims.generateFrameNumbers("hero", { start: 8, end: 15 }), // Adjust start and end based on your spritesheet
+      frames: this.anims.generateFrameNumbers(`archer-${activeColor}-running`, {
+        start: 8,
+        end: 15,
+      }), // Adjust start and end based on your spritesheet
       frameRate: 5, // Animation speed
       repeat: -1, // Repeat indefinitely
     });
@@ -309,10 +320,13 @@ export class Preloader extends Scene implements ISceneLifecycle {
     // Define the running animation
     this.anims.create({
       key: "hero_attack",
-      frames: this.anims.generateFrameNumbers("hero_attack", {
-        start: 24,
-        end: 29,
-      }), // Adjust start and end based on your spritesheet
+      frames: this.anims.generateFrameNumbers(
+        `archer-${activeColor}-attack-normal`,
+        {
+          start: 24,
+          end: 29,
+        },
+      ), // Adjust start and end based on your spritesheet
       frameRate: 5, // Animation speed
       repeat: -1, // Repeat indefinitely
     });
