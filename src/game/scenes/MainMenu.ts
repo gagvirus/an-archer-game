@@ -10,27 +10,26 @@ export class MainMenu extends Scene implements ISceneLifecycle {
   }
 
   create() {
-    createCenteredText(this, "Main Menu", -300, 38, false);
-    createCenteredText(this, "Start Game", -100, 32, true).on(
+    createCenteredText(this, "Start Game", -100, 48, true).on(
       "pointerdown",
       () => {
         this.scene.start("MainScene");
       },
     );
-    createCenteredText(this, "Hero Select", 100, 32, true).on(
+    createCenteredText(this, "Hero Select", 50, 32, true).on(
       "pointerdown",
       () => {
         this.scene.start("HeroSelectScene");
       },
     );
-    createCenteredText(this, "Settings", 200, 32, true).on(
+    createCenteredText(this, "Settings", 125, 32, true).on(
       "pointerdown",
       () => {
         this.scene.start("SettingsScene");
       },
     );
 
-    createCenteredText(this, "Statistics", 300, 32, true).on(
+    createCenteredText(this, "Statistics", 200, 32, true).on(
       "pointerdown",
       () => {
         this.scene.start("StatisticsScene");
