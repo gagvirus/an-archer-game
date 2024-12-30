@@ -1,5 +1,10 @@
 ## Changelog
 
+### WIP
+
+- bugfix - stats not being shown correctly on game over screen
+
+
 ### v0.0.14
 
 - Showing game score on top-right corner
