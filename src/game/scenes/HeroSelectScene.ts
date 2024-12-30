@@ -2,11 +2,7 @@ import { Scene } from "phaser";
 import { EventBus } from "../EventBus.ts";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
 import { HEX_COLOR_LIGHT, HEX_COLOR_PRIMARY } from "../helpers/colors.ts";
-import {
-  HeroClass,
-  heroClasses,
-  HeroDefinition,
-} from "../helpers/hero-manager.ts";
+import { HeroClass, heroClasses } from "../helpers/hero-manager.ts";
 
 class HeroSelectScene extends Scene implements ISceneLifecycle {
   constructor() {
@@ -63,16 +59,18 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
     });
 
     heroes.forEach((heroClass) => {
-      const card = this.createHeroCard(heroClasses[heroClass]);
+      const card = this.createHeroCard(heroClass);
       gridSizer.add(card, { expand: false });
     });
 
     return gridSizer;
   }
 
-  private createHeroCard(hero: HeroDefinition) {
+  private createHeroCard(heroClass: HeroClass) {
+    const hero = heroClasses[heroClass];
+    const heroDescription = `${heroClass} description`;
+    const heroPreviewIcon = `archer-${hero.color}-running`;
     const width = (this.scale.width - 200) / 4;
-    console.log(width);
     const height = 250;
 
     const card = this.rexUI.add
@@ -91,14 +89,14 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
       );
 
     const icon = this.add
-      .image(0, 0, hero.icon)
+      .sprite(0, 0, heroPreviewIcon, 0)
       .setDisplaySize(80, 80)
       .setOrigin(0.5);
-    const title = this.add.text(0, 0, hero.name, {
+    const title = this.add.text(0, 0, heroClass, {
       fontSize: "18px",
       color: "#ffffff",
     });
-    const description = this.add.text(0, 0, hero.description, {
+    const description = this.add.text(0, 0, heroDescription, {
       fontSize: "14px",
       color: "#cccccc",
       wordWrap: { width: width - 20 },
