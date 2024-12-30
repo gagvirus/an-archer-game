@@ -8,6 +8,14 @@ import {
 import { VectorZeroes } from "../helpers/position-helper.ts";
 import { Scene } from "phaser";
 import { ISceneLifecycle } from "../ISceneLifecycle.ts";
+import {
+  isAutoAttackEnabled,
+  isAutoEnterPortal,
+  isDebugMode,
+  isEasyMode,
+  isMultipleResourceDropsEnabled,
+  isRapidLevelUp,
+} from "../helpers/registry-helper.ts";
 import Rectangle = Phaser.GameObjects.Rectangle;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -203,13 +211,12 @@ class SettingsScene extends Scene implements ISceneLifecycle {
   }
 
   private loadStoredSettingsValues() {
-    this.debugMode = this.game.registry.get("debugMode") == "true";
-    this.autoAttack = this.game.registry.get("autoAttack") == "true";
-    this.easyMode = this.game.registry.get("easyMode") == "true";
-    this.rapidLevelUp = this.game.registry.get("rapidLevelUp") == "true";
-    this.autoEnterPortal = this.game.registry.get("autoEnterPortal") == "true";
-    this.multipleResourceDrops =
-      this.game.registry.get("multipleResourceDrops") == "true";
+    this.debugMode = isDebugMode();
+    this.autoAttack = isAutoAttackEnabled();
+    this.easyMode = isEasyMode();
+    this.rapidLevelUp = isRapidLevelUp();
+    this.autoEnterPortal = isAutoEnterPortal();
+    this.multipleResourceDrops = isMultipleResourceDropsEnabled();
   }
 }
 
