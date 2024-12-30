@@ -10,6 +10,7 @@ import {
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import { createText } from "../helpers/text-helpers.ts";
 import RoundRectangle = UIPlugin.RoundRectangle;
 
 class HeroSelectScene extends Scene implements ISceneLifecycle {
@@ -24,6 +25,21 @@ class HeroSelectScene extends Scene implements ISceneLifecycle {
   create() {
     this.selectedHeroClass = getSelectedHeroClass();
     this.renderHeroSelectionCards();
+
+    createText(
+      this,
+      "Go Back",
+      {
+        x: 100,
+        y: this.scale.height - 100,
+      },
+      20,
+    )
+      .setInteractive()
+      .on("pointerdown", () => {
+        this.scene.start("MainMenu");
+      });
+
     EventBus.emit("current-scene-ready", this);
   }
 
