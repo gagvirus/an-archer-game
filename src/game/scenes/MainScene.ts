@@ -4,8 +4,6 @@ import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import GameObjectWithBody = Phaser.Types.Physics.Arcade.GameObjectWithBody;
 import Tile = Phaser.Tilemaps.Tile;
-import { Scene } from "phaser";
-import Hero from "../game-objects/Hero.ts";
 import Enemy from "../game-objects/Enemy.ts";
 import {
   getRandomPositionAwayFromPoint,
@@ -16,24 +14,17 @@ import { createAnimatedText } from "../helpers/text-helpers.ts";
 import Portal from "../game-objects/Portal.ts";
 import Tower from "../game-objects/Tower.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
-import { createCursorKeys } from "../helpers/keyboard-helper.ts";
-import ModuleManager, { Module } from "../modules/module-manager.ts";
-import FpsCounterModule from "../modules/fps-counter-module.ts";
-import DpsIndicatorModule from "../modules/dps-indicator-module.ts";
-import LogModule from "../modules/log-module.ts";
 import { COLOR_WARNING } from "../helpers/colors.ts";
 import {
   isDebugMode,
   isMultipleResourceDropsEnabled,
 } from "../helpers/registry-helper.ts";
-import StageInfoModule from "../modules/stage-info-module.ts";
 import { Coin } from "../game-objects/drop/resource/Coin.ts";
 import { Soul } from "../game-objects/drop/resource/Soul.ts";
 import {
   Resource,
   ResourceType,
 } from "../game-objects/drop/resource/Resource.ts";
-import ResourceListModule from "../modules/resource-list-module.ts";
 import {
   getRandomItem,
   getRandomNumberBetweenRange,
@@ -47,23 +38,16 @@ import { powerups } from "../game-objects/drop/powerup/powerups.ts";
 import DoubleDamage from "../game-objects/drop/powerup/timed/DoubleDamage.ts";
 import DoubleSpeed from "../game-objects/drop/powerup/timed/DoubleSpeed.ts";
 import Invulnerability from "../game-objects/drop/powerup/timed/Invulnerability.ts";
-import ActiveEffectsModule from "../modules/active-effects-module.ts";
-import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";
-import ScoreModule from "../modules/score-module.ts";
-import { addStatistic, resetStatistics } from "../helpers/accessors.ts";
+import { addStatistic } from "../helpers/accessors.ts";
+import AbstractGameplayScene from "./AbstractGameplayScene.ts";
+import { Module } from "../modules/module-manager.ts";
+import StageInfoModule from "../modules/stage-info-module.ts";
 
-class MainScene extends Scene implements ISceneLifecycle {
-  private moduleManager!: ModuleManager;
-
+class MainScene extends AbstractGameplayScene {
   stage: number;
-  enemies: Group;
-  hero: Hero;
   portal: Portal;
   buildings: Group;
-  drops: Group;
-  dropsFollowing: Group;
-  playingSince: number;
 
   constructor() {
     // Call the Phaser.Scene constructor and pass the scene key
@@ -72,15 +56,9 @@ class MainScene extends Scene implements ISceneLifecycle {
 
   // Create game objects
   create() {
-    // Initialize the module manager
-    this.moduleManager = ModuleManager.getInstance(this);
-    // Initialize the hero in the center of the canvas
-    this.hero = new Hero(this, this.scale.width / 2, this.scale.height / 2);
+    super.create();
     // initialize the portal
     this.portal = new Portal(this, 400, 400, this.hero);
-
-    this.drops = this.physics.add.group();
-    this.dropsFollowing = this.physics.add.group();
 
     if (isDebugMode()) {
       this.drops.add(new Magnet(this, 150, 150));
@@ -100,34 +78,6 @@ class MainScene extends Scene implements ISceneLifecycle {
       undefined,
       this,
     );
-
-    // Register modules
-    this.moduleManager.register(Module.fpsCounter, new FpsCounterModule(this));
-    this.moduleManager.register(
-      Module.dpsIndicator,
-      new DpsIndicatorModule(this, this.hero),
-    );
-    this.moduleManager.register(Module.score, new ScoreModule(this));
-    this.moduleManager.register(Module.stageInfo, new StageInfoModule(this));
-    this.moduleManager.register(
-      Module.resourceList,
-      new ResourceListModule(this, this.hero),
-    );
-    this.moduleManager.register(
-      Module.activeEffects,
-      new ActiveEffectsModule(this),
-    );
-    // cleanup any previous logs
-    LogModule.cleanEntries();
-    this.moduleManager.register(Module.logs, new LogModule(this));
-    // Enable the FPS counter initially
-    this.moduleManager.enable(Module.fpsCounter);
-    this.moduleManager.enable(Module.dpsIndicator);
-    this.moduleManager.enable(Module.stageInfo);
-    this.moduleManager.enable(Module.resourceList);
-    this.moduleManager.enable(Module.activeEffects);
-    this.moduleManager.enable(Module.logs);
-    this.moduleManager.enable(Module.score);
 
     this.stage = 1;
     this.scene
@@ -149,20 +99,10 @@ class MainScene extends Scene implements ISceneLifecycle {
     this.events.on("powerupEnded", () => this.recalculateStats());
 
     // Initialize enemy group
-    this.enemies = this.physics.add.group(); // Group to hold all enemies
-
     this.buildings = this.physics.add.group();
-
-    this.events.on("resume", () => this.onResume());
-    this.events.on("shutdown", () => this.onShutdown());
 
     // Listener for keyboard inputs
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        this.onPause();
-        this.scene.launch("PauseMenu");
-      }
-
       if (event.key === "b") {
         this.onPause();
         // get disabled tiles and pass to build scene
@@ -179,22 +119,6 @@ class MainScene extends Scene implements ISceneLifecycle {
         if (event.key === "m") {
           this.magnetEffect();
         }
-
-        if (event.key === "k") {
-          this.hero.attackable.takeDamage(Infinity);
-        }
-      }
-
-      if (event.key == "f") {
-        this.moduleManager.toggle(Module.fpsCounter);
-      }
-
-      if (event.key == "g") {
-        this.moduleManager.toggle(Module.dpsIndicator);
-      }
-
-      if (event.key == "l") {
-        this.moduleManager.toggle(Module.logs);
       }
     });
     this.startStage();
@@ -202,9 +126,16 @@ class MainScene extends Scene implements ISceneLifecycle {
     new UiIcon(this, 50, this.scale.height - 50, "hand-sparkle")
       .setInteractive()
       .on("pointerdown", () => this.openStatsScreen());
+  }
 
-    this.children.bringToTop(this.hero);
-    this.playingSince = Date.now();
+  onShutdown() {
+    super.onShutdown();
+    this.moduleManager.disable(Module.stageInfo);
+  }
+
+  update(time: number, delta: number) {
+    super.update(time, delta);
+    this.portal.update();
   }
 
   onResourcePull(
@@ -216,37 +147,6 @@ class MainScene extends Scene implements ISceneLifecycle {
       (resource as Resource).setStartedPulling();
       this.dropsFollowing.add(resource as GameObject);
     }
-  }
-
-  dropsFollowHero() {
-    this.dropsFollowing.getChildren().forEach((gameObject) => {
-      // Calculate the direction to pull the resource
-      const drop: Drop = gameObject as Drop;
-      const { x, y, startedPulling } = drop;
-      const { body } = drop as GameObjectWithBody;
-
-      const elapsedTime = (Date.now() - startedPulling) / 1000;
-      const angle = Phaser.Math.Angle.Between(x, y, this.hero.x, this.hero.y);
-
-      const pullX = Math.cos(angle) * this.hero.pullForce * elapsedTime;
-      const pullY = Math.sin(angle) * this.hero.pullForce * elapsedTime;
-
-      body.velocity.x = pullX;
-      body.velocity.y = pullY;
-
-      // Check if the resource is within collectDistance
-      const distance = Phaser.Math.Distance.Between(
-        this.hero.x,
-        this.hero.y,
-        x,
-        y,
-      );
-      if (distance < this.hero.collectDistance) {
-        drop.onCollected();
-        this.dropsFollowing.remove(drop as Resource, true, true);
-        this.drops.remove(drop as Resource);
-      }
-    });
   }
 
   spawnSoul(x: number, y: number, amount: number = 1) {
@@ -310,38 +210,6 @@ class MainScene extends Scene implements ISceneLifecycle {
         (drop as GameObjectWithBody)?.body?.velocity.set(0, 0);
       },
     });
-  }
-
-  onPause() {
-    this.scene.pause();
-    this.hero.attackable.stopRegeneration();
-    this.events.emit("GamePaused");
-    addStatistic(
-      "secondsPlayed",
-      Math.round((Date.now() - this.playingSince) / 1000),
-    );
-  }
-
-  onResume() {
-    this.hero.attackable.registerHealthRegenerationIfNecessary();
-    this.events.emit("GameResumed");
-    this.playingSince = Date.now();
-  }
-
-  onShutdown() {
-    this.moduleManager.disable(Module.fpsCounter);
-    this.moduleManager.disable(Module.dpsIndicator);
-    this.moduleManager.disable(Module.stageInfo);
-    this.moduleManager.disable(Module.resourceList);
-    this.moduleManager.disable(Module.activeEffects);
-    this.moduleManager.disable(Module.logs);
-    this.hero.attackable.stopRegeneration();
-    addStatistic(
-      "secondsPlayed",
-      Math.round((Date.now() - this.playingSince) / 1000),
-    );
-    // this shall happen when player moves to main menu, or dies
-    resetStatistics();
   }
 
   getOccupiedTiles() {
@@ -449,22 +317,10 @@ class MainScene extends Scene implements ISceneLifecycle {
     );
   }
 
-  // Update game state (called every frame)
-  update(time: number, delta: number) {
-    this.moduleManager.update();
-
-    // Make enemies move towards the hero and avoid collision with each other
-    this.enemies.getChildren().forEach((gameObject: GameObject) => {
-      (gameObject as Enemy).update(time, delta);
-    });
-
-    const cursors = createCursorKeys(this);
-
-    // Update hero based on input
-    this.hero.update(cursors, time, delta);
-
-    this.portal.update();
-    this.dropsFollowHero();
+  protected registerAndEnableModules() {
+    super.registerAndEnableModules();
+    this.moduleManager.register(Module.stageInfo, new StageInfoModule(this));
+    this.moduleManager.enable(Module.stageInfo);
   }
 
   get enemiesForStage() {

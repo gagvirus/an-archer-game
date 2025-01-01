@@ -14,6 +14,7 @@ import {
 import { showDamage, showEvaded } from "../helpers/text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
 import { addStatistic } from "../helpers/accessors.ts";
+import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.Physics.Arcade.Group;
@@ -161,7 +162,7 @@ class Enemy extends Sprite {
   // @ts-expect-error we *must* receive time
   update(time: number, delta: number) {
     this.move();
-    this.avoidCollision((this.scene as MainScene).enemies, 50);
+    this.avoidCollision((this.scene as AbstractGameplayScene).enemies, 50);
     this.avoidCollision((this.scene as MainScene).buildings, 50);
     this.attackable.update(delta);
   }
