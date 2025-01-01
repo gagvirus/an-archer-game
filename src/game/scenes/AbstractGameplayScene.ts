@@ -150,7 +150,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     this.moduleManager.enable(Module.score);
   }
 
-  private registerEventListeners() {
+  protected registerEventListeners() {
     this.events.on("resume", () => this.onResume());
     this.events.on("shutdown", () => this.onShutdown());
 
