@@ -1,6 +1,6 @@
 import { AttributeLayer } from "../attribute-layer.ts";
 import { Attributes } from "../attributes.ts";
-import { PowerupType } from "../../logic/drop/powerup/timed/powerupType.ts";
+import { PowerupType } from "../../game-objects/drop/powerup/timed/powerupType.ts";
 
 export class PowerupsLayer implements AttributeLayer {
   invincibilityActive: boolean = false;

@@ -5,16 +5,16 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 import GameObjectWithBody = Phaser.Types.Physics.Arcade.GameObjectWithBody;
 import Tile = Phaser.Tilemaps.Tile;
 import { Scene } from "phaser";
-import Hero from "../logic/Hero.ts";
-import Enemy from "../logic/Enemy.ts";
+import Hero from "../game-objects/Hero.ts";
+import Enemy from "../game-objects/Enemy.ts";
 import {
   getRandomPositionAwayFromPoint,
   getTileCoordinate,
   TILE_SIZE,
 } from "../helpers/position-helper.ts";
 import { createAnimatedText } from "../helpers/text-helpers.ts";
-import Portal from "../logic/Portal.ts";
-import Tower from "../logic/Tower.ts";
+import Portal from "../game-objects/Portal.ts";
+import Tower from "../game-objects/Tower.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
 import { createCursorKeys } from "../helpers/keyboard-helper.ts";
 import ModuleManager, { Module } from "../modules/module-manager.ts";
@@ -27,23 +27,26 @@ import {
   isMultipleResourceDropsEnabled,
 } from "../helpers/registry-helper.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
-import { Coin } from "../logic/drop/resource/Coin.ts";
-import { Soul } from "../logic/drop/resource/Soul.ts";
-import { Resource, ResourceType } from "../logic/drop/resource/Resource.ts";
+import { Coin } from "../game-objects/drop/resource/Coin.ts";
+import { Soul } from "../game-objects/drop/resource/Soul.ts";
+import {
+  Resource,
+  ResourceType,
+} from "../game-objects/drop/resource/Resource.ts";
 import ResourceListModule from "../modules/resource-list-module.ts";
 import {
   getRandomItem,
   getRandomNumberBetweenRange,
   randomChance,
 } from "../helpers/random-helper.ts";
-import { ResourceDropChance } from "../logic/enemies.ts";
-import Magnet from "../logic/drop/powerup/Magnet.ts";
-import { Drop } from "../logic/drop/Drop.ts";
+import { ResourceDropChance } from "../game-objects/enemies.ts";
+import Magnet from "../game-objects/drop/powerup/Magnet.ts";
+import { Drop } from "../game-objects/drop/Drop.ts";
 
-import { powerups } from "../logic/drop/powerup/powerups.ts";
-import DoubleDamage from "../logic/drop/powerup/timed/DoubleDamage.ts";
-import DoubleSpeed from "../logic/drop/powerup/timed/DoubleSpeed.ts";
-import Invulnerability from "../logic/drop/powerup/timed/Invulnerability.ts";
+import { powerups } from "../game-objects/drop/powerup/powerups.ts";
+import DoubleDamage from "../game-objects/drop/powerup/timed/DoubleDamage.ts";
+import DoubleSpeed from "../game-objects/drop/powerup/timed/DoubleSpeed.ts";
+import Invulnerability from "../game-objects/drop/powerup/timed/Invulnerability.ts";
 import ActiveEffectsModule from "../modules/active-effects-module.ts";
 import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import UiIcon from "../ui/icon.ts";

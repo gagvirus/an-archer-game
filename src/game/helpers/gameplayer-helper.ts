@@ -1,11 +1,11 @@
-import HealthBar from "../logic/HealthBar.ts";
-import XpBar from "../logic/XpBar.ts";
+import HealthBar from "../game-objects/HealthBar.ts";
+import XpBar from "../game-objects/XpBar.ts";
 import { Scene } from "phaser";
 import { showGainedXp, showReplenishedHealth } from "./text-helpers.ts";
 import { addLogEntry, LogEntryCategory } from "./log-utils.ts";
 import { COLOR_SUCCESS, COLOR_WARNING } from "./colors.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
-import Enemy from "../logic/Enemy.ts";
+import Enemy from "../game-objects/Enemy.ts";
 import { addScore, addStatistic } from "./accessors.ts";
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;

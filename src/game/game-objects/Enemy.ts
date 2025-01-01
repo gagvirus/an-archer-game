@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Hero from "./Hero";
+import Hero from "./Hero.ts";
 import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
 import { Attackable } from "../helpers/gameplayer-helper.ts";

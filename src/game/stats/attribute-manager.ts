@@ -10,7 +10,7 @@ import coreStats, { CoreStat, StatType } from "../helpers/stats.ts";
 import FinalLayer from "./layers/60-final-layer.ts";
 import { DifficultyLayer } from "./layers/50-difficulty-layer.ts";
 import { Scene } from "phaser";
-import { PowerupType } from "../logic/drop/powerup/timed/powerupType.ts";
+import { PowerupType } from "../game-objects/drop/powerup/timed/powerupType.ts";
 import { HeroClass } from "../helpers/hero-manager.ts";
 import { getSelectedHeroClass } from "../helpers/registry-helper.ts";
 

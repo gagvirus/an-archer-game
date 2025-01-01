@@ -30,12 +30,12 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   pullForce: number = 200;
   collectDistance: number = 25;
   collectLootCircle: Arc;
+  walkSpeed: number;
+  public attributes: AttributeManager;
   private resources: { [key in ResourceType]: number } = {
     [ResourceType.soul]: 0,
     [ResourceType.coin]: 0,
   };
-  walkSpeed: number;
-  public attributes: AttributeManager;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, "hero"); // 'hero' is the key for the hero sprite
@@ -100,14 +100,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
   }
 
-  collectResource(name: ResourceType, amount: number = 1) {
-    this.resources[name] += amount;
-  }
-
-  getResources() {
-    return this.resources;
-  }
-
   get attackDamage() {
     // todo: remove this perhaps
     return this.attributes.damage;
@@ -126,6 +118,38 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   get damagePerSecond() {
     // todo: remove this perhaps
     return this.attributes.getDps();
+  }
+
+  get statPointsToGrant() {
+    if (this._level % 100 < 1) {
+      // on level 100, 200... grant 50 points
+      return 50;
+    }
+    if (this._level % 50 < 1) {
+      // on level 50, 150... grant 20 points
+      return 25;
+    }
+    if (this._level % 25 < 1) {
+      // on level 25, 75, 125... grant 10 points
+      return 10;
+    }
+    if (this._level % 10 < 1) {
+      // on level 10, 20... grant 5 points
+      return 5;
+    }
+    if (this._level % 5 < 1) {
+      // on level 5, 15, 35... grant 3 points
+      return 3;
+    }
+    return 1;
+  }
+
+  collectResource(name: ResourceType, amount: number = 1) {
+    this.resources[name] += amount;
+  }
+
+  getResources() {
+    return this.resources;
   }
 
   onLevelUp = (newLevel: number) => {
@@ -156,30 +180,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.xpManager.xpBar.setUnallocatedStats(this.attributes.unallocatedStats);
     this.scene.events.emit("levelUp");
   };
-
-  get statPointsToGrant() {
-    if (this._level % 100 < 1) {
-      // on level 100, 200... grant 50 points
-      return 50;
-    }
-    if (this._level % 50 < 1) {
-      // on level 50, 150... grant 20 points
-      return 25;
-    }
-    if (this._level % 25 < 1) {
-      // on level 25, 75, 125... grant 10 points
-      return 10;
-    }
-    if (this._level % 10 < 1) {
-      // on level 10, 20... grant 5 points
-      return 5;
-    }
-    if (this._level % 5 < 1) {
-      // on level 5, 15, 35... grant 3 points
-      return 3;
-    }
-    return 1;
-  }
 
   initXpBar = (level: number, currentXp: number, xpToNextLevel: number) =>
     new XpBar(

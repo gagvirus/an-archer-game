@@ -8,7 +8,7 @@ import {
 import { Scene } from "phaser";
 import { createText, formatNumber } from "../../helpers/text-helpers.ts";
 import { VectorZeroes } from "../../helpers/position-helper.ts";
-import { ResourceType } from "../../logic/drop/resource/Resource.ts";
+import { ResourceType } from "../../game-objects/drop/resource/Resource.ts";
 import { getStatistic } from "../../helpers/accessors.ts";
 
 class GameStatisticsPartial implements Renderable {

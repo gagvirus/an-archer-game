@@ -1,7 +1,7 @@
 import { Scene } from "phaser";
 import { ISceneLifecycle } from "./contracts/ISceneLifecycle.ts";
 import { createCursorKeys } from "../helpers/keyboard-helper.ts";
-import Hero from "../logic/Hero.ts";
+import Hero from "../game-objects/Hero.ts";
 
 class PlaygroundScene extends Scene implements ISceneLifecycle {
   private hero: Hero;

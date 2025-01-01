@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import Tower from "../logic/Tower.ts";
+import Tower from "../game-objects/Tower.ts";
 import {
   dampPosition,
   getTileCoordinate,

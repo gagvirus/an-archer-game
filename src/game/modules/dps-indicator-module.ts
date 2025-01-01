@@ -1,6 +1,6 @@
 import { createText, formatNumber } from "../helpers/text-helpers.ts";
 import { Scene } from "phaser";
-import Hero from "../logic/Hero.ts";
+import Hero from "../game-objects/Hero.ts";
 import { AbstractModule } from "./module-manager.ts";
 
 class DpsIndicatorModule extends AbstractModule {

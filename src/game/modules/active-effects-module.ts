@@ -6,7 +6,7 @@ import UiHelper from "../helpers/ui-helper.ts";
 import {
   PowerupIconMap,
   PowerupType,
-} from "../logic/drop/powerup/timed/powerupType.ts";
+} from "../game-objects/drop/powerup/timed/powerupType.ts";
 import { createAnimatedSprite } from "../helpers/text-helpers.ts";
 import Sizer = UIPlugin.Sizer;
 import Sprite = Phaser.GameObjects.Sprite;

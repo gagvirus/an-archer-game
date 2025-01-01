@@ -1,8 +1,8 @@
 import { createText, formatNumber } from "../helpers/text-helpers.ts";
 import { Scene } from "phaser";
-import Hero from "../logic/Hero.ts";
+import Hero from "../game-objects/Hero.ts";
 import { AbstractModule } from "./module-manager.ts";
-import { ResourceType } from "../logic/drop/resource/Resource.ts";
+import { ResourceType } from "../game-objects/drop/resource/Resource.ts";
 import ScrollablePanel from "phaser3-rex-plugins/templates/ui/scrollablepanel/ScrollablePanel";
 import Sizer from "phaser3-rex-plugins/templates/ui/sizer/Sizer";
 import UiHelper from "../helpers/ui-helper.ts";

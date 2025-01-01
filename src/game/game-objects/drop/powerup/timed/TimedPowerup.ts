@@ -10,8 +10,6 @@ abstract class TimedPowerup extends Powerup {
   remainingDurationSeconds?: number;
   private timeout: number;
 
-  abstract get powerupType(): PowerupType;
-
   protected constructor(scene: Scene, x: number, y: number, name: string) {
     super(scene, x, y, name);
     (this.scene as MainScene).events
@@ -31,6 +29,8 @@ abstract class TimedPowerup extends Powerup {
         }
       });
   }
+
+  abstract get powerupType(): PowerupType;
 
   applyEffect(scene: MainScene): void {
     scene.hero.attributes.setPowerupActive(this.powerupType, true);
