@@ -74,7 +74,7 @@ class Enemy extends Sprite {
         new HealthBar(scene, this, 40, 5, maxHealth, { x: -20, y: -30 }),
       () => {
         this.destroy();
-        scene.onEnemyKilled(this);
+        scene.events.emit("enemyKilled", { enemy: this });
       },
       () => {
         const isEvaded = randomChance(this.hero.attributes.evadeChance);

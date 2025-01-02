@@ -97,6 +97,9 @@ class MainScene extends AbstractGameplayScene {
       .events.on("statsUpdated", () => this.recalculateStats());
     this.events.on("powerupCollected", () => this.recalculateStats());
     this.events.on("powerupEnded", () => this.recalculateStats());
+    this.events.on("enemyKilled", (data: { enemy: Enemy }) =>
+      this.onEnemyKilled(data.enemy),
+    );
 
     // Initialize enemy group
     this.buildings = this.physics.add.group();
