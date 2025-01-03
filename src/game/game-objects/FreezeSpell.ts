@@ -54,6 +54,7 @@ class FreezeSpell extends Container {
       "effects_blue",
       index,
     );
+    // todo:  ice shall follow the target
     target.speed *= 0.1;
   }
 
