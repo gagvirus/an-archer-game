@@ -4,7 +4,7 @@ import AbstractProjectile from "./AbstractProjectile.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
-export class Arrow extends AbstractProjectile {
+export class TargetedArrow extends AbstractProjectile {
   target: Attackable;
   targetPosition: Vector2Like;
 
@@ -33,4 +33,4 @@ export class Arrow extends AbstractProjectile {
   }
 }
 
-export default Arrow;
+export default TargetedArrow;
