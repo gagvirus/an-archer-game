@@ -87,6 +87,7 @@ class PlaygroundScene extends AbstractGameplayScene {
         10,
         angle,
         distance,
+        this.enemies,
       );
       this.arrows.add(arrow);
     }
