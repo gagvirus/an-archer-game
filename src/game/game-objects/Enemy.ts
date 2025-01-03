@@ -38,7 +38,6 @@ class Enemy extends Sprite {
   // that will become when the arrow hits the enemy, so we would be able to determine whether it's about to be killed
   soonToBeHealth: number;
   drops: EnemyDrops;
-
   constructor(
     scene: AbstractGameplayScene,
     x: number,
@@ -65,6 +64,7 @@ class Enemy extends Sprite {
       0.3,
     );
     this.attackRadiusCircle.setVisible(isDebugMode());
+    this._instanceId = Phaser.Math.RND.uuid();
 
     this.attackCooldown = 0;
     // Create a health bar for the enemy
@@ -126,6 +126,12 @@ class Enemy extends Sprite {
       },
       this,
     );
+  }
+
+  private _instanceId: string;
+
+  get instanceId() {
+    return this._instanceId;
   }
 
   get isToBeKilled() {

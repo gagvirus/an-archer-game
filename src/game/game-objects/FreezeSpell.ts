@@ -4,12 +4,19 @@ import Phaser from "phaser";
 import Container = Phaser.GameObjects.Container;
 import Group = Phaser.Physics.Arcade.Group;
 import GameObject = Phaser.GameObjects.GameObject;
-import Vector2Like = Phaser.Types.Math.Vector2Like;
+import Sprite = Phaser.GameObjects.Sprite;
+
+interface Target extends GameObject {
+  x: number;
+  y: number;
+  instanceId: string;
+}
 
 class FreezeSpell extends Container {
   private owner: Attackable;
   private frozenTargets: Group;
   private thawingTargets: Group;
+  private iceList: Record<string, Sprite> = {};
   private readonly sphereRadius: number = 250;
   private readonly thawingTime: number = 2500;
 
@@ -28,8 +35,8 @@ class FreezeSpell extends Container {
     scene.physics.add.overlap(
       sphere,
       targets,
-      (_, enemy) => {
-        this.handleCollision(enemy as GameObject);
+      (_, target) => {
+        this.handleCollision(target as Target);
       },
       undefined,
       this,
@@ -38,9 +45,19 @@ class FreezeSpell extends Container {
     this.add(sphere);
   }
 
-  createIce(position: Vector2Like) {
+  createIce(target: Target) {
     const index = 37;
-    this.scene.add.sprite(position.x, position.y, "effects_blue", index);
+    this.iceList[target.instanceId] = this.scene.add.sprite(
+      target.x,
+      target.y,
+      "effects_blue",
+      index,
+    );
+  }
+
+  removeIce(target: Target) {
+    this.iceList[target.instanceId].destroy();
+    delete this.iceList[target.instanceId];
   }
 
   update() {
@@ -48,28 +65,29 @@ class FreezeSpell extends Container {
     this.checkTargets();
   }
 
-  private handleCollision(target: GameObject) {
+  private handleCollision(target: Target) {
     if (
       !this.frozenTargets.contains(target) &&
       !this.thawingTargets.contains(target)
     ) {
       this.frozenTargets.add(target);
-      this.createIce(target as unknown as Vector2Like);
-      console.log(`freezing ${target.name}`);
+      this.createIce(target);
     }
   }
 
   private checkTargets() {
     this.frozenTargets.getChildren().forEach((frozenTarget: GameObject) => {
-      const { x, y } = frozenTarget as unknown as Vector2Like;
+      const target = frozenTarget as Target;
+      const { x, y } = target;
       const distance = Phaser.Math.Distance.Between(this.x, this.y, x, y);
       if (distance > this.sphereRadius) {
-        this.frozenTargets.remove(frozenTarget);
-        this.thawingTargets.add(frozenTarget);
+        this.frozenTargets.remove(target);
+        this.thawingTargets.add(target);
         this.scene.time.delayedCall(
           this.thawingTime,
           () => {
-            this.thawingTargets.remove(frozenTarget);
+            this.thawingTargets.remove(target);
+            this.removeIce(target);
           },
           [],
           this,
