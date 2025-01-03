@@ -87,6 +87,11 @@ export class Preloader extends Scene implements ISceneLifecycle {
       frameHeight: 32,
     });
 
+    this.load.spritesheet("dummy", "enemy/dummy/dummy.png", {
+      frameWidth: 32,
+      frameHeight: 32,
+    });
+
     for (let i = 1; i <= 6; i++) {
       this.load.image(`skeleton_walk_${i}`, `enemy/skeleton/walk_${i}.png`);
       this.load.image(
@@ -214,6 +219,11 @@ export class Preloader extends Scene implements ISceneLifecycle {
       })),
       frameRate: 10,
       repeat: -1,
+    });
+
+    this.anims.create({
+      key: "dummy_walk",
+      frames: this.anims.generateFrameNumbers("dummy", { start: 0, end: 0 }),
     });
 
     // Create an animation using the custom texture

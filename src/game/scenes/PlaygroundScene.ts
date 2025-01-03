@@ -37,7 +37,7 @@ class PlaygroundScene extends AbstractGameplayScene {
       name: "Dummy",
       scale: 1,
       speed: 0,
-      type: "imp",
+      type: "dummy",
       weight: 0,
       xpAmount: 0,
     };

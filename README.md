@@ -43,6 +43,7 @@ This project utilizes the following resources:
   - [Input Prompts Pixel 16×](https://kenney.nl/assets/input-prompts-pixel-16)
   - [UI Pack - Pixel Adventure](https://kenney.nl/assets/ui-pack-pixel-adventure)
   - [Pixel Icons and Game controller 2](https://disven.itch.io/pixel-icons-and-game-controller-2)
+  - [2d Pixel Art Training Dummy Sprites](https://elthen.itch.io/2d-pixel-art-training-dummy)
 
 - Free assets that might be useful
   - [Kyrise's Free 16x16 RPG Icon Pack](https://kyrise.itch.io/kyrises-free-16x16-rpg-icon-pack)
@@ -50,3 +51,4 @@ This project utilizes the following resources:
   - [NPC Pack 2D Pixel Art](https://xzany.itch.io/npc-characters-2d-pixel-art)
   - [Pocket Inventory Series #5 : Player Status](https://humblepixel.itch.io/pocket-inventory-series-5-player-status)
   - [Coins & Gems & Chests & More](https://greatdocbrown.itch.io/coins-gems-etc)
+  - [Traders Top Down Asset Pack](https://pixivan.itch.io/traders-top-down-npc)
