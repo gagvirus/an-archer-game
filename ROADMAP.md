@@ -33,6 +33,11 @@
 
 - Achievements
   - To be detailed
+  - global achievements
+  - per-game achievements
+  - show achievement progress
+  - achievements shall grant something
+  - progress of all achievements (10/200)
 - Leaderboards
   - 1st Step - Local - Table containing the following columns:
     - name (just "Hero" for now)
