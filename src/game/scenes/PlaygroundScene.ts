@@ -4,11 +4,13 @@ import { EnemyDef } from "../game-objects/enemies.ts";
 import { DirectionalArrow } from "../game-objects/DirectionalArrow.ts";
 import { randomChance } from "../helpers/random-helper.ts";
 import TargetedArrow from "../game-objects/TargetedArrow.ts";
+import FreezeSpell from "../game-objects/FreezeSpell.ts";
 import Group = Phaser.GameObjects.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
 class PlaygroundScene extends AbstractGameplayScene {
   private arrows: Group;
+  private freezeSpell?: FreezeSpell;
   constructor() {
     super("PlaygroundScene");
   }
@@ -24,6 +26,7 @@ class PlaygroundScene extends AbstractGameplayScene {
     this.arrows.getChildren().forEach((gameObject: GameObject) => {
       (gameObject as TargetedArrow).update();
     });
+    this.freezeSpell?.update();
   }
 
   protected registerEventListeners() {
@@ -42,7 +45,12 @@ class PlaygroundScene extends AbstractGameplayScene {
   }
 
   private freeze() {
-    this.barrage();
+    if (!this.freezeSpell) {
+      this.freezeSpell = new FreezeSpell(this, this.hero.attackable);
+    } else {
+      this.freezeSpell.destroy();
+      this.freezeSpell = undefined;
+    }
   }
 
   private createDummyEnemy() {
