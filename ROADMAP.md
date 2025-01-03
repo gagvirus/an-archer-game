@@ -38,6 +38,33 @@
   - show achievement progress
   - achievements shall grant something
   - progress of all achievements (10/200)
+- city view
+  - in the city shall be multiple activities
+  - gameplay similar to combat, stroll around
+  - talk to NPCs
+    - merchant
+    - blacksmith
+    - etc
+  - ability to purchase home
+- home view
+  - ability to upgrade home
+    - number of trophies on display
+    - number of relics to display
+- challenge modifiers
+  - unlocks after some time (for example going through stage 100)
+  - can be unlocked with money
+  - each challenge modifier makes the game more challenging, but increases the rewards
+- relics
+  - ability to find relics
+    - during combat
+    - or purchase from merchant
+  - relics shall be stored in a "diablo-like" inventory
+  - each relic gives some passive boost
+- trophies
+  - after killing an elite enemy / boss, collect it's head
+  - can sell for huge money
+  - keep for passive buff
+  - trophy is randomized
 - Leaderboards
   - 1st Step - Local - Table containing the following columns:
     - name (just "Hero" for now)
