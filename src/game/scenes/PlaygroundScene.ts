@@ -46,7 +46,11 @@ class PlaygroundScene extends AbstractGameplayScene {
 
   private freeze() {
     if (!this.freezeSpell) {
-      this.freezeSpell = new FreezeSpell(this, this.hero.attackable);
+      this.freezeSpell = new FreezeSpell(
+        this,
+        this.hero.attackable,
+        this.enemies,
+      );
     } else {
       this.freezeSpell.destroy();
       this.freezeSpell = undefined;
