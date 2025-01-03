@@ -219,7 +219,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.anims.play("idle", true);
       }
     }
-    isAutoAttackEnabled() && this.attackable.attack();
+    this.autoAttack && this.attackable.attack();
     this.arrows.getChildren().forEach((gameObject: GameObject) => {
       (gameObject as Arrow).update();
     });
