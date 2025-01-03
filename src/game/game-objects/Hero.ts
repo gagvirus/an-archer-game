@@ -2,7 +2,6 @@ import Phaser from "phaser";
 import Enemy from "./Enemy.ts";
 import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
-import MainScene from "../scenes/MainScene.ts";
 import { Attackable, XpManager } from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
 import {
@@ -17,6 +16,7 @@ import { ResourceType } from "./drop/resource/Resource.ts";
 import { randomChance } from "../helpers/random-helper.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
 import { addStatistic, getStatistic } from "../helpers/accessors.ts";
+import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
@@ -36,19 +36,27 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     [ResourceType.soul]: 0,
     [ResourceType.coin]: 0,
   };
+  private gamePlayScene: AbstractGameplayScene;
 
-  constructor(scene: Phaser.Scene, x: number, y: number) {
+  constructor(scene: AbstractGameplayScene, x: number, y: number) {
     super(scene, x, y, "hero"); // 'hero' is the key for the hero sprite
+    this.gamePlayScene = scene;
     scene.add.existing(this); // Add the hero to the scene
     scene.physics.add.existing(this); // Enable physics for the hero
     this.setCollideWorldBounds(true); // Prevent the hero from moving offscreen
-    this.attributes = new AttributeManager(this.scene);
+    this.attributes = new AttributeManager(this.gamePlayScene);
 
     this._level = 1;
     this.name = "Hero";
     this.walkSpeed = 160;
     this.collectLootCircle = scene.physics.add.existing(
-      this.scene.add.circle(this.x, this.y, this.pullDistance, 0x0000ff, 0.2),
+      this.gamePlayScene.add.circle(
+        this.x,
+        this.y,
+        this.pullDistance,
+        0x0000ff,
+        0.2,
+      ),
     );
     this.collectLootCircle.setVisible(isDebugMode());
 
@@ -65,7 +73,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       });
     }
     this.attackable = new Attackable(
-      this.scene,
+      this.gamePlayScene,
       this.attacksPerSecond, // attacks per second
       this.attackDamage, // attack damage
       this.maxHealth, // initial health
@@ -81,7 +89,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         ),
       () => {
         this.attackable.stopRegeneration();
-        this.scene.scene.start("GameOver", {
+        this.gamePlayScene.scene.start("GameOver", {
           statistics: {
             score: getStatistic("score"),
             levelsPassed: getStatistic("levelsPassed"),
@@ -178,12 +186,12 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       LogEntryCategory.Loot,
     );
     this.xpManager.xpBar.setUnallocatedStats(this.attributes.unallocatedStats);
-    this.scene.events.emit("levelUp");
+    this.gamePlayScene.events.emit("levelUp");
   };
 
   initXpBar = (level: number, currentXp: number, xpToNextLevel: number) =>
     new XpBar(
-      this.scene,
+      this.gamePlayScene,
       {
         x: 20,
         y: 50,
@@ -251,7 +259,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
     target.soonToBeHealth -= attackDamage;
     const arrow = new Arrow(
-      this.scene,
+      this.gamePlayScene,
       this.x,
       this.y,
       target,
@@ -261,18 +269,15 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       attackDamage,
       isCritical,
     );
-    this.scene.add.existing(arrow);
+    this.gamePlayScene.add.existing(arrow);
     return arrow;
   }
 
   getNearestEnemy(): Enemy | null {
-    if (this.scene.scene.key !== "MainScene") {
-      return null;
-    }
     let nearestEnemy: Enemy | null = null;
     let minDistance = Number.MAX_VALUE;
 
-    const enemies = (this.scene as MainScene).enemies
+    const enemies = this.gamePlayScene.enemies
       .getChildren()
       .filter((enemy: GameObject) => !(enemy as Enemy).isToBeKilled);
 

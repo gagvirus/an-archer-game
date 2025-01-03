@@ -22,6 +22,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
   enemies: Group;
   drops: Group;
   dropsFollowing: Group;
+  buildings: Group;
   playingSince: number;
   protected moduleManager!: ModuleManager;
 
@@ -40,6 +41,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     this.drops = this.physics.add.group();
     this.dropsFollowing = this.physics.add.group();
     this.enemies = this.physics.add.group(); // Group to hold all enemies
+    this.buildings = this.physics.add.group();
     this.children.bringToTop(this.hero);
     this.playingSince = Date.now();
   }

@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import Hero from "./Hero.ts";
-import MainScene from "../scenes/MainScene.ts";
 import HealthBar from "./HealthBar.ts";
 import { Attackable } from "../helpers/gameplayer-helper.ts";
 import { enemies, EnemyDef, EnemyDrops } from "./enemies.ts";
@@ -24,6 +23,7 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 class Enemy extends Sprite {
   attackRange: number;
   isAttacking: boolean = false;
+  gamePlayScene: AbstractGameplayScene;
   attackRadiusCircle: Phaser.GameObjects.Arc;
   hero: Hero;
   speed: number;
@@ -39,8 +39,14 @@ class Enemy extends Sprite {
   soonToBeHealth: number;
   drops: EnemyDrops;
 
-  constructor(scene: MainScene, x: number, y: number, enemyDef?: EnemyDef) {
+  constructor(
+    scene: AbstractGameplayScene,
+    x: number,
+    y: number,
+    enemyDef?: EnemyDef,
+  ) {
     super(scene, x, y, "enemy"); // 'enemy' is the key for the enemy sprite
+    this.gamePlayScene = scene;
     scene.add.existing(this); // Add to the scene
     scene.physics.add.existing(this); // Enable physics
     this.setCollideWorldBounds(true); // Prevent enemy from going offscreen
@@ -66,7 +72,7 @@ class Enemy extends Sprite {
     this.soonToBeHealth = this.maxHealth;
 
     this.attackable = new Attackable(
-      this.scene,
+      this.gamePlayScene,
       this.attacksPerSecond,
       this.attackDamage,
       this.maxHealth,
@@ -88,7 +94,7 @@ class Enemy extends Sprite {
             },
             LogEntryCategory.Combat,
           );
-          showEvaded(this.scene, this.hero as Vector2Like);
+          showEvaded(this.gamePlayScene, this.hero as Vector2Like);
         } else {
           const blockedDamage = this.hero.attributes.getFinalDamageReduction(
             this.attackDamage,
@@ -110,7 +116,12 @@ class Enemy extends Sprite {
           addStatistic("damageBlocked", blockedDamage);
 
           this.hero.attackable.takeDamage(damageDealt);
-          showDamage(this.scene, this.hero as Vector2Like, damageDealt, false);
+          showDamage(
+            this.gamePlayScene,
+            this.hero as Vector2Like,
+            damageDealt,
+            false,
+          );
         }
       },
       this,
@@ -162,8 +173,9 @@ class Enemy extends Sprite {
   // @ts-expect-error we *must* receive time
   update(time: number, delta: number) {
     this.move();
-    this.avoidCollision((this.scene as AbstractGameplayScene).enemies, 50);
-    this.avoidCollision((this.scene as MainScene).buildings, 50);
+    const scene = this.gamePlayScene;
+    this.avoidCollision(scene.enemies, 50);
+    this.avoidCollision(scene.buildings, 50);
     this.attackable.update(delta);
   }
 

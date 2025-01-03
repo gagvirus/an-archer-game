@@ -1,5 +1,4 @@
 import GameObject = Phaser.GameObjects.GameObject;
-import Group = Phaser.Physics.Arcade.Group;
 import Sprite = Phaser.GameObjects.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import GameObjectWithBody = Phaser.Types.Physics.Arcade.GameObjectWithBody;
@@ -47,7 +46,6 @@ import StageInfoModule from "../modules/stage-info-module.ts";
 class MainScene extends AbstractGameplayScene {
   stage: number;
   portal: Portal;
-  buildings: Group;
 
   constructor() {
     // Call the Phaser.Scene constructor and pass the scene key
@@ -101,9 +99,6 @@ class MainScene extends AbstractGameplayScene {
       this.onEnemyKilled(data.enemy),
     );
 
-    // Initialize enemy group
-    this.buildings = this.physics.add.group();
-
     // Listener for keyboard inputs
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
       if (event.key === "b") {
@@ -129,6 +124,7 @@ class MainScene extends AbstractGameplayScene {
     new UiIcon(this, 50, this.scale.height - 50, "hand-sparkle")
       .setInteractive()
       .on("pointerdown", () => this.openStatsScreen());
+    this.children.bringToTop(this.hero);
   }
 
   onShutdown() {
