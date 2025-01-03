@@ -103,7 +103,7 @@ abstract class AbstractProjectile extends Sprite {
     return Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
   }
 
-  protected isHitting(target: Vector2Like) {
+  protected arrivedAtTarget(target: Vector2Like) {
     return this.getDistanceToTarget(target) < this.hitRadius;
   }
 

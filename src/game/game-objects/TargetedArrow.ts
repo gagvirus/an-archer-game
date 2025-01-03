@@ -29,7 +29,7 @@ export class TargetedArrow extends AbstractProjectile {
   // Check if the arrow reached the target
   update() {
     this.moveTowardsTarget(this.targetPosition);
-    this.isHitting(this.targetPosition) && this.handleHit(this.target);
+    this.arrivedAtTarget(this.targetPosition) && this.handleHit(this.target);
   }
 }
 

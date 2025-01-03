@@ -50,6 +50,6 @@ export class DirectionalArrow extends AbstractProjectile {
 
   update() {
     this.moveTowardsTarget(this.targetPosition);
-    this.isHitting(this.targetPosition) && this.destroy();
+    this.arrivedAtTarget(this.targetPosition) && this.destroy();
   }
 }
