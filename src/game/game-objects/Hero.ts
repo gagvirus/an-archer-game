@@ -7,6 +7,7 @@ import XpBar from "./XpBar.ts";
 import {
   isAutoAttackEnabled,
   isDebugMode,
+  setBooleanValueToRegistry,
 } from "../helpers/registry-helper.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
@@ -22,6 +23,7 @@ import Group = Phaser.GameObjects.Group;
 import Arc = Phaser.GameObjects.Arc;
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
+  autoAttack: boolean;
   arrows: Group;
   attackable: Attackable;
   xpManager: XpManager;
@@ -59,6 +61,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       ),
     );
     this.collectLootCircle.setVisible(isDebugMode());
+    this.autoAttack = isAutoAttackEnabled();
 
     // Initialize arrow group
     this.arrows = scene.add.group(); // Group to hold all arrows
@@ -67,11 +70,10 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.state = "idle";
     this.anims.play("idle");
 
-    if (!isAutoAttackEnabled()) {
-      scene.input.keyboard?.on("keydown-SPACE", () => {
-        this.attackable.attack();
-      });
-    }
+    scene.input.keyboard?.on("keydown-SPACE", () => {
+      this.autoAttack = !this.autoAttack;
+      setBooleanValueToRegistry("autoAttack", this.autoAttack);
+    });
     this.attackable = new Attackable(
       this.gamePlayScene,
       this.attacksPerSecond, // attacks per second
