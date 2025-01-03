@@ -13,6 +13,7 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
   targetPosition: Vector2Like;
   attackDamage: number;
   isCritical: boolean;
+  hitRadius: number = 10;
 
   constructor(
     scene: Phaser.Scene,
@@ -37,22 +38,17 @@ export class Arrow extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
 
     this.setRotationTowardsTarget();
-    // this.moveTowardsTarget();
   }
 
   // Check if the arrow reached the target
   update() {
     this.moveTowardsTarget();
-    if (
-      Phaser.Math.Distance.Between(
-        this.x,
-        this.y,
-        this.targetPosition.x,
-        this.targetPosition.y,
-      ) < 10
-    ) {
+    this.getDistanceToTarget(this.targetPosition) < this.hitRadius &&
       this.handleHit();
-    }
+  }
+
+  getDistanceToTarget(target: Vector2Like) {
+    return Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
   }
 
   // Rotate the arrow to face the target
