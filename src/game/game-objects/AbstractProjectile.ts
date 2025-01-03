@@ -1,5 +1,3 @@
-import Sprite = Phaser.Physics.Arcade.Sprite;
-import Vector2Like = Phaser.Types.Math.Vector2Like;
 import { addStatistic } from "../helpers/accessors.ts";
 import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
 import { COLOR_DANGER, COLOR_WARNING } from "../helpers/colors.ts";
@@ -7,12 +5,15 @@ import { Attackable } from "../helpers/gameplayer-helper.ts";
 import { showDamage } from "../helpers/text-helpers.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import Phaser from "phaser";
+import Sprite = Phaser.Physics.Arcade.Sprite;
+import Vector2Like = Phaser.Types.Math.Vector2Like;
 
 abstract class AbstractProjectile extends Sprite {
   protected owner: Attackable;
   protected attackDamage: number;
   protected isCritical: boolean;
   private readonly speed: number;
+  private readonly hitRadius: number;
 
   constructor(
     scene: AbstractGameplayScene,
@@ -23,6 +24,7 @@ abstract class AbstractProjectile extends Sprite {
     isCritical: boolean,
     owner: Attackable,
     speed: number,
+    hitRadius: number,
   ) {
     super(scene, x, y, sprite);
     this._gamePlayScene = scene;
@@ -30,6 +32,10 @@ abstract class AbstractProjectile extends Sprite {
     this.attackDamage = attackDamage;
     this.owner = owner;
     this.speed = speed;
+    this.hitRadius = hitRadius;
+
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
   }
 
   private _gamePlayScene: AbstractGameplayScene;
@@ -85,17 +91,25 @@ abstract class AbstractProjectile extends Sprite {
     this.destroy();
   }
 
-  protected moveTowardsTarget(targetPosition: Vector2Like) {
-    const angle = Phaser.Math.Angle.Between(
-      this.x,
-      this.y,
-      targetPosition.x,
-      targetPosition.y,
-    );
+  protected moveTowardsTarget(target: Vector2Like) {
+    const angle = Phaser.Math.Angle.Between(this.x, this.y, target.x, target.y);
     const velocityX = Math.cos(angle) * this.speed;
     const velocityY = Math.sin(angle) * this.speed;
 
     this.setVelocity(velocityX, velocityY);
+  }
+
+  protected getDistanceToTarget(target: Vector2Like) {
+    return Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
+  }
+
+  protected isHitting(target: Vector2Like) {
+    return this.getDistanceToTarget(target) < this.hitRadius;
+  }
+
+  protected faceTarget(target: Vector2Like) {
+    const angle = Phaser.Math.Angle.Between(this.x, this.y, target.x, target.y);
+    this.setRotation(angle + 45);
   }
 }
 

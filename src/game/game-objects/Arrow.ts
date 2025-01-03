@@ -7,7 +7,6 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 export class Arrow extends AbstractProjectile {
   target: Attackable;
   targetPosition: Vector2Like;
-  hitRadius: number = 10;
 
   constructor(
     scene: AbstractGameplayScene,
@@ -20,36 +19,17 @@ export class Arrow extends AbstractProjectile {
     attackDamage: number,
     isCritical: boolean,
   ) {
-    super(scene, x, y, "arrow", attackDamage, isCritical, owner, speed);
+    super(scene, x, y, "arrow", attackDamage, isCritical, owner, speed, 10);
     this.target = target;
     this.targetPosition = targetPosition;
 
-    scene.add.existing(this);
-    scene.physics.add.existing(this);
-
-    this.setRotationTowardsTarget();
+    this.faceTarget(targetPosition);
   }
 
   // Check if the arrow reached the target
   update() {
     this.moveTowardsTarget(this.targetPosition);
-    this.getDistanceToTarget(this.targetPosition) < this.hitRadius &&
-      this.handleHit(this.target);
-  }
-
-  getDistanceToTarget(target: Vector2Like) {
-    return Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
-  }
-
-  // Rotate the arrow to face the target
-  private setRotationTowardsTarget() {
-    const angle = Phaser.Math.Angle.Between(
-      this.x,
-      this.y,
-      this.targetPosition.x,
-      this.targetPosition.y,
-    );
-    this.setRotation(angle + 45);
+    this.isHitting(this.targetPosition) && this.handleHit(this.target);
   }
 }
 
