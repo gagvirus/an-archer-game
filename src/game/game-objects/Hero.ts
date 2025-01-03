@@ -2,17 +2,21 @@ import Phaser from "phaser";
 import Enemy from "./Enemy.ts";
 import Arrow from "./Arrow.ts";
 import HealthBar from "./HealthBar.ts";
-import {Attackable, XpManager} from "../helpers/gameplayer-helper.ts";
+import { Attackable, XpManager } from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
-import {isAutoAttackEnabled, isDebugMode, setBooleanValueToRegistry,} from "../helpers/registry-helper.ts";
-import {addLogEntry, LogEntryCategory} from "../helpers/log-utils.ts";
-import {VectorZeroes} from "../helpers/position-helper.ts";
-import {CustomCursorKeysDown} from "../helpers/keyboard-helper.ts";
-import {COLOR_SUCCESS, COLOR_WARNING} from "../helpers/colors.ts";
-import {ResourceType} from "./drop/resource/Resource.ts";
-import {randomChance} from "../helpers/random-helper.ts";
-import {AttributeManager} from "../stats/attribute-manager.ts";
-import {addStatistic, getStatistic} from "../helpers/accessors.ts";
+import {
+  isAutoAttackEnabled,
+  isDebugMode,
+  setBooleanValueToRegistry,
+} from "../helpers/registry-helper.ts";
+import { addLogEntry, LogEntryCategory } from "../helpers/log-utils.ts";
+import { VectorZeroes } from "../helpers/position-helper.ts";
+import { CustomCursorKeysDown } from "../helpers/keyboard-helper.ts";
+import { COLOR_SUCCESS, COLOR_WARNING } from "../helpers/colors.ts";
+import { ResourceType } from "./drop/resource/Resource.ts";
+import { randomChance } from "../helpers/random-helper.ts";
+import { AttributeManager } from "../stats/attribute-manager.ts";
+import { addStatistic, getStatistic } from "../helpers/accessors.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import Group = Phaser.GameObjects.Group;
@@ -94,14 +98,14 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
           },
         });
       },
-        () => {
-          const nearestEnemy = this.getNearestEnemy();
-          if (nearestEnemy) {
-            this.arrows.add(this.shootArrowAtEnemy(nearestEnemy));
-          }
-        };,
+      () => {
+        const nearestEnemy = this.getNearestEnemy();
+        if (nearestEnemy) {
+          this.arrows.add(this.shootArrowAtEnemy(nearestEnemy));
+        }
+      },
       this,
-    )
+    );
 
     this.xpManager = new XpManager(this.initXpBar, this.onLevelUp);
   }
