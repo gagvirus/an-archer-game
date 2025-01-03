@@ -7,10 +7,7 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 export class Arrow extends AbstractProjectile {
   target: Attackable;
   speed: number;
-  owner: Attackable;
   targetPosition: Vector2Like;
-  attackDamage: number;
-  isCritical: boolean;
   hitRadius: number = 10;
 
   constructor(
@@ -27,10 +24,7 @@ export class Arrow extends AbstractProjectile {
     super(scene, x, y, "arrow", attackDamage, isCritical, owner);
     this.target = target;
     this.targetPosition = targetPosition;
-    this.owner = owner;
     this.speed = speed;
-    this.attackDamage = attackDamage;
-    this.isCritical = isCritical;
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
