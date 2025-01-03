@@ -9,6 +9,7 @@ import Sprite = Phaser.GameObjects.Sprite;
 interface Target extends GameObject {
   x: number;
   y: number;
+  speed: number;
   instanceId: string;
 }
 
@@ -53,11 +54,14 @@ class FreezeSpell extends Container {
       "effects_blue",
       index,
     );
+    target.speed *= 0.1;
   }
 
   removeIce(target: Target) {
     this.iceList[target.instanceId].destroy();
     delete this.iceList[target.instanceId];
+    target.speed /= 0.1;
+    // todo: when disabling the freeze spell, make sure to clean all ice
   }
 
   update() {

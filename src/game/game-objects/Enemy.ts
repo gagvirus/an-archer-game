@@ -217,6 +217,7 @@ class Enemy extends Sprite {
       this.hero.x,
       this.hero.y,
     );
+
     const velocityX = Math.cos(angle) * this.speed;
     const velocityY = Math.sin(angle) * this.speed;
 
