@@ -6,11 +6,13 @@ import { COLOR_DANGER, COLOR_WARNING } from "../helpers/colors.ts";
 import { Attackable } from "../helpers/gameplayer-helper.ts";
 import { showDamage } from "../helpers/text-helpers.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
+import Phaser from "phaser";
 
 abstract class AbstractProjectile extends Sprite {
   protected owner: Attackable;
   protected attackDamage: number;
   protected isCritical: boolean;
+  private readonly speed: number;
 
   constructor(
     scene: AbstractGameplayScene,
@@ -20,12 +22,14 @@ abstract class AbstractProjectile extends Sprite {
     attackDamage: number,
     isCritical: boolean,
     owner: Attackable,
+    speed: number,
   ) {
     super(scene, x, y, sprite);
     this._gamePlayScene = scene;
     this.isCritical = isCritical;
     this.attackDamage = attackDamage;
     this.owner = owner;
+    this.speed = speed;
   }
 
   private _gamePlayScene: AbstractGameplayScene;
@@ -79,6 +83,19 @@ abstract class AbstractProjectile extends Sprite {
       this.isCritical,
     );
     this.destroy();
+  }
+
+  protected moveTowardsTarget(targetPosition: Vector2Like) {
+    const angle = Phaser.Math.Angle.Between(
+      this.x,
+      this.y,
+      targetPosition.x,
+      targetPosition.y,
+    );
+    const velocityX = Math.cos(angle) * this.speed;
+    const velocityY = Math.sin(angle) * this.speed;
+
+    this.setVelocity(velocityX, velocityY);
   }
 }
 
