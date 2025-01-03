@@ -1,5 +1,6 @@
 ## Roadmap
 
+- Bug - health not being immediate update after leveling up - it's updated only after updating a stat
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 - Improve UI / UX on statistics screen (both global & per-game)
 - Active skills
