@@ -5,23 +5,13 @@ import { DirectionalArrow } from "../game-objects/DirectionalArrow.ts";
 import { randomChance } from "../helpers/random-helper.ts";
 import TargetedArrow from "../game-objects/TargetedArrow.ts";
 import FreezeSpell from "../game-objects/FreezeSpell.ts";
+import {
+  ACTIVE_SKILLS_MAP,
+  ActiveSkillCallbacks,
+  ActiveSkillKey,
+} from "../helpers/active-skills.ts";
 import Group = Phaser.GameObjects.Group;
 import GameObject = Phaser.GameObjects.GameObject;
-
-enum ActiveSkillKey {
-  freeze = "1",
-  barrage = "2",
-}
-
-enum ActiveSkillCallbacks {
-  freeze = "freeze",
-  barrage = "barrage",
-}
-
-const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkillCallbacks> = {
-  [ActiveSkillKey.freeze]: ActiveSkillCallbacks.freeze,
-  [ActiveSkillKey.barrage]: ActiveSkillCallbacks.barrage,
-};
 
 class PlaygroundScene extends AbstractGameplayScene {
   private arrows: Group;
@@ -33,6 +23,7 @@ class PlaygroundScene extends AbstractGameplayScene {
   create() {
     super.create();
     this.createDummyEnemy();
+    this.renderActiveSkillsPanel();
     this.arrows = this.add.group();
   }
 
@@ -43,6 +34,8 @@ class PlaygroundScene extends AbstractGameplayScene {
     });
     this.freezeSpell?.update();
   }
+
+  private renderActiveSkillsPanel() {}
 
   protected registerEventListeners() {
     super.registerEventListeners();
