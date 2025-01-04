@@ -8,6 +8,21 @@ import FreezeSpell from "../game-objects/FreezeSpell.ts";
 import Group = Phaser.GameObjects.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
+enum ActiveSkillKey {
+  freeze = "1",
+  barrage = "2",
+}
+
+enum ActiveSkillCallbacks {
+  freeze = "freeze",
+  barrage = "barrage",
+}
+
+const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkillCallbacks> = {
+  [ActiveSkillKey.freeze]: ActiveSkillCallbacks.freeze,
+  [ActiveSkillKey.barrage]: ActiveSkillCallbacks.barrage,
+};
+
 class PlaygroundScene extends AbstractGameplayScene {
   private arrows: Group;
   private freezeSpell?: FreezeSpell;
@@ -31,14 +46,11 @@ class PlaygroundScene extends AbstractGameplayScene {
 
   protected registerEventListeners() {
     super.registerEventListeners();
+    const keys = Object.keys(ACTIVE_SKILLS_MAP);
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      if (["1", "2"].includes(event.key)) {
-        const skillsMap = {
-          "1": "freeze",
-          "2": "barrage",
-        };
-        const eventKey = event.key as "1" | "2";
-        const skill = skillsMap[eventKey] as "freeze" | "barrage";
+      if (keys.includes(event.key)) {
+        const eventKey = event.key as ActiveSkillKey;
+        const skill = ACTIVE_SKILLS_MAP[eventKey] as ActiveSkillCallbacks;
         this[skill]();
       }
     });
