@@ -66,7 +66,6 @@ class FreezeSpell extends Container {
     delete this.iceList[target.instanceId];
     target.speed /= 0.1;
     target.removeStatusEffect("ice");
-    // todo: when disabling the freeze spell, make sure to clean all ice
   }
 
   update() {
@@ -103,6 +102,22 @@ class FreezeSpell extends Container {
         );
       }
     });
+  }
+
+  destroy() {
+    this.scene.time.delayedCall(
+      this.thawingTime,
+      () => {
+        this.frozenTargets.getChildren().forEach((target) => {
+          this.thawingTargets.remove(target);
+          this.removeIce(target as Target);
+        });
+      },
+      [],
+      this,
+    );
+
+    super.destroy();
   }
 }
 
