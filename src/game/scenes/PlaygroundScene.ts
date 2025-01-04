@@ -136,6 +136,9 @@ class PlaygroundScene
         skill.icon,
         skill.key,
         skill.description,
+        () => {
+          this[skill.callback]();
+        },
       )
         .setInteractive()
         .on("pointerdown", () => {

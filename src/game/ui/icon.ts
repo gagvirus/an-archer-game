@@ -12,6 +12,7 @@ export default class UiIcon extends Container {
     icon: string,
     activateKey?: string,
     tooltipText?: string,
+    onClickCallback?: () => void,
   ) {
     const { x, y } = position;
     super(scene, x, y);
@@ -42,6 +43,7 @@ export default class UiIcon extends Container {
       const tooltip = new Tooltip(scene);
       iconSprite
         .setInteractive()
+        .on("pointerdown", () => onClickCallback && onClickCallback())
         .on("pointerover", () => {
           tooltip.show(tooltipText);
         })
