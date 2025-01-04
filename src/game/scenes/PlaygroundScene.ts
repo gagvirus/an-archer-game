@@ -7,7 +7,7 @@ import TargetedArrow from "../game-objects/TargetedArrow.ts";
 import FreezeSpell from "../game-objects/FreezeSpell.ts";
 import {
   ACTIVE_SKILLS_MAP,
-  ActiveSkillCallbacks,
+  ActiveSkillCallbackMethods,
   ActiveSkillKey,
 } from "../helpers/active-skills.ts";
 import UiIcon from "../ui/icon.ts";
@@ -15,7 +15,10 @@ import { VectorZeroes } from "../helpers/position-helper.ts";
 import Group = Phaser.GameObjects.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
-class PlaygroundScene extends AbstractGameplayScene {
+class PlaygroundScene
+  extends AbstractGameplayScene
+  implements ActiveSkillCallbackMethods
+{
   private arrows: Group;
   private freezeSpell?: FreezeSpell;
   constructor() {
@@ -37,64 +40,7 @@ class PlaygroundScene extends AbstractGameplayScene {
     this.freezeSpell?.update();
   }
 
-  private renderActiveSkillsPanel() {
-    const buttonSize = 64; // Set button size
-    const padding = 10;
-    const totalWidth =
-      Object.keys(ACTIVE_SKILLS_MAP).length * (buttonSize + padding) - padding;
-
-    const skillsBar = this.rexUI.add.sizer({
-      x: this.cameras.main.width / 2 - totalWidth / 2,
-      y: this.cameras.main.height - buttonSize,
-      width: totalWidth,
-      height: buttonSize,
-      orientation: "horizontal",
-      space: { item: padding },
-    });
-
-    Object.values(ACTIVE_SKILLS_MAP).forEach((skill) => {
-      const button = new UiIcon(
-        this,
-        VectorZeroes(),
-        buttonSize,
-        "hand-sparkle",
-      );
-      // const button = this.rexUI.add
-      //   .label({
-      //     width: buttonSize,
-      //     height: buttonSize,
-      //     background: this.add
-      //       .rectangle(0, 0, buttonSize, buttonSize, 0x000000)
-      //       .setStrokeStyle(2, 0xffffff),
-      //     icon: this.add
-      //       .sprite(0, 0, "icons", "hand-sparkle")
-      //       .setDisplaySize(buttonSize * 0.8, buttonSize * 0.8),
-      //     space: { icon: 0 },
-      //   })
-      //   .setInteractive();
-
-      // button.on("pointerdown", () => {
-      //   console.log(skill);
-      // });
-      skillsBar.add(button, { proportion: 0, expand: false });
-    });
-
-    skillsBar.layout();
-  }
-
-  protected registerEventListeners() {
-    super.registerEventListeners();
-    const keys = Object.keys(ACTIVE_SKILLS_MAP);
-    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      if (keys.includes(event.key)) {
-        const eventKey = event.key as ActiveSkillKey;
-        const skill = ACTIVE_SKILLS_MAP[eventKey] as ActiveSkillCallbacks;
-        this[skill]();
-      }
-    });
-  }
-
-  private freeze() {
+  freeze() {
     if (!this.freezeSpell) {
       this.freezeSpell = new FreezeSpell(
         this,
@@ -105,6 +51,41 @@ class PlaygroundScene extends AbstractGameplayScene {
       this.freezeSpell.destroy();
       this.freezeSpell = undefined;
     }
+  }
+
+  barrage() {
+    const isCritical = randomChance(this.hero.attributes.criticalChance);
+    const numberOfArrows = 72;
+    const distance = 1000;
+    for (let i = 0; i < numberOfArrows; i++) {
+      const angle = (360 / numberOfArrows) * i;
+      const arrow = new DirectionalArrow(
+        this,
+        this.hero.x,
+        this.hero.y,
+        this.hero.attackDamage,
+        isCritical,
+        this.hero.attackable,
+        500,
+        10,
+        angle,
+        distance,
+        this.enemies,
+      );
+      this.arrows.add(arrow);
+    }
+  }
+
+  protected registerEventListeners() {
+    super.registerEventListeners();
+    const keys = Object.keys(ACTIVE_SKILLS_MAP);
+    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+      if (keys.includes(event.key)) {
+        const eventKey = event.key as ActiveSkillKey;
+        const skill = ACTIVE_SKILLS_MAP[eventKey].callback;
+        this[skill]();
+      }
+    });
   }
 
   private createDummyEnemy() {
@@ -132,27 +113,44 @@ class PlaygroundScene extends AbstractGameplayScene {
     this.enemies.add(enemy);
   }
 
-  private barrage() {
-    const isCritical = randomChance(this.hero.attributes.criticalChance);
-    const numberOfArrows = 72;
-    const distance = 1000;
-    for (let i = 0; i < numberOfArrows; i++) {
-      const angle = (360 / numberOfArrows) * i;
-      const arrow = new DirectionalArrow(
-        this,
-        this.hero.x,
-        this.hero.y,
-        this.hero.attackDamage,
-        isCritical,
-        this.hero.attackable,
-        500,
-        10,
-        angle,
-        distance,
-        this.enemies,
-      );
-      this.arrows.add(arrow);
-    }
+  private renderActiveSkillsPanel() {
+    const buttonSize = 64; // Set button size
+    const padding = 10;
+    const totalWidth =
+      Object.keys(ACTIVE_SKILLS_MAP).length * (buttonSize + padding) - padding;
+
+    const skillsBar = this.rexUI.add.sizer({
+      x: this.cameras.main.width / 2 - totalWidth / 2,
+      y: this.cameras.main.height - buttonSize,
+      width: totalWidth,
+      height: buttonSize,
+      orientation: "horizontal",
+      space: { item: padding },
+    });
+
+    Object.values(ACTIVE_SKILLS_MAP).forEach((skill) => {
+      const button = new UiIcon(this, VectorZeroes(), buttonSize, skill.icon);
+      // const button = this.rexUI.add
+      //   .label({
+      //     width: buttonSize,
+      //     height: buttonSize,
+      //     background: this.add
+      //       .rectangle(0, 0, buttonSize, buttonSize, 0x000000)
+      //       .setStrokeStyle(2, 0xffffff),
+      //     icon: this.add
+      //       .sprite(0, 0, "icons", "hand-sparkle")
+      //       .setDisplaySize(buttonSize * 0.8, buttonSize * 0.8),
+      //     space: { icon: 0 },
+      //   })
+      //   .setInteractive();
+
+      // button.on("pointerdown", () => {
+      //   console.log(skill);
+      // });
+      skillsBar.add(button, { proportion: 0, expand: false });
+    });
+
+    skillsBar.layout();
   }
 }
 

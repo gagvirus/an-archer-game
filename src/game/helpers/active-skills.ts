@@ -8,7 +8,22 @@ export enum ActiveSkillCallbacks {
   barrage = "barrage",
 }
 
-export const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkillCallbacks> = {
-  [ActiveSkillKey.freeze]: ActiveSkillCallbacks.freeze,
-  [ActiveSkillKey.barrage]: ActiveSkillCallbacks.barrage,
+export type ActiveSkillCallbackMethods = {
+  [K in ActiveSkillCallbacks]: () => void;
+};
+
+export interface ActiveSkill {
+  icon: string;
+  callback: ActiveSkillCallbacks;
+}
+
+export const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkill> = {
+  [ActiveSkillKey.freeze]: {
+    icon: "cold",
+    callback: ActiveSkillCallbacks.freeze,
+  },
+  [ActiveSkillKey.barrage]: {
+    icon: "arrows-valley",
+    callback: ActiveSkillCallbacks.barrage,
+  },
 };
