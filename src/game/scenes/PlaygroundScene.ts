@@ -129,24 +129,11 @@ class PlaygroundScene
     });
 
     Object.values(ACTIVE_SKILLS_MAP).forEach((skill) => {
-      const button = new UiIcon(this, VectorZeroes(), buttonSize, skill.icon);
-      // const button = this.rexUI.add
-      //   .label({
-      //     width: buttonSize,
-      //     height: buttonSize,
-      //     background: this.add
-      //       .rectangle(0, 0, buttonSize, buttonSize, 0x000000)
-      //       .setStrokeStyle(2, 0xffffff),
-      //     icon: this.add
-      //       .sprite(0, 0, "icons", "hand-sparkle")
-      //       .setDisplaySize(buttonSize * 0.8, buttonSize * 0.8),
-      //     space: { icon: 0 },
-      //   })
-      //   .setInteractive();
-
-      // button.on("pointerdown", () => {
-      //   console.log(skill);
-      // });
+      const button = new UiIcon(this, VectorZeroes(), buttonSize, skill.icon)
+        .setInteractive()
+        .on("pointerdown", () => {
+          this[skill.callback]();
+        });
       skillsBar.add(button, { proportion: 0, expand: false });
     });
 
