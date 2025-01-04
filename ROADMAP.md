@@ -2,6 +2,7 @@
 
 - Bug - health not being immediate update after leveling up - it's updated only after updating a stat
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
+- Improvement - when "stats" button is clicked, it's intuitive that clicking on it again would close the stats screen
 - Improve UI / UX on statistics screen (both global & per-game)
 - Active skills
   - when the player reaches certain level (e.g. 5, 15, 25, 50), allow the player to select one of the skills
