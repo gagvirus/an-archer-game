@@ -121,7 +121,15 @@ class MainScene extends AbstractGameplayScene {
     });
     this.startStage();
 
-    new UiIcon(this, 50, this.scale.height - 50, "hand-sparkle")
+    new UiIcon(
+      this,
+      {
+        x: 50,
+        y: this.scale.height - 50,
+      },
+      64,
+      "hand-sparkle",
+    )
       .setInteractive()
       .on("pointerdown", () => this.openStatsScreen());
     this.children.bringToTop(this.hero);

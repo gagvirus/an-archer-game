@@ -1,11 +1,26 @@
-import Sprite = Phaser.GameObjects.Sprite;
-import MainScene from "../scenes/MainScene.ts";
+import Container = Phaser.GameObjects.Container;
+import Vector2Like = Phaser.Types.Math.Vector2Like;
+import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 
-export default class UiIcon extends Sprite {
-  constructor(scene: MainScene, x: number, y: number, icon: string) {
-    super(scene, x, y, "ui", "sprite1");
+export default class UiIcon extends Container {
+  constructor(
+    scene: AbstractGameplayScene,
+    position: Vector2Like,
+    buttonSize: number,
+    icon: string,
+  ) {
+    const { x, y } = position;
+    super(scene, x, y);
     scene.add.existing(this);
-    this.scale = 2;
-    scene.add.sprite(x, y, "icons", icon);
+
+    const backgroundSprite = scene.add.sprite(0, 0, "ui", "sprite1");
+    const iconSprite = scene.add.sprite(0, 0, "icons", icon);
+
+    backgroundSprite.scale = 2;
+    iconSprite.setOrigin(0.5);
+
+    this.add(backgroundSprite);
+    this.add(iconSprite);
+    this.setSize(buttonSize, buttonSize);
   }
 }

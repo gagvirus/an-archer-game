@@ -10,6 +10,8 @@ import {
   ActiveSkillCallbacks,
   ActiveSkillKey,
 } from "../helpers/active-skills.ts";
+import UiIcon from "../ui/icon.ts";
+import { VectorZeroes } from "../helpers/position-helper.ts";
 import Group = Phaser.GameObjects.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
@@ -35,7 +37,50 @@ class PlaygroundScene extends AbstractGameplayScene {
     this.freezeSpell?.update();
   }
 
-  private renderActiveSkillsPanel() {}
+  private renderActiveSkillsPanel() {
+    const buttonSize = 64; // Set button size
+    const padding = 10;
+    const totalWidth =
+      Object.keys(ACTIVE_SKILLS_MAP).length * (buttonSize + padding) - padding;
+
+    const skillsBar = this.rexUI.add.sizer({
+      x: this.cameras.main.width / 2 - totalWidth / 2,
+      y: this.cameras.main.height - buttonSize,
+      width: totalWidth,
+      height: buttonSize,
+      orientation: "horizontal",
+      space: { item: padding },
+    });
+
+    Object.values(ACTIVE_SKILLS_MAP).forEach((skill) => {
+      const button = new UiIcon(
+        this,
+        VectorZeroes(),
+        buttonSize,
+        "hand-sparkle",
+      );
+      // const button = this.rexUI.add
+      //   .label({
+      //     width: buttonSize,
+      //     height: buttonSize,
+      //     background: this.add
+      //       .rectangle(0, 0, buttonSize, buttonSize, 0x000000)
+      //       .setStrokeStyle(2, 0xffffff),
+      //     icon: this.add
+      //       .sprite(0, 0, "icons", "hand-sparkle")
+      //       .setDisplaySize(buttonSize * 0.8, buttonSize * 0.8),
+      //     space: { icon: 0 },
+      //   })
+      //   .setInteractive();
+
+      // button.on("pointerdown", () => {
+      //   console.log(skill);
+      // });
+      skillsBar.add(button, { proportion: 0, expand: false });
+    });
+
+    skillsBar.layout();
+  }
 
   protected registerEventListeners() {
     super.registerEventListeners();
@@ -73,7 +118,7 @@ class PlaygroundScene extends AbstractGameplayScene {
       minLevel: 0,
       name: "Dummy",
       scale: 1,
-      speed: 100,
+      speed: 0,
       type: "dummy",
       weight: 0,
       xpAmount: 0,
