@@ -199,6 +199,10 @@ class Enemy extends Sprite {
     delete this.statusEffects[key];
   }
 
+  hasStatusEffect(key: string): boolean {
+    return !!this.statusEffects[key];
+  }
+
   move() {
     // Update the debug circle position
     this.attackRadiusCircle.setPosition(this.x, this.y);

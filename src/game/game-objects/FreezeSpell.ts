@@ -9,6 +9,7 @@ import Sprite = Phaser.GameObjects.Sprite;
 interface Target extends GameObject {
   x: number;
   y: number;
+  hasStatusEffect: (key: string) => boolean;
   addStatusEffect: (key: string, value: Sprite) => void;
   removeStatusEffect: (key: string) => void;
   speed: number;
@@ -75,6 +76,7 @@ class FreezeSpell extends Container {
 
   private handleCollision(target: Target) {
     if (
+      !target.hasStatusEffect("ice") &&
       !this.frozenTargets.contains(target) &&
       !this.thawingTargets.contains(target)
     ) {
