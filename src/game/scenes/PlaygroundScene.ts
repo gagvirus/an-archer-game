@@ -60,7 +60,7 @@ class PlaygroundScene extends AbstractGameplayScene {
   private createDummyEnemy() {
     const dummyDef: EnemyDef = {
       attackDamage: 0,
-      attackRange: 0,
+      attackRange: 10,
       attacksPerSecond: 0,
       drops: {},
       maxHealth: Infinity,
@@ -68,7 +68,7 @@ class PlaygroundScene extends AbstractGameplayScene {
       minLevel: 0,
       name: "Dummy",
       scale: 1,
-      speed: 0,
+      speed: 100,
       type: "dummy",
       weight: 0,
       xpAmount: 0,

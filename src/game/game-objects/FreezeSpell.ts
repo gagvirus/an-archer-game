@@ -9,6 +9,8 @@ import Sprite = Phaser.GameObjects.Sprite;
 interface Target extends GameObject {
   x: number;
   y: number;
+  addStatusEffect: (key: string, value: Sprite) => void;
+  removeStatusEffect: (key: string) => void;
   speed: number;
   instanceId: string;
 }
@@ -48,20 +50,22 @@ class FreezeSpell extends Container {
 
   createIce(target: Target) {
     const index = 37;
-    this.iceList[target.instanceId] = this.scene.add.sprite(
+    const ice = this.scene.add.sprite(
       target.x,
       target.y,
       "effects_blue",
       index,
     );
-    // todo:  ice shall follow the target
+    this.iceList[target.instanceId] = ice;
     target.speed *= 0.1;
+    target.addStatusEffect("ice", ice);
   }
 
   removeIce(target: Target) {
     this.iceList[target.instanceId].destroy();
     delete this.iceList[target.instanceId];
     target.speed /= 0.1;
+    target.removeStatusEffect("ice");
     // todo: when disabling the freeze spell, make sure to clean all ice
   }
 

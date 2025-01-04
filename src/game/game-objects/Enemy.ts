@@ -34,6 +34,7 @@ class Enemy extends Sprite {
   type: string = "enemy";
   attackable: Attackable;
   xpAmount: number;
+  private statusEffects: Record<string, Sprite> = {};
   // when an arrow is on the way, the health bar is not yet updated, but we need to keep track of "actual" health
   // that will become when the arrow hits the enemy, so we would be able to determine whether it's about to be killed
   soonToBeHealth: number;
@@ -183,6 +184,19 @@ class Enemy extends Sprite {
     this.avoidCollision(scene.enemies, 50);
     this.avoidCollision(scene.buildings, 50);
     this.attackable.update(delta);
+    // status Effects - like fire, ice on the enemy
+    Object.values(this.statusEffects).forEach((effect) =>
+      effect.setPosition(this.x, this.y),
+    );
+  }
+
+  addStatusEffect(key: string, value: Sprite) {
+    this.statusEffects[key] = value;
+  }
+
+  removeStatusEffect(key: string) {
+    this.statusEffects[key]?.destroy();
+    delete this.statusEffects[key];
   }
 
   move() {
