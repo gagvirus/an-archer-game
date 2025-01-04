@@ -135,6 +135,7 @@ class PlaygroundScene
         buttonSize,
         skill.icon,
         skill.key,
+        skill.description,
       )
         .setInteractive()
         .on("pointerdown", () => {
