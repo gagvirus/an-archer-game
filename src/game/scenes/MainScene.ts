@@ -129,6 +129,7 @@ class MainScene extends AbstractGameplayScene {
       },
       64,
       "hand-sparkle",
+      "C",
     )
       .setInteractive()
       .on("pointerdown", () => this.openStatsScreen());

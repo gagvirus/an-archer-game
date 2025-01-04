@@ -129,7 +129,13 @@ class PlaygroundScene
     });
 
     Object.values(ACTIVE_SKILLS_MAP).forEach((skill) => {
-      const button = new UiIcon(this, VectorZeroes(), buttonSize, skill.icon)
+      const button = new UiIcon(
+        this,
+        VectorZeroes(),
+        buttonSize,
+        skill.icon,
+        skill.key,
+      )
         .setInteractive()
         .on("pointerdown", () => {
           this[skill.callback]();

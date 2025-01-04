@@ -15,15 +15,18 @@ export type ActiveSkillCallbackMethods = {
 export interface ActiveSkill {
   icon: string;
   callback: ActiveSkillCallbacks;
+  key: ActiveSkillKey;
 }
 
 export const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkill> = {
   [ActiveSkillKey.freeze]: {
     icon: "cold",
     callback: ActiveSkillCallbacks.freeze,
+    key: ActiveSkillKey.freeze,
   },
   [ActiveSkillKey.barrage]: {
     icon: "arrows-valley",
     callback: ActiveSkillCallbacks.barrage,
+    key: ActiveSkillKey.barrage,
   },
 };
