@@ -35,7 +35,7 @@ class StatsCirclePartial implements Renderable {
   }
 
   render() {
-    this.tooltip = new Tooltip(this.scene, 0, 0, "");
+    this.tooltip = new Tooltip(this.scene);
     this.coreStats.forEach((coreStat: ICoreStat, i: number) => {
       this.renderAllocateStatQuarter(coreStat, i);
       this.renderStatQuarter(coreStat, i);

@@ -2,6 +2,7 @@ import Container = Phaser.GameObjects.Container;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import { createText } from "../helpers/text-helpers.ts";
+import Tooltip from "./tooltip.ts";
 
 export default class UiIcon extends Container {
   constructor(
@@ -36,6 +37,19 @@ export default class UiIcon extends Container {
       ).setOrigin(1);
       this.add(text);
     }
+
+    if (tooltipText) {
+      const tooltip = new Tooltip(scene);
+      iconSprite
+        .setInteractive()
+        .on("pointerover", () => {
+          tooltip.show(tooltipText);
+        })
+        .on("pointerout", () => {
+          tooltip.hide();
+        });
+    }
+
     this.setSize(buttonSize, buttonSize);
   }
 }

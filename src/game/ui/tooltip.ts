@@ -12,7 +12,12 @@ class Tooltip extends Phaser.GameObjects.Container {
   private readonly padding = 10;
   private mousePosition: Vector2Like;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, message: string) {
+  constructor(
+    scene: Phaser.Scene,
+    x: number = 0,
+    y: number = 0,
+    message: string = "",
+  ) {
     super(scene, x, y);
 
     // Tooltip background

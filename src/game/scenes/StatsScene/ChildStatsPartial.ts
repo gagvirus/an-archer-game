@@ -28,7 +28,7 @@ class StatsCirclePartial implements Renderable {
     this.width = width;
     this.attributes = statsManager;
     this.coreStats = listCoreStats();
-    this.tooltip = new Tooltip(this.scene, 0, 0, "");
+    this.tooltip = new Tooltip(this.scene);
   }
 
   render(container: Sizer) {
