@@ -54,10 +54,10 @@ class PlaygroundScene
   }
 
   barrage() {
-    const isCritical = randomChance(this.hero.attributes.criticalChance);
     const numberOfArrows = 72;
     const distance = 1000;
     for (let i = 0; i < numberOfArrows; i++) {
+      const isCritical = randomChance(this.hero.attributes.criticalChance);
       const angle = (360 / numberOfArrows) * i;
       const arrow = new DirectionalArrow(
         this,
