@@ -9,7 +9,7 @@ import {
   ACTIVE_SKILLS_MAP,
   ActiveSkillCallbackMethods,
   ActiveSkillKey,
-} from "../helpers/active-skills.ts";
+} from "../active-skills/utils.ts";
 import UiIcon from "../ui/icon.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
 import Group = Phaser.GameObjects.Group;
