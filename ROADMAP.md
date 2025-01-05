@@ -6,8 +6,26 @@
 - Improve UI / UX on statistics screen (both global & per-game)
 - Active skills
   - when the player reaches certain level (e.g. 5, 15, 25, 50), allow the player to select one of the skills
-  - can be enabled by clicking on correct buttons, displayed on the screen (e.g. icons on bottom-left)
-  - can be enabled by hotkeys (e.g. 1, 2, 3 etc)
+  - ~~can be enabled by clicking on correct buttons, displayed on the screen (e.g. icons on bottom-left)~~
+  - ~~can be enabled by hotkeys (e.g. 1, 2, 3 etc)~~
+  - different types of skills:
+    - activated at once (for example damage skills, that damage at once and go to cooldown. e.g. nuke, barrage etc)
+      - mana / resource requirement
+      - cooldown
+      - active effect - damages nearby
+    - has a duration (for example freeze, scorched earth, applies effect while active):
+      - duration
+      - mana / resource requirement
+      - cooldown
+      - active effect
+    - toggleable - You enable / disable them (for example "armor reduction debuff against enemies", "buff to self")
+      - mana / resource requirement to activate
+      - mana / resource requirement to keep active per second
+      - no cooldown
+      - active effect
+        - buff
+        - debuff
+        - damage over time
   - each skill shall have a different stats:
     - duration
     - effect radius
