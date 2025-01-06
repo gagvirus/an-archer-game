@@ -1,10 +1,6 @@
 import AbstractGameplayScene from "./AbstractGameplayScene.ts";
 import Enemy from "../game-objects/Enemy.ts";
 import { EnemyDef } from "../game-objects/enemies.ts";
-import { DirectionalArrow } from "../game-objects/DirectionalArrow.ts";
-import { randomChance } from "../helpers/random-helper.ts";
-import TargetedArrow from "../game-objects/TargetedArrow.ts";
-import FreezeSpell from "../game-objects/FreezeSpell.ts";
 import {
   ACTIVE_SKILLS_MAP,
   ActiveSkillCallbackMethods,
@@ -12,15 +8,15 @@ import {
 } from "../active-skills/utils.ts";
 import UiIcon from "../ui/icon.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
-import Group = Phaser.GameObjects.Group;
-import GameObject = Phaser.GameObjects.GameObject;
+import Barrage from "../active-skills/Barrage.ts";
+import Freeze from "../active-skills/Freeze.ts";
 
 class PlaygroundScene
   extends AbstractGameplayScene
   implements ActiveSkillCallbackMethods
 {
-  private arrows: Group;
-  private freezeSpell?: FreezeSpell;
+  private barrageSkill: Barrage;
+  private freezeSkill: Freeze;
   constructor() {
     super("PlaygroundScene");
   }
@@ -29,51 +25,23 @@ class PlaygroundScene
     super.create();
     this.createDummyEnemy();
     this.renderActiveSkillsPanel();
-    this.arrows = this.add.group();
+
+    this.barrageSkill = new Barrage(this, this.enemies);
+    this.freezeSkill = new Freeze(this, this.enemies);
   }
 
   update(time: number, delta: number) {
     super.update(time, delta);
-    this.arrows.getChildren().forEach((gameObject: GameObject) => {
-      (gameObject as TargetedArrow).update();
-    });
-    this.freezeSpell?.update();
+    this.barrageSkill.update();
+    this.freezeSkill.update();
   }
 
   freeze() {
-    if (!this.freezeSpell) {
-      this.freezeSpell = new FreezeSpell(
-        this,
-        this.hero.attackable,
-        this.enemies,
-      );
-    } else {
-      this.freezeSpell.destroy();
-      this.freezeSpell = undefined;
-    }
+    this.freezeSkill.activate();
   }
 
   barrage() {
-    const numberOfArrows = 72;
-    const distance = 1000;
-    for (let i = 0; i < numberOfArrows; i++) {
-      const isCritical = randomChance(this.hero.attributes.criticalChance);
-      const angle = (360 / numberOfArrows) * i;
-      const arrow = new DirectionalArrow(
-        this,
-        this.hero.x,
-        this.hero.y,
-        this.hero.attackDamage,
-        isCritical,
-        this.hero.attackable,
-        500,
-        10,
-        angle,
-        distance,
-        this.enemies,
-      );
-      this.arrows.add(arrow);
-    }
+    this.barrageSkill.activate();
   }
 
   protected registerEventListeners() {
