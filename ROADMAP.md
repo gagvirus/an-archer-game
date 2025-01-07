@@ -4,6 +4,9 @@
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 - Improvement - when "stats" button is clicked, it's intuitive that clicking on it again would close the stats screen
 - Improve UI / UX on statistics screen (both global & per-game)
+- Add abstraction for projectile.
+  - add a new skill "fire ball" similar to regular arrows
+  - add a new skill similar to barrage for fire
 - Active skills
   - when the player reaches certain level (e.g. 5, 15, 25, 50), allow the player to select one of the skills
   - ~~can be enabled by clicking on correct buttons, displayed on the screen (e.g. icons on bottom-left)~~
