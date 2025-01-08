@@ -185,6 +185,16 @@ export class Preloader extends Scene implements ISceneLifecycle {
       repeat: -1,
     });
 
+    this.anims.create({
+      key: "fireball",
+      frames: this.anims.generateFrameNumbers("effects_yellow", {
+        start: 36 * 10 + 19,
+        end: 36 * 10 + 22,
+      }),
+      frameRate: 4,
+      repeat: -1,
+    });
+
     // Define the portal animation
     this.anims.create({
       key: "portal-idle",
