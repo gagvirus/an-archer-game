@@ -1,22 +1,13 @@
 import AbstractGameplayScene from "./AbstractGameplayScene.ts";
 import Enemy from "../game-objects/Enemy.ts";
 import { EnemyDef } from "../game-objects/enemies.ts";
-import {
-  ACTIVE_SKILLS_MAP,
-  ActiveSkillCallbackMethods,
-  ActiveSkillKey,
-} from "../active-skills/utils.ts";
+import { ACTIVE_SKILLS_MAP, ActiveSkillKey } from "../active-skills/utils.ts";
 import UiIcon from "../ui/icon.ts";
 import { VectorZeroes } from "../helpers/position-helper.ts";
-import Barrage from "../active-skills/Barrage.ts";
-import Freeze from "../active-skills/Freeze.ts";
+import SkillsManager from "../active-skills/skills-manager.ts";
 
-class PlaygroundScene
-  extends AbstractGameplayScene
-  implements ActiveSkillCallbackMethods
-{
-  private barrageSkill: Barrage;
-  private freezeSkill: Freeze;
+class PlaygroundScene extends AbstractGameplayScene {
+  private manager: SkillsManager;
   constructor() {
     super("PlaygroundScene");
   }
@@ -25,33 +16,20 @@ class PlaygroundScene
     super.create();
     this.createDummyEnemy();
     this.renderActiveSkillsPanel();
-
-    this.barrageSkill = new Barrage(this, this.enemies);
-    this.freezeSkill = new Freeze(this, this.enemies);
+    this.manager = new SkillsManager(this, this.enemies);
   }
 
   update(time: number, delta: number) {
     super.update(time, delta);
-    this.barrageSkill.update();
-    this.freezeSkill.update();
+    this.manager.update();
   }
-
-  freeze() {
-    this.freezeSkill.activate();
-  }
-
-  barrage() {
-    this.barrageSkill.activate();
-  }
-
   protected registerEventListeners() {
     super.registerEventListeners();
     const keys = Object.keys(ACTIVE_SKILLS_MAP);
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
       if (keys.includes(event.key)) {
         const eventKey = event.key as ActiveSkillKey;
-        const skill = ACTIVE_SKILLS_MAP[eventKey].callback;
-        this[skill]();
+        this.manager.activateSkill(ACTIVE_SKILLS_MAP[eventKey]);
       }
     });
   }
@@ -105,12 +83,12 @@ class PlaygroundScene
         skill.key,
         skill.description,
         () => {
-          this[skill.callback]();
+          this.manager.activateSkill(skill);
         },
       )
         .setInteractive()
         .on("pointerdown", () => {
-          this[skill.callback]();
+          this.manager.activateSkill(skill);
         });
       skillsBar.add(button, { proportion: 0, expand: false });
     });

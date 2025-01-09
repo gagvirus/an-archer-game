@@ -1,20 +1,22 @@
+import AbstractSkill from "./abstract-skill.ts";
+
 export enum ActiveSkillKey {
   freeze = "1",
   barrage = "2",
 }
 
-export enum ActiveSkillCallbacks {
+export enum Skills {
   freeze = "freeze",
   barrage = "barrage",
 }
 
-export type ActiveSkillCallbackMethods = {
-  [K in ActiveSkillCallbacks]: () => void;
+export type SkillAccessors = {
+  [K in Skills]: AbstractSkill;
 };
 
 export interface ActiveSkill {
   icon: string;
-  callback: ActiveSkillCallbacks;
+  callback: Skills;
   key: ActiveSkillKey;
   description?: string;
 }
@@ -22,13 +24,13 @@ export interface ActiveSkill {
 export const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkill> = {
   [ActiveSkillKey.freeze]: {
     icon: "cold",
-    callback: ActiveSkillCallbacks.freeze,
+    callback: Skills.freeze,
     key: ActiveSkillKey.freeze,
     description: "Freeze all enemies in a circle",
   },
   [ActiveSkillKey.barrage]: {
     icon: "arrows-valley",
-    callback: ActiveSkillCallbacks.barrage,
+    callback: Skills.barrage,
     key: ActiveSkillKey.barrage,
     description: "Fire deadly barrage of arrows all around You",
   },
