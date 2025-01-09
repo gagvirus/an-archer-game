@@ -5,18 +5,18 @@ export enum ActiveSkillKey {
   barrage = "2",
 }
 
-export enum Skills {
+export enum SkillsRef {
   freeze = "freeze",
   barrage = "barrage",
 }
 
 export type SkillAccessors = {
-  [K in Skills]: AbstractSkill;
+  [K in SkillsRef]: AbstractSkill;
 };
 
 export interface ActiveSkill {
   icon: string;
-  callback: Skills;
+  reference: SkillsRef;
   key: ActiveSkillKey;
   description?: string;
 }
@@ -24,13 +24,13 @@ export interface ActiveSkill {
 export const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkill> = {
   [ActiveSkillKey.freeze]: {
     icon: "cold",
-    callback: Skills.freeze,
+    reference: SkillsRef.freeze,
     key: ActiveSkillKey.freeze,
     description: "Freeze all enemies in a circle",
   },
   [ActiveSkillKey.barrage]: {
     icon: "arrows-valley",
-    callback: Skills.barrage,
+    reference: SkillsRef.barrage,
     key: ActiveSkillKey.barrage,
     description: "Fire deadly barrage of arrows all around You",
   },

@@ -13,7 +13,7 @@ class SkillsManager implements SkillAccessors {
   }
 
   activateSkill(skill: ActiveSkill) {
-    const callback = skill.callback;
+    const callback = skill.reference;
     this[callback].activate();
   }
 
