@@ -3,6 +3,7 @@
 ### WIP
 
 - bugfix - stats not being shown correctly on game over screen
+- Bug - health not being immediate update after leveling up - it's updated only after updating a stat
 
 
 ### v0.0.14
