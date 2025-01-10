@@ -163,6 +163,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   onLevelUp = (newLevel: number) => {
+    this.attributes.setHeroLevel(newLevel);
     addLogEntry(
       ":hero has become LVL :level",
       {
@@ -178,7 +179,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.attackable.attacksPerSecond = this.attacksPerSecond;
     const statPointsToGrant = this.statPointsToGrant;
     this.attributes.unallocatedStats += statPointsToGrant;
-    this.attributes.setHeroLevel(newLevel);
     addLogEntry(
       ":hero has received :stats stat points",
       {
