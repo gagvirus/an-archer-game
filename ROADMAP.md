@@ -1,7 +1,6 @@
 ## Roadmap
 
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
-- Improvement - when "stats" button is clicked, it's intuitive that clicking on it again would close the stats screen
 - Improve UI / UX on statistics screen (both global & per-game)
 - Add abstraction for projectile.
   - add a new skill "fire ball" similar to regular arrows
