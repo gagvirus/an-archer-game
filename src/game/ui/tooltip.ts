@@ -10,7 +10,7 @@ class Tooltip extends Phaser.GameObjects.Container {
   private readonly background: Phaser.GameObjects.Rectangle;
   private readonly text: Phaser.GameObjects.Text;
   private readonly padding = 10;
-  private mousePosition: Vector2Like;
+  private mousePosition: Vector2Like = { x: -100, y: -100 };
 
   constructor(
     scene: Phaser.Scene,

@@ -9,6 +9,7 @@ import AttributesPartial from "./AttributesPartial.ts";
 import StatsCirclePartial from "./StatsCirclePartial.ts";
 import ChildStatsPartial from "./ChildStatsPartial.ts";
 import { AttributeManager } from "../../stats/attribute-manager.ts";
+import { renderOpenStatsIcon } from "../../ui/stats-icon.ts";
 
 export default class StatsScene extends Scene implements ISceneLifecycle {
   private attributes: AttributeManager;
@@ -59,6 +60,11 @@ export default class StatsScene extends Scene implements ISceneLifecycle {
       .add(coreStatsWheelPanel, 1, "center", 0, true)
       .add(statsPanel, 1, "center", 0, true)
       .layout();
+
+    renderOpenStatsIcon(this, () => {
+      this.scene.resume("MainScene");
+      this.scene.stop();
+    });
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.cleanup, this);
   }

@@ -37,11 +37,11 @@ import { powerups } from "../game-objects/drop/powerup/powerups.ts";
 import DoubleDamage from "../game-objects/drop/powerup/timed/DoubleDamage.ts";
 import DoubleSpeed from "../game-objects/drop/powerup/timed/DoubleSpeed.ts";
 import Invulnerability from "../game-objects/drop/powerup/timed/Invulnerability.ts";
-import UiIcon from "../ui/icon.ts";
 import { addStatistic } from "../helpers/accessors.ts";
 import AbstractGameplayScene from "./AbstractGameplayScene.ts";
 import { Module } from "../modules/module-manager.ts";
 import StageInfoModule from "../modules/stage-info-module.ts";
+import { renderOpenStatsIcon } from "../ui/stats-icon.ts";
 
 class MainScene extends AbstractGameplayScene {
   stage: number;
@@ -121,20 +121,7 @@ class MainScene extends AbstractGameplayScene {
     });
     this.startStage();
 
-    new UiIcon(
-      this,
-      {
-        x: 50,
-        y: this.scale.height - 50,
-      },
-      64,
-      "hand-sparkle",
-      "C",
-      "Open stats menu",
-      () => this.openStatsScreen(),
-    )
-      .setInteractive()
-      .on("pointerdown", () => this.openStatsScreen());
+    renderOpenStatsIcon(this, () => this.openStatsScreen());
     this.children.bringToTop(this.hero);
   }
 

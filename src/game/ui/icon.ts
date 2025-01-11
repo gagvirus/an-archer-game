@@ -1,12 +1,12 @@
 import Container = Phaser.GameObjects.Container;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
-import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import { createText } from "../helpers/text-helpers.ts";
 import Tooltip from "./tooltip.ts";
+import { Scene } from "phaser";
 
 export default class UiIcon extends Container {
   constructor(
-    scene: AbstractGameplayScene,
+    scene: Scene,
     position: Vector2Like,
     buttonSize: number,
     icon: string,
