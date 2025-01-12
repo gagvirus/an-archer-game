@@ -19,6 +19,7 @@ abstract class AbstractProjectile extends Sprite {
   protected isCritical: boolean;
   private readonly speed: number;
   private readonly hitRadius: number;
+  protected rotationOffset: number = 45;
 
   constructor(
     scene: AbstractGameplayScene,
@@ -32,10 +33,8 @@ abstract class AbstractProjectile extends Sprite {
     hitRadius: number,
   ) {
     let sprite = "arrow";
-    switch (type) {
-      case ProjectileType.fireball:
-        sprite = "fireball";
-        break;
+    if (type === "fireball") {
+      sprite = "fireball";
     }
     super(scene, x, y, sprite);
     this._gamePlayScene = scene;
@@ -49,6 +48,8 @@ abstract class AbstractProjectile extends Sprite {
     scene.physics.add.existing(this);
 
     if (type === ProjectileType.fireball) {
+      console.log("aaa");
+      this.rotationOffset = 90;
       this.anims.play("fireball");
     }
   }
@@ -124,7 +125,7 @@ abstract class AbstractProjectile extends Sprite {
 
   protected faceTarget(target: Vector2Like) {
     const angle = Phaser.Math.Angle.Between(this.x, this.y, target.x, target.y);
-    this.setRotation(angle + 45);
+    this.setRotation(angle + this.rotationOffset);
   }
 }
 

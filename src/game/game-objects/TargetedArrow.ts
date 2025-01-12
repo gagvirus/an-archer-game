@@ -23,7 +23,7 @@ export class TargetedArrow extends AbstractProjectile {
       scene,
       x,
       y,
-      ProjectileType.arrow,
+      ProjectileType.fireball,
       attackDamage,
       isCritical,
       owner,
