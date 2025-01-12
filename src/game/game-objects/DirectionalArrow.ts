@@ -24,7 +24,7 @@ export class DirectionalArrow extends AbstractProjectile {
       scene,
       x,
       y,
-      ProjectileType.fireball,
+      ProjectileType.arrow,
       attackDamage,
       isCritical,
       owner,
@@ -39,14 +39,14 @@ export class DirectionalArrow extends AbstractProjectile {
       this,
       targets,
       (_, enemy) => {
-        this.handleArrowCollision(enemy as GameObject);
+        this.handleCollision(enemy as GameObject);
       },
       undefined,
       this,
     );
   }
 
-  handleArrowCollision(target: GameObject) {
+  handleCollision(target: GameObject) {
     if ("attackable" in target) {
       const attackable = target.attackable as Attackable;
       this.handleHit(attackable);
