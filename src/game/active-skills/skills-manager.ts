@@ -39,6 +39,7 @@ class SkillsManager implements SkillAccessors {
   update() {
     this.freeze.update();
     this.barrage.update();
+    this.commonArrow.update();
   }
 }
 

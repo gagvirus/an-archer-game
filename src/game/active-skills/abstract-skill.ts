@@ -1,4 +1,3 @@
-import Hero from "../game-objects/Hero.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import Group = Phaser.Physics.Arcade.Group;
 
@@ -22,7 +21,7 @@ abstract class AbstractSkill {
     return this._targets;
   }
 
-  abstract activate(hero: Hero, targets: Group): void;
+  abstract activate(): void;
   abstract update(): void;
 }
 

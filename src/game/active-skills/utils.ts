@@ -8,6 +8,7 @@ export enum ActiveSkillKey {
 export enum SkillsRef {
   freeze = "freeze",
   barrage = "barrage",
+  commonArrow = "commonArrow",
 }
 
 export type SkillAccessors = {
@@ -15,13 +16,16 @@ export type SkillAccessors = {
 };
 
 export interface ActiveSkill {
-  icon: string;
+  icon?: string;
   reference: SkillsRef;
   key?: ActiveSkillKey;
   description?: string;
 }
 
 export const ACTIVE_SKILLS_MAP: ActiveSkill[] = [
+  {
+    reference: SkillsRef.commonArrow,
+  },
   {
     icon: "cold",
     reference: SkillsRef.freeze,
