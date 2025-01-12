@@ -14,6 +14,10 @@ import DpsIndicatorModule from "../modules/dps-indicator-module.ts";
 import FpsCounterModule from "../modules/fps-counter-module.ts";
 import { isDebugMode } from "../helpers/registry-helper.ts";
 import { addStatistic, resetStatistics } from "../helpers/accessors.ts";
+import SkillsManager from "../active-skills/skills-manager.ts";
+import { ACTIVE_SKILLS_MAP, ActiveSkillKey } from "../active-skills/utils.ts";
+import UiIcon from "../ui/icon.ts";
+import { VectorZeroes } from "../helpers/position-helper.ts";
 import GameObject = Phaser.GameObjects.GameObject;
 import GameObjectWithBody = Phaser.Types.Physics.Arcade.GameObjectWithBody;
 import Group = Phaser.Physics.Arcade.Group;
@@ -25,6 +29,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
   buildings: Group;
   playingSince: number;
   protected moduleManager!: ModuleManager;
+  protected skillsManager: SkillsManager;
 
   private _hero: Hero;
 
@@ -43,7 +48,9 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     this.enemies = this.physics.add.group(); // Group to hold all enemies
     this.buildings = this.physics.add.group();
     this.children.bringToTop(this.hero);
+    this.skillsManager = new SkillsManager(this, this.enemies);
     this.playingSince = Date.now();
+    this.renderActiveSkillsPanel();
   }
 
   update(time: number, delta: number) {
@@ -51,6 +58,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     this.enemies.getChildren().forEach((gameObject: GameObject) => {
       (gameObject as Enemy).update(time, delta);
     });
+    this.skillsManager.update();
 
     const cursors = createCursorKeys(this);
 
@@ -180,6 +188,51 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
         this.moduleManager.toggle(Module.logs);
       }
     });
+
+    const keys = Object.keys(ACTIVE_SKILLS_MAP);
+    this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
+      if (keys.includes(event.key)) {
+        const eventKey = event.key as ActiveSkillKey;
+        this.skillsManager.activateSkill(ACTIVE_SKILLS_MAP[eventKey]);
+      }
+    });
+  }
+
+  private renderActiveSkillsPanel() {
+    const buttonSize = 64; // Set button size
+    const padding = 10;
+    const totalWidth =
+      Object.keys(ACTIVE_SKILLS_MAP).length * (buttonSize + padding) - padding;
+
+    const skillsBar = this.rexUI.add.sizer({
+      x: this.cameras.main.width / 2 - totalWidth / 2,
+      y: this.cameras.main.height - buttonSize,
+      width: totalWidth,
+      height: buttonSize,
+      orientation: "horizontal",
+      space: { item: padding },
+    });
+
+    Object.values(ACTIVE_SKILLS_MAP).forEach((skill) => {
+      const button = new UiIcon(
+        this,
+        VectorZeroes(),
+        buttonSize,
+        skill.icon,
+        skill.key,
+        skill.description,
+        () => {
+          this.skillsManager.activateSkill(skill);
+        },
+      )
+        .setInteractive()
+        .on("pointerdown", () => {
+          this.skillsManager.activateSkill(skill);
+        });
+      skillsBar.add(button, { proportion: 0, expand: false });
+    });
+
+    skillsBar.layout();
   }
 }
 
