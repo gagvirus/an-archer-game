@@ -8,17 +8,17 @@ import {
   SkillAccessors,
   SkillsRef,
 } from "./utils.ts";
-import CommonArrow from "./CommonArrow.ts";
+import SingleShotProjectile from "./SingleShotProjectile.ts";
 import Group = Phaser.Physics.Arcade.Group;
 
 class SkillsManager implements SkillAccessors {
-  readonly commonArrow: CommonArrow;
+  readonly commonArrow: SingleShotProjectile;
   readonly freeze: Freeze;
   readonly barrage: Barrage;
   constructor(scene: AbstractGameplayScene, targets: Group) {
     this.freeze = new Freeze(scene, targets);
     this.barrage = new Barrage(scene, targets);
-    this.commonArrow = new CommonArrow(scene, targets);
+    this.commonArrow = new SingleShotProjectile(scene, targets);
   }
 
   activateSkill(skill: ActiveSkill) {

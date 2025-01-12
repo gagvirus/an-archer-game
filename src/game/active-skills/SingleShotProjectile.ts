@@ -6,7 +6,7 @@ import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import Group = Phaser.Physics.Arcade.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
-class CommonArrow extends AbstractSkill {
+class SingleShotProjectile extends AbstractSkill {
   private arrows: Phaser.GameObjects.Group;
   constructor(scene: AbstractGameplayScene, targets: Group) {
     super(scene, targets);
@@ -51,4 +51,4 @@ class CommonArrow extends AbstractSkill {
   }
 }
 
-export default CommonArrow;
+export default SingleShotProjectile;
