@@ -11,18 +11,22 @@ import {
 import SingleShotProjectile from "./SingleShotProjectile.ts";
 import SingleShotArrow from "./SingleShotArrow.ts";
 import Fireball from "./Fireball.ts";
+import ArrowBarrage from "./ArrowBarrage.ts";
+import FireBurst from "./FireBurst.ts";
 import Group = Phaser.Physics.Arcade.Group;
 
 class SkillsManager implements SkillAccessors {
   readonly commonArrow: SingleShotProjectile;
   readonly freeze: Freeze;
-  readonly barrage: Barrage;
+  readonly arrowBarrage: Barrage;
   readonly fireball: Fireball;
+  readonly fireBurst: FireBurst;
   constructor(scene: AbstractGameplayScene, targets: Group) {
     this.freeze = new Freeze(scene, targets);
-    this.barrage = new Barrage(scene, targets);
+    this.arrowBarrage = new ArrowBarrage(scene, targets);
     this.commonArrow = new SingleShotArrow(scene, targets);
     this.fireball = new Fireball(scene, targets);
+    this.fireBurst = new FireBurst(scene, targets);
   }
 
   activateSkill(skill: ActiveSkill) {
@@ -47,9 +51,10 @@ class SkillsManager implements SkillAccessors {
 
   update() {
     this.freeze.update();
-    this.barrage.update();
+    this.arrowBarrage.update();
     this.commonArrow.update();
     this.fireball.update();
+    this.fireBurst.update();
   }
 }
 

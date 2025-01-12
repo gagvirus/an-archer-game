@@ -1,47 +1,67 @@
 import AbstractSkill from "./abstract-skill.ts";
-import { randomChance } from "../helpers/random-helper.ts";
 import { DirectionalProjectile } from "../game-objects/DirectionalProjectile.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import TargetedProjectile from "../game-objects/TargetedProjectile.ts";
+import { ProjectileType } from "../game-objects/AbstractProjectile.ts";
 import Group = Phaser.GameObjects.Group;
 import ArcadeGroup = Phaser.Physics.Arcade.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
-class Barrage extends AbstractSkill {
-  private arrows: Group;
+abstract class Barrage extends AbstractSkill {
+  private projectiles: Group;
+  private readonly damageMultiplier: number;
+  private readonly numberOfProjectiles: number;
+  private readonly distance: number;
+  private readonly projectileSpeed: number;
+  private readonly hitRadius: number;
+  private readonly type: ProjectileType;
 
-  constructor(scene: AbstractGameplayScene, targets: ArcadeGroup) {
+  constructor(
+    scene: AbstractGameplayScene,
+    targets: ArcadeGroup,
+    type: ProjectileType = ProjectileType.arrow,
+    damageMultiplier: number = 1,
+    numberOfProjectiles: number = 36,
+    distance: number = 1000,
+    projectileSpeed: number = 500,
+    hitRadius: number = 10,
+  ) {
     super(scene, targets);
-    this.arrows = scene.add.group();
+    this.projectiles = scene.add.group();
+    this.damageMultiplier = damageMultiplier;
+    this.numberOfProjectiles = numberOfProjectiles;
+    this.distance = distance;
+    this.projectileSpeed = projectileSpeed;
+    this.hitRadius = hitRadius;
+    this.type = type;
   }
 
   activate() {
-    const numberOfArrows = 72;
-    const distance = 1000;
-    for (let i = 0; i < numberOfArrows; i++) {
-      const isCritical = randomChance(this.hero.attributes.criticalChance);
-      const angle = (360 / numberOfArrows) * i;
-      const arrow = new DirectionalProjectile(
+    for (let i = 0; i < this.numberOfProjectiles; i++) {
+      const angle = (360 / this.numberOfProjectiles) * i;
+      const projectile = new DirectionalProjectile(
         this.scene,
         this.hero.x,
         this.hero.y,
-        this.hero.attackDamage,
-        isCritical,
+        this.hero.attackDamage * this.damageMultiplier,
+        false,
         this.hero.attackable,
-        500,
-        10,
+        this.projectileSpeed,
+        this.hitRadius,
         angle,
-        distance,
+        this.distance,
         this.targets,
+        this.type,
       );
-      this.arrows.add(arrow);
+      this.projectiles.add(projectile);
     }
   }
 
   update() {
-    this.arrows.getChildren().forEach((gameObject: GameObject) => {
+    this.projectiles.getChildren().forEach((gameObject: GameObject) => {
       (gameObject as TargetedProjectile).update();
     });
   }
 }
+
 export default Barrage;

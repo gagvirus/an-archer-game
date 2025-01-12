@@ -2,14 +2,16 @@ import AbstractSkill from "./abstract-skill.ts";
 
 export enum ActiveSkillKey {
   fireball = "1",
+  fireBurst = "2",
   freeze = "3",
-  barrage = "4",
+  arrowBarrage = "4",
 }
 
 export enum SkillsRef {
   fireball = "fireball",
+  fireBurst = "fireBurst",
   freeze = "freeze",
-  barrage = "barrage",
+  arrowBarrage = "arrowBarrage",
   commonArrow = "commonArrow",
 }
 
@@ -35,6 +37,12 @@ export const ACTIVE_SKILLS_MAP: ActiveSkill[] = [
     description: "Throw a devastating fireball",
   },
   {
+    icon: "circle-of-fire",
+    reference: SkillsRef.fireBurst,
+    key: ActiveSkillKey.fireBurst,
+    description: "Burst deadly fireballs all around yourself.",
+  },
+  {
     icon: "cold",
     reference: SkillsRef.freeze,
     key: ActiveSkillKey.freeze,
@@ -42,8 +50,8 @@ export const ACTIVE_SKILLS_MAP: ActiveSkill[] = [
   },
   {
     icon: "arrows-valley",
-    reference: SkillsRef.barrage,
-    key: ActiveSkillKey.barrage,
+    reference: SkillsRef.arrowBarrage,
+    key: ActiveSkillKey.arrowBarrage,
     description: "Fire deadly barrage of arrows all around You",
   },
 ];

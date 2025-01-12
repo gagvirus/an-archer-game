@@ -6,7 +6,7 @@ import Group = Phaser.GameObjects.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
 export class DirectionalProjectile extends AbstractProjectile {
-  private targetPosition: Vector2Like;
+  private readonly targetPosition: Vector2Like;
   constructor(
     scene: AbstractGameplayScene,
     x: number,
@@ -19,18 +19,9 @@ export class DirectionalProjectile extends AbstractProjectile {
     angle: number,
     distance: number,
     targets: Group,
+    type: ProjectileType = ProjectileType.arrow,
   ) {
-    super(
-      scene,
-      x,
-      y,
-      ProjectileType.arrow,
-      attackDamage,
-      isCritical,
-      owner,
-      speed,
-      hitRadius,
-    );
+    super(scene, x, y, type, attackDamage, isCritical, owner, speed, hitRadius);
 
     this.targetPosition = this.calculateTarget(angle, distance);
     this.faceTarget(this.targetPosition);
