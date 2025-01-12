@@ -2,6 +2,8 @@
 
 - Bug - sometimes "damage reduced" is being shown wrongfully while previewing stat changes
 - Improve UI / UX on statistics screen (both global & per-game)
+- Bug - after enemy death - remove ice
+- Change common arrow to work on hit
 - Add abstraction for projectile.
   - add a new skill "fire ball" similar to regular arrows
   - add a new skill similar to barrage for fire
