@@ -1,4 +1,4 @@
-import AbstractProjectile from "./AbstractProjectile.ts";
+import AbstractProjectile, { ProjectileType } from "./AbstractProjectile.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import { Attackable } from "../helpers/gameplayer-helper.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
@@ -24,7 +24,7 @@ export class DirectionalArrow extends AbstractProjectile {
       scene,
       x,
       y,
-      "arrow",
+      ProjectileType.arrow,
       attackDamage,
       isCritical,
       owner,

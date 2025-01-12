@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { Attackable } from "../helpers/gameplayer-helper.ts";
-import AbstractProjectile from "./AbstractProjectile.ts";
+import AbstractProjectile, { ProjectileType } from "./AbstractProjectile.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
@@ -19,7 +19,17 @@ export class TargetedArrow extends AbstractProjectile {
     attackDamage: number,
     isCritical: boolean,
   ) {
-    super(scene, x, y, "arrow", attackDamage, isCritical, owner, speed, 10);
+    super(
+      scene,
+      x,
+      y,
+      ProjectileType.arrow,
+      attackDamage,
+      isCritical,
+      owner,
+      speed,
+      10,
+    );
     this.target = target;
     this.targetPosition = targetPosition;
 

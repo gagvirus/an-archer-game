@@ -1,5 +1,5 @@
 import Sprite = Phaser.Physics.Arcade.Sprite;
-import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
+import AbstractGameplayScene from "../../../scenes/AbstractGameplayScene.ts";
 
 class Fireball extends Sprite {
   constructor(scene: AbstractGameplayScene, x: number, y: number) {

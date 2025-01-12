@@ -8,6 +8,11 @@ import Phaser from "phaser";
 import Sprite = Phaser.Physics.Arcade.Sprite;
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
+export enum ProjectileType {
+  arrow = "arrow",
+  fireball = "fireball",
+}
+
 abstract class AbstractProjectile extends Sprite {
   protected owner: Attackable;
   protected attackDamage: number;
@@ -19,13 +24,19 @@ abstract class AbstractProjectile extends Sprite {
     scene: AbstractGameplayScene,
     x: number,
     y: number,
-    sprite: string = "arrow",
+    type: ProjectileType = ProjectileType.arrow,
     attackDamage: number,
     isCritical: boolean,
     owner: Attackable,
     speed: number,
     hitRadius: number,
   ) {
+    let sprite = "arrow";
+    switch (type) {
+      case ProjectileType.fireball:
+        sprite = "fireball";
+        break;
+    }
     super(scene, x, y, sprite);
     this._gamePlayScene = scene;
     this.isCritical = isCritical;
@@ -36,6 +47,10 @@ abstract class AbstractProjectile extends Sprite {
 
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    if (type === ProjectileType.fireball) {
+      this.anims.play("fireball");
+    }
   }
 
   private _gamePlayScene: AbstractGameplayScene;
