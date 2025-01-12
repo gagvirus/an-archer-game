@@ -1,11 +1,13 @@
 import AbstractSkill from "./abstract-skill.ts";
 
 export enum ActiveSkillKey {
-  freeze = "1",
-  barrage = "2",
+  fireball = "1",
+  freeze = "3",
+  barrage = "4",
 }
 
 export enum SkillsRef {
+  fireball = "fireball",
   freeze = "freeze",
   barrage = "barrage",
   commonArrow = "commonArrow",
@@ -25,6 +27,12 @@ export interface ActiveSkill {
 export const ACTIVE_SKILLS_MAP: ActiveSkill[] = [
   {
     reference: SkillsRef.commonArrow,
+  },
+  {
+    icon: "fiery-skull",
+    reference: SkillsRef.fireball,
+    key: ActiveSkillKey.fireball,
+    description: "Throw a devastating fireball",
   },
   {
     icon: "cold",
