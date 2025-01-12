@@ -1,7 +1,9 @@
 import AbstractSkill from "./abstract-skill.ts";
 
 class CommonArrow extends AbstractSkill {
-  activate(): void {}
+  activate(): void {
+    // this.targets
+  }
 
   update(): void {}
 }
