@@ -17,21 +17,21 @@ export type SkillAccessors = {
 export interface ActiveSkill {
   icon: string;
   reference: SkillsRef;
-  key: ActiveSkillKey;
+  key?: ActiveSkillKey;
   description?: string;
 }
 
-export const ACTIVE_SKILLS_MAP: Record<ActiveSkillKey, ActiveSkill> = {
-  [ActiveSkillKey.freeze]: {
+export const ACTIVE_SKILLS_MAP: ActiveSkill[] = [
+  {
     icon: "cold",
     reference: SkillsRef.freeze,
     key: ActiveSkillKey.freeze,
     description: "Freeze all enemies in a circle",
   },
-  [ActiveSkillKey.barrage]: {
+  {
     icon: "arrows-valley",
     reference: SkillsRef.barrage,
     key: ActiveSkillKey.barrage,
     description: "Fire deadly barrage of arrows all around You",
   },
-};
+];

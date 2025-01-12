@@ -189,11 +189,10 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
       }
     });
 
-    const keys = Object.keys(ACTIVE_SKILLS_MAP);
+    const keys = Object.values(ActiveSkillKey);
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
-      if (keys.includes(event.key)) {
-        const eventKey = event.key as ActiveSkillKey;
-        this.skillsManager.activateSkill(ACTIVE_SKILLS_MAP[eventKey]);
+      if (keys.includes(event.key as ActiveSkillKey)) {
+        this.skillsManager.activateSkillByHotkey(event.key as ActiveSkillKey);
       }
     });
   }
@@ -202,7 +201,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     const buttonSize = 64; // Set button size
     const padding = 10;
     const totalWidth =
-      Object.keys(ACTIVE_SKILLS_MAP).length * (buttonSize + padding) - padding;
+      ACTIVE_SKILLS_MAP.length * (buttonSize + padding) - padding;
 
     const skillsBar = this.rexUI.add.sizer({
       x: this.cameras.main.width / 2 - totalWidth / 2,
@@ -213,7 +212,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
       space: { item: padding },
     });
 
-    Object.values(ACTIVE_SKILLS_MAP).forEach((skill) => {
+    ACTIVE_SKILLS_MAP.forEach((skill) => {
       const button = new UiIcon(
         this,
         VectorZeroes(),
