@@ -18,18 +18,9 @@ export class TargetedProjectile extends AbstractProjectile {
     owner: Attackable,
     attackDamage: number,
     isCritical: boolean,
+    type: ProjectileType = ProjectileType.arrow,
   ) {
-    super(
-      scene,
-      x,
-      y,
-      ProjectileType.arrow,
-      attackDamage,
-      isCritical,
-      owner,
-      speed,
-      10,
-    );
+    super(scene, x, y, type, attackDamage, isCritical, owner, speed, 10);
     this.target = target;
     this.targetPosition = targetPosition;
 

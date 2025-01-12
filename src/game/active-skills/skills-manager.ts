@@ -9,6 +9,7 @@ import {
   SkillsRef,
 } from "./utils.ts";
 import SingleShotProjectile from "./SingleShotProjectile.ts";
+import SingleShotArrow from "./SingleShotArrow.ts";
 import Group = Phaser.Physics.Arcade.Group;
 
 class SkillsManager implements SkillAccessors {
@@ -18,7 +19,7 @@ class SkillsManager implements SkillAccessors {
   constructor(scene: AbstractGameplayScene, targets: Group) {
     this.freeze = new Freeze(scene, targets);
     this.barrage = new Barrage(scene, targets);
-    this.commonArrow = new SingleShotProjectile(scene, targets);
+    this.commonArrow = new SingleShotArrow(scene, targets);
   }
 
   activateSkill(skill: ActiveSkill) {
