@@ -4,7 +4,7 @@ import AbstractProjectile, { ProjectileType } from "./AbstractProjectile.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
 import Vector2Like = Phaser.Types.Math.Vector2Like;
 
-export class TargetedArrow extends AbstractProjectile {
+export class TargetedProjectile extends AbstractProjectile {
   target: Attackable;
   targetPosition: Vector2Like;
 
@@ -36,11 +36,11 @@ export class TargetedArrow extends AbstractProjectile {
     this.faceTarget(targetPosition);
   }
 
-  // Check if the arrow reached the target
+  // Check if the projectile reached the target
   update() {
     this.moveTowardsTarget(this.targetPosition);
     this.arrivedAtTarget(this.targetPosition) && this.handleHit(this.target);
   }
 }
 
-export default TargetedArrow;
+export default TargetedProjectile;

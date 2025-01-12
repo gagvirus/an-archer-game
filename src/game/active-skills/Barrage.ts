@@ -1,8 +1,8 @@
 import AbstractSkill from "./abstract-skill.ts";
 import { randomChance } from "../helpers/random-helper.ts";
-import { DirectionalArrow } from "../game-objects/DirectionalArrow.ts";
+import { DirectionalProjectile } from "../game-objects/DirectionalProjectile.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
-import TargetedArrow from "../game-objects/TargetedArrow.ts";
+import TargetedProjectile from "../game-objects/TargetedProjectile.ts";
 import Group = Phaser.GameObjects.Group;
 import ArcadeGroup = Phaser.Physics.Arcade.Group;
 import GameObject = Phaser.GameObjects.GameObject;
@@ -21,7 +21,7 @@ class Barrage extends AbstractSkill {
     for (let i = 0; i < numberOfArrows; i++) {
       const isCritical = randomChance(this.hero.attributes.criticalChance);
       const angle = (360 / numberOfArrows) * i;
-      const arrow = new DirectionalArrow(
+      const arrow = new DirectionalProjectile(
         this.scene,
         this.hero.x,
         this.hero.y,
@@ -40,7 +40,7 @@ class Barrage extends AbstractSkill {
 
   update() {
     this.arrows.getChildren().forEach((gameObject: GameObject) => {
-      (gameObject as TargetedArrow).update();
+      (gameObject as TargetedProjectile).update();
     });
   }
 }

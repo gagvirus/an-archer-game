@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Enemy from "./Enemy.ts";
-import TargetedArrow from "./TargetedArrow.ts";
+import TargetedProjectile from "./TargetedProjectile.ts";
 import HealthBar from "./HealthBar.ts";
 import { Attackable, XpManager } from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
@@ -221,7 +221,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     }
     this.autoAttack && this.attackable.attack();
     this.arrows.getChildren().forEach((gameObject: GameObject) => {
-      (gameObject as TargetedArrow).update();
+      (gameObject as TargetedProjectile).update();
     });
     this.attackable.update(delta);
     // pull circle follows the hero
@@ -260,7 +260,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       attackDamage *= this.attributes.criticalAmount;
     }
     target.soonToBeHealth -= attackDamage;
-    const arrow = new TargetedArrow(
+    const arrow = new TargetedProjectile(
       this.gamePlayScene,
       this.x,
       this.y,

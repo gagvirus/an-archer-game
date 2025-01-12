@@ -5,7 +5,7 @@ import Vector2Like = Phaser.Types.Math.Vector2Like;
 import Group = Phaser.GameObjects.Group;
 import GameObject = Phaser.GameObjects.GameObject;
 
-export class DirectionalArrow extends AbstractProjectile {
+export class DirectionalProjectile extends AbstractProjectile {
   private targetPosition: Vector2Like;
   constructor(
     scene: AbstractGameplayScene,
