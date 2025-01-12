@@ -1,6 +1,4 @@
 import Phaser from "phaser";
-import Enemy from "./Enemy.ts";
-import TargetedProjectile from "./TargetedProjectile.ts";
 import HealthBar from "./HealthBar.ts";
 import { Attackable, XpManager } from "../helpers/gameplayer-helper.ts";
 import XpBar from "./XpBar.ts";
@@ -14,17 +12,14 @@ import { VectorZeroes } from "../helpers/position-helper.ts";
 import { CustomCursorKeysDown } from "../helpers/keyboard-helper.ts";
 import { COLOR_SUCCESS, COLOR_WARNING } from "../helpers/colors.ts";
 import { ResourceType } from "./drop/resource/Resource.ts";
-import { randomChance } from "../helpers/random-helper.ts";
 import { AttributeManager } from "../stats/attribute-manager.ts";
 import { addStatistic, getStatistic } from "../helpers/accessors.ts";
 import AbstractGameplayScene from "../scenes/AbstractGameplayScene.ts";
-import GameObject = Phaser.GameObjects.GameObject;
-import Group = Phaser.GameObjects.Group;
+import { SkillsRef } from "../active-skills/utils.ts";
 import Arc = Phaser.GameObjects.Arc;
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
   autoAttack: boolean;
-  arrows: Group;
   attackable: Attackable;
   xpManager: XpManager;
   _level: number;
@@ -38,7 +33,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     [ResourceType.soul]: 0,
     [ResourceType.coin]: 0,
   };
-  private gamePlayScene: AbstractGameplayScene;
+  private readonly gamePlayScene: AbstractGameplayScene;
 
   constructor(scene: AbstractGameplayScene, x: number, y: number) {
     super(scene, x, y, "hero"); // 'hero' is the key for the hero sprite
@@ -62,9 +57,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     );
     this.collectLootCircle.setVisible(isDebugMode());
     this.autoAttack = isAutoAttackEnabled();
-
-    // Initialize arrow group
-    this.arrows = scene.add.group(); // Group to hold all arrows
 
     // initial state
     this.state = "idle";
@@ -99,10 +91,9 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         });
       },
       () => {
-        const nearestEnemy = this.getNearestEnemy();
-        if (nearestEnemy) {
-          this.arrows.add(this.shootArrowAtEnemy(nearestEnemy));
-        }
+        this.gamePlayScene.skillsManager.activateSkillByRef(
+          SkillsRef.commonArrow,
+        );
       },
       this,
     );
@@ -220,9 +211,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       }
     }
     this.autoAttack && this.attackable.attack();
-    this.arrows.getChildren().forEach((gameObject: GameObject) => {
-      (gameObject as TargetedProjectile).update();
-    });
     this.attackable.update(delta);
     // pull circle follows the hero
     this.collectLootCircle.x = this.x;
@@ -250,54 +238,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     } else {
       this.setVelocityY(0);
     }
-  }
-
-  shootArrowAtEnemy(target: Enemy) {
-    let attackDamage = this.attackable.attackDamage;
-
-    const isCritical = randomChance(this.attributes.criticalChance);
-    if (isCritical) {
-      attackDamage *= this.attributes.criticalAmount;
-    }
-    target.soonToBeHealth -= attackDamage;
-    const arrow = new TargetedProjectile(
-      this.gamePlayScene,
-      this.x,
-      this.y,
-      target,
-      target.attackable,
-      500,
-      this.attackable,
-      attackDamage,
-      isCritical,
-    );
-    this.gamePlayScene.add.existing(arrow);
-    return arrow;
-  }
-
-  getNearestEnemy(): Enemy | null {
-    let nearestEnemy: Enemy | null = null;
-    let minDistance = Number.MAX_VALUE;
-
-    const enemies = this.gamePlayScene.enemies
-      .getChildren()
-      .filter((enemy: GameObject) => !(enemy as Enemy).isToBeKilled);
-
-    enemies.forEach((gameObject: GameObject) => {
-      const enemy = gameObject as Enemy;
-      const distance = Phaser.Math.Distance.Between(
-        this.x,
-        this.y,
-        enemy.x,
-        enemy.y,
-      );
-      if (distance < minDistance) {
-        nearestEnemy = enemy as Enemy;
-        minDistance = distance;
-      }
-    });
-
-    return nearestEnemy;
   }
 }
 

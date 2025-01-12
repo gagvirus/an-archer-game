@@ -6,6 +6,7 @@ import {
   ActiveSkill,
   ActiveSkillKey,
   SkillAccessors,
+  SkillsRef,
 } from "./utils.ts";
 import CommonArrow from "./CommonArrow.ts";
 import Group = Phaser.Physics.Arcade.Group;
@@ -30,6 +31,10 @@ class SkillsManager implements SkillAccessors {
     if (skill) {
       this.activateSkill(skill);
     }
+  }
+
+  activateSkillByRef(skillRef: SkillsRef) {
+    this[skillRef].activate();
   }
 
   findSkillByHotkey(hotkey: ActiveSkillKey) {

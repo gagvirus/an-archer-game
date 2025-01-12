@@ -29,12 +29,16 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
   buildings: Group;
   playingSince: number;
   protected moduleManager!: ModuleManager;
-  protected skillsManager: SkillsManager;
+  protected _skillsManager: SkillsManager;
 
   private _hero: Hero;
 
   public get hero() {
     return this._hero;
+  }
+
+  get skillsManager() {
+    return this._skillsManager;
   }
 
   create() {
@@ -48,24 +52,9 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     this.enemies = this.physics.add.group(); // Group to hold all enemies
     this.buildings = this.physics.add.group();
     this.children.bringToTop(this.hero);
-    this.skillsManager = new SkillsManager(this, this.enemies);
+    this._skillsManager = new SkillsManager(this, this.enemies);
     this.playingSince = Date.now();
     this.renderActiveSkillsPanel();
-  }
-
-  update(time: number, delta: number) {
-    // Make enemies move towards the hero and avoid collision with each other
-    this.enemies.getChildren().forEach((gameObject: GameObject) => {
-      (gameObject as Enemy).update(time, delta);
-    });
-    this.skillsManager.update();
-
-    const cursors = createCursorKeys(this);
-
-    // Update hero based on input
-    this.hero.update(cursors, time, delta);
-    this.moduleManager.update();
-    this.dropsFollowHero();
   }
 
   dropsFollowHero() {
@@ -160,6 +149,21 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     this.moduleManager.enable(Module.score);
   }
 
+  update(time: number, delta: number) {
+    // Make enemies move towards the hero and avoid collision with each other
+    this.enemies.getChildren().forEach((gameObject: GameObject) => {
+      (gameObject as Enemy).update(time, delta);
+    });
+    this._skillsManager.update();
+
+    const cursors = createCursorKeys(this);
+
+    // Update hero based on input
+    this.hero.update(cursors, time, delta);
+    this.moduleManager.update();
+    this.dropsFollowHero();
+  }
+
   protected registerEventListeners() {
     this.events.on("resume", () => this.onResume());
     this.events.on("shutdown", () => this.onShutdown());
@@ -192,7 +196,7 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     const keys = Object.values(ActiveSkillKey);
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
       if (keys.includes(event.key as ActiveSkillKey)) {
-        this.skillsManager.activateSkillByHotkey(event.key as ActiveSkillKey);
+        this._skillsManager.activateSkillByHotkey(event.key as ActiveSkillKey);
       }
     });
   }
@@ -213,22 +217,24 @@ abstract class AbstractGameplayScene extends Scene implements ISceneLifecycle {
     });
 
     ACTIVE_SKILLS_MAP.forEach((skill) => {
-      const button = new UiIcon(
-        this,
-        VectorZeroes(),
-        buttonSize,
-        skill.icon,
-        skill.key,
-        skill.description,
-        () => {
-          this.skillsManager.activateSkill(skill);
-        },
-      )
-        .setInteractive()
-        .on("pointerdown", () => {
-          this.skillsManager.activateSkill(skill);
-        });
-      skillsBar.add(button, { proportion: 0, expand: false });
+      if (skill.icon) {
+        const button = new UiIcon(
+          this,
+          VectorZeroes(),
+          buttonSize,
+          skill.icon,
+          skill.key,
+          skill.description,
+          () => {
+            this._skillsManager.activateSkill(skill);
+          },
+        )
+          .setInteractive()
+          .on("pointerdown", () => {
+            this._skillsManager.activateSkill(skill);
+          });
+        skillsBar.add(button, { proportion: 0, expand: false });
+      }
     });
 
     skillsBar.layout();
